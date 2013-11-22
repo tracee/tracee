@@ -1,21 +1,46 @@
 # tracee   0.1-SNAPSHOT
 ## Introduction
 
+Debugging distributed enterprise applications is difficult.
 
-- *What problem does it try to fix?*
-- *What are the most important features?*
+...
 
-*Also important: What is the current state of the project? Is it early development or already future complete and production stable?*
+You may already aggregate all your machine logs in a single logging database (using logstash, elasticsearch or others) but it is still
+complicated to find all log entries that belong to a certain interaction with the system.
+
+*TracEE* is a framework that tries to ease this kind of interaction diagnosis by passing contextual information through your system and
+makes them visible in your logs. Therefore if contains adapters or interceptors for the most relevant ee technologies:
+
+* servlet 2.5
+* jax-ws
+* jax-rs
+* jms
+
+The following logging frameworks are supported as backends
+
+* slf4j
+* log4j
+* jboss-logging
+
+This project is sill in early experimental alpha stage and the whole api may change during further development.
 
 ## Getting started
 *Just some lines of description in prose and code that gets the user up and running with this library.*
+
+
+The following context information are visible out of the box:
+- for each new incoming
+
+
 
 ## Contribution
 - (2013) Daniel Wegener (Holisticon AG)
 
 ### Setup a development environment
 tracee is built using Maven (at least version 3.0.4).
-A simple import of the pom in your IDE should get you up and running.
+A simple import of the pom in your IDE should get you up and running:
+
+``mvn clean install``
 
 ### Requirements
 The likelihood of a pull request being used rises with the following properties:
