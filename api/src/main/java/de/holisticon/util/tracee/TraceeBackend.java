@@ -12,6 +12,11 @@ import java.util.TreeMap;
 public interface TraceeBackend {
 
     /**
+     * @return {@code true} if this backend contains no context information, {@code false} otherwise.
+     */
+    boolean isEmpty();
+
+    /**
      * Clears all context information from this backend.
      */
     void clear();
@@ -29,12 +34,20 @@ public interface TraceeBackend {
 
 
     /**
-     * @return a map (copy) of all values within this TraceeBackend
+     * @return a map (copy) of all entries within this TraceeBackend
      */
     TreeMap<String,String> extractContext();
     
     void putAll(Map<String,String> values);
 
 
+    String serialize();
+
+    /**
+     * Deserializes the given serialized context and merges every entry into this backend.
+     * @param serialized
+     * @return {@code false} on deserialization error, {@code true} otherwise.
+     */
+    boolean merge(String serialized);
 
 }

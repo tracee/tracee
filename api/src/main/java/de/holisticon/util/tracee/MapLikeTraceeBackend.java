@@ -31,6 +31,8 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     public final void remove(String key) {
         final Collection<String> registeredKeys = getRegisteredKeys();
         registeredKeys.remove(key);
+        if (registeredKeys.isEmpty())
+            removeFromMap(REGISTERED_KEYS_KEY);
         removeFromMap(key);
     }
 

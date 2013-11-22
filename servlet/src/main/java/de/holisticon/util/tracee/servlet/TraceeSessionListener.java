@@ -16,16 +16,16 @@ import javax.servlet.http.HttpSessionListener;
  * </ul>
  * @author Daniel
  */
-public class SimpleSessionLifecycleMonitor implements HttpSessionListener {
+public class TraceeSessionListener implements HttpSessionListener {
 
 
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        Tracee.getBackend().put(TraceeConstants.SESSION_ID_KEY,httpSessionEvent.getSession().getId());
+        Tracee.getBackend().put(TraceeConstants.SESSION_ID_KEY, httpSessionEvent.getSession().getId());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        Tracee.getBackend().remove(TraceeConstants.PRINCIPAL_KEY);
+        Tracee.getBackend().remove(TraceeConstants.SESSION_ID_KEY);
     }
 }
