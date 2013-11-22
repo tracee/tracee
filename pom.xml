@@ -20,6 +20,7 @@
         <module>servlet</module>
         <module>jaxrs</module>
         <module>jaxws</module>
+        <module>jms</module>
 
         <!-- outbound -->
         <module>httpclient</module>
