@@ -13,14 +13,15 @@ import java.util.Map;
 class JbossLoggingTraceeBackend extends MapLikeTraceeBackend {
 
 
+
     @Override
-    public String get(String key) {
+    public String getFromMap(String key) {
         final Object obj = MDC.get(key);
         return obj == null? null : obj.toString();
     }
 
     @Override
-    public boolean contains(String key) {
+    public boolean mapContains(String key) {
         return MDC.get(key) != null;
     }
 

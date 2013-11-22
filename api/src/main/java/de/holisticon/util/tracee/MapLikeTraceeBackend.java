@@ -1,5 +1,12 @@
 package de.holisticon.util.tracee;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -9,10 +16,55 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     public static final String REGISTERED_KEYS_KEY = "de.holisticon.util.tracee.spi.TraceeBackend.REGISTERED_KEYS";
 
+
+    private final JsonFactory jsonFactory = new JsonFactory();
+
+
+    @Override
+    public String serialize() {
+        final StringWriter stringWriter = new StringWriter();
+        try {
+            final JsonGenerator generator = jsonFactory.createGenerator(stringWriter);
+            generator.writeObject(extractContext());
+        } catch (IOException e) {
+            // must not happen
+        }
+        return stringWriter.getBuffer().toString();
+    }
+
+    @Override
+    public boolean merge(String serialized) {
+        try {
+            final JsonParser parser = jsonFactory.createParser(serialized);
+            final Iterator<Map<String,String>> objectIterator = parser.readValuesAs(new TypeReference<Map<String, String>>() {});
+
+
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public final boolean contains(String key) {
+        return getRegisteredKeys().contains(key);
+    }
+
+    @Override
+    public final boolean isEmpty() {
+        return getFromMap(REGISTERED_KEYS_KEY) != null;
+    }
+
+    @Override
+    public final String get(String key) {
+        if (!getRegisteredKeys().contains(key)) return null;
+        return getFromMap(key);
+    }
+
     @Override
     public final Collection<String> getRegisteredKeys() {
-        final String serializedKeys = get(REGISTERED_KEYS_KEY);
-        if (serializedKeys == null) return new ArrayList<String>();
+        final String serializedKeys = getFromMap(REGISTERED_KEYS_KEY);
+        if (serializedKeys == null) return Collections.emptyList();
         return deserialize(serializedKeys);
     }
 
@@ -44,9 +96,15 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
         removeFromMap(REGISTERED_KEYS_KEY);
     }
 
+
+
     protected abstract void putInMap(String key, String value);
 
     protected abstract void removeFromMap(String key);
+
+    protected abstract String getFromMap(String key);
+
+    protected abstract boolean mapContains(String key);
 
     public void putAll(Map<String,String> entries) {
         for (Map.Entry<String, String> entry : entries.entrySet()) {
@@ -84,7 +142,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     public TreeMap<String,String> extractContext() {
         final TreeMap<String,String> traceeContext = new TreeMap<String, String>();
         for (String s : getRegisteredKeys()) {
-            traceeContext.put(s, get(s));
+            traceeContext.put(s, getFromMap(s));
         }
         return traceeContext;
     }

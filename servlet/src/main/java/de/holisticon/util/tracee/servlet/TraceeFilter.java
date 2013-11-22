@@ -85,7 +85,6 @@ public class TraceeFilter implements Filter {
             response.setHeader(headerName, backend.serialize());
 
         backend.clear();
-
     }
 
     private String anonymizedSessionKey(String sessionKey) {
