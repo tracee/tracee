@@ -1,0 +1,35 @@
+package de.holisticon.util.tracee;
+
+import java.util.Collection;
+import java.util.Map;
+
+/**
+ * A backend is expected to be thread local.
+ *
+ * @author Daniel Wegener (Holisticon AG)
+ */
+public interface TraceeBackend {
+
+    /**
+     * Clears all context information from this backend.
+     */
+    void clear();
+
+    Collection<String> getRegisteredKeys();
+
+    /**
+     * @param key ignored if <code>null</code>
+     * @param value ignored if <code>null</code>
+     */
+    void put(String key, String value);
+    void remove(String key);
+    String get(String key);
+    boolean contains(String key);
+
+    TraceeContext extractContext();
+    
+    void putAll(Map<String,String> values);
+
+
+
+}

@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.holisticon.util.tracee.backend</groupId>
+  <artifactId>tracee-slf4j</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>de.holisticon.util.tracee</groupId>
+    <artifactId>tracee-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <name>tracee-slf4j</name>
+  <description>Please refer to https://github.com/holisticon/tracee.</description>
+
+
+  <dependencies>
+    <dependency>
+      <artifactId>tracee-api</artifactId>
+      <groupId>de.holisticon.util.tracee</groupId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <artifactId>slf4j-api</artifactId>
+      <groupId>org.slf4j</groupId>
+      <version>1.6.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+
+</project>
