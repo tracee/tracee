@@ -20,7 +20,7 @@ public class TraceeTest {
             expected = e;
         }
         assertThat(expected, notNullValue());
-        assertThat(expected.getMessage(), equalTo("Unable to find a context provider"));
+        assertThat(expected.getMessage(), equalTo("Unable to find a tracee backend provider"));
 
     }
 }

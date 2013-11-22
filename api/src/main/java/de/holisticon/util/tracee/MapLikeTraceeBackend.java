@@ -1,8 +1,6 @@
 package de.holisticon.util.tracee;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -48,6 +46,11 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     protected abstract void removeFromMap(String key);
 
+    public void putAll(Map<String,String> entries) {
+        for (Map.Entry<String, String> entry : entries.entrySet()) {
+            put(entry.getKey(),entry.getValue());
+        }
+    }
 
 
     private void setRegisteredKeys(Collection<String> registeredKeys) {
@@ -76,8 +79,8 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     }
 
     @Override
-    public TraceeContext extractContext() {
-        final TraceeContext traceeContext = new TraceeContext();
+    public TreeMap<String,String> extractContext() {
+        final TreeMap<String,String> traceeContext = new TreeMap<String, String>();
         for (String s : getRegisteredKeys()) {
             traceeContext.put(s, get(s));
         }

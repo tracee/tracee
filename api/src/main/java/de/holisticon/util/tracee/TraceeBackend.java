@@ -2,6 +2,7 @@ package de.holisticon.util.tracee;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A backend is expected to be thread local.
@@ -26,7 +27,11 @@ public interface TraceeBackend {
     String get(String key);
     boolean contains(String key);
 
-    TraceeContext extractContext();
+
+    /**
+     * @return a map (copy) of all values within this TraceeBackend
+     */
+    TreeMap<String,String> extractContext();
     
     void putAll(Map<String,String> values);
 
