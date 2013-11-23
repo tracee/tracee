@@ -1,4 +1,7 @@
 # tracee   0.1-SNAPSHOT
+
+[![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
+
 ## Introduction
 
 Debugging distributed enterprise applications is difficult.
