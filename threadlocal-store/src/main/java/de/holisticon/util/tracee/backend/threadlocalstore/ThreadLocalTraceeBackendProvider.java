@@ -8,12 +8,12 @@ import de.holisticon.util.tracee.spi.TraceeBackendProvider;
  */
 public class ThreadLocalTraceeBackendProvider implements TraceeBackendProvider {
 
-    private static final ThreadLocalMap threadLocalMap = new ThreadLocalMap();
+    private static final ThreadLocalMap THREAD_LOCAL_MAP = new ThreadLocalMap();
 
-    private final TraceeBackend traceeBackend = new ThreadLocalTraceeBackend(threadLocalMap);
+    private final TraceeBackend traceeBackend = new ThreadLocalTraceeBackend(THREAD_LOCAL_MAP);
 
     @Override
-    public TraceeBackend provideBackend() {
+    public final TraceeBackend provideBackend() {
         return traceeBackend;
     }
 

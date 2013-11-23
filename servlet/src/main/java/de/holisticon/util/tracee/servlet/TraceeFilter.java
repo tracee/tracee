@@ -30,14 +30,16 @@ public class TraceeFilter implements Filter {
     public static final String TRACEE_CONTEXT_KEY = "de.holisticon.util.tracee.servlet.TRACEE_CONTEXT_KEY";
 
     /**
-     * Init-Param key to
+     * Init-Param key to.
      */
-    public static final String ACCEPT_INCOMING_CONTEXT_KEY = "de.holisticon.util.tracee.servlet.TraceeFilter.acceptIncomingContext";
+    public static final String ACCEPT_INCOMING_CONTEXT_KEY =
+            "de.holisticon.util.tracee.servlet.TraceeFilter.acceptIncomingContext";
 
     /**
-     * Init-Param to configure if the
+     * Init-Param to configure if the.
      */
-    public static final String RESPOND_WITH_CONTEXT_KEY = "de.holisticon.util.tracee.servlet.TraceeFilter.respondWithContextKey";
+    public static final String RESPOND_WITH_CONTEXT_KEY =
+            "de.holisticon.util.tracee.servlet.TraceeFilter.respondWithContextKey";
 
     /**
      * Init-Param key for the name of the request header that may contain the incoming
@@ -51,7 +53,8 @@ public class TraceeFilter implements Filter {
     private TraceeBackend backend = null;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
         if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse) {
             doFilterHttp((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, filterChain);
         } else {
@@ -82,51 +85,34 @@ public class TraceeFilter implements Filter {
         }
 
         if (respondWithContext && backend.isEmpty())
-            response.setHeader(headerName, backend.serialize());
+            response.setHeader(headerName, backend.toHeaderRepresentation());
 
         backend.clear();
     }
 
     private String anonymizedSessionKey(String sessionKey) {
-        // TODO: how about some salt?
+        // TO DO: how about some salt?
         return Integer.toHexString(sessionKey.hashCode());
     }
 
     private void mergeIncomingContextToBackend(HttpServletRequest request) {
         final Enumeration headers = request.getHeaders(headerName);
         if (headers == null) {
-            throw new IllegalStateException("Could not read headers with name '" + headerName + "'. The access seem to be forbidden by the container");
+            throw new IllegalStateException("Could not read headers with name '"
+                    + headerName + "'. The access seem to be forbidden by the container");
         }
         while (headers.hasMoreElements()) {
-            backend.merge((String)headers.nextElement());
+            backend.merge((String) headers.nextElement());
         }
     }
-
-
-    private void buildSessionContext(HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-        final String sessionId = session != null ? session.getId() : null;
-        Tracee.getBackend().put(TraceeConstants.SESSION_ID_KEY, sessionId);
-    }
-
-    private void buildRequestContext(HttpServletRequest request) {
-        final String requestContextFromHeader = request.getHeader(headerName);
-        final String requestContextFromRequest = (String) request.getAttribute(TRACEE_CONTEXT_KEY);
-
-    }
-
 
     private String generateRandomHexString() {
         Random r = ThreadLocalRandom.current();
         return new UUID(r.nextLong(), r.nextLong()).toString().replace("-", "");
     }
 
-    private void closeContext() {
-        Tracee.getBackend().clear();
-    }
-
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public final void init(FilterConfig filterConfig) throws ServletException {
         //ensure spi scanning on filter initialization
         backend = Tracee.getBackend();
         final String configuredHeaderName = filterConfig.getInitParameter(HEADER_NAME_PARAM_KEY);
@@ -140,6 +126,6 @@ public class TraceeFilter implements Filter {
 
 
     @Override
-    public void destroy() {
+    public final void destroy() {
     }
 }

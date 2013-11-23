@@ -5,13 +5,12 @@ package de.holisticon.util.tracee;
  */
 public final class TraceeConstants {
 
-    private TraceeConstants() {}
+    private TraceeConstants() {
+    }
 
     public static final String HTTP_HEADER_NAME = "X-TracEE-Context";
 
     public static final String SESSION_ID_KEY = "x-tracee-session";
     public static final String REQUEST_ID_KEY = "x-tracee-request";
-    public static final String PRINCIPAL_KEY = "x-tracee-principal";
-
 
 }

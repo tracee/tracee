@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
 
+
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
@@ -21,23 +22,27 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
 
     @Override
-    public String serialize() {
+    public final String toHeaderRepresentation() {
         final StringWriter stringWriter = new StringWriter();
         try {
             final JsonGenerator generator = jsonFactory.createGenerator(stringWriter);
             generator.writeObject(extractContext());
-        } catch (IOException e) {
+        } catch (IOException ignored) {
             // must not happen
         }
         return stringWriter.getBuffer().toString();
     }
 
     @Override
-    public boolean merge(String serialized) {
+    public final boolean merge(String serialized) {
         try {
             final JsonParser parser = jsonFactory.createParser(serialized);
-            final Iterator<Map<String,String>> objectIterator = parser.readValuesAs(new TypeReference<Map<String, String>>() {});
-
+            final Iterator<Map<String, String>> objectIterator =
+                    parser.readValuesAs(new TypeReference<Map<String, String>>() {
+                    });
+            while (objectIterator.hasNext()) {
+                putAll(objectIterator.next());
+            }
 
         } catch (IOException e) {
             return false;
@@ -97,7 +102,6 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     }
 
 
-
     protected abstract void putInMap(String key, String value);
 
     protected abstract void removeFromMap(String key);
@@ -106,9 +110,10 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     protected abstract boolean mapContains(String key);
 
-    public void putAll(Map<String,String> entries) {
+
+    public final void putAll(Map<String, String> entries) {
         for (Map.Entry<String, String> entry : entries.entrySet()) {
-            put(entry.getKey(),entry.getValue());
+            put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -133,14 +138,14 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     }
 
     private Collection<String> deserialize(String serialized) {
-        final String[] split = serialized.trim().split(",",0);
-            return Arrays.asList(split);
+        final String[] split = serialized.trim().split(",", 0);
+        return Arrays.asList(split);
 
     }
 
     @Override
-    public TreeMap<String,String> extractContext() {
-        final TreeMap<String,String> traceeContext = new TreeMap<String, String>();
+    public final TreeMap<String, String> extractContext() {
+        final TreeMap<String, String> traceeContext = new TreeMap<String, String>();
         for (String s : getRegisteredKeys()) {
             traceeContext.put(s, getFromMap(s));
         }

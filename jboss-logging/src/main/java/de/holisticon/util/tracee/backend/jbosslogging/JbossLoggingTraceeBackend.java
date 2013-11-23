@@ -3,8 +3,6 @@ package de.holisticon.util.tracee.backend.jbosslogging;
 import de.holisticon.util.tracee.MapLikeTraceeBackend;
 import org.jboss.logging.MDC;
 
-import java.util.Map;
-
 /**
  * TraceeBackend provided using the jboss logging {@link MDC}.
  *
@@ -13,26 +11,25 @@ import java.util.Map;
 class JbossLoggingTraceeBackend extends MapLikeTraceeBackend {
 
 
-
     @Override
-    public String getFromMap(String key) {
+    public final String getFromMap(String key) {
         final Object obj = MDC.get(key);
-        return obj == null? null : obj.toString();
+        return obj == null ? null : obj.toString();
     }
 
     @Override
-    public boolean mapContains(String key) {
+    public final boolean mapContains(String key) {
         return MDC.get(key) != null;
     }
 
 
     @Override
-    protected void putInMap(String key, String value) {
-        MDC.put(key,value);
+    protected final void putInMap(String key, String value) {
+        MDC.put(key, value);
     }
 
     @Override
-    protected void removeFromMap(String key) {
+    protected final void removeFromMap(String key) {
         MDC.remove(key);
     }
 }

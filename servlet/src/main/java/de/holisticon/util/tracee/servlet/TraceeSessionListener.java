@@ -11,21 +11,22 @@ import javax.servlet.http.HttpSessionListener;
  * This might not work for every servlet container.
  * It should at least work for the following containers:
  * <ul>
- *     <li>Jetty</li>
- *     <li>Tomcat</li>
+ * <li>Jetty</li>
+ * <li>Tomcat</li>
  * </ul>
+ *
  * @author Daniel
  */
 public class TraceeSessionListener implements HttpSessionListener {
 
 
     @Override
-    public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+    public final void sessionCreated(HttpSessionEvent httpSessionEvent) {
         Tracee.getBackend().put(TraceeConstants.SESSION_ID_KEY, httpSessionEvent.getSession().getId());
     }
 
     @Override
-    public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+    public final void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         Tracee.getBackend().remove(TraceeConstants.SESSION_ID_KEY);
     }
 }

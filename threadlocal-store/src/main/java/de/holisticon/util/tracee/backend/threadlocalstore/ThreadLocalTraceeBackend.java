@@ -2,8 +2,6 @@ package de.holisticon.util.tracee.backend.threadlocalstore;
 
 import de.holisticon.util.tracee.MapLikeTraceeBackend;
 
-import java.util.Map;
-
 /**
  * @author Daniel
  */
@@ -16,27 +14,22 @@ public class ThreadLocalTraceeBackend extends MapLikeTraceeBackend {
     }
 
     @Override
-    public String get(String key) {
+    protected final String getFromMap(String key) {
         return threadLocalMap.get().get(key);
     }
 
     @Override
-    public boolean contains(String key) {
+    protected final boolean mapContains(String key) {
         return threadLocalMap.get().containsKey(key);
     }
 
     @Override
-    public void putAll(Map<String, String> values) {
-        threadLocalMap.get().putAll(values);
+    protected final void putInMap(String key, String value) {
+        threadLocalMap.get().put(key, value);
     }
 
     @Override
-    protected void putInMap(String key, String value) {
-        threadLocalMap.get().put(key,value);
-    }
-
-    @Override
-    protected void removeFromMap(String key) {
+    protected final void removeFromMap(String key) {
         threadLocalMap.get().remove(key);
     }
 }

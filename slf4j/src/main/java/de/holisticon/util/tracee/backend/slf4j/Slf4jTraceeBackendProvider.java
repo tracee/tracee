@@ -11,7 +11,7 @@ public class Slf4jTraceeBackendProvider implements TraceeBackendProvider {
     private final Slf4jTraceeBackend slf4jTraceeContext = new Slf4jTraceeBackend();
 
     @Override
-    public TraceeBackend provideBackend() {
+    public final TraceeBackend provideBackend() {
         return slf4jTraceeContext;
     }
 }

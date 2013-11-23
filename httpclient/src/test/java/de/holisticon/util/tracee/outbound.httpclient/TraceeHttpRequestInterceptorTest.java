@@ -20,7 +20,7 @@ public class TraceeHttpRequestInterceptorTest {
     @Test
     public void testProcess() throws Exception {
         final HttpRequest httpRequest = mock(HttpRequest.class);
-        unit.process(httpRequest , mock(HttpContext.class));
+        unit.process(httpRequest, mock(HttpContext.class));
         verify(httpRequest).addHeader(eq(TraceeConstants.HTTP_HEADER_NAME), contains(""));
 
 

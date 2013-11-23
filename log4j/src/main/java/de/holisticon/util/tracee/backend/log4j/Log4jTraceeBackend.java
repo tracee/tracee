@@ -9,22 +9,23 @@ import org.apache.log4j.MDC;
 public class Log4jTraceeBackend extends MapLikeTraceeBackend {
 
     @Override
-    protected void putInMap(String key, String value) {
-        MDC.put(key,value);
+    protected final void putInMap(String key, String value) {
+        MDC.put(key, value);
     }
 
     @Override
-    protected void removeFromMap(String key) {
+    protected final void removeFromMap(String key) {
         MDC.remove(key);
     }
 
+
     @Override
-    public String get(String key) {
-        return (String)MDC.get(key);
+    public final String getFromMap(String key) {
+        return (String) MDC.get(key);
     }
 
     @Override
-    public boolean contains(String key) {
+    public final boolean mapContains(String key) {
         return MDC.get(key) != null;
     }
 }

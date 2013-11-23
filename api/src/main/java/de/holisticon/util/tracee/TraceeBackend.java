@@ -24,27 +24,31 @@ public interface TraceeBackend {
     Collection<String> getRegisteredKeys();
 
     /**
-     * @param key ignored if <code>null</code>
+     * @param key   ignored if <code>null</code>
      * @param value ignored if <code>null</code>
      */
     void put(String key, String value);
+
     void remove(String key);
+
     String get(String key);
+
     boolean contains(String key);
 
 
     /**
      * @return a map (copy) of all entries within this TraceeBackend
      */
-    TreeMap<String,String> extractContext();
-    
-    void putAll(Map<String,String> values);
+    TreeMap<String, String> extractContext();
+
+    void putAll(Map<String, String> values);
 
 
-    String serialize();
+    String toHeaderRepresentation();
 
     /**
      * Deserializes the given serialized context and merges every entry into this backend.
+     *
      * @param serialized
      * @return {@code false} on deserialization error, {@code true} otherwise.
      */

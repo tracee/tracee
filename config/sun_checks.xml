@@ -96,7 +96,7 @@
 
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
-        <module name="AvoidStarImport"/>
+        <!--<module name="AvoidStarImport"/> -->
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
@@ -104,7 +104,9 @@
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
-        <module name="LineLength"/>
+        <module name="LineLength">
+            <property name="max" value="120"/>
+        </module>
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 
@@ -132,18 +134,30 @@
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
+        <module name="EmptyBlock">
+            <!-- Adding comments will you not rescue from empty-block warnings -->
+            <property name="option" value="stmt" />
+            <!-- Excluded LITERAL_CATCH: empty catch blocks are not nice but sometimes nessessary -->
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, INSTANCE_INIT, STATIC_INIT"/>
+        </module>
         <module name="LeftCurly"/>
-        <module name="NeedBraces"/>
+
+        <!-- NeedBraces Disabled: There are plenty of reasons why there is no need for braces.
+        <module name="NeedBraces"/> -->
         <module name="RightCurly"/>
 
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
-        <module name="AvoidInlineConditionals"/>
+        <!-- DISABLED AvoidInlineContitionals: This check is bullshit. This is the only way to express if/elses in a
+        functional way in java since if/else/switch are instructions (do return no value).
+        <module name="AvoidInlineConditionals"/>-->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField"/>
+        <module name="HiddenField">
+            <!-- It is completely okay to name constructor parameters like the fields they will be assigned to  -->
+            <property name="ignoreConstructorParameter" value="true" />
+        </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
@@ -164,7 +178,10 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
+        <!-- FinalParameters DISABLED: its a bit noisy and overkill to have all parameters final. IDEs does already warn you when you
+        try to reassign a parameter. The onyl practical case is when the parameter is accesses by an (anonymous)
+        inner class.
+        <module name="FinalParameters"/>-->
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 

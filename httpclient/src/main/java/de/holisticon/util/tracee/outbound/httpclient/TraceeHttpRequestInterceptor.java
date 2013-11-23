@@ -8,19 +8,18 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * TODO: how to use it
+ * TO DO: how to use it.
  *
  * @author Daniel
  */
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
     @Override
-    public void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
-        final TreeMap<String,String> traceeContext = Tracee.getBackend().extractContext();
+    public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
+        final TreeMap<String, String> traceeContext = Tracee.getBackend().extractContext();
         httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, traceeContext.toString());
     }
 

@@ -7,6 +7,6 @@ import de.holisticon.util.tracee.TraceeBackend;
  */
 public interface TraceeBackendProvider {
 
-    public TraceeBackend provideBackend();
+    TraceeBackend provideBackend();
 
 }

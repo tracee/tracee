@@ -1,10 +1,7 @@
 package de.holisticon.util.tracee.backend.slf4j;
 
 import de.holisticon.util.tracee.MapLikeTraceeBackend;
-import de.holisticon.util.tracee.TraceeBackend;
 import org.slf4j.MDC;
-
-import java.util.Collections;
 
 /**
  * @author Daniel
@@ -12,22 +9,22 @@ import java.util.Collections;
 class Slf4jTraceeBackend extends MapLikeTraceeBackend {
 
     @Override
-    public String get(String key) {
+    public final String getFromMap(String key) {
         return MDC.get(key);
     }
 
     @Override
-    public boolean contains(String key) {
+    public final boolean mapContains(String key) {
         return MDC.get(key) != null;
     }
 
     @Override
-    protected void putInMap(String key, String value) {
-        MDC.put(key,value);
+    protected final void putInMap(String key, String value) {
+        MDC.put(key, value);
     }
 
     @Override
-    protected void removeFromMap(String key) {
+    protected final void removeFromMap(String key) {
         MDC.remove(key);
     }
 }
