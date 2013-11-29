@@ -24,8 +24,4 @@ public class Log4jTraceeBackend extends MapLikeTraceeBackend {
         return (String) MDC.get(key);
     }
 
-    @Override
-    public final boolean mapContains(String key) {
-        return MDC.get(key) != null;
-    }
 }

@@ -1,12 +1,5 @@
 package de.holisticon.util.tracee;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 
@@ -17,38 +10,6 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     public static final String REGISTERED_KEYS_KEY = "de.holisticon.util.tracee.spi.TraceeBackend.REGISTERED_KEYS";
 
-
-    private final JsonFactory jsonFactory = new JsonFactory();
-
-
-    @Override
-    public final String toHeaderRepresentation() {
-        final StringWriter stringWriter = new StringWriter();
-        try {
-            final JsonGenerator generator = jsonFactory.createGenerator(stringWriter);
-            generator.writeObject(extractContext());
-        } catch (IOException ignored) {
-            // must not happen
-        }
-        return stringWriter.getBuffer().toString();
-    }
-
-    @Override
-    public final boolean merge(String serialized) {
-        try {
-            final JsonParser parser = jsonFactory.createParser(serialized);
-            final Iterator<Map<String, String>> objectIterator =
-                    parser.readValuesAs(new TypeReference<Map<String, String>>() {
-                    });
-            while (objectIterator.hasNext()) {
-                putAll(objectIterator.next());
-            }
-
-        } catch (IOException e) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public final boolean contains(String key) {
@@ -69,7 +30,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
     @Override
     public final Collection<String> getRegisteredKeys() {
         final String serializedKeys = getFromMap(REGISTERED_KEYS_KEY);
-        if (serializedKeys == null) return Collections.emptyList();
+        if (serializedKeys == null) return new ArrayList<String>();
         return deserialize(serializedKeys);
     }
 
@@ -108,8 +69,6 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     protected abstract String getFromMap(String key);
 
-    protected abstract boolean mapContains(String key);
-
 
     public final void putAll(Map<String, String> entries) {
         for (Map.Entry<String, String> entry : entries.entrySet()) {
@@ -130,9 +89,9 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
         final StringBuilder serializedBuilder = new StringBuilder();
         boolean first = true;
         for (String registeredKey : registeredKeys) {
-            serializedBuilder.append(registeredKey);
             if (!first) serializedBuilder.append(',');
             first = false;
+            serializedBuilder.append(registeredKey);
         }
         return serializedBuilder.toString();
     }

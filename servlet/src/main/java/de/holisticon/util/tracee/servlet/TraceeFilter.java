@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.servlet;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.TraceeContextSerialization;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,8 @@ public class TraceeFilter implements Filter {
     private boolean respondWithContext = false;
     private TraceeBackend backend = null;
 
+    private final TraceeContextSerialization contextSerialization = new TraceeContextSerialization();
+
     @Override
     public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
@@ -84,8 +87,10 @@ public class TraceeFilter implements Filter {
             // shit happens
         }
 
-        if (respondWithContext && backend.isEmpty())
-            response.setHeader(headerName, backend.toHeaderRepresentation());
+        if (respondWithContext && backend.isEmpty()) {
+            response.setHeader(headerName, contextSerialization.toHeaderRepresentation(backend));
+        }
+
 
         backend.clear();
     }
@@ -102,7 +107,7 @@ public class TraceeFilter implements Filter {
                     + headerName + "'. The access seem to be forbidden by the container");
         }
         while (headers.hasMoreElements()) {
-            backend.merge((String) headers.nextElement());
+            contextSerialization.merge(backend, (String) headers.nextElement());
         }
     }
 

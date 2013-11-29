@@ -1,5 +1,7 @@
-package de.holisticon.util.tracee;
+package de.holisticon.util;
 
+import de.holisticon.util.tracee.Tracee;
+import de.holisticon.util.tracee.TraceeException;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

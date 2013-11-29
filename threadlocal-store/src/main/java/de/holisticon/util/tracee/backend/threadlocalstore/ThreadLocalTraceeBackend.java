@@ -19,11 +19,6 @@ public class ThreadLocalTraceeBackend extends MapLikeTraceeBackend {
     }
 
     @Override
-    protected final boolean mapContains(String key) {
-        return threadLocalMap.get().containsKey(key);
-    }
-
-    @Override
     protected final void putInMap(String key, String value) {
         threadLocalMap.get().put(key, value);
     }

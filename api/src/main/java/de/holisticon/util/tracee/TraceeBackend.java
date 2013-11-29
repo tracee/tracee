@@ -43,15 +43,4 @@ public interface TraceeBackend {
 
     void putAll(Map<String, String> values);
 
-
-    String toHeaderRepresentation();
-
-    /**
-     * Deserializes the given serialized context and merges every entry into this backend.
-     *
-     * @param serialized
-     * @return {@code false} on deserialization error, {@code true} otherwise.
-     */
-    boolean merge(String serialized);
-
 }

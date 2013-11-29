@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <artifactId>tracee-api</artifactId>
+            <artifactId>tracee-core</artifactId>
             <groupId>de.holisticon.util.tracee</groupId>
             <version>0.1-SNAPSHOT</version>
         </dependency>

@@ -14,11 +14,6 @@ class Slf4jTraceeBackend extends MapLikeTraceeBackend {
     }
 
     @Override
-    public final boolean mapContains(String key) {
-        return MDC.get(key) != null;
-    }
-
-    @Override
     protected final void putInMap(String key, String value) {
         MDC.put(key, value);
     }

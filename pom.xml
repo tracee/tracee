@@ -9,6 +9,7 @@
 
     <modules>
         <module>api</module>
+        <module>core</module>
 
         <!-- backends -->
         <module>slf4j</module>
