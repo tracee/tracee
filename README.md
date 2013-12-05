@@ -52,6 +52,15 @@ The likelihood of a pull request being used rises with the following properties:
 - You have included a test that demonstrates the functionality added or fixed.
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
 
+## TODO
+- Add logging capabilities to Backends to allow direct logging of errors within tracee interceptors.
+
+# servlet use cases
+-
+
+## Slides
+[to be completed](docs/slides/index.html)
+
 ## Sponsoring
 This project is sponsored and supported by [holisticon AG](http://holisticon.de/cms/About/Startseite)
 
