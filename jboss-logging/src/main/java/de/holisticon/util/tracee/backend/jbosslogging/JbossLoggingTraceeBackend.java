@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.backend.jbosslogging;
 
 import de.holisticon.util.tracee.MapLikeTraceeBackend;
+import de.holisticon.util.tracee.TraceeLogger;
 import org.jboss.logging.MDC;
 
 /**
@@ -25,5 +26,10 @@ class JbossLoggingTraceeBackend extends MapLikeTraceeBackend {
     @Override
     protected final void removeFromMap(String key) {
         MDC.remove(key);
+    }
+
+    @Override
+    public final TraceeLogger getLogger(Class<?> clazz) {
+        return new JbossLoggingTraceeLogger(clazz);
     }
 }

@@ -21,7 +21,7 @@ public class Slf4jTraceeContextProviderIT {
     @Test
     public void testLoadProviderAndStoreToSlf4jMdc() {
         final TraceeBackend context = Tracee.getBackend();
-        context.put("FOO","BAR");
+        context.put("FOO", "BAR");
         assertThat(MDC.get("FOO"), equalTo("BAR"));
         log.debug("Hi");
     }
