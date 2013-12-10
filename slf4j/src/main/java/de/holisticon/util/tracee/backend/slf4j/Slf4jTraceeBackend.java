@@ -1,9 +1,8 @@
 package de.holisticon.util.tracee.backend.slf4j;
 
-import org.slf4j.MDC;
-
 import de.holisticon.util.tracee.MapLikeTraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
+import org.slf4j.MDC;
 
 /**
  * @author Daniel

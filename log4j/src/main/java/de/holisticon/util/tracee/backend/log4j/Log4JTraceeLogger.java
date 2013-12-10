@@ -1,8 +1,7 @@
 package de.holisticon.util.tracee.backend.log4j;
 
-import org.apache.log4j.Logger;
-
 import de.holisticon.util.tracee.TraceeLogger;
+import org.apache.log4j.Logger;
 
 /**
  * TraceeLogger Abstraction for Log4J.

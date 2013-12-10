@@ -9,13 +9,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.namespace.QName;
 import javax.xml.soap.*;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class TraceeServerHandler extends AbstractTraceeHandler {
 
@@ -53,9 +52,9 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
                                 final Node childNode = childNodeList.item(j);
 
-                                    NamedNodeMap namedNodeMap = childNode.getAttributes();
-                                    final String attributeName = childNode.getNodeName();
-                                    final String value = childNode.getTextContent();
+                                NamedNodeMap namedNodeMap = childNode.getAttributes();
+                                final String attributeName = childNode.getNodeName();
+                                final String value = childNode.getTextContent();
 
 
                                 if (attributeName != null
@@ -131,4 +130,8 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
         return true;
     }
 
+    @Override
+    public Set<QName> getHeaders() {
+        return null;
+    }
 }

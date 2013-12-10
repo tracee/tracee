@@ -23,6 +23,7 @@
     <!-- If the query includes 'print-pdf', use the PDF print sheet -->
     <script>
         document.write('<link rel="stylesheet" href="css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+
     </script>
 
     <!--[if lt IE 9]>
@@ -58,9 +59,9 @@
                 * grep catalina.out/server.log ...
                 * No fun on many™ machines
                 * Log aggregator (Kibana?)
-                    * Find exception
-                    * Filter thread
-                    * This works for one “system”
+                * Find exception
+                * Filter thread
+                * This works for one “system”
                 * Prove
             </script>
 
@@ -89,8 +90,8 @@
                 ## What is a context (in terms of tracEE)?
 
                 * RequestId
-                    * Incoming Http-Paramter
-                    * or _artificial_
+                * Incoming Http-Paramter
+                * or _artificial_
                 * SessionId (masked)
                 * CorrelationId from external system
                 * ConversationId from fat browser app
@@ -103,7 +104,7 @@
         </section>
 
         <section>
-            <img src="assets/here_comes_tracee.jpg" />
+            <img src="assets/here_comes_tracee.jpg"/>
         </section>
 
         <section data-markdown>
@@ -111,12 +112,12 @@
                 ## How to use?
 
                 * Configure “Incoming-Handlers”
-                    * TraceeFilter (Servlet)
-                    * or SpringTraceeFilter (Spring Interceptor)
-                    * or TraceeServerHandler (SOAP)
+                * TraceeFilter (Servlet)
+                * or SpringTraceeFilter (Spring Interceptor)
+                * or TraceeServerHandler (SOAP)
                 * Configure “Propagators”
-                    * HttpClientPropagator (Apache HttpClient, REST)
-                    * TraceeClientHandler (SOAP)
+                * HttpClientPropagator (Apache HttpClient, REST)
+                * TraceeClientHandler (SOAP)
             </script>
         </section>
 
@@ -231,6 +232,7 @@
             } }
         ]
     });
+
 
 </script>
 

@@ -14,7 +14,9 @@
     </parent>
 
     <name>tracee-threadlocal-store</name>
-    <description>This is a simple implementation of a tracee backend. It might be used for system where no supported logging framework is present or for test purpose.</description>
+    <description>This is a simple implementation of a tracee backend. It might be used for system where no supported
+        logging framework is present or for test purpose.
+    </description>
 
 
     <dependencies>

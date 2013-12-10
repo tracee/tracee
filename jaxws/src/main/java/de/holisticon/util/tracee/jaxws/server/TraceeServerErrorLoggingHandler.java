@@ -5,11 +5,13 @@ import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 import org.json.JSONObject;
 
+import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 06.12.13.
@@ -82,4 +84,8 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     }
 
 
+    @Override
+    public Set<QName> getHeaders() {
+        return null;
+    }
 }

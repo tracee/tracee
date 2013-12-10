@@ -15,7 +15,7 @@ public class TraceeMessageListener implements MessageListener {
 
         //todo read TraceeContext from messageproperty
 
-       //todo write TraceeContext to message property
+        //todo write TraceeContext to message property
 
 
     }

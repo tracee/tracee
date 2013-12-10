@@ -1,9 +1,8 @@
 package de.holisticon.util.tracee.backend.slf4j;
 
+import de.holisticon.util.tracee.TraceeLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.holisticon.util.tracee.TraceeLogger;
 
 /**
  * TraceeLogger Abstraction for SLF4J.

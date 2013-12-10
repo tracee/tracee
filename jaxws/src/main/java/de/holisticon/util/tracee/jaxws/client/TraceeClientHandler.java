@@ -66,6 +66,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
                                         this.getTraceeBackend().put(attributeName, value);
 
+
                                         // Add it, only first ocurrence of attribute!
                                         existingAttributeNames.add(attributeName);
                                     }

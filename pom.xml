@@ -25,6 +25,9 @@
 
         <!-- outbound -->
         <module>httpclient</module>
+
+        <!-- examples -->
+        <module>examples</module>
     </modules>
 
     <parent>
@@ -46,6 +49,12 @@
         <developer>
             <name>Daniel Wegener</name>
             <email>daniel.wegener@holisticon.de</email>
+            <organization>holisticon AG</organization>
+            <organizationUrl>http://holisticon.de/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Tobias Gindler</name>
+            <email>tobias.gindler@holisticon.de</email>
             <organization>holisticon AG</organization>
             <organizationUrl>http://holisticon.de/</organizationUrl>
         </developer>
@@ -96,6 +105,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
@@ -142,6 +152,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.0.1</version>
             </plugin>
+
         </plugins>
     </build>
 </project>

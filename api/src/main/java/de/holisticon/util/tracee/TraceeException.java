@@ -6,7 +6,6 @@ package de.holisticon.util.tracee;
 public class TraceeException extends RuntimeException {
 
 
-
     public TraceeException() {
     }
 

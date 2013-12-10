@@ -6,16 +6,11 @@ import de.holisticon.util.tracee.TraceeConstants;
 import org.apache.http.HttpRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.protocol.HttpContext;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.contains;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 /**
  * @author Daniel
@@ -26,10 +21,10 @@ public class TraceeHttpRequestInterceptorTest {
 
     @Test
     public void testProcess() throws Exception {
-        final HttpRequest httpRequest = new BasicHttpRequest("GET","http://localhost/pew");
+        final HttpRequest httpRequest = new BasicHttpRequest("GET", "http://localhost/pew");
 
         final TraceeBackend backend = Tracee.getBackend();
-        backend.put("foo","bar");
+        backend.put("foo", "bar");
 
         unit.process(httpRequest, mock(HttpContext.class));
 

@@ -3,14 +3,14 @@ package de.holisticon.util.tracee.jaxws;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 
-import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 06.12.13.
  */
-public abstract class AbstractTraceeHandler implements Handler<SOAPMessageContext> {
+public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
     private final TraceeBackend traceeBackend = Tracee.getBackend();
 

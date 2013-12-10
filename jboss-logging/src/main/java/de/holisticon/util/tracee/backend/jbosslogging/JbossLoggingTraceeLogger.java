@@ -1,12 +1,11 @@
 package de.holisticon.util.tracee.backend.jbosslogging;
 
+import de.holisticon.util.tracee.TraceeLogger;
 import org.jboss.logging.Logger;
 
-import de.holisticon.util.tracee.TraceeLogger;
-
 /**
- *
  * TraceeLogger Abstraction for Jboss Logging.
+ *
  * @author Tobias Gindler, holisticon AG
  */
 
