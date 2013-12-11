@@ -86,41 +86,47 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
     }
 
     protected final void handleOutbound(SOAPMessageContext context) {
-        final SOAPMessage msg = context.getMessage();
-        if (msg != null) {
+        try {
+            final SOAPMessage msg = context.getMessage();
+            if (msg != null) {
 
-            try {
-                final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
+                try {
+                    final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
 
-                // get or create header
-                SOAPHeader header = env.getHeader();
-                if (header == null) {
-                    header = env.addHeader();
+                    // get or create header
+                    SOAPHeader header = env.getHeader();
+                    if (header == null) {
+                        header = env.addHeader();
+                    }
+
+                    // create soap header element for tracee entries
+                    final SOAPHeaderElement soapHeaderElement = header.addHeaderElement(
+                            TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
+
+                    // loop over mdc attributes and add them to the header
+                    for (final String attributeName : this.getTraceeBackend().getRegisteredKeys()) {
+
+                        final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(attributeName);
+
+                        final String attributeValue = this.getTraceeBackend().get(attributeName);
+                        traceeSoapHeaderElement.setValue(attributeValue);
+
+                    }
+
+
+                    msg.saveChanges();
+                    context.setMessage(msg);
+                } catch (final SOAPException e) {
+                    traceeLogger.error("TraceeServerHandler : Exception "
+                            + "occurred during processing of outbound message.", e);
                 }
 
-                // create soap header element for tracee entries
-                final SOAPHeaderElement soapHeaderElement = header.addHeaderElement(
-                        TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
 
-                // loop over mdc attributes and add them to the header
-                for (final String attributeName : this.getTraceeBackend().getRegisteredKeys()) {
-
-                    final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(attributeName);
-
-                    final String attributeValue = this.getTraceeBackend().get(attributeName);
-                    traceeSoapHeaderElement.setValue(attributeValue);
-
-                }
-
-
-                msg.saveChanges();
-
-            } catch (final SOAPException e) {
-                traceeLogger.error("TraceeServerHandler : Exception "
-                        + "occurred during processing of outbound message.", e);
             }
 
-            context.setMessage(msg);
+        } finally {
+            // must reset tracee context
+            getTraceeBackend().clear();
         }
     }
 
@@ -131,7 +137,9 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
     }
 
     @Override
-    public Set<QName> getHeaders() {
-        return null;
+    public final Set<QName> getHeaders() {
+        HashSet<QName> set = new HashSet<QName>();
+        set.add(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
+        return set;
     }
 }

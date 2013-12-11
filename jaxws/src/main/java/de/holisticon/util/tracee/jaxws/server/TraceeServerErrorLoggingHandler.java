@@ -21,7 +21,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     private final TraceeLogger traceeLogger = this.getTraceeBackend().getLogger(
             TraceeServerHandler.class);
 
-    private static final ThreadLocal<String> threadLocalSoapMessageStr = new ThreadLocal<String>();
+    private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
 
     @Override
     public final boolean handleFault(SOAPMessageContext context) {
@@ -33,7 +33,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
         // add soap request and response to map
         map.put(TraceeErrorConstants.JAX_WS_REQUEST_SOAP_MESSAGE,
-                threadLocalSoapMessageStr.get());
+                THREAD_LOCAL_SOAP_MESSAGE_STR.get());
 
         map.put(TraceeErrorConstants.JAX_WS_RESPONSE_SOAP_MESSAGE,
                 getSoapMessageAsString(soapMessage));
@@ -43,7 +43,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
                 + new JSONObject(map).toString());
 
         // cleanup thread local request soap message
-        threadLocalSoapMessageStr.remove();
+        THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
 
         return true;
 
@@ -73,7 +73,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
         SOAPMessage soapMessage = context.getMessage();
         if (soapMessage != null) {
             String soapMessageAsString = getSoapMessageAsString(soapMessage);
-            threadLocalSoapMessageStr.set(soapMessageAsString);
+            THREAD_LOCAL_SOAP_MESSAGE_STR.set(soapMessageAsString);
         }
 
     }
@@ -85,7 +85,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
 
     @Override
-    public Set<QName> getHeaders() {
+    public final Set<QName> getHeaders() {
         return null;
     }
 }
