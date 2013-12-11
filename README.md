@@ -38,6 +38,7 @@ The following context information are visible out of the box:
 
 ## Contribution
 - (2013) Daniel Wegener (Holisticon AG)
+- (2013) Tobias Gindler (Holisticon AG)
 
 ### Setup a development environment
 tracee is built using Maven (at least version 3.0.4).
@@ -53,7 +54,8 @@ The likelihood of a pull request being used rises with the following properties:
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
 
 ## TODO
-- Add logging capabilities to Backends to allow direct logging of errors within tracee interceptors.
+- Simplify configuration of JAX-WS server and client handlers
+- Implement contextual error logger servlet filter
 
 # servlet use cases
 -
