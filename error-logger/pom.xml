@@ -2,8 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.holisticon.util.tracee.inbound</groupId>
-    <artifactId>tracee-servlet</artifactId>
+    <artifactId>tracee-error-logger</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -13,32 +12,50 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-servlet</name>
+    <name>tracee-error-logger</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
-
     <dependencies>
+
         <dependency>
-            <artifactId>tracee-core</artifactId>
-            <groupId>de.holisticon.util.tracee</groupId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
-            <artifactId>tracee-error-logger</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.7.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+
         <dependency>
             <artifactId>servlet-api</artifactId>
             <groupId>javax.servlet</groupId>
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>7.0.35</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>de.holisticon.util.tracee</groupId>
+            <artifactId>tracee-api</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 

@@ -1,16 +1,13 @@
 package de.holisticon.util.tracee.jaxws.server;
 
-import de.holisticon.util.tracee.TraceeErrorConstants;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.errorlogger.json.generator.TraceeErrorLoggerJsonCreator;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
-import org.json.JSONObject;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -29,18 +26,15 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
         // Must pipe out Soap envelope
         SOAPMessage soapMessage = context.getMessage();
 
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        // add soap request and response to map
-        map.put(TraceeErrorConstants.JAX_WS_REQUEST_SOAP_MESSAGE,
-                THREAD_LOCAL_SOAP_MESSAGE_STR.get());
-
-        map.put(TraceeErrorConstants.JAX_WS_RESPONSE_SOAP_MESSAGE,
-                getSoapMessageAsString(soapMessage));
+        String errorJson = TraceeErrorLoggerJsonCreator.createJsonCreator()
+                .addJaxwsCategory(THREAD_LOCAL_SOAP_MESSAGE_STR.get(), getSoapMessageAsString(soapMessage))
+                .addCommonCategory()
+                .addTraceeCategory(getTraceeBackend())
+                .createJson();
 
         // write log message
         traceeLogger.error("TraceeServerErrorLoggingHandler - FAULT :\n "
-                + new JSONObject(map).toString());
+                + errorJson);
 
         // cleanup thread local request soap message
         THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
@@ -88,4 +82,5 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     public final Set<QName> getHeaders() {
         return null;
     }
+
 }

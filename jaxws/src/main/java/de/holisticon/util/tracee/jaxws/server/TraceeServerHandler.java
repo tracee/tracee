@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.jaxws.server;
 
 import de.holisticon.util.tracee.TraceeConstants;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.Utilities;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
 import org.w3c.dom.NamedNodeMap;
@@ -20,9 +21,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
     private final TraceeLogger traceeLogger = getTraceeBackend().getLogger(TraceeServerHandler.class);
 
-    private String generateRandomHexString() {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
+
 
 
     protected final void handleInbound(SOAPMessageContext context) {
@@ -76,7 +75,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
             // generate request id if it doesn't exist
             if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null) {
-                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, generateRandomHexString());
+                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createUUID());
             }
 
 
