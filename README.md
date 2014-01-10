@@ -54,8 +54,10 @@ The likelihood of a pull request being used rises with the following properties:
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
 
 ## TODO
-- Simplify configuration of JAX-WS server and client handlers
-- Implement contextual error logger servlet filter
+- Add connectors to error logging servlet filter and jaxws service handler to send error jsons to external systems.
+- Build example webapp to demonstrate usage of the tracee servlet filters.
+- Documentation
+
 
 # servlet use cases
 -
