@@ -55,7 +55,6 @@ The likelihood of a pull request being used rises with the following properties:
 
 ## TODO
 - Add connectors to error logging servlet filter and jaxws service handler to send error jsons to external systems.
-- Build example webapp to demonstrate usage of the tracee servlet filters.
 - Documentation
 
 
