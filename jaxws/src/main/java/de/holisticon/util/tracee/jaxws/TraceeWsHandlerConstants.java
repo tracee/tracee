@@ -17,5 +17,10 @@ public final class TraceeWsHandlerConstants {
             TRACEE_SOAP_HEADER_CONTEXT_URL,
             TRACEE_SOAP_HEADER_TAG_NAME);
 
+    public static final String TRACEE_HANDLER_CHAIN_URL =
+            "/de/holisticon/util/tracee/jaxws/TraceeHandlerChain.xml";
+    public static final String TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL =
+            "/de/holisticon/util/tracee/jaxws/TraceeWithErrorLoggingHandlerChain.xml";
+
 
 }

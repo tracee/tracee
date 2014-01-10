@@ -1,14 +1,17 @@
 package de.holisticon.util.tracee.examples.jaxws.service;
 
+import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
+
 import javax.ejb.Stateless;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
+import java.io.File;
 
 @Stateless
 @WebService(serviceName = "TraceeJaxWsTestService", portName = "TraceeJaxWsTestPort",
         targetNamespace = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl",
         endpointInterface = "de.holisticon.util.tracee.examples.jaxws.service.TraceeJaxWsTestWS")
-@HandlerChain(file = "handlerChain.xml")
+@HandlerChain(file = TraceeWsHandlerConstants.TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL)
 public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 
     @Override
@@ -23,6 +26,7 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 
     @Override
     public final int error(final int a, final int b) {
+
         throw new NullPointerException("TraceeJaxWsTestService test error");
     }
 

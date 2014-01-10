@@ -10,8 +10,8 @@ public final class TraceeErrorConstants {
         // hide constructor
     }
 
-    public final static String SYSTEM_PROPERTY_NAME_STAGE = "tracee-standard-stage";
-    public final static String SYSTEM_PROPERTY_NAME_SYSTEM = "tracee-standard-system";
+    public final static String SYSTEM_PROPERTY_NAME_STAGE = "de.holisticon.util.tracee.errorlogger.tracee-standard-stage";
+    public final static String SYSTEM_PROPERTY_NAME_SYSTEM = "de.holisticon.util.tracee.errorlogger.tracee-standard-system";
 
 
 }
