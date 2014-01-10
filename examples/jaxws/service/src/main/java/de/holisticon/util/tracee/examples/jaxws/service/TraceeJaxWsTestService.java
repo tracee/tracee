@@ -1,6 +1,8 @@
 package de.holisticon.util.tracee.examples.jaxws.service;
 
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.jws.HandlerChain;
@@ -14,19 +16,23 @@ import java.io.File;
 @HandlerChain(file = TraceeWsHandlerConstants.TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL)
 public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(TraceeJaxWsTestService.class);
+
     @Override
     public final int multiply(final int mul1, final int mul2) {
+        LOGGER.info("multiply {} with {}", mul1, mul2);
         return mul1 * mul2;
     }
 
     @Override
     public final int sum(final int add1, final int add2) {
+        LOGGER.info("summarize {} with {}", add1, add2);
         return add1 + add2;
     }
 
     @Override
     public final int error(final int a, final int b) {
-
+        LOGGER.info("trigger NullPointerException");
         throw new NullPointerException("TraceeJaxWsTestService test error");
     }
 

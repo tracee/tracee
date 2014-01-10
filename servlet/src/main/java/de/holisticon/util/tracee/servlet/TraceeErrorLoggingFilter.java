@@ -28,21 +28,25 @@ public class TraceeErrorLoggingFilter implements Filter {
     @Override
     public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        RuntimeException tmpException = null;
+        Exception tmpException = null;
 
         try {
-            filterChain.doFilter(servletRequest,servletResponse);
-        } catch (RuntimeException e) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (Exception e) {
             tmpException = e;
 
-            if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse) {
+            if (servletRequest instanceof HttpServletRequest) {
                 handleHttpServletRequest((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, e);
             }
 
         }
 
         if (tmpException != null) {
-            throw tmpException;
+            if (tmpException instanceof RuntimeException) {
+                throw (RuntimeException) tmpException;
+            } else {
+                new RuntimeException(tmpException);
+            }
         }
 
     }
@@ -53,7 +57,7 @@ public class TraceeErrorLoggingFilter implements Filter {
             Exception e) {
 
 
-        String errorJson = TraceeErrorLoggerJsonCreator.createJsonCreator().addServletCategory(servletRequest,servletResponse)
+        String errorJson = TraceeErrorLoggerJsonCreator.createJsonCreator().addServletCategory(servletRequest, servletResponse)
                 .addCommonCategory()
                 .addExceptionCategory(e)
                 .addTraceeCategory(traceeBackend)

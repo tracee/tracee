@@ -8,6 +8,7 @@
 
     <modules>
         <module>jaxws</module>
+        <module>webapp</module>
     </modules>
 
     <parent>

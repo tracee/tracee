@@ -81,18 +81,25 @@ public class TraceeFilter implements Filter {
             }
         }
 
+        Exception exception = null;
         try {
             filterChain.doFilter(request, response);
+
+            if (respondWithContext && backend.isEmpty()) {
+                response.setHeader(headerName, contextSerialization.toHeaderRepresentation(backend));
+            }
+
         } catch (Exception e) {
-            // shit happens
+            exception = e;
+        } finally {
+            // ensure cleanup
+            backend.clear();
         }
 
-        if (respondWithContext && backend.isEmpty()) {
-            response.setHeader(headerName, contextSerialization.toHeaderRepresentation(backend));
+        if (exception != null) {
+            throw new RuntimeException(exception);
         }
 
-
-        backend.clear();
     }
 
     private String anonymizedSessionKey(String sessionKey) {
