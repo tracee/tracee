@@ -18,7 +18,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public final boolean isEmpty() {
-        return getFromMap(REGISTERED_KEYS_KEY) != null;
+        return getFromMap(REGISTERED_KEYS_KEY) == null;
     }
 
     @Override
