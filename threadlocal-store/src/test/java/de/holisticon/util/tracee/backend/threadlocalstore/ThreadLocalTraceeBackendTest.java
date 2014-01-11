@@ -24,7 +24,7 @@ public class ThreadLocalTraceeBackendTest {
 
     @Test
     public void testExtractContext() {
-        unit.putInMap("FUBI", "BARBI");
+        unit.put("FUBI", "BARBI");
         assertThat(unit.getRegisteredKeys(), Matchers.contains("FUBI"));
         assertThat(unit.extractContext(), hasEntry("FUBI", "BARBI"));
     }
