@@ -44,7 +44,7 @@ public class TraceeErrorJsonCreateTest {
     @Test
     public void createCommonJsonTest() {
 
-        final String expectedJsonPattern = "\\{\"x-tracee-common\":\\{\"system-name\":\"FE\",\"stage\":\"DEV\",\"timestamp\":\\d+,\"thread\\-name\":\".*?\"\\}\\}";
+        final String expectedJsonPattern = "\\{\"x-tracee-common\":\\{\"system-name\":\"FE\",\"stage\":\"DEV\",\"timestamp\":\\d+,\"thread\\-name\":\".*?\",\"thread\\-id\":\\d+\\}\\}";
 
         System.setProperty(TraceeErrorConstants.SYSTEM_PROPERTY_NAME_SYSTEM, "FE");
         System.setProperty(TraceeErrorConstants.SYSTEM_PROPERTY_NAME_STAGE, "DEV");
