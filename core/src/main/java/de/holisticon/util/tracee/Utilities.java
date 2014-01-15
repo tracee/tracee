@@ -2,7 +2,9 @@ package de.holisticon.util.tracee;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 11.12.13.
@@ -20,7 +22,8 @@ public final class Utilities {
     }
 
     public static String createUUID() {
-        return UUID.randomUUID().toString().replace("-", "");
+        Random r = ThreadLocalRandom.current();
+        return new UUID(r.nextLong(), r.nextLong()).toString().replace("-", "");
     }
 
 }
