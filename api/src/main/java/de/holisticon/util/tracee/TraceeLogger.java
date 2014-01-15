@@ -1,7 +1,8 @@
 package de.holisticon.util.tracee;
 
 /**
- * Abstraction interface for tracce logging.
+ * Abstraction interface for tracee logging.
+ * It will resolve to the underlying logging system.
  *
  * @author Tobias Gindler, holisticon AG
  */
