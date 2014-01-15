@@ -21,9 +21,21 @@ public final class Utilities {
         return sw.toString();
     }
 
-    public static String createUUID() {
-        Random r = ThreadLocalRandom.current();
-        return new UUID(r.nextLong(), r.nextLong()).toString().replace("-", "");
+
+
+    private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+    /**
+     * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
+     */
+    public static String createRandomAlphanumeric() {
+        final int length = 32;
+        final Random r = ThreadLocalRandom.current();
+        final char[] randomChars = new char[length];
+        for (int i=0; i<length; ++i) {
+            randomChars[i] = ALPHANUMERICS[r.nextInt(ALPHANUMERICS.length)];
+        }
+        return new String(randomChars);
     }
 
 }
