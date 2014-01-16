@@ -32,9 +32,8 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 
     @Override
     public final int error(final int a, final int b) {
-        LOGGER.info("trigger NullPointerException");
-        throw new NullPointerException("TraceeJaxWsTestService test error");
+        LOGGER.info("trigger NullPointerException with parameters {} and {}", a, b);
+        throw new TraceeExampleServiceRuntimeException(a, b);
     }
-
 
 }
