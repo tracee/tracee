@@ -1,9 +1,6 @@
 package de.holisticon.util.tracee.servlet;
 
-import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeContextSerialization;
+import de.holisticon.util.tracee.*;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * <h2>Configuration</h2>
@@ -71,7 +65,7 @@ public class TraceeFilter implements Filter {
             mergeIncomingContextToBackend(request);
 
         if (!backend.contains(TraceeConstants.REQUEST_ID_KEY)) {
-            backend.put(TraceeConstants.REQUEST_ID_KEY, generateRandomHexString());
+            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric());
         }
 
         if (!backend.contains(TraceeConstants.SESSION_ID_KEY)) {
@@ -116,11 +110,6 @@ public class TraceeFilter implements Filter {
         while (headers.hasMoreElements()) {
             contextSerialization.merge(backend, (String) headers.nextElement());
         }
-    }
-
-    private String generateRandomHexString() {
-        Random r = ThreadLocalRandom.current();
-        return new UUID(r.nextLong(), r.nextLong()).toString().replace("-", "");
     }
 
     @Override

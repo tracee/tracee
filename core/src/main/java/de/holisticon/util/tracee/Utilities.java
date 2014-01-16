@@ -2,7 +2,8 @@ package de.holisticon.util.tracee;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.UUID;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 11.12.13.
@@ -19,8 +20,21 @@ public final class Utilities {
         return sw.toString();
     }
 
-    public static String createUUID() {
-        return UUID.randomUUID().toString().replace("-", "");
+
+
+    private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+    /**
+     * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
+     */
+    public static String createRandomAlphanumeric() {
+        final int length = 32;
+        final Random r = ThreadLocalRandom.current();
+        final char[] randomChars = new char[length];
+        for (int i=0; i<length; ++i) {
+            randomChars[i] = ALPHANUMERICS[r.nextInt(ALPHANUMERICS.length)];
+        }
+        return new String(randomChars);
     }
 
 }

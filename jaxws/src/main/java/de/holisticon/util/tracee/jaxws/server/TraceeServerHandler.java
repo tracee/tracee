@@ -15,7 +15,6 @@ import javax.xml.soap.*;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class TraceeServerHandler extends AbstractTraceeHandler {
 
@@ -75,7 +74,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
             // generate request id if it doesn't exist
             if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null) {
-                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createUUID());
+                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric());
             }
 
 
