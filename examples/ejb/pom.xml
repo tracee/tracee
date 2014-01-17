@@ -2,22 +2,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tracee-examples</artifactId>
+    <artifactId>tracee-examples-ejb</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>jaxws</module>
-        <module>webapp</module>
-        <module>ejb</module>
-    </modules>
-
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
-        <artifactId>tracee-parent</artifactId>
+        <artifactId>tracee-examples</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-examples</name>
+    <name>tracee-examples-ejb</name>
+    <description>Please refer to https://github.com/holisticon/tracee.</description>
+
+   <modules>
+       <module>interface</module>
+       <module>ejb</module>
+   </modules>
+
 
 </project>

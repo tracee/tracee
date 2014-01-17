@@ -33,7 +33,7 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
     @Override
     public final int error(final int a, final int b) {
         LOGGER.info("trigger NullPointerException with parameters {} and {}", a, b);
-        throw new TraceeExampleServiceRuntimeException(a, b);
+        throw new NullPointerException("JAXWS Tracee Example : Triggered exception with passed parameters '" + a + "' and '" +b + "'");
     }
 
 }

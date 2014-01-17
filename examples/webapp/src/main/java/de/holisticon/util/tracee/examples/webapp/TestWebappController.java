@@ -1,8 +1,6 @@
 package de.holisticon.util.tracee.examples.webapp;
 
-import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.examples.ejb.TestEjb;
 import de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestService;
 import de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS;
 import de.holisticon.util.tracee.jaxws.client.TraceeClientHandlerResolver;
@@ -12,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -47,30 +46,29 @@ public class TestWebappController {
         return null;
     }
 
-    public String multiplyRemotely() {
-        LOGGER.info("call multiply remote service method");
+    public String multiplyJaxWsRemotely() {
+        LOGGER.info("call multiply on remote jaxws service method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
-            payload.setResult(getServiceClient().multiply(payload.getFirstArgument(), payload.getSecondArgument()));
+            payload.setResult(getJaxWsServiceClient().multiply(payload.getFirstArgument(), payload.getSecondArgument()));
         }
         return null;
     }
 
-    public String sumRemotely() {
-        LOGGER.info("call sum remote service method");
+    public String sumJaxWsRemotely() {
+        LOGGER.info("call sum remote on jaxws service method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
-            payload.setResult(getServiceClient().sum(payload.getFirstArgument(), payload.getSecondArgument()));
+            payload.setResult(getJaxWsServiceClient().sum(payload.getFirstArgument(), payload.getSecondArgument()));
         }
         return null;
     }
 
-    public String triggerRemoteError() {
-        LOGGER.info("Trigger remote error");
-        getServiceClient().error(this.payload.getFirstArgument(),this.payload.getSecondArgument());
+    public String triggerJaxWsRemoteError() {
+        LOGGER.info("Trigger jaxws remote error");
+        getJaxWsServiceClient().error(this.payload.getFirstArgument(), this.payload.getSecondArgument());
         return null;
-
     }
 
-    private TraceeJaxWsTestWS getServiceClient () {
+    private TraceeJaxWsTestWS getJaxWsServiceClient() {
 
         TraceeJaxWsTestService testWebservice = null;
         try {

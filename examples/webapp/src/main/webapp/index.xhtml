@@ -28,9 +28,12 @@
 
             <h:commandButton action="#{testWebappController.sum}" value="Sum" /><br />
             <h:commandButton action="#{testWebappController.multiply}" value="Multiply" /><br />
-            <h:commandButton action="#{testWebappController.sumRemotely}" value="JaxWS Sum" /><br />
-            <h:commandButton action="#{testWebappController.multiplyRemotely}" value="JaxWS Multiply" /><br />
-            <h:commandButton action="#{testWebappController.triggerRemoteError}" value="JaxWS Trigger Exception" /><br />
+            <h:commandButton action="#{testWebappController.sumJaxWsRemotely}" value="JaxWS Sum" /><br />
+            <h:commandButton action="#{testWebappController.multiplyJaxWsRemotely}" value="JaxWS Multiply" /><br />
+            <h:commandButton action="#{testWebappController.triggerJaxWsRemoteError}" value="JaxWS Trigger Exception" /><br />
+            <h:commandButton action="#{testWebappEjbController.sumEjbRemotely}" value="Remote EJB Sum" /><br />
+            <h:commandButton action="#{testWebappEjbController.multiplyEjbRemotely}" value="Remote EJB Multiply" /><br />
+            <h:commandButton action="#{testWebappEjbController.triggerEjbRemoteError}" value="Remote EJB Trigger Exception" /><br />
         </h:form>
 
     </f:view>

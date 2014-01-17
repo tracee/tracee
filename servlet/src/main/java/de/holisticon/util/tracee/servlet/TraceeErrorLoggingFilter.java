@@ -43,9 +43,9 @@ public class TraceeErrorLoggingFilter implements Filter {
 
         if (tmpException != null) {
             if (tmpException instanceof RuntimeException) {
-                throw (RuntimeException) tmpException;
+                 throw (RuntimeException) tmpException;
             } else {
-                new RuntimeException(tmpException);
+                 throw new RuntimeException(tmpException);
             }
         }
 
