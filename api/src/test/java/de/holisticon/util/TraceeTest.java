@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeTest {
 

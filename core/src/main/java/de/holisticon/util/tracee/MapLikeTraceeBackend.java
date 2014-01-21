@@ -13,6 +13,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public final boolean contains(String key) {
+        if (key == null) return false;
         return getRegisteredKeys().contains(key);
     }
 
@@ -23,6 +24,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public final String get(String key) {
+        if (null == key) return null;
         if (!getRegisteredKeys().contains(key)) return null;
         return getFromMap(key);
     }
@@ -47,6 +49,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public final void remove(String key) {
+        if (null == key) return;
         final Collection<String> registeredKeys = getRegisteredKeys();
         registeredKeys.remove(key);
         if (registeredKeys.isEmpty())

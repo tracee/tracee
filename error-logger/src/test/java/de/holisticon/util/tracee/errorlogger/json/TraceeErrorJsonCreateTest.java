@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 19.12.13.
+ * Created by Tobias Gindler, holisticon AG
  */
 public class TraceeErrorJsonCreateTest {
 

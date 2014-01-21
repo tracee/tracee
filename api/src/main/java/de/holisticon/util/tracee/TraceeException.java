@@ -1,7 +1,7 @@
 package de.holisticon.util.tracee;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeException extends RuntimeException {
 
