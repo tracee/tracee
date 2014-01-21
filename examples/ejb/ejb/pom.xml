@@ -8,7 +8,7 @@
 
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
-        <artifactId>tracee-examples</artifactId>
+        <artifactId>tracee-examples-ejb</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
