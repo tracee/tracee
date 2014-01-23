@@ -21,8 +21,4 @@ public class TraceeException extends RuntimeException {
         super(cause);
     }
 
-    public TraceeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
 }
