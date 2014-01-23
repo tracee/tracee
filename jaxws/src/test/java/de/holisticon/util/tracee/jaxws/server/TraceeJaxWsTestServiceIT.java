@@ -6,19 +6,16 @@ import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -52,10 +49,10 @@ public class TraceeJaxWsTestServiceIT {
         Service calculatorService = Service.create(ENDPOINT_URL, ENDPOINT_QNAME);
 
         final TraceeJaxWsEndpoint remote = calculatorService.getPort(TraceeJaxWsEndpoint.class);
-        final Map<String, String> result = remote.getCurrentTraceeContext();
+        final List<String> result = remote.getCurrentTraceeContext();
 
-        assertThat(result.entrySet(), not(empty()));
-        assertThat(result, Matchers.hasKey(TraceeConstants.REQUEST_ID_KEY));
+        assertThat(result, not(empty()));
+        assertThat(result, contains(equalTo(TraceeConstants.REQUEST_ID_KEY), not(isEmptyString())));
 
     }
 
