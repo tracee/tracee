@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.jaxws.server;
 
 import javax.jws.WebService;
+import java.util.List;
 import java.util.Map;
 
 @WebService(targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS)
@@ -10,7 +11,7 @@ public interface TraceeJaxWsEndpoint {
         String TNS = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl";
     }
 
-    Map<String,String> getCurrentTraceeContext();
+    List<String> getCurrentTraceeContext();
 
 }
 

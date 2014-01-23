@@ -8,8 +8,7 @@ import org.apache.log4j.Logger;
 import javax.ejb.Stateless;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Stateless
 @WebService(serviceName = "TraceeJaxWsEndpoint", portName = "TraceeJaxWsEndpointPort",
@@ -22,11 +21,15 @@ public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
     private final Logger LOGGER = Logger.getLogger(TraceeJaxWsEndpointImpl.class);
 
     @Override
-    public Map<String, String> getCurrentTraceeContext() {
+    public List<String> getCurrentTraceeContext() {
 
-
+        final List<String> entries = new ArrayList<String>();
         LOGGER.info("Hello from Endpoint");
+        for (Map.Entry<String, String> entry : Tracee.getBackend().extractContext().entrySet()) {
+            entries.add(entry.getKey());
+            entries.add(entry.getValue());
+        }
 
-        return new TreeMap<String, String>(Tracee.getBackend().extractContext());
+        return entries;
     }
 }
