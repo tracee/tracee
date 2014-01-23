@@ -6,6 +6,8 @@ import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.xml.namespace.QName;
@@ -31,6 +33,10 @@ public class TraceeJaxWsTestServiceIT {
         ENDPOINT_URL = new URL("http://127.0.0.1:4204/jaxws/TraceeJaxWsEndpointImpl?wsdl");
         Properties p = new Properties();
         p.setProperty("openejb.embedded.remotable", "true");
+
+        p.setProperty("log4j.category.de.holisticon.util.tracee", "info");
+        p.setProperty("log4j.appender.C.layout", "org.apache.log4j.PatternLayout");
+        p.setProperty("log4j.appender.C.layout.ConversionPattern", "%d{yyyy-MM-dd HH:mm:ss.SSSS} [x-tracee-request:%X{x-tracee-request}] \n %m%n");
         ejbContainer = EJBContainer.createEJBContainer(p);
     }
 
