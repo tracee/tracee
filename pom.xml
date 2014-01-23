@@ -76,7 +76,7 @@
 	<inceptionYear>2013</inceptionYear>
 
 	<prerequisites>
-		<maven>3.0.5</maven>
+		<maven>3.0.4</maven>
 	</prerequisites>
 
 	<issueManagement>
@@ -156,7 +156,7 @@
 							<configuration>
 								<rules>
 									<requireMavenVersion>
-										<version>3.0.5</version>
+										<version>3.0.4</version>
 									</requireMavenVersion>
 									<requireJavaVersion>
 										<version>1.6</version>
@@ -227,7 +227,12 @@
 
 	<dependencyManagement>
 		<dependencies>
-
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>0.9.30</version>
+			</dependency>
+			
 			<!-- Provided dependencies -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
