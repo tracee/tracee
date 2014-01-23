@@ -2,5 +2,4 @@ language: java
 install: mvn install -DskipTests=true
 script: mvn verify
 jdk:
-  - oraclejdk6
   - openjdk6
