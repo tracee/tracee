@@ -65,7 +65,7 @@ The likelihood of a pull request being used rises with the following properties:
 [to be completed](docs/slides/index.html)
 
 ## Sponsoring
-This project is sponsored and supported by [holisticon AG](http://holisticon.de/cms/About/Startseite)
+This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
 
 ## License
-This project is released under the revised BSD License (s. license.txt).
+This project is released under the revised [BSD License](LICENSE).
