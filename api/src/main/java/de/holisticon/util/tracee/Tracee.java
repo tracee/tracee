@@ -46,13 +46,15 @@ public final class Tracee {
 
     private static final class ContextProviderResolver {
 
+			private static final int EXPECTED_MAX_CLASS_NAME_LENGTH = 128;
+			private static final String UTF_8 = "UTF-8";
+
         //cache per classloader for an appropriate discovery
         //keep them in a weak hashmap to avoid memory leaks and allow proper hot redeployment
-        //TODO use a WeakConcurrentHashMap
         //FIXME The List<VP> does keep a strong reference to the key ClassLoader,
         // use the same model as JPA CachingPersistenceProviderResolver
         private static final Map<ClassLoader, List<TraceeBackendProvider>> PROVIDERS_PER_CLASSLOADER =
-                new WeakHashMap<ClassLoader, List<TraceeBackendProvider>>();
+                Collections.synchronizedMap(new WeakHashMap<ClassLoader, List<TraceeBackendProvider>>());
 
         private static final String SERVICES_FILE = "META-INF/services/" + TraceeBackendProvider.class.getName();
 
@@ -63,9 +65,7 @@ public final class Tracee {
             }
 
             List<TraceeBackendProvider> providers;
-            synchronized (PROVIDERS_PER_CLASSLOADER) {
-                providers = PROVIDERS_PER_CLASSLOADER.get(classloader);
-            }
+            providers = PROVIDERS_PER_CLASSLOADER.get(classloader);
 
             if (providers == null) {
                 providers = new ArrayList<TraceeBackendProvider>();
@@ -96,20 +96,14 @@ public final class Tracee {
                 } catch (InstantiationException e) {
                     throw new TraceeException("Unable to instanciate Tracee Context provider" + name, e);
                 }
-                synchronized (PROVIDERS_PER_CLASSLOADER) {
-                    PROVIDERS_PER_CLASSLOADER.put(classloader, providers);
-
-                }
+                PROVIDERS_PER_CLASSLOADER.put(classloader, providers);
             }
 
             return providers;
         }
 
-        private static final int EXPECTED_MAX_CLASS_NAME_LENGTH = 128;
-        private static final String UTF_8 = "UTF-8";
-
         private List<String> readClassNamesFrom(URL url) throws IOException {
-            final List<String> classNames = new LinkedList<String>();
+            final List<String> classNames = new ArrayList<String>();
 
             InputStream stream = null;
             BufferedReader reader = null;
@@ -121,30 +115,28 @@ public final class Tracee {
                 } catch (UnsupportedEncodingException e) {
                     throw new Error("UTF8 charset not supported.");
                 }
-                String name = reader.readLine();
-                while (name != null) {
+                String name;
+                while ((name = reader.readLine()) != null) {
                     name = name.trim();
                     if (!name.startsWith("#")) {
                         classNames.add(name);
                     }
-                    name = reader.readLine();
                 }
             } finally {
-                try {
-                    if (stream != null) stream.close();
-                } catch (IOException ignored) {
-                    //ignored
-                }
-                try {
-                    if (reader != null) reader.close();
-                } catch (IOException ignored) {
-                    //ignored
-                }
+							closeSilent(stream);
+							closeSilent(reader);
             }
 
             return classNames;
         }
-
+			
+			private void closeSilent(Closeable closeable) {
+				try {
+					if (closeable != null) closeable.close();
+				} catch (IOException ignored) {
+					//ignored
+				}
+			}
 
         private static final class GetClassLoader implements PrivilegedAction<ClassLoader> {
             private final Class<?> clazz;
