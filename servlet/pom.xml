@@ -32,11 +32,6 @@
             <artifactId>servlet-api</artifactId>
             <groupId>javax.servlet</groupId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>7.0.35</version>
-        </dependency>
     </dependencies>
 
 
