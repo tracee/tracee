@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import java.util.List;
 
 /**
+ * Envelope for Json data.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 @JsonAutoDetect(
@@ -16,15 +17,15 @@ import java.util.List;
 )
 @JsonPropertyOrder(
         value = {
-                TraceeErrorJsonEnvelope.CATEGORY_COMMON,
-                TraceeErrorJsonEnvelope.CATEGORY_TRACEE,
-                TraceeErrorJsonEnvelope.CATEGORY_SERVLET,
-                TraceeErrorJsonEnvelope.CATEGORY_JAXWS,
-                TraceeErrorJsonEnvelope.CATEGORY_EXCEPTION
+                TraceeJsonEnvelope.CATEGORY_COMMON,
+                TraceeJsonEnvelope.CATEGORY_TRACEE,
+                TraceeJsonEnvelope.CATEGORY_SERVLET,
+                TraceeJsonEnvelope.CATEGORY_JAXWS,
+                TraceeJsonEnvelope.CATEGORY_EXCEPTION
         }
 )
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public final class TraceeErrorJsonEnvelope {
+public final class TraceeJsonEnvelope {
 
     public static final String CATEGORY_COMMON = "x-tracee-common";
     public static final String CATEGORY_TRACEE = "x-tracee-tracee";
@@ -33,31 +34,31 @@ public final class TraceeErrorJsonEnvelope {
     public static final String CATEGORY_SERVLET = "x-tracee-servlet";
 
 
-    @JsonProperty(TraceeErrorJsonEnvelope.CATEGORY_COMMON)
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_COMMON)
     private final CommonCategory common;
 
-    @JsonProperty(TraceeErrorJsonEnvelope.CATEGORY_TRACEE)
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_TRACEE)
     private final List<TraceeContextValue> tracee;
 
-    @JsonProperty(TraceeErrorJsonEnvelope.CATEGORY_EXCEPTION)
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_EXCEPTION)
     private final ExceptionCategory exception;
 
-    @JsonProperty(TraceeErrorJsonEnvelope.CATEGORY_JAXWS)
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_JAXWS)
     private final JaxWsCategory jaxws;
 
-    @JsonProperty(TraceeErrorJsonEnvelope.CATEGORY_SERVLET)
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_SERVLET)
     private final ServletCategory servlet;
 
     @SuppressWarnings("unused")
-    private TraceeErrorJsonEnvelope() {
+    private TraceeJsonEnvelope() {
         this(null, null, null, null, null);
     }
 
-    public TraceeErrorJsonEnvelope(CommonCategory common,
-                                   List<TraceeContextValue> tracee,
-                                   ServletCategory servlet,
-                                   ExceptionCategory exception,
-                                   JaxWsCategory jaxws) {
+    public TraceeJsonEnvelope(CommonCategory common,
+                              List<TraceeContextValue> tracee,
+                              ServletCategory servlet,
+                              ExceptionCategory exception,
+                              JaxWsCategory jaxws) {
 
         this.common = common;
         this.tracee = tracee;
@@ -66,6 +67,7 @@ public final class TraceeErrorJsonEnvelope {
         this.jaxws = jaxws;
     }
 
+    @SuppressWarnings("unused")
     public CommonCategory getCommon() {
         return common;
     }

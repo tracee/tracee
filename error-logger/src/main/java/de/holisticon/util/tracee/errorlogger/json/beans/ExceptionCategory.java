@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 /**
+ * Category for json output for exception context specific data.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 @JsonAutoDetect(
@@ -35,10 +36,12 @@ public final class ExceptionCategory {
         this.stacktrace = stacktrace;
     }
 
+    @SuppressWarnings("unused")
     public String getMessage() {
         return message;
     }
 
+    @SuppressWarnings("unused")
     public String getStacktrace() {
         return stacktrace;
     }

@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * Factory for common context specific data.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 public final class CommonCategoryCreator {

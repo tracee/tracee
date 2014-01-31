@@ -5,7 +5,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 /**
- * Created by Tobias Gindler on 19.12.13.
+ * Category for json output for jaxws context specific data.
+ * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 @JsonAutoDetect(
         getterVisibility = JsonAutoDetect.Visibility.NONE,
@@ -38,10 +39,12 @@ public final class JaxWsCategory {
         this.responseSoapMessage = responseSoapMessage;
     }
 
+    @SuppressWarnings("unused")
     public String getRequestSoapMessage() {
         return requestSoapMessage;
     }
 
+    @SuppressWarnings("unused")
     public String getResponseSoapMessage() {
         return responseSoapMessage;
     }

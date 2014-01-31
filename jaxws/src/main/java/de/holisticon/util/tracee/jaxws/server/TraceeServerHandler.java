@@ -14,6 +14,7 @@ import javax.xml.namespace.QName;
 import javax.xml.soap.*;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class TraceeServerHandler extends AbstractTraceeHandler {

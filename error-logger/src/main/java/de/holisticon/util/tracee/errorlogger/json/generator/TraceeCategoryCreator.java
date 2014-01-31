@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Factory for tracee context specific data (MDB).
  * Created by Tobias Gindler, holisticon AG on 20.12.13.
  */
 public final class TraceeCategoryCreator {

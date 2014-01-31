@@ -4,14 +4,21 @@ package de.holisticon.util.tracee.errorlogger.json.beans;
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 
-import de.holisticon.util.tracee.errorlogger.json.beans.values.ServletHttpHeader;
-import de.holisticon.util.tracee.errorlogger.json.beans.values.ServletHttpParameter;
+import de.holisticon.util.tracee.errorlogger.json.beans.servlet.ServletRequestSubCategory;
+import de.holisticon.util.tracee.errorlogger.json.beans.servlet.ServletResponseSubCategory;
+import de.holisticon.util.tracee.errorlogger.json.beans.servlet.ServletSessionSubCategory;
+import de.holisticon.util.tracee.errorlogger.json.beans.values.ServletRequestAttribute;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.List;
+
+
+/**
+ *
+ */
 
 @JsonAutoDetect(
         getterVisibility = JsonAutoDetect.Visibility.NONE,
@@ -20,99 +27,69 @@ import java.util.List;
 )
 @JsonPropertyOrder(
         value = {
-                ServletCategory.ATTR_URL,
-                ServletCategory.ATTR_HTTP_METHOD,
-                ServletCategory.ATTR_HTTP_PARAMETERS,
-                ServletCategory.ATTR_HTTP_HEADERS,
-                ServletCategory.ATTR_HTTP_REMOTE_ADDRESS,
-                ServletCategory.ATTR_HTTP_REMOTE_HOST,
-                ServletCategory.ATTR_HTTP_REMOTE_PORT,
-                ServletCategory.ATTR_USER
+                ServletCategory.ATTR_REQUEST,
+                ServletCategory.ATTR_RESPONSE,
+                ServletCategory.ATTR_SESSION,
+                ServletCategory.ATTR_REQUEST_ATTRIBUTES
         }
 )
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public final class ServletCategory {
 
-    public static final String ATTR_URL = "url";
-    public static final String ATTR_HTTP_METHOD = "http-method";
-    public static final String ATTR_HTTP_PARAMETERS = "http-parameters";
-    public static final String ATTR_HTTP_HEADERS = "http-headers";
-    public static final String ATTR_USER = "user";
-    public static final String ATTR_HTTP_REMOTE_ADDRESS = "http-remote-address";
-    public static final String ATTR_HTTP_REMOTE_HOST = "http-remote-host";
-    public static final String ATTR_HTTP_REMOTE_PORT = "http-remote-port";
+    public static final String ATTR_REQUEST = "request";
+    public static final String ATTR_RESPONSE = "response";
+    public static final String ATTR_SESSION = "session";
+    public static final String ATTR_REQUEST_ATTRIBUTES = "request-attributes";
 
-    @JsonProperty(value = ServletCategory.ATTR_URL)
-    private final String url;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_METHOD)
-    private final String httpMethod;
-    @JsonProperty(value = ServletCategory.ATTR_USER)
-    private final String user;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_PARAMETERS)
-    private final List<ServletHttpParameter> httpParameters;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_HEADERS)
-    private final List<ServletHttpHeader> httpHeaders;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_REMOTE_ADDRESS)
-    private final String httpRemoteAddress;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_REMOTE_HOST)
-    private final String httpRemoteHost;
-    @JsonProperty(value = ServletCategory.ATTR_HTTP_REMOTE_PORT)
-    private final Integer httpRemotePort;
+    @JsonProperty(value = ServletCategory.ATTR_REQUEST)
+    private final ServletRequestSubCategory request;
 
+    @JsonProperty(value = ServletCategory.ATTR_RESPONSE)
+    private final ServletResponseSubCategory response;
+
+    @JsonProperty(value = ServletCategory.ATTR_SESSION)
+    private final ServletSessionSubCategory session;
+
+    @JsonProperty(value = ServletCategory.ATTR_REQUEST_ATTRIBUTES)
+    private final List<ServletRequestAttribute> requestAttributes;
 
     @SuppressWarnings("unused")
     private ServletCategory() {
-        this(null, null, null, null, null, null, null, null);
+        this(null, null, null, null);
     }
 
-    public ServletCategory(String url,
-                           String httpMethod,
-                           List<ServletHttpParameter> httpParameters,
-                           List<ServletHttpHeader> httpHeaders,
-                           String httpRemoteAddress,
-                           String httpRemoteHost,
-                           Integer httpRemotePort,
-                           String user) {
-        this.url = url;
-        this.httpMethod = httpMethod;
-        this.httpParameters = httpParameters;
-        this.httpHeaders = httpHeaders;
-        this.httpRemoteAddress = httpRemoteAddress;
-        this.httpRemoteHost = httpRemoteHost;
-        this.httpRemotePort = httpRemotePort;
-        this.user = user;
+    public ServletCategory(
+            ServletRequestSubCategory request,
+            ServletResponseSubCategory response,
+            ServletSessionSubCategory session,
+            List<ServletRequestAttribute> requestAttributes
+    ) {
+
+        this.request = request;
+        this.response = response;
+        this.session = session;
+        this.requestAttributes = requestAttributes;
+
     }
 
-    public String getUrl() {
-        return url;
+    @SuppressWarnings("unused")
+    public ServletRequestSubCategory getRequest() {
+        return request;
     }
 
-    public String getHttpMethod() {
-        return httpMethod;
+    @SuppressWarnings("unused")
+    public ServletResponseSubCategory getResponse() {
+        return response;
     }
 
-    public List<ServletHttpHeader> getHttpHeaders() {
-        return httpHeaders;
+    @SuppressWarnings("unused")
+    public ServletSessionSubCategory getSession() {
+        return session;
     }
 
-    public List<ServletHttpParameter> getHttpParameters() {
-        return httpParameters;
-    }
-
-    public String getHttpRemoteAddress() {
-        return httpRemoteAddress;
-    }
-
-    public String getHttpRemoteHost() {
-        return httpRemoteHost;
-    }
-
-    public Integer getHttpRemotePort() {
-        return httpRemotePort;
-    }
-
-    public String getUser() {
-        return user;
+    @SuppressWarnings("unused")
+    public List<ServletRequestAttribute> getRequestAttributes() {
+        return requestAttributes;
     }
 }
 

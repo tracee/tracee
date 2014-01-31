@@ -59,7 +59,7 @@ public class TraceeErrorLoggerJsonCreator {
     public final String createJson() {
 
 
-        TraceeErrorJsonEnvelope envelope = new TraceeErrorJsonEnvelope(
+        TraceeJsonEnvelope envelope = new TraceeJsonEnvelope(
                 categoryCommon,
                 categoryTracee,
                 categoryServlet,

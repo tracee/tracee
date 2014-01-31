@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 /**
+ * Abstract value class for JSON generation.
  * Created by Tobias Gindler on 20.12.13.
  */
 

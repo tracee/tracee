@@ -7,6 +7,7 @@ import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import java.util.Date;
 
 /**
+ * Category for json output for common context specific data like system name, stage and timestamp.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 @JsonAutoDetect(
@@ -59,22 +60,27 @@ public final class CommonCategory {
 
     }
 
+    @SuppressWarnings("unused")
     public Date getTimestamp() {
         return timestamp;
     }
 
+    @SuppressWarnings("unused")
     public String getSystemName() {
         return systemName;
     }
 
+    @SuppressWarnings("unused")
     public String getStage() {
         return stage;
     }
 
+    @SuppressWarnings("unused")
     public String getThreadName() {
         return threadName;
     }
 
+    @SuppressWarnings("unused")
     public Long getThreadId() {
         return threadId;
     }

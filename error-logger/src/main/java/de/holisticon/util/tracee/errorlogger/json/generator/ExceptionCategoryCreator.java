@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
+ * Factory for Exception context specific data.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 public final class ExceptionCategoryCreator {

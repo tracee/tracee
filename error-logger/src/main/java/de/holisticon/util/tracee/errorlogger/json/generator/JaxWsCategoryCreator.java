@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.errorlogger.json.generator;
 import de.holisticon.util.tracee.errorlogger.json.beans.JaxWsCategory;
 
 /**
+ * Factory for jaxws context specific data.
  * Created by TGI on 19.12.13.
  */
 public final class JaxWsCategoryCreator {
