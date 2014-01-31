@@ -12,22 +12,23 @@ import java.io.StringWriter;
 import java.util.List;
 
 /**
+ * Creator class to generate context json via a fluent api.
  * Created by Tobias Gindler, holisticon AG on 17.12.13.
  */
 public class TraceeErrorLoggerJsonCreator {
-
-    private enum Category {
-        COMMON, EXCEPTION, JAXWS
-    }
-
 
     private CommonCategory categoryCommon = null;
     private ServletCategory categoryServlet = null;
     private ExceptionCategory categoryException = null;
     private JaxWsCategory categoryJaxws = null;
     private List<TraceeContextValue> categoryTracee = null;
+    private String prefixedMessage = null;
 
     private TraceeErrorLoggerJsonCreator() {
+    }
+
+    public static TraceeErrorLoggerJsonCreator createJsonCreator() {
+        return new TraceeErrorLoggerJsonCreator();
     }
 
     public final TraceeErrorLoggerJsonCreator addCommonCategory() {
@@ -55,8 +56,19 @@ public class TraceeErrorLoggerJsonCreator {
         return this;
     }
 
+    public final TraceeErrorLoggerJsonCreator addPrefixedMessage(String prefixedMessage) {
+        this.prefixedMessage = prefixedMessage;
+        return this;
+    }
 
-    public final String createJson() {
+
+
+    @Override
+    public final  String toString() {
+        return this.createJson();
+    }
+
+    private String createJson() {
 
 
         TraceeJsonEnvelope envelope = new TraceeJsonEnvelope(
@@ -69,6 +81,9 @@ public class TraceeErrorLoggerJsonCreator {
 
 
         final StringWriter stringWriter = new StringWriter();
+        if (this.prefixedMessage != null) {
+            stringWriter.append(this.prefixedMessage).append(" - ");
+        }
 
         try {
 
@@ -84,8 +99,5 @@ public class TraceeErrorLoggerJsonCreator {
 
     }
 
-    public static TraceeErrorLoggerJsonCreator createJsonCreator() {
-        return new TraceeErrorLoggerJsonCreator();
-    }
 
 }

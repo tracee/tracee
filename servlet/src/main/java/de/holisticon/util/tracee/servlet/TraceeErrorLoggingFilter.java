@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Servlet filter to detect uncaught exceptions and to provide some contextual error logs.
  * Created by Tobias Gindler, holisticon AG on 11.12.13.
  */
 public class TraceeErrorLoggingFilter implements Filter {
@@ -51,21 +52,20 @@ public class TraceeErrorLoggingFilter implements Filter {
 
     }
 
-    private final void handleHttpServletRequest(
+    private void handleHttpServletRequest(
             HttpServletRequest servletRequest,
             HttpServletResponse servletResponse,
             Exception e) {
 
 
-        String errorJson = TraceeErrorLoggerJsonCreator.createJsonCreator().addServletCategory(servletRequest, servletResponse)
+        TraceeErrorLoggerJsonCreator errorJsonCreator = TraceeErrorLoggerJsonCreator.createJsonCreator().addServletCategory(servletRequest, servletResponse)
+                .addPrefixedMessage("TraceeErrorLoggingFilter - FAULT :")
                 .addCommonCategory()
                 .addExceptionCategory(e)
-                .addTraceeCategory(traceeBackend)
-                .createJson();
+                .addTraceeCategory(traceeBackend);
 
         // write log message
-        traceeLogger.error("TraceeErrorLoggingFilter - FAULT :\n "
-                + errorJson);
+        traceeLogger.error(errorJsonCreator);
 
     }
 

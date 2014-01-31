@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
 /**
+ * JaxWs server side handler that detects uncaught exceptions and outputs contextual informations.
  * Created by Tobias Gindler, holisticon AG on 06.12.13.
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
@@ -26,15 +27,14 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
         // Must pipe out Soap envelope
         SOAPMessage soapMessage = context.getMessage();
 
-        String errorJson = TraceeErrorLoggerJsonCreator.createJsonCreator()
+        Object errorJsonCreator = TraceeErrorLoggerJsonCreator.createJsonCreator()
+                .addPrefixedMessage("TraceeServerErrorLoggingHandler - FAULT :\n ")
                 .addJaxwsCategory(THREAD_LOCAL_SOAP_MESSAGE_STR.get(), getSoapMessageAsString(soapMessage))
                 .addCommonCategory()
-                .addTraceeCategory(getTraceeBackend())
-                .createJson();
+                .addTraceeCategory(getTraceeBackend());
 
         // write log message
-        traceeLogger.error("TraceeServerErrorLoggingHandler - FAULT :\n "
-                + errorJson);
+        traceeLogger.error(errorJsonCreator);
 
         // cleanup thread local request soap message
         THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
