@@ -2,8 +2,7 @@ package de.holisticon.util.tracee;
 
 import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 
-import java.io.*;
-import java.net.URL;
+import java.lang.ref.SoftReference;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
@@ -17,130 +16,112 @@ public final class Tracee {
 
     }
 
+    /**
+     * Returns the TraceeBackend. There must be exactly one Tracee implementation on the classpath.
+     * <p/>
+     * A call to this method may initially block to lookup the implementation with a {@link java.util.ServiceLoader}.
+     * The call to this method from multiple threads with different class loader contexts may initially be slow
+     * because cache writes can overwrite each other in concurrent situations and some class loader contexts may have
+     * to be looked up multiple times. This allows the lookup mechanism to completely avoid synchronization.
+     * <p/>
+     * TODO: If you run a nested class loader environment (like a servlet container) and have the Tracee Api in a top
+     * level class loader and a Tracee Implementation in a child class loader, the child class loader may not be unloaded
+     * until a low memory situation occurs (since the SoftReference keeps the TraceeBackendProvider in memory).
+     * It could be a solution to change the SoftReference to WeakReference but let a TraceeBackend keep a strong
+     * reference to its TraceeBackendProvider.
+     */
     public static TraceeBackend getBackend() {
 
-        final ContextProviderResolver contextProviderResolver = new ContextProviderResolver();
-        final List<TraceeBackendProvider> contextProviders;
+        final BackendProviderResolver contextProviderResolver = new BackendProviderResolver();
+        final List<TraceeBackendProvider> backendProviders;
         try {
-            contextProviders = contextProviderResolver.getContextProviders();
+            backendProviders = contextProviderResolver.getContextProviders();
         } catch (RuntimeException e) {
             throw new TraceeException("Unable to load available backend providers", e);
         }
-        if (contextProviders.isEmpty()) {
+        if (backendProviders.isEmpty()) {
             throw new TraceeException("Unable to find a tracee backend provider");
         }
-        if (contextProviders.size() > 1) {
-            final ArrayList<Class<?>> providerClasses = new ArrayList<Class<?>>(contextProviders.size());
-            for (TraceeBackendProvider contextProvider : contextProviders) {
-                providerClasses.add(contextProvider.getClass());
+        if (backendProviders.size() > 1) {
+            final ArrayList<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());
+            for (TraceeBackendProvider backendProvider : backendProviders) {
+                providerClasses.add(backendProvider.getClass());
             }
             final String providerClassNames = Arrays.toString(providerClasses.toArray());
             throw new TraceeException("Multiple context providers found. Don't know which one of the following to use: "
                     + providerClassNames);
         }
-        return contextProviders.get(0).provideBackend();
+        return backendProviders.get(0).provideBackend();
     }
 
 
-    private static final class ContextProviderResolver {
+    private static final class BackendProviderResolver {
 
-        //cache per classloader for an appropriate discovery
-        //keep them in a weak hashmap to avoid memory leaks and allow proper hot redeployment
-        //TODO use a WeakConcurrentHashMap
-        //FIXME The List<VP> does keep a strong reference to the key ClassLoader,
-        // use the same model as JPA CachingPersistenceProviderResolver
-        private static final Map<ClassLoader, List<TraceeBackendProvider>> PROVIDERS_PER_CLASSLOADER =
-                new WeakHashMap<ClassLoader, List<TraceeBackendProvider>>();
+        private static Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> PROVIDERS_PER_CLASSLOADER =
+                new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>();
 
-        private static final String SERVICES_FILE = "META-INF/services/" + TraceeBackendProvider.class.getName();
-
-        public List<TraceeBackendProvider> getContextProviders() {
-            ClassLoader classloader = GetClassLoader.fromContext();
-            if (classloader == null) {
-                classloader = GetClassLoader.fromClass(ContextProviderResolver.class);
-            }
-
-            List<TraceeBackendProvider> providers;
-            synchronized (PROVIDERS_PER_CLASSLOADER) {
-                providers = PROVIDERS_PER_CLASSLOADER.get(classloader);
-            }
-
-            if (providers == null) {
-                providers = new ArrayList<TraceeBackendProvider>();
-                String name = null;
-
-                try {
-                    Enumeration<URL> providerDefinitions = classloader.getResources(SERVICES_FILE);
-                    while (providerDefinitions.hasMoreElements()) {
-                        final URL url = providerDefinitions.nextElement();
-
-                        final List<String> classNames = readClassNamesFrom(url);
-
-                        for (String className : classNames) {
-                            name = className;
-                            final Class<?> providerClass = loadClass(
-                                    className,
-                                    ContextProviderResolver.class
-                            );
-                            providers.add((TraceeBackendProvider) providerClass.newInstance());
-                        }
-                    }
-                } catch (IOException e) {
-                    throw new TraceeException("Unable to read " + SERVICES_FILE, e);
-                } catch (ClassNotFoundException e) {
-                    throw new TraceeException("Unable to load Tracee Context provider " + name, e);
-                } catch (IllegalAccessException e) {
-                    throw new TraceeException("Unable to instanciate Tracee Context provider" + name, e);
-                } catch (InstantiationException e) {
-                    throw new TraceeException("Unable to instanciate Tracee Context provider" + name, e);
-                }
-                synchronized (PROVIDERS_PER_CLASSLOADER) {
-                    PROVIDERS_PER_CLASSLOADER.put(classloader, providers);
-
-                }
-            }
-
-            return providers;
+        private static List<TraceeBackendProvider> getFromCache(Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache, ClassLoader classLoader) {
+            final SoftReference<List<TraceeBackendProvider>> entry = cache.get(classLoader);
+            return entry == null ? null : entry.get();
         }
 
-        private static final int EXPECTED_MAX_CLASS_NAME_LENGTH = 128;
-        private static final String UTF_8 = "UTF-8";
+        public static WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>> updatedCache(
+                Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache,
+                ClassLoader classLoader, List<TraceeBackendProvider> provider) {
+            final WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>> copyOnWriteMap = new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>(cache);
+            copyOnWriteMap.put(classLoader, new SoftReference<List<TraceeBackendProvider>>(provider));
+            return copyOnWriteMap;
+        }
 
-        private List<String> readClassNamesFrom(URL url) throws IOException {
-            final List<String> classNames = new LinkedList<String>();
 
-            InputStream stream = null;
-            BufferedReader reader = null;
-            try {
-                stream = url.openStream();
+        public List<TraceeBackendProvider> getContextProviders() {
+            final Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache = PROVIDERS_PER_CLASSLOADER;
 
-                try {
-                    reader = new BufferedReader(new InputStreamReader(stream, UTF_8), EXPECTED_MAX_CLASS_NAME_LENGTH);
-                } catch (UnsupportedEncodingException e) {
-                    throw new Error("UTF8 charset not supported.");
-                }
-                String name = reader.readLine();
-                while (name != null) {
-                    name = name.trim();
-                    if (!name.startsWith("#")) {
-                        classNames.add(name);
-                    }
-                    name = reader.readLine();
-                }
-            } finally {
-                try {
-                    if (stream != null) stream.close();
-                } catch (IOException ignored) {
-                    //ignored
-                }
-                try {
-                    if (reader != null) reader.close();
-                } catch (IOException ignored) {
-                    //ignored
-                }
+            final ClassLoader contextClassloader = GetClassLoader.fromContext();
+
+            // 1. take cached from context class loader
+            final List<TraceeBackendProvider> cachedContextClassLoaderProviders = getFromCache(cache, contextClassloader);
+            if (cachedContextClassLoaderProviders != null) {
+                return cachedContextClassLoaderProviders;
             }
 
-            return classNames;
+            // 2. load from context class loader and cache if not empty
+            final List<TraceeBackendProvider> contextClassLoaderProviders = loadProviders(contextClassloader);
+            if (!contextClassLoaderProviders.isEmpty()) {
+                PROVIDERS_PER_CLASSLOADER = updatedCache(cache, contextClassloader, contextClassLoaderProviders);
+                return contextClassLoaderProviders;
+            } else {
+
+                // 3. take cached from current class loader
+                final ClassLoader classloader = GetClassLoader.fromClass(BackendProviderResolver.class);
+                final List<TraceeBackendProvider> cachedClassLoaderProviders = getFromCache(cache, classloader);
+                if (cachedClassLoaderProviders != null) {
+                    // if already processed return the cached provider list
+                    return cachedClassLoaderProviders;
+                }
+
+                // 4. load from current class loader and cache the result
+                final List<TraceeBackendProvider> classLoaderProviders = loadProviders(classloader);
+                PROVIDERS_PER_CLASSLOADER = updatedCache(cache, classloader, classLoaderProviders);
+                return classLoaderProviders;
+            }
+
+        }
+
+        private List<TraceeBackendProvider> loadProviders(ClassLoader classloader) {
+            final ServiceLoader<TraceeBackendProvider> loader = ServiceLoader.load(TraceeBackendProvider.class, classloader);
+            final Iterator<TraceeBackendProvider> providerIterator = loader.iterator();
+            final List<TraceeBackendProvider> validationProviderList = new ArrayList<TraceeBackendProvider>();
+            while (providerIterator.hasNext()) {
+                try {
+                    validationProviderList.add(providerIterator.next());
+                } catch (ServiceConfigurationError e) {
+                    // ignore, because it can happen when multiple
+                    // providers are present and some of them are not class loader
+                    // compatible with our API.
+                }
+            }
+            return validationProviderList;
         }
 
 
@@ -180,23 +161,5 @@ public final class Tracee {
                 }
             }
         }
-
-        private static Class<?> loadClass(String name, Class<?> caller) throws ClassNotFoundException {
-            try {
-                //try context classloader, if fails try caller classloader
-                ClassLoader loader = GetClassLoader.fromContext();
-                if (loader != null) {
-                    return loader.loadClass(name);
-                }
-            } catch (ClassNotFoundException e) {
-                //trying caller classloader
-                if (caller == null) {
-                    throw e;
-                }
-            }
-            return Class.forName(name, true, GetClassLoader.fromClass(caller));
-        }
     }
-
-
 }

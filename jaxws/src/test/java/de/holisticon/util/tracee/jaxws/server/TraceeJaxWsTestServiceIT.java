@@ -11,12 +11,11 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -31,6 +30,10 @@ public class TraceeJaxWsTestServiceIT {
         ENDPOINT_URL = new URL("http://127.0.0.1:4204/jaxws/TraceeJaxWsEndpointImpl?wsdl");
         Properties p = new Properties();
         p.setProperty("openejb.embedded.remotable", "true");
+
+        p.setProperty("log4j.category.de.holisticon.util.tracee", "info");
+        p.setProperty("log4j.appender.C.layout", "org.apache.log4j.PatternLayout");
+        p.setProperty("log4j.appender.C.layout.ConversionPattern", "%d{yyyy-MM-dd HH:mm:ss.SSSS} [x-tracee-request:%X{x-tracee-request}] \n %m%n");
         ejbContainer = EJBContainer.createEJBContainer(p);
     }
 
@@ -46,10 +49,10 @@ public class TraceeJaxWsTestServiceIT {
         Service calculatorService = Service.create(ENDPOINT_URL, ENDPOINT_QNAME);
 
         final TraceeJaxWsEndpoint remote = calculatorService.getPort(TraceeJaxWsEndpoint.class);
-        final Map<String, String> result = remote.getCurrentTraceeContext();
+        final List<String> result = remote.getCurrentTraceeContext();
 
-        assertThat(result.entrySet(), not(empty()));
-        assertThat(result, Matchers.hasKey(TraceeConstants.REQUEST_ID_KEY));
+        assertThat(result, not(empty()));
+        assertThat(result, contains(equalTo(TraceeConstants.REQUEST_ID_KEY), not(isEmptyString())));
 
     }
 

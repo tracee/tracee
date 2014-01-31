@@ -1,7 +1,7 @@
 package de.holisticon.util.tracee;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeException extends RuntimeException {
 
@@ -19,10 +19,6 @@ public class TraceeException extends RuntimeException {
 
     public TraceeException(Throwable cause) {
         super(cause);
-    }
-
-    public TraceeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 
 }
