@@ -14,13 +14,12 @@ import java.io.IOException;
 /**
  * TO DO: how to use it.
  *
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
     private final TraceeBackend backend = Tracee.getBackend();
     private final TraceeContextSerialization contextSerialization = new TraceeContextSerialization();
-
 
     @Override
     public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
