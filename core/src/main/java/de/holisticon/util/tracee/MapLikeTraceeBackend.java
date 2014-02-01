@@ -101,11 +101,7 @@ public abstract class MapLikeTraceeBackend implements TraceeBackend {
 
     private Collection<String> deserialize(String serialized) {
         final String[] split = serialized.trim().split(",", 0);
-        List<String> list = new ArrayList<String>();
-        for (String element : split) {
-            list.add(element);
-        }
-        return list;
+        return new ArrayList<String>(Arrays.asList(split));
     }
 
     @Override

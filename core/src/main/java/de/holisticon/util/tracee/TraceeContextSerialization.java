@@ -5,18 +5,22 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeContextSerialization {
 
-
     private final Gson gson = new Gson();
 
-
+    /**
+     * @return a serialized view of the given TraceeBackend or {@code null} if the backend is empty.
+     */
     public final String toHeaderRepresentation(TraceeBackend backend) {
-        return gson.toJson(backend.extractContext());
+        final TreeMap<String,String> context = backend.extractContext();
+        if (context.isEmpty()) return null;
+        else return gson.toJson(context);
     }
 
     public final boolean merge(TraceeBackend backend, String serialized) {
