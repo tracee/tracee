@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientRequestFilterTest {
 
     private final TraceeBackend traceeBackend = Tracee.getBackend();
-    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend);
+    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter();
     private ClientRequestContext clientRequestContext = Mockito.mock(ClientRequestContext.class);
 
 

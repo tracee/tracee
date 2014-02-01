@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee.jaxrs.client;
 
+import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
 import de.holisticon.util.tracee.TraceeContextSerialization;
@@ -16,12 +17,8 @@ import java.io.IOException;
 @Provider
 public class TraceeClientResponseFilter implements ClientResponseFilter {
 
-    private final TraceeBackend backend;
+    private final TraceeBackend backend = Tracee.getBackend();
     private final TraceeContextSerialization serialization = new TraceeContextSerialization();
-
-    public TraceeClientResponseFilter(TraceeBackend traceeBackend) {
-        this.backend = traceeBackend;
-    }
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {

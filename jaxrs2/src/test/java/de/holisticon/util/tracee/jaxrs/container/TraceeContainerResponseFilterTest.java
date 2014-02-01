@@ -24,7 +24,7 @@ public class TraceeContainerResponseFilterTest {
 
     private final TraceeBackend backend = Tracee.getBackend();
 
-    private final TraceeContainerResponseFilter unit = new TraceeContainerResponseFilter(backend);
+    private final TraceeContainerResponseFilter unit = new TraceeContainerResponseFilter();
     private final ContainerResponseContext responseContext = Mockito.mock(ContainerResponseContext.class);
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 

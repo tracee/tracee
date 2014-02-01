@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientResponseFilterTest {
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend);
+    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter();
     private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
     private final MultivaluedMap<String,String> headers = new MultivaluedHashMap<String, String>();
 
