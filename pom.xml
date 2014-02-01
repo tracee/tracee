@@ -22,7 +22,7 @@
 
 		<!-- inbound -->
 		<module>servlet</module>
-		<module>jaxrs</module>
+		<module>jaxrs2</module>
 		<module>jaxws</module>
 		<module>jms</module>
 
