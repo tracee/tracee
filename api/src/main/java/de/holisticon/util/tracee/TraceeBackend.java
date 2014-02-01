@@ -42,7 +42,7 @@ public interface TraceeBackend {
     TraceeLogger getLogger(Class<?> clazz);
 
     /**
-     * @return a collection of keys withing this backend. The returned Collection is a copy and might be modified.
+     * @return a collection of keys withing this backend. The returned Collection is a copy and may be modified.
      */
     Collection<String> getRegisteredKeys();
 
