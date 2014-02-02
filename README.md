@@ -105,16 +105,16 @@ trust boundaries (like HTTP-Responses to users or third-party Web-Services). Tra
 that allow you to selectively decide at which point in your application you want to pass around what contextual information.
 
 
-# Use cases
+## Use cases
 
 | Framework | Client | Container |
-|--|--|--|
-| Servlet  | x  | Use (tracee-servlet)[servlet] as a servlet filter |
-| JAX-RS | Configure (tracee-httpclient)[httpclient] as Executor | Use (tracee-servlet)[servlet] as a servlet filter. |
-| JAX-RS2 | Configure (tracee-jaxrs2)[jaxrsw]'s `TraceeClientRequestFilter` and `TraceeContainerResponseFilter` | Use (tracee-jaxrs2)[jaxrsw]'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
-| JAX-WS | Use (tracee-jaxws)[jaxws]'s `TraceeClientHandlerResolver` | Use (tracee-jaxws)[jaxws]'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
-| JMS | Producer: Use (tracee-jms)[jms]'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use (trace-jms)[jms]'s `TraceeMessageListener` as EJB interceptor. |
-
+| --------- | ------ | --------- |
+| Servlet   | x  | Use [tracee-servlet](servlet) as a servlet filter. |
+| JAX-RS    | Configure [tracee-httpclient](httpclient) as Executor | Use [tracee-servlet](servlet) as a servlet filter. |
+| JAX-RS2   | Configure [tracee-jaxrs2](jaxrs2)'s `TraceeClientRequestFilter` and `TraceeContainerResponseFilter` | Use [tracee-jaxrs2](jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
+| JAX-WS    | Use [tracee-jaxws](jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
+| JMS       | Producer: Use [tracee-jms](jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms)'s `TraceeMessageListener` as EJB interceptor. |
+| ApacheHttpClient | Use [tracee-httpclient](httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
 
 ## Slides
 [to be completed](docs/slides/index.html)
