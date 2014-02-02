@@ -2,18 +2,33 @@
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
  * http://creativecommons.org/publicdomain/zero/1.0/
- *
- * http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/main/java/util/concurrent/ThreadLocalRandom.java?view=markup
  */
 package de.holisticon.util.tracee;
 
 import java.util.Random;
 
-// CHECKSTYLE:OFF
 /**
- * Copied directly from the JSR-166 project.
+ * A random number generator isolated to the current thread.  Like the
+ * global {@link java.util.Random} generator used by the {@link
+ * java.lang.Math} class, a {@code ThreadLocalRandom} is initialized
+ * with an internally generated seed that may not otherwise be
+ * modified. When applicable, use of {@code ThreadLocalRandom} rather
+ * than shared {@code Random} objects in concurrent programs will
+ * typically encounter much less overhead and contention.
+ *
+ * <p>Usages of this class should typically be of the form:
+ * {@code ThreadLocalRandom.current().nextX(...)} (where
+ * {@code X} is {@code Int}, {@code Long}, etc).
+ * When all usages are of this form, it is never possible to
+ * accidently share a {@code ThreadLocalRandom} across multiple threads.
+ *
+ * <p>This class also provides additional commonly used bounded random
+ * generation methods.
+ *
+ * @since 1.7
+ * @author Doug Lea
  */
-class ThreadLocalRandom extends Random {
+public class ThreadLocalRandom extends Random {
     // same constants as Random, but must be redeclared because private
     private static final long multiplier = 0x5DEECE66DL;
     private static final long addend = 0xBL;
