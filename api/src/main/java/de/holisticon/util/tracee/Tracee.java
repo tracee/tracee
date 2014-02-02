@@ -40,7 +40,7 @@ public final class Tracee {
             throw new TraceeException("Unable to load available backend providers", e);
         }
         if (backendProviders.isEmpty()) {
-            throw new TraceeException("Unable to find a tracee backend provider");
+            throw new TraceeException("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath.");
         }
         if (backendProviders.size() > 1) {
             final ArrayList<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());

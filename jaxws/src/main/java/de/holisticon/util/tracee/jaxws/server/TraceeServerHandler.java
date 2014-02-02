@@ -75,7 +75,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
             // generate request id if it doesn't exist
             if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null) {
-                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric());
+                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
             }
 
 
@@ -103,15 +103,10 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
                             TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
 
                     // loop over mdc attributes and add them to the header
-                    for (final String attributeName : this.getTraceeBackend().getRegisteredKeys()) {
-
-                        final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(attributeName);
-
-                        final String attributeValue = this.getTraceeBackend().get(attributeName);
-                        traceeSoapHeaderElement.setValue(attributeValue);
-
+                    for (final Map.Entry<String, String> entry : this.getTraceeBackend().entrySet()) {
+                        final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(entry.getKey());
+                        traceeSoapHeaderElement.setValue(entry.getValue());
                     }
-
 
                     msg.saveChanges();
                     context.setMessage(msg);

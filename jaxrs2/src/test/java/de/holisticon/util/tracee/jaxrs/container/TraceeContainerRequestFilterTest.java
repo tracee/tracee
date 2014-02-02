@@ -12,8 +12,9 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -37,6 +38,19 @@ public class TraceeContainerRequestFilterTest {
         headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"foo\":\"bar\"}");
         unit.filter(requestContext);
         assertThat(backend.get("foo"), equalTo("bar"));
+    }
+
+    @Test
+    public void testFilterDeserializesExistingRequestId() throws IOException {
+        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\""+TraceeConstants.REQUEST_ID_KEY+"\":\"foo\"}");
+        unit.filter(requestContext);
+        assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
+    }
+
+    @Test
+    public void testFilterCreatesRequestIdIfNotInHeaders() throws IOException {
+        unit.filter(requestContext);
+        assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
     }
 
 }

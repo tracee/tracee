@@ -13,6 +13,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +41,24 @@ public class TraceeClientRequestFilterTest {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
         assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                Matchers.equalTo("{\"foo\":\"bar\"}"));
+                containsString("\"foo\":\"bar\""));
+    }
+
+    @Test
+    public void testFilterCreatesRequestId() throws IOException {
+        unit.filter(clientRequestContext);
+        assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
+        assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+                containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\""));
+    }
+
+    @Test
+    public void testFilterKeepsExistingRequestId() throws IOException {
+        traceeBackend.put(TraceeConstants.REQUEST_ID_KEY, "foo");
+        unit.filter(clientRequestContext);
+        assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
+        assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+                containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\"foo\""));
     }
 
 }

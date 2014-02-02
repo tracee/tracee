@@ -3,7 +3,8 @@ package de.holisticon.util.tracee.outbound.httpclient;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeContextSerialization;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -19,13 +20,13 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TraceeContextSerialization serialization = new TraceeContextSerialization();
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport();
 
     @Override
     public void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
         final Header traceeHeader = response.getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
         if (traceeHeader != null) {
-            serialization.merge(backend, traceeHeader.getValue());
+            transportSerialization.mergeToBackend(backend, traceeHeader.getValue());
         }
     }
 }

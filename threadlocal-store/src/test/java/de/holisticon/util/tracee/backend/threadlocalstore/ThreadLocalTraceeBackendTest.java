@@ -1,10 +1,13 @@
 package de.holisticon.util.tracee.backend.threadlocalstore;
 
+import de.holisticon.util.tracee.ThreadLocalHashSet;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasEntry;
 
 /**
@@ -12,21 +15,25 @@ import static org.hamcrest.Matchers.hasEntry;
  */
 public class ThreadLocalTraceeBackendTest {
 
-    private ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend(new ThreadLocalMap());
+    private ThreadLocalMap<String,String> backedMap = new ThreadLocalMap<String,String>();
+    private MdcLikeThreadLocalMapAdapter adapter = new MdcLikeThreadLocalMapAdapter(backedMap);
+
+    private ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend(adapter, new ThreadLocalHashSet<String>());
 
     @Test
     public void testStoredKeys() {
-        assertThat(unit.getRegisteredKeys().size(), equalTo(0));
+        unit.clear();
+        assertThat(unit.keySet().size(), equalTo(0));
         unit.put("FOO", "BAR");
         assertThat(unit.get("FOO"), equalTo("BAR"));
-        assertThat(unit.getRegisteredKeys().size(), equalTo(1));
+        assertThat(unit.keySet().size(), equalTo(1));
     }
 
     @Test
     public void testExtractContext() {
         unit.put("FUBI", "BARBI");
-        assertThat(unit.getRegisteredKeys(), Matchers.contains("FUBI"));
-        assertThat(unit.extractContext(), hasEntry("FUBI", "BARBI"));
+        assertThat(unit.keySet(), contains("FUBI"));
+        assertThat(unit, hasEntry("FUBI", "BARBI"));
     }
 
 }

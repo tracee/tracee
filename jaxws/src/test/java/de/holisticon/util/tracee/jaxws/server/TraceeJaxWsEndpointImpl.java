@@ -25,7 +25,7 @@ public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
 
         final List<String> entries = new ArrayList<String>();
         LOGGER.info("Hello from Endpoint");
-        for (Map.Entry<String, String> entry : Tracee.getBackend().extractContext().entrySet()) {
+        for (Map.Entry<String, String> entry : Tracee.getBackend().entrySet()) {
             entries.add(entry.getKey());
             entries.add(entry.getValue());
         }

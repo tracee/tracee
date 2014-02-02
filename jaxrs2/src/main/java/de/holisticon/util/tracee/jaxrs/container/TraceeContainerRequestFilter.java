@@ -1,9 +1,8 @@
 package de.holisticon.util.tracee.jaxrs.container;
 
-import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeContextSerialization;
+import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import de.holisticon.util.tracee.transport.TransportSerialization;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -17,14 +16,18 @@ import java.io.IOException;
 public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TraceeContextSerialization serialization = new TraceeContextSerialization();
-
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport();
 
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+        // generate request id if it doesn't exist
+        if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null) {
+            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
+        }
+
         final String serializedTraceeHeader = containerRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
         if (serializedTraceeHeader != null)
-            serialization.merge(backend, serializedTraceeHeader);
+            transportSerialization.mergeToBackend(backend, serializedTraceeHeader);
     }
 }

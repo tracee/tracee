@@ -1,31 +1,21 @@
 package de.holisticon.util.tracee.backend.jbosslogging;
 
-import de.holisticon.util.tracee.MapLikeTraceeBackend;
+import de.holisticon.util.tracee.MDCLike;
+import de.holisticon.util.tracee.MDCLikeTraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import org.jboss.logging.MDC;
+
+import java.util.Set;
 
 /**
  * TraceeBackend provided using the jboss logging {@link MDC}.
  *
  * @author Daniel
  */
-class JbossLoggingTraceeBackend extends MapLikeTraceeBackend {
+final class JbossLoggingTraceeBackend extends MDCLikeTraceeBackend {
 
-
-    @Override
-    public final String getFromMap(String key) {
-        final Object obj = MDC.get(key);
-        return obj == null ? null : obj.toString();
-    }
-
-    @Override
-    protected final void putInMap(String key, String value) {
-        MDC.put(key, value);
-    }
-
-    @Override
-    protected final void removeFromMap(String key) {
-        MDC.remove(key);
+    JbossLoggingTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
+        super(mdcAdapter, traceeKeys);
     }
 
     @Override

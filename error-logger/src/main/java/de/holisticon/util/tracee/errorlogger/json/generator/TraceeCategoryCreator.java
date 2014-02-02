@@ -21,19 +21,14 @@ public final class TraceeCategoryCreator {
 
     public static List<TraceeContextValue> createTraceeCategory(TraceeBackend traceeBackend) {
 
-        List<TraceeContextValue> list = new ArrayList<TraceeContextValue>();
+        final List<TraceeContextValue> list = new ArrayList<TraceeContextValue>();
 
-        Collection<String> keys = traceeBackend.getRegisteredKeys();
+        final Collection<String> keys = traceeBackend.keySet();
         if (keys != null) {
-
             for (String key : keys) {
-
-                String value = traceeBackend.get(key);
-
+                final String value = traceeBackend.get(key);
                 list.add(new TraceeContextValue(key, value));
-
             }
-
         }
         return list;
 

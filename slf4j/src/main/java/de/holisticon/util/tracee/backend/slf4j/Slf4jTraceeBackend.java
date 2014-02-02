@@ -1,17 +1,18 @@
 package de.holisticon.util.tracee.backend.slf4j;
 
-import de.holisticon.util.tracee.MapLikeTraceeBackend;
+import de.holisticon.util.tracee.MDCLike;
+import de.holisticon.util.tracee.MDCLikeTraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
-import org.slf4j.MDC;
+
+import java.util.Set;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
-class Slf4jTraceeBackend extends MapLikeTraceeBackend {
+class Slf4jTraceeBackend extends MDCLikeTraceeBackend {
 
-    @Override
-    public final String getFromMap(final String key) {
-        return MDC.get(key);
+    Slf4jTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
+        super(mdcAdapter, traceeKeys);
     }
 
     @Override
@@ -19,13 +20,4 @@ class Slf4jTraceeBackend extends MapLikeTraceeBackend {
         return new Slf4jTraceeLogger(clazz);
     }
 
-    @Override
-    protected final void putInMap(final String key, final String value) {
-        MDC.put(key, value);
-    }
-
-    @Override
-    protected final void removeFromMap(final String key) {
-        MDC.remove(key);
-    }
 }

@@ -37,7 +37,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
                 // get attribute names from cds and store them into the session
                 final Set<String> existingAttributeNames = new HashSet<String>(
-                        this.getTraceeBackend().getRegisteredKeys());
+                        this.getTraceeBackend().keySet());
 
                 // get soap header
                 final SOAPHeader header = env.getHeader();
@@ -105,7 +105,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
                         TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
 
                 // loop over mdc attributes and add them to the header
-                for (final String attributeName : this.getTraceeBackend().getRegisteredKeys()) {
+                for (final String attributeName : this.getTraceeBackend().keySet()) {
 
                     final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(attributeName);
 

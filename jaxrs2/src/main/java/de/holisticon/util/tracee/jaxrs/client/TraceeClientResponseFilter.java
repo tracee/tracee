@@ -3,7 +3,8 @@ package de.holisticon.util.tracee.jaxrs.client;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeContextSerialization;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import de.holisticon.util.tracee.transport.TransportSerialization;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
@@ -18,13 +19,13 @@ import java.io.IOException;
 public class TraceeClientResponseFilter implements ClientResponseFilter {
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TraceeContextSerialization serialization = new TraceeContextSerialization();
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport();
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         final String serializedContext = responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
         if (serializedContext != null)
-            serialization.merge(backend, serializedContext);
+            transportSerialization.mergeToBackend(backend, serializedContext);
     }
 
 }

@@ -52,7 +52,7 @@ public class TraceeJaxWsTestServiceIT {
         final List<String> result = remote.getCurrentTraceeContext();
 
         assertThat(result, not(empty()));
-        assertThat(result, contains(equalTo(TraceeConstants.REQUEST_ID_KEY), not(isEmptyString())));
+        assertThat(result, contains(equalTo(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString())));
 
     }
 

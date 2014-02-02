@@ -22,7 +22,7 @@ public class TraceeTest {
             expected = e;
         }
         assertThat(expected, notNullValue());
-        assertThat(expected.getMessage(), equalTo("Unable to find a tracee backend provider"));
+        assertThat(expected.getMessage(), equalTo("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath."));
 
     }
 }

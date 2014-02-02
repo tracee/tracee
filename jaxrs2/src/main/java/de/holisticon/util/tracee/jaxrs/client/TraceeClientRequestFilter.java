@@ -1,9 +1,8 @@
 package de.holisticon.util.tracee.jaxrs.client;
 
-import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeContextSerialization;
+import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import de.holisticon.util.tracee.transport.TransportSerialization;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -17,12 +16,18 @@ import java.io.IOException;
 public class TraceeClientRequestFilter implements ClientRequestFilter {
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TraceeContextSerialization traceeContextSerialization = new TraceeContextSerialization();
 
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport();
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        final String serializedTraceeContext = traceeContextSerialization.toHeaderRepresentation(backend);
+
+        // generate request id if it doesn't exist
+        if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null) {
+            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
+        }
+
+        final String serializedTraceeContext = transportSerialization.render(backend);
         if (serializedTraceeContext == null)
             return;
         requestContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedTraceeContext);

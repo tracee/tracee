@@ -8,7 +8,7 @@ import de.holisticon.util.tracee.TraceeLogger;
  * @author Tobias Gindler, holisticon AG
  */
 
-public final class ThreadLocalTraceeLogger implements TraceeLogger {
+final class ThreadLocalTraceeLogger implements TraceeLogger {
 
     private enum LEVEL {
         ERROR, WARN

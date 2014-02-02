@@ -12,7 +12,7 @@ public class UtilitiesTest {
 
     @Test
     public void testCreateRandomAlphanumeric() {
-        final String randomAlphanumeric = Utilities.createRandomAlphanumeric();
+        final String randomAlphanumeric = Utilities.createRandomAlphanumeric(32);
         assertThat("length", randomAlphanumeric.length(), equalTo(32));
     }
 

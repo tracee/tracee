@@ -18,9 +18,11 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
@@ -31,13 +33,14 @@ public class AllFilterIT {
 
     @Before
     public void setUp() throws Exception {
+        Tracee.getBackend().clear();
         final ResourceConfig rc = new ResourceConfig().packages("de.holisticon.util.tracee.jaxrs");
         server = GrizzlyHttpServerFactory.createHttpServer(URI.create(ENDPOINT_URL), rc);
     }
 
     @After
-    public void tearDown() {
-        server.stop();
+    public void tearDown() throws ExecutionException, InterruptedException {
+        server.shutdown().get();
     }
 
     @Path("/")

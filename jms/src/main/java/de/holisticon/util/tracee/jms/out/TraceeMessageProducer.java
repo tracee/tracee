@@ -1,12 +1,14 @@
 package de.holisticon.util.tracee.jms.out;
 
 import de.holisticon.util.tracee.Tracee;
+import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -26,7 +28,7 @@ public class TraceeMessageProducer implements MessageProducer {
      * This method is idempotent.
      */
     protected final void writeTraceeContextToMessage(Message message) throws JMSException {
-        final TreeMap<String, String> traceeProperties = Tracee.getBackend().extractContext();
+        final TraceeBackend traceeProperties = Tracee.getBackend();
         final TreeMap<String, String> defensiveCopy = new TreeMap<String, String>(traceeProperties);
         message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, defensiveCopy);
     }

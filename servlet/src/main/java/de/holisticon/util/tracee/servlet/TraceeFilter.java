@@ -1,6 +1,8 @@
 package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import de.holisticon.util.tracee.transport.TransportSerialization;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +20,7 @@ import java.util.Enumeration;
  * <li>{@link de.holisticon.util.tracee.servlet.TraceeFilter#RESPOND_WITH_CONTEXT_KEY}</li>
  * </ul>
  *
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeFilter implements Filter {
 
@@ -47,7 +49,8 @@ public class TraceeFilter implements Filter {
     private boolean respondWithContext = false;
     private TraceeBackend backend = null;
 
-    private final TraceeContextSerialization contextSerialization = new TraceeContextSerialization();
+    private TransportSerialization<String> httpJsonHeaderSerialization = new HttpJsonHeaderTransport();
+
 
     @Override
     public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -59,16 +62,16 @@ public class TraceeFilter implements Filter {
         }
     }
 
-    private void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    private void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         if (acceptIncomingContext)
             mergeIncomingContextToBackend(request);
 
-        if (!backend.contains(TraceeConstants.REQUEST_ID_KEY)) {
-            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric());
+        if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
+            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
         }
 
-        if (!backend.contains(TraceeConstants.SESSION_ID_KEY)) {
+        if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY)) {
             final HttpSession session = request.getSession(false);
             if (session != null) {
                 backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId()));
@@ -78,33 +81,18 @@ public class TraceeFilter implements Filter {
         Exception exception = null;
         try {
             filterChain.doFilter(request, response);
-
-            if (respondWithContext && backend.isEmpty()) {
-                response.setHeader(headerName, contextSerialization.toHeaderRepresentation(backend));
+            if (respondWithContext && !backend.isEmpty()) {
+                response.setHeader(headerName, httpJsonHeaderSerialization.render(backend));
             }
-
-        } catch (Exception e) {
-            exception = e;
         } finally {
             // ensure cleanup
             backend.clear();
         }
 
-        if (exception != null) {
-            if (exception instanceof  RuntimeException) {
-                throw (RuntimeException)exception;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
-
-
-
     }
 
     private String anonymizedSessionKey(String sessionKey) {
-        // TO DO: how about some salt?
-        return Integer.toHexString(sessionKey.hashCode());
+        return Utilities.createAlphanumericHash(sessionKey, 32);
     }
 
     private void mergeIncomingContextToBackend(HttpServletRequest request) {
@@ -114,7 +102,7 @@ public class TraceeFilter implements Filter {
                     + headerName + "'. The access seem to be forbidden by the container");
         }
         while (headers.hasMoreElements()) {
-            contextSerialization.merge(backend, (String) headers.nextElement());
+            httpJsonHeaderSerialization.mergeToBackend(backend, (String) headers.nextElement());
         }
     }
 
