@@ -108,7 +108,7 @@ that allow you to selectively decide at which point in your application you want
 ## Use cases
 
 | Framework | Client | Container |
-| --------- | ------ | --------- |
+| ---------:|:------:|:---------:|
 | Servlet   | x  | Use [tracee-servlet](servlet) as a servlet filter. |
 | JAX-RS    | Configure [tracee-httpclient](httpclient) as Executor | Use [tracee-servlet](servlet) as a servlet filter. |
 | JAX-RS2   | Configure [tracee-jaxrs2](jaxrs2)'s `TraceeClientRequestFilter` and `TraceeContainerResponseFilter` | Use [tracee-jaxrs2](jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
