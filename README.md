@@ -70,7 +70,7 @@ We call these context boundaries MDC gaps. There are different kinds of those ga
         * Remote EJB calls
         * Invoking and accepting arbitrary HTTP requests (Servlet, HttpClient)
         * Invoking and accepting remote web-service calls (JAX-WS)
-        * Invoking and accepting remote rest-services (JAX-RS)
+        * Invoking and accepting remote rest-services calls(JAX-RS)
     * Asynchronous
         * Async processing of a servlet request (Servlet3 Async)
         * Async EJB calls
@@ -105,8 +105,16 @@ trust boundaries (like HTTP-Responses to users or third-party Web-Services). Tra
 that allow you to selectively decide at which point in your application you want to pass around what contextual information.
 
 
-# servlet use cases
--
+# Use cases
+
+| Framework | Client | Container |
+|--|--|--|
+| Servlet  | x  | Use (tracee-servlet)[servlet] as a servlet filter |
+| JAX-RS | Configure (tracee-httpclient)[httpclient] as Executor | Use (tracee-servlet)[servlet] as a servlet filter. |
+| JAX-RS2 | Configure (tracee-jaxrs2)[jaxrsw]'s `TraceeClientRequestFilter` and `TraceeContainerResponseFilter` | Use (tracee-jaxrs2)[jaxrsw]'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
+| JAX-WS | Use (tracee-jaxws)[jaxws]'s `TraceeClientHandlerResolver` | Use (tracee-jaxws)[jaxws]'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
+| JMS | Producer: Use (tracee-jms)[jms]'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use (trace-jms)[jms]'s `TraceeMessageListener` as EJB interceptor. |
+
 
 ## Slides
 [to be completed](docs/slides/index.html)
