@@ -5,7 +5,7 @@
     <groupId>de.holisticon.util.tracee.backend</groupId>
     <artifactId>tracee-threadlocal-store</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
@@ -18,6 +18,14 @@
         logging framework is present or for test purpose.
     </description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
