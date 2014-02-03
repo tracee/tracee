@@ -36,7 +36,7 @@ propagate context information from a servlet container based frontend to an ejb 
 ### Maven artifacts
 
 Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
-``xml
+```xml
 <dependencies>
     <dependency>
         <groupId>de.holisticon.util.tracee</groupId>
@@ -44,10 +44,11 @@ Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
         <version>0.1</version>
     </dependency>
 </dependencies>
-``
+```
 
 ... or use the latest SNAPSHOT
-``xml
+
+```xml
 <repositories>
     <repository>
         <id>sonatype-nexus-snapshots</id>
@@ -62,7 +63,7 @@ Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
         <version>0.1-SNAPSHOT</version>
     </dependency>
 </dependencies>
-``
+```
 
 All tracEE artifacts are OSGI compliant.
 
