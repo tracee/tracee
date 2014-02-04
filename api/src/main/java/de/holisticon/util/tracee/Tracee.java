@@ -49,7 +49,7 @@ public final class Tracee {
             throw new TraceeException("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath.");
         }
         if (backendProviders.size() > 1) {
-            final ArrayList<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());
+            final List<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());
             for (TraceeBackendProvider backendProvider : backendProviders) {
                 providerClasses.add(backendProvider.getClass());
             }
@@ -130,42 +130,39 @@ public final class Tracee {
             return validationProviderList;
         }
 
+			private static final class GetClassLoader implements PrivilegedAction<ClassLoader> {
+				private final Class<?> clazz;
 
-        private static final class GetClassLoader implements PrivilegedAction<ClassLoader> {
-            private final Class<?> clazz;
+				private GetClassLoader(final Class<?> clazz) {
+					this.clazz = clazz;
+				}
 
-            public static ClassLoader fromContext() {
-                final GetClassLoader action = new GetClassLoader(null);
-                if (System.getSecurityManager() != null) {
-                    return AccessController.doPrivileged(action);
-                } else {
-                    return action.run();
-                }
-            }
+				public ClassLoader run() {
+					if (clazz != null) {
+						return clazz.getClassLoader();
+					} else {
+						return Thread.currentThread().getContextClassLoader();
+					}
+				}
 
-            public static ClassLoader fromClass(Class<?> clazz) {
-                if (clazz == null) {
-                    throw new IllegalArgumentException("Class is null");
-                }
-                final GetClassLoader action = new GetClassLoader(clazz);
-                if (System.getSecurityManager() != null) {
-                    return AccessController.doPrivileged(action);
-                } else {
-                    return action.run();
-                }
-            }
+				public static ClassLoader fromContext() {
+					return doPrivileged(new GetClassLoader(null));
+				}
 
-            private GetClassLoader(final Class<?> clazz) {
-                this.clazz = clazz;
-            }
+				public static ClassLoader fromClass(Class<?> clazz) {
+					if (clazz == null) {
+						throw new IllegalArgumentException("Class is null");
+					}
+					return doPrivileged(new GetClassLoader(clazz));
+				}
 
-            public ClassLoader run() {
-                if (clazz != null) {
-                    return clazz.getClassLoader();
-                } else {
-                    return Thread.currentThread().getContextClassLoader();
-                }
-            }
-        }
-    }
+				private static ClassLoader doPrivileged(GetClassLoader action) {
+					if (System.getSecurityManager() != null) {
+						return AccessController.doPrivileged(action);
+					} else {
+						return action.run();
+					}
+				}
+			}
+		}
 }
