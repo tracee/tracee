@@ -16,15 +16,6 @@
     <name>tracee-slf4j</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <artifactId>tracee-core</artifactId>
@@ -45,6 +36,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
 </project>

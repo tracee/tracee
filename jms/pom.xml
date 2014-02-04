@@ -18,10 +18,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>

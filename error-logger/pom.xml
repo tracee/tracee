@@ -15,15 +15,6 @@
     <name>tracee-error-logger</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
