@@ -102,7 +102,7 @@ The likelihood of a pull request being used rises with the following properties:
 - OSGI compliance
 
 ## Slides
-[to be completed](docs/slides/index.html)
+[to be completed](http://holisticon.github.io/tracee/docs/slides/)
 
 ## Sponsoring
 This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
