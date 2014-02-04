@@ -4,7 +4,6 @@
 
     <groupId>de.holisticon.util.tracee.outbound</groupId>
     <artifactId>tracee-httpclient</artifactId>
-    <version>0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <parent>

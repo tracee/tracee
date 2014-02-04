@@ -4,7 +4,6 @@
 
     <groupId>de.holisticon.util.tracee.backend</groupId>
     <artifactId>tracee-jboss-logging</artifactId>
-    <version>0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <parent>

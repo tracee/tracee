@@ -3,7 +3,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tracee-examples-jaxws-service</artifactId>
-    <version>0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <parent>

@@ -4,7 +4,6 @@
 
     <groupId>de.holisticon.util.tracee.inbound</groupId>
     <artifactId>tracee-servlet</artifactId>
-    <version>0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <parent>
