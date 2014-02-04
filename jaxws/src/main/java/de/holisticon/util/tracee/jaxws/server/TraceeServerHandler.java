@@ -6,12 +6,16 @@ import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.Utilities;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.*;
+import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPHeaderElement;
+import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,9 +24,6 @@ import java.util.Set;
 public class TraceeServerHandler extends AbstractTraceeHandler {
 
     private final TraceeLogger traceeLogger = getTraceeBackend().getLogger(TraceeServerHandler.class);
-
-
-
 
     protected final void handleInbound(SOAPMessageContext context) {
         try {
@@ -42,7 +43,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
                     for (int i = 0; i < nodeList.getLength(); i++) {
 
-
                         final Node node = nodeList.item(i);
                         final NodeList childNodeList = node.getChildNodes();
                         if (childNodeList.getLength() > 0) {
@@ -51,7 +51,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
                                 final Node childNode = childNodeList.item(j);
 
-                                NamedNodeMap namedNodeMap = childNode.getAttributes();
                                 final String attributeName = childNode.getNodeName();
                                 final String value = childNode.getTextContent();
 
@@ -77,7 +76,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
             if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null) {
                 getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
             }
-
 
         } catch (final SOAPException e) {
             traceeLogger.error("TraceeServerHandler - Error during precessing of inbound soap header");
@@ -114,8 +112,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
                     traceeLogger.error("TraceeServerHandler : Exception "
                             + "occurred during processing of outbound message.", e);
                 }
-
-
             }
 
         } finally {
