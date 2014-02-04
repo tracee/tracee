@@ -46,16 +46,6 @@
             <artifactId>jaxws-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
             <artifactId>tracee-log4j</artifactId>
             <version>0.1-SNAPSHOT</version>

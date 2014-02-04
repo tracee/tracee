@@ -50,11 +50,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-api</artifactId>
             <version>0.1-SNAPSHOT</version>

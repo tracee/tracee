@@ -23,13 +23,5 @@
             <groupId>de.holisticon.util.tracee</groupId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <artifactId>junit</artifactId>
-            <groupId>junit</groupId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
     </dependencies>
 </project>
