@@ -29,8 +29,8 @@ public final class CommonCategoryCreator {
 
     }
 
-    private static String getSystemProperty(final String attributeNmae) {
-        return System.getProperty(attributeNmae);
+    private static String getSystemProperty(final String attributeName) {
+        return System.getProperty(attributeName);
     }
 
 }
