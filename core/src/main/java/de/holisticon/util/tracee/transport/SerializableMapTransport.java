@@ -22,6 +22,4 @@ public abstract class SerializableMapTransport implements TransportSerialization
     public Map<String,String> render(TraceeBackend backend) {
         return new HashMap<String, String>(backend);
     }
-
-
 }

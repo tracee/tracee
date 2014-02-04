@@ -78,7 +78,6 @@ public class TraceeFilter implements Filter {
             }
         }
 
-        Exception exception = null;
         try {
             filterChain.doFilter(request, response);
             if (respondWithContext && !backend.isEmpty()) {

@@ -12,7 +12,6 @@ import java.util.Map;
  */
 public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 
-
     private final Gson gson = new Gson();
 
     @Override
@@ -29,10 +28,9 @@ public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 
     @Override
     public String render(TraceeBackend backend) {
-        final Map<String, String> context = backend;
-        if (context.isEmpty()) return null;
-        else return gson.toJson(context);
+		if (backend.isEmpty()) 
+			return null;
+        
+		return gson.toJson(backend);
     }
-
-
 }
