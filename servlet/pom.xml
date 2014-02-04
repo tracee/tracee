@@ -33,8 +33,8 @@
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <artifactId>tracee-core</artifactId>
-            <groupId>de.holisticon.util.tracee</groupId>
+			<groupId>de.holisticon.util.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
