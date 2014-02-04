@@ -28,7 +28,7 @@ public class TraceeTest {
 
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowExceptionWithoutProviders() {
-		final Tracee.BackendProviderResolver resolver = createTestBackendResolverWith(new ArrayList<TraceeBackendProvider>());
+		final BackendProviderResolver resolver = createTestBackendResolverWith(new ArrayList<TraceeBackendProvider>());
 		try {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
@@ -36,23 +36,23 @@ public class TraceeTest {
 			throw e;
 		}
 	}
-	
+
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowExceptionWithMoreThenOneProvider() {
 		final ArrayList<TraceeBackendProvider> backendProvider = new ArrayList<TraceeBackendProvider>();
 		backendProvider.add(new TestBackendProvider());
 		backendProvider.add(new TestBackendProvider());
 
-		final Tracee.BackendProviderResolver resolver = createTestBackendResolverWith(backendProvider);
+		final BackendProviderResolver resolver = createTestBackendResolverWith(backendProvider);
 		try {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), allOf(startsWith("Multiple context providers found. Don't know which one of the following to use:"), 
+			assertThat(e.getMessage(), allOf(startsWith("Multiple context providers found. Don't know which one of the following to use:"),
 					containsString(TestBackendProvider.class.getSimpleName())));
 			throw e;
 		}
 	}
-	
+
 	@Test
 	public void backendRetrievalShouldReturnBackendWithOneGivenProvider() {
 		final ArrayList<TraceeBackendProvider> backendProvider = new ArrayList<TraceeBackendProvider>();
@@ -63,14 +63,13 @@ public class TraceeTest {
 		assertThat(resolvedBackend, is(not(nullValue())));
 	}
 
-	private Tracee.BackendProviderResolver createTestBackendResolverWith(List<TraceeBackendProvider> backendProvider) {
-		final Tracee.BackendProviderResolver testBackendProvider = Mockito.mock(Tracee.BackendProviderResolver.class);
+	private BackendProviderResolver createTestBackendResolverWith(List<TraceeBackendProvider> backendProvider) {
+		final BackendProviderResolver testBackendProvider = Mockito.mock(BackendProviderResolver.class);
 		when(testBackendProvider.getContextProviders()).thenReturn(backendProvider);
 		return testBackendProvider;
 	}
 
 	private static final class TestBackendProvider implements TraceeBackendProvider {
-
 		@Override
 		public TraceeBackend provideBackend() {
 			return Mockito.mock(TraceeBackend.class);
