@@ -5,7 +5,14 @@ import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 import java.lang.ref.SoftReference;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -32,10 +39,9 @@ public final class Tracee {
      */
     public static TraceeBackend getBackend() {
 
-        final BackendProviderResolver contextProviderResolver = new BackendProviderResolver();
-        final List<TraceeBackendProvider> backendProviders;
+			final List<TraceeBackendProvider> backendProviders;
         try {
-            backendProviders = contextProviderResolver.getContextProviders();
+            backendProviders = new BackendProviderResolver().getContextProviders();
         } catch (RuntimeException e) {
             throw new TraceeException("Unable to load available backend providers", e);
         }
@@ -65,10 +71,10 @@ public final class Tracee {
             return entry == null ? null : entry.get();
         }
 
-        public static WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>> updatedCache(
+        public static Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> updatedCache(
                 Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache,
                 ClassLoader classLoader, List<TraceeBackendProvider> provider) {
-            final WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>> copyOnWriteMap = new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>(cache);
+            final Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> copyOnWriteMap = new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>(cache);
             copyOnWriteMap.put(classLoader, new SoftReference<List<TraceeBackendProvider>>(provider));
             return copyOnWriteMap;
         }
