@@ -1,6 +1,5 @@
 package de.holisticon.util.tracee.examples.webapp;
 
-import de.holisticon.util.tracee.examples.ejb.TestEjb;
 import de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestService;
 import de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS;
 import de.holisticon.util.tracee.jaxws.client.TraceeClientHandlerResolver;
@@ -10,18 +9,15 @@ import org.slf4j.LoggerFactory;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by Tobias Gindler, holisticon AG on 10.01.14.
- */
 @ManagedBean
 @RequestScoped
 public class TestWebappController {
 
-    final Logger LOGGER = LoggerFactory.getLogger(TestWebappController.class);
+	public static final String TEST_SOAP_URL = "http://localhost:8080/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl";
+	final Logger LOGGER = LoggerFactory.getLogger(TestWebappController.class);
 
     @ManagedProperty(value="#{payload}")
     private TestWebappPayload payload;
@@ -68,19 +64,15 @@ public class TestWebappController {
         return null;
     }
 
-    private TraceeJaxWsTestWS getJaxWsServiceClient() {
-
-        TraceeJaxWsTestService testWebservice = null;
-        try {
-            testWebservice = new TraceeJaxWsTestService(
-                    new URL("http://localhost:8080/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl"));
-            testWebservice.setHandlerResolver(new TraceeClientHandlerResolver());
-        } catch (MalformedURLException e) {
-           // should never occur
-        }
-
-        return testWebservice.getPort(TraceeJaxWsTestWS.class);
-    }
-
-
+	private TraceeJaxWsTestWS getJaxWsServiceClient() {
+		try {
+			TraceeJaxWsTestService testWebservice = new TraceeJaxWsTestService(new URL(TEST_SOAP_URL));
+			/* ADD TRACEE TO THE CALL */
+			testWebservice.setHandlerResolver(new TraceeClientHandlerResolver());
+			/* END OF TRACEE SPECIFIC CODE */
+			return testWebservice.getPort(TraceeJaxWsTestWS.class);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
