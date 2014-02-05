@@ -26,10 +26,10 @@ class BackendProviderResolver {
 			return cachedContextClassLoaderProviders;
 		}
 
-		// 2. load from context class loader and cache if not empty
+		// 2. load from context class loader and cache if not empty. This is the expensive part.
 		final List<TraceeBackendProvider> contextClassLoaderProviders = loadProviders(contextClassloader);
 		if (!contextClassLoaderProviders.isEmpty()) {
-			PROVIDERS_PER_CLASSLOADER = updatedCache(cache, contextClassloader, contextClassLoaderProviders);
+			PROVIDERS_PER_CLASSLOADER = updatedCache(PROVIDERS_PER_CLASSLOADER, contextClassloader, contextClassLoaderProviders);
 			return contextClassLoaderProviders;
 		} else {
 
@@ -43,7 +43,7 @@ class BackendProviderResolver {
 
 			// 4. load from current class loader and cache the result
 			final List<TraceeBackendProvider> classLoaderProviders = loadProviders(classloader);
-			PROVIDERS_PER_CLASSLOADER = updatedCache(cache, classloader, classLoaderProviders);
+			PROVIDERS_PER_CLASSLOADER = updatedCache(PROVIDERS_PER_CLASSLOADER, classloader, classLoaderProviders);
 			return classLoaderProviders;
 		}
 
