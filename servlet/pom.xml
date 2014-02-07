@@ -41,5 +41,16 @@
             <version>0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.0.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>7.3.0.v20110203</version>
+		</dependency>
     </dependencies>
 </project>
