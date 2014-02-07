@@ -62,7 +62,8 @@ public final class Utilities {
      */
     public static String createAlphanumericHash(Object o, int length) {
         final int hashCode = o.hashCode();
-        ThreadLocalRandom.current().setSeed(hashCode);
+        // TODO using seeds is not supported - a UnsupportedOperationException will be thrown
+        // ThreadLocalRandom.current().setSeed(hashCode);
         return createRandomAlphanumeric(length);
     }
 
