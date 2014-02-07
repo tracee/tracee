@@ -6,6 +6,7 @@ import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpHead
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpParameter;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletRequestAttribute;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletSessionAttribute;
+import de.holisticon.util.tracee.contextlogger.presets.Preset;
 
 import java.security.Principal;
 
@@ -45,10 +46,10 @@ public final class ServletCategoryCreator {
             List<ServletRequestAttribute> servletRequestAttributes = createServletRequestAttributes(httpServletRequest);
 
             return new ServletCategory(
-                    servletRequestSubCategory,
-                    servletResponseSubCategory,
-                    servletSessionSubCategory,
-                    servletRequestAttributes
+                    Preset.getPreset().getPresetConfig().showServletRequest() ? servletRequestSubCategory : null,
+                    Preset.getPreset().getPresetConfig().showServletResponse() ? servletResponseSubCategory : null,
+                    Preset.getPreset().getPresetConfig().showServletSession() ? servletSessionSubCategory : null,
+                    Preset.getPreset().getPresetConfig().showServletRequestAttributes() ? servletRequestAttributes : null
             );
 
         } else {
@@ -73,10 +74,10 @@ public final class ServletCategoryCreator {
         return new ServletRequestSubCategory(url,
                 httpMethod,
                 httpParameters,
-                httpHeaders,
-                remoteInfo,
-                enhancedRequestInfo,
-                cookies);
+                Preset.getPreset().getPresetConfig().showServletRequestHttpHeaders() ? httpHeaders : null,
+                Preset.getPreset().getPresetConfig().showServletRequestRemoteInfo() ? remoteInfo : null,
+                Preset.getPreset().getPresetConfig().showServletRequestEnhancedInfo() ? enhancedRequestInfo : null,
+                Preset.getPreset().getPresetConfig().showServletRequestCookies() ? cookies : null);
     }
 
     private static ServletRemoteInfoSubCategory createRequestRemoteInfo(HttpServletRequest request) {
@@ -124,7 +125,7 @@ public final class ServletCategoryCreator {
             final Integer statusCode = response.getStatus();
             final List<ServletHttpHeader> httpHeaders = getResponseHttpHeaders(response);
 
-            return new ServletResponseSubCategory(statusCode, httpHeaders);
+            return new ServletResponseSubCategory(statusCode, Preset.getPreset().getPresetConfig().showServletResponseHttpHeaders() ? httpHeaders : null);
         } catch (Exception e) {
 
             // handle servlet apis &lt; 3.0
@@ -145,7 +146,7 @@ public final class ServletCategoryCreator {
         }
 
 
-        return new ServletSessionSubCategory(sessionExists, userName, sessionAttributes);
+        return new ServletSessionSubCategory(sessionExists, userName, Preset.getPreset().getPresetConfig().showServletSessionAttributes() ? sessionAttributes : null);
     }
 
 

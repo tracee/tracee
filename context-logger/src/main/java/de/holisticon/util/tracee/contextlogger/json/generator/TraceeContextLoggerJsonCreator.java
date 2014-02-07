@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.json.generator;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.contextlogger.json.beans.*;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.TraceeContextValue;
+import de.holisticon.util.tracee.contextlogger.presets.Preset;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,11 +73,11 @@ public class TraceeContextLoggerJsonCreator {
 
 
         TraceeJsonEnvelope envelope = new TraceeJsonEnvelope(
-                categoryCommon,
-                categoryTracee,
-                categoryServlet,
-                categoryException,
-                categoryJaxws
+                Preset.getPreset().getPresetConfig().showCommon() ? categoryCommon : null,
+                Preset.getPreset().getPresetConfig().showTracee() ? categoryTracee : null,
+                Preset.getPreset().getPresetConfig().showServlet() ? categoryServlet : null,
+                Preset.getPreset().getPresetConfig().showException() ? categoryException : null,
+                Preset.getPreset().getPresetConfig().showJaxWs() ? categoryJaxws : null
         );
 
 

@@ -58,7 +58,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <artifactId>tracee-error-logger</artifactId>
+            <artifactId>tracee-context-logger</artifactId>
             <groupId>de.holisticon.util.tracee</groupId>
             <version>0.1-SNAPSHOT</version>
         </dependency>

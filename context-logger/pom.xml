@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tracee-error-logger</artifactId>
+    <artifactId>tracee-context-logger</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
@@ -11,7 +11,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-error-logger</name>
+    <name>tracee-context-logger</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <dependencies>
@@ -33,6 +33,28 @@
             <artifactId>jboss-servlet-api_3.0_spec</artifactId>
             <version>1.0.0.Final</version>
             <scope>provided</scope>
+        </dependency>
+
+
+
+        <!-- dependecies for unittests -->
+        <dependency>
+            <groupId>de.holisticon.util.tracee.backend</groupId>
+            <artifactId>tracee-slf4j</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

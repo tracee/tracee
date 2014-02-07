@@ -36,7 +36,7 @@ public final class ServletRequestSubCategory {
     public static final String ATTR_URL = "url";
     public static final String ATTR_HTTP_METHOD = "http-method";
     public static final String ATTR_HTTP_PARAMETERS = "http-parameters";
-    public static final String ATTR_HTTP_REQUEST_HEADERS = "http-response-headers";
+    public static final String ATTR_HTTP_REQUEST_HEADERS = "http-request-headers";
     public static final String ATTR_REMOTE_INFO = "remote-info";
     public static final String ATTR_ENHANCED_REQUEST_INFO = "enhanced-request-info";
     public static final String ATTR_COOKIES = "cookies";

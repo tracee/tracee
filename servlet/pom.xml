@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
-            <artifactId>tracee-error-logger</artifactId>
+            <artifactId>tracee-context-logger</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

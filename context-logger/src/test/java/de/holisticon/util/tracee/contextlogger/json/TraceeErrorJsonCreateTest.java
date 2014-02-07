@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.json;
 
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.json.generator.*;
+import de.holisticon.util.tracee.contextlogger.presets.Preset;
 import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class TraceeErrorJsonCreateTest {
 
     }
 
-    @Ignore("pending implementation")
+    //@Ignore("pending implementation")
     @Test
     public void createCommonJsonTest() {
 
@@ -86,9 +87,12 @@ public class TraceeErrorJsonCreateTest {
 
     }
 
-    @Ignore("to be fixed")
+    //@Ignore("to be fixed")
     @Test
     public void createServletJsonTest() {
+
+        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.FULL.name());
+        Preset.reload();
 
         final String expectedHttpMethod = "POST";
         final String expectedUser = "TEST";
@@ -97,19 +101,17 @@ public class TraceeErrorJsonCreateTest {
         final String expectedHttpParameterValue1 = "V1";
         final String expectedHttpParameterName2 = "P2";
         final String expectedHttpParameterValue2 = "V2";
+        final String expectedRequestAttributeName = "RA1";
+        final String expectedRequestAttributeValue = "V1";
         final String[] expectedHttpParameterValues1 = {expectedHttpParameterValue1, expectedHttpParameterValue2};
         final String[] expectedHttpParameterValues2 = {expectedHttpParameterValue2};
+
         final String expectedRemoteAddress = "1.1.1.1";
         final String expectedRemoteHost = "test.holisticon.de";
         final Integer expectedRemotePort = 1000;
 
 
-        final String expectedJson = "{\"x-tracee-servlet\":{\"url\":\"http://www.test.de:4573/abc/def\","
-                + "\"http-method\":\"POST\",\"http-parameters\":[{\"name\":\"P1\",\"value\":\"V1\"},"
-                + "{\"name\":\"P1\",\"value\":\"V2\"},{\"name\":\"P2\",\"value\":\"V2\"}],"
-                + "\"http-headers\":[{\"name\":\"P1\",\"value\":\"V1\"},{\"name\":\"P2\","
-                + "\"value\":\"V2\"}],\"http-remote-address\":\"1.1.1.1\","
-                + "\"http-remote-host\":\"test.holisticon.de\",\"http-remote-port\":1000,\"user\":\"TEST\"}}";
+        final String expectedJson = "{\"x-tracee-servlet\":{\"request\":{\"url\":\"http://www.test.de:4573/abc/def\",\"http-method\":\"POST\",\"http-parameters\":[{\"name\":\"P1\",\"value\":\"V1\"},{\"name\":\"P1\",\"value\":\"V2\"},{\"name\":\"P2\",\"value\":\"V2\"}],\"http-request-headers\":[{\"name\":\"P1\",\"value\":\"V1\"},{\"name\":\"P2\",\"value\":\"V2\"}],\"remote-info\":{\"http-remote-address\":\"1.1.1.1\",\"http-remote-host\":\"test.holisticon.de\",\"http-remote-port\":1000},\"enhanced-request-info\":{\"scheme\":null,\"is-secure\":false,\"content-type\":null,\"content-length\":0,\"locale\":\"de_DE\"}},\"response\":{\"http-status-code\":0,\"http-response-headers\":[]},\"session\":{\"sessionExists\":false,\"userName\":null,\"sessionAttributes\":null},\"request-attributes\":[{\"name\":\"RA1\",\"value\":\"V1\"}]}}";
 
 
         final HttpServletResponse httpServletResponsetMock = mock(HttpServletResponse.class);
@@ -131,6 +133,8 @@ public class TraceeErrorJsonCreateTest {
         final Enumeration<String> expectedHeaderNames = toEnumeration(
                 Arrays.asList(expectedHttpParameterName1, expectedHttpParameterName2).iterator());
 
+        final Enumeration<String> expectedRequestAttributeNames = toEnumeration(Arrays.asList(expectedRequestAttributeName).iterator());
+
         when(httpServletRequestMock.getParameterNames()).thenReturn(expectedParameterNames);
         when(httpServletRequestMock.getHeaderNames()).thenReturn(expectedHeaderNames);
 
@@ -146,6 +150,10 @@ public class TraceeErrorJsonCreateTest {
         when(httpServletRequestMock.getRemoteAddr()).thenReturn(expectedRemoteAddress);
         when(httpServletRequestMock.getRemoteHost()).thenReturn(expectedRemoteHost);
         when(httpServletRequestMock.getRemotePort()).thenReturn(expectedRemotePort);
+        when(httpServletRequestMock.getLocale()).thenReturn(Locale.GERMANY);
+
+        when(httpServletRequestMock.getAttributeNames()).thenReturn(expectedRequestAttributeNames);
+        when(httpServletRequestMock.getAttribute(expectedRequestAttributeName)).thenReturn(expectedRequestAttributeValue);
 
         final String json = TraceeContextLoggerJsonCreator.createJsonCreator().addServletCategory(
                 httpServletRequestMock, httpServletResponsetMock
