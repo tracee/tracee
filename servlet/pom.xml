@@ -51,6 +51,7 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
 			<version>7.3.0.v20110203</version>
+			<scope>test</scope>
 		</dependency>
     </dependencies>
 </project>
