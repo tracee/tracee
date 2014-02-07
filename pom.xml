@@ -11,8 +11,8 @@
 		<module>api</module>
 		<module>core</module>
 
-		<!-- error logging -->
-		<module>error-logger</module>
+		<!-- contextual logging -->
+		<module>context-logger</module>
 
 		<!-- backends -->
 		<module>slf4j</module>

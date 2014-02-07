@@ -1,7 +1,7 @@
 package de.holisticon.util.tracee.jaxws.server;
 
 import de.holisticon.util.tracee.TraceeLogger;
-import de.holisticon.util.tracee.errorlogger.json.generator.TraceeErrorLoggerJsonCreator;
+import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 
 import javax.xml.namespace.QName;
@@ -27,7 +27,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
         // Must pipe out Soap envelope
         SOAPMessage soapMessage = context.getMessage();
 
-        Object errorJsonCreator = TraceeErrorLoggerJsonCreator.createJsonCreator()
+        Object errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
                 .addPrefixedMessage("TraceeServerErrorLoggingHandler - FAULT :\n ")
                 .addJaxwsCategory(THREAD_LOCAL_SOAP_MESSAGE_STR.get(), getSoapMessageAsString(soapMessage))
                 .addCommonCategory()
