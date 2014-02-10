@@ -10,6 +10,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import javax.ejb.embeddable.EJBContainer;
 import javax.jms.*;
+import javax.naming.NamingException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -41,13 +42,13 @@ public class TestMDBIT {
     private EJBContainer container;
 
     @After
-    public void clearTraceeCtx() {
+    public void clearTraceeCtx() throws NamingException {
         Tracee.getBackend().clear();
-        container.close();
+		container.getContext().close();
     }
 
     @Test
-    public void testContextIsPropagatedForthAndBack() throws JMSException {
+    public void testContextIsPropagatedForthAndBack() throws JMSException, InterruptedException {
 
         Tracee.getBackend().put("foo", "bar");
 
@@ -70,6 +71,7 @@ public class TestMDBIT {
 
         session.close();
         connection.close();
+
 
     }
 
