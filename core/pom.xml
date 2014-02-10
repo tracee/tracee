@@ -30,6 +30,7 @@
         </dependency>
     </dependencies>
 
+	<!-- activate to generate jflex parsers
 	<build>
 		<plugins>
 			<plugin>
@@ -52,4 +53,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	-->
 </project>
