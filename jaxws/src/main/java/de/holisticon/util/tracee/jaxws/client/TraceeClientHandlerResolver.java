@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 06.12.13.
+ * @author Tobias Gindler (Holisticon AG)
  */
 public class TraceeClientHandlerResolver implements HandlerResolver {
 

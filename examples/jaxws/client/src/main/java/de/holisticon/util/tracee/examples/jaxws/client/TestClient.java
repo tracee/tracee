@@ -14,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 10.12.13.
+ * @author Tobias Gindler (Holisticon AG)
  */
 public final class TestClient {
 
@@ -25,7 +25,7 @@ public final class TestClient {
     public static void main(final String[] args) throws MalformedURLException {
 
         final TraceeBackend traceeBackend = Tracee.getBackend();
-        final TraceeLogger traceeLogger = traceeBackend.getLogger(TestClient.class);
+        final TraceeLogger traceeLogger = traceeBackend.getLoggerFactory().getLogger(TestClient.class);
 
         final TraceeJaxWsTestService testWebservice = new TraceeJaxWsTestService(
                 new URL("http://localhost:8081/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl"));

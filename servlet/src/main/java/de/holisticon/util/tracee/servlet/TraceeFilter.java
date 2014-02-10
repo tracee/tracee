@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * <h2>Configuration</h2>
@@ -49,7 +51,7 @@ public class TraceeFilter implements Filter {
     private boolean respondWithContext = false;
     private TraceeBackend backend = null;
 
-    private TransportSerialization<String> httpJsonHeaderSerialization = new HttpJsonHeaderTransport();
+    private TransportSerialization<String> httpJsonHeaderSerialization = null;
 
 
     @Override
@@ -64,8 +66,8 @@ public class TraceeFilter implements Filter {
 
     private void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        if (acceptIncomingContext)
-            mergeIncomingContextToBackend(request);
+		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.IncomingRequest))
+        	mergeIncomingContextToBackend(request);
 
         if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
             backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
@@ -100,10 +102,15 @@ public class TraceeFilter implements Filter {
             throw new IllegalStateException("Could not read headers with name '"
                     + headerName + "'. The access seem to be forbidden by the container");
         }
+
         while (headers.hasMoreElements()) {
-            httpJsonHeaderSerialization.mergeToBackend(backend, (String) headers.nextElement());
+			final Map<String,String> parsed = httpJsonHeaderSerialization.parse((String) headers.nextElement());
+
+			backend.putAll(parsed);
         }
     }
+
+
 
     @Override
     public final void init(FilterConfig filterConfig) throws ServletException {
@@ -116,6 +123,8 @@ public class TraceeFilter implements Filter {
             acceptIncomingContext = true;
         if (Boolean.parseBoolean(filterConfig.getInitParameter(RESPOND_WITH_CONTEXT_KEY)))
             respondWithContext = true;
+
+		httpJsonHeaderSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
     }
 
 

@@ -19,7 +19,7 @@ public enum Preset {
 
 
     private static Preset preset = null;
-    private static final TraceeLogger LOGGEER = Tracee.getBackend().getLogger(Preset.class);
+    private static final TraceeLogger LOGGEER = Tracee.getBackend().getLoggerFactory().getLogger(Preset.class);
 
     private PresetConfig presetConfig;
 

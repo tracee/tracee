@@ -1,16 +1,20 @@
 package de.holisticon.util.tracee;
 
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * A backend is expected to be thread local.
+ * A backend is expected to be thread-safe (reads and writes are delegated to thread local state).
  *
  * @author Daniel Wegener (Holisticon AG)
  */
 public interface TraceeBackend extends Map<String,String> {
 
+
+	TraceeFilterConfiguration getConfiguration();
 
     @Override
     Collection<String> values();
@@ -24,9 +28,8 @@ public interface TraceeBackend extends Map<String,String> {
     /**
      * Gets a logger proxy that delegates to a concrete logging framework at runtime. Should only be used in tracee
      * adapters.
-     * @param clazz the returned logger will be named after clazz
      */
-    TraceeLogger getLogger(Class<?> clazz);
+    TraceeLoggerFactory getLoggerFactory();
 
     /**
      * Clears all context information from this backend.

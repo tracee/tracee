@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.transport;
 
-import de.holisticon.util.tracee.TraceeBackend;
-
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,16 +9,20 @@ import java.util.Map;
  *
  * @author Daniel Wegener (Holisticon AG)
  */
-public abstract class SerializableMapTransport implements TransportSerialization<Map<String,String> > {
+public final class SerializableMapTransport implements TransportSerialization<Map<String,String> > {
 
+	@Override
+	public Map<String, String> parse(Map<String, String> serialized) {
+		return serialized;
+	}
 
-    @Override
-    public void mergeToBackend(TraceeBackend backend, Map<String,String> serialized) {
-        backend.putAll(serialized);
-    }
+	@Override
+	public Map<String, String> render(Map<String, String> backend) {
+		if (backend instanceof Serializable) {
+			return backend;
+		} else {
+			return new HashMap<String, String>(backend);
+		}
+	}
 
-    @Override
-    public Map<String,String> render(TraceeBackend backend) {
-        return new HashMap<String, String>(backend);
-    }
 }

@@ -20,14 +20,16 @@ import java.io.IOException;
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
     private final TraceeBackend backend = Tracee.getBackend();
-    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport();
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 
     @Override
     public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
-        if (!backend.isEmpty()) {
+
+		if (!backend.isEmpty()) {
             final String contextAsHeader = transportSerialization.render(backend);
             httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
         }
+
     }
 
 }

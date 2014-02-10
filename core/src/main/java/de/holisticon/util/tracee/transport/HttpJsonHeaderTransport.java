@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import de.holisticon.util.tracee.TraceeBackend;
+import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -13,24 +16,29 @@ import java.util.Map;
 public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 
     private final Gson gson = new Gson();
+	private final TraceeLogger logger;
+
+	public HttpJsonHeaderTransport(TraceeLoggerFactory traceeLoggerFactory) {
+		logger = traceeLoggerFactory.getLogger(HttpJsonHeaderTransport.class);
+	}
 
     @Override
-    public void mergeToBackend(TraceeBackend backend, String serialized) {
+    public Map<String,String> parse(String serialized) {
         try {
-            final Map<?, ?> map = gson.fromJson(serialized, new TypeToken<Map<String, String>>() { } .getType());
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                backend.put(entry.getKey().toString(), entry.getValue().toString());
-            }
+            return gson.fromJson(serialized, new TypeToken<Map<String, String>>() { } .getType());
+
         } catch (JsonParseException e) {
-            backend.getLogger(HttpJsonHeaderTransport.class).debug("Failed to parse header. Ignoring: \""+serialized+"\"");
+			logger.debug("Failed to parse header. Ignoring: \"" + serialized + "\"");
+			return Collections.emptyMap();
         }
     }
 
     @Override
-    public String render(TraceeBackend backend) {
+    public String render(Map<String,String> backend) {
 		if (backend.isEmpty()) 
 			return null;
         
 		return gson.toJson(backend);
     }
+
 }

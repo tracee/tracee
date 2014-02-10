@@ -22,7 +22,7 @@ public class TraceeErrorLoggingFilter implements Filter {
     public final void init(FilterConfig filterConfig) throws ServletException {
 
         traceeBackend = Tracee.getBackend();
-        traceeLogger = traceeBackend.getLogger(TraceeErrorLoggingFilter.class);
+        traceeLogger = traceeBackend.getLoggerFactory().getLogger(TraceeErrorLoggingFilter.class);
 
     }
 

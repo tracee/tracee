@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.backend.log4j;
 import de.holisticon.util.tracee.MDCLike;
 import de.holisticon.util.tracee.MDCLikeTraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 
 import java.util.Set;
 
@@ -17,8 +18,13 @@ final class Log4jTraceeBackend extends MDCLikeTraceeBackend {
     }
 
     @Override
-    public final TraceeLogger getLogger(Class<?> clazz) {
-        return new Log4JTraceeLogger(clazz);
+    public final TraceeLoggerFactory getLoggerFactory() {
+		return new TraceeLoggerFactory() {
+			@Override
+			public TraceeLogger getLogger(Class<?> clazz) {
+				return new Log4JTraceeLogger(clazz);
+			}
+		};
     }
 
 }

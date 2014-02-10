@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.jaxws.server;
+package de.holisticon.util.tracee.jaxws.container;
 
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
@@ -11,13 +11,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
 /**
- * JaxWs server side handler that detects uncaught exceptions and outputs contextual informations.
- * Created by Tobias Gindler, holisticon AG on 06.12.13.
+ * JaxWs container side handler that detects uncaught exceptions and outputs contextual informations.
+ *
+ * @author Tobias Gindler (Holisticon AG)
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
-    private final TraceeLogger traceeLogger = this.getTraceeBackend().getLogger(
-            TraceeServerHandler.class);
+    private final TraceeLogger traceeLogger = this.getTraceeBackend().getLoggerFactory().getLogger(
+			TraceeServerHandler.class);
 
     private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
 
@@ -62,7 +63,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
 
     @Override
-    protected final void handleInbound(SOAPMessageContext context) {
+    protected final void handleOutgoing(SOAPMessageContext context) {
         // Save soap request message in thread local storage for error logging
         SOAPMessage soapMessage = context.getMessage();
         if (soapMessage != null) {
@@ -73,7 +74,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     }
 
     @Override
-    protected final void handleOutbound(SOAPMessageContext context) {
+    protected final void handleIncoming(SOAPMessageContext context) {
         // Do nothing
     }
 

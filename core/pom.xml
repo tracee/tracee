@@ -29,4 +29,27 @@
             <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>de.jflex</groupId>
+				<artifactId>maven-jflex-plugin</artifactId>
+				<version>1.4.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+
+					</execution>
+				</executions>
+				<configuration>
+					<lexDefinitions>
+						<lexDefinition>src/main/jflex</lexDefinition>
+					</lexDefinitions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

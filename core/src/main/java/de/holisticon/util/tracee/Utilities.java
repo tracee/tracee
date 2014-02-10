@@ -22,6 +22,10 @@ public final class Utilities {
     }
 
 
+	public static boolean isNullOrEmptyString(String value) {
+		return value == null || value.trim().isEmpty();
+	}
+
     /**
      * Wraps an Iterable[T] as Enumeration[T]
      */

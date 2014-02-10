@@ -1,5 +1,10 @@
 package de.holisticon.util.tracee;
 
+import de.holisticon.util.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
+import de.holisticon.util.tracee.configuration.TraceePropertiesFileLoader;
+
+import java.io.IOException;
 import java.util.*;
 
 
@@ -9,13 +14,37 @@ import java.util.*;
 public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
 
-    protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
+	/**
+	 * Lazily initializes the configuration for this MDCLikeTraceeBackend
+	 */
+	@Override
+	public final TraceeFilterConfiguration getConfiguration() {
+
+
+		if (lazyTraceeFilterConfiguration == null) {
+			try {
+				final Properties traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties();
+				lazyTraceeFilterConfiguration = new PropertiesBasedTraceeFilterConfiguration(traceeFileProperties);
+			} catch (IOException ioe) {
+				throw new IllegalStateException("Could not load TraceeProperties: "+ ioe.getMessage(), ioe);
+			}
+
+
+		}
+		return lazyTraceeFilterConfiguration;
+	}
+
+	private TraceeFilterConfiguration lazyTraceeFilterConfiguration = null;
+
+	protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
         this.mdcAdapter = mdcAdapter;
         this.traceeKeys = traceeKeys;
     }
     private final MDCLike mdcAdapter;
 
     private final ThreadLocal<Set<String>> traceeKeys;
+
+
 
 
     @Override
@@ -58,7 +87,7 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public Collection<String> values() {
-        final Collection<String> values = new ArrayList<String>(traceeKeys.get().size());
+        final Collection<String> values = new ArrayList<String>(traceeKeys.get());
         for (String traceeKey : traceeKeys.get()) {
             values.add(mdcAdapter.get(traceeKey));
         }

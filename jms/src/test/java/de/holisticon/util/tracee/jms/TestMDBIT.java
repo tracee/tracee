@@ -10,6 +10,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import javax.ejb.embeddable.EJBContainer;
 import javax.jms.*;
+import java.util.Map;
 import java.util.TreeMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -64,7 +65,7 @@ public class TestMDBIT {
 
         assertThat("response within 1 second", response, notNullValue());
         assertThat(response.getText(), equalTo("foo"));
-        final TreeMap<String, String> traceeContext = (TreeMap<String, String>) response.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
+        final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
         assertThat(traceeContext, Matchers.hasEntry("foo", "bar"));
 
         session.close();

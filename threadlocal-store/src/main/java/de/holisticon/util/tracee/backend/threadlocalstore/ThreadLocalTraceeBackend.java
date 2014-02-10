@@ -1,9 +1,6 @@
 package de.holisticon.util.tracee.backend.threadlocalstore;
 
-import de.holisticon.util.tracee.MDCLike;
-import de.holisticon.util.tracee.MDCLikeTraceeBackend;
-import de.holisticon.util.tracee.ThreadLocalHashSet;
-import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -17,8 +14,13 @@ class ThreadLocalTraceeBackend extends MDCLikeTraceeBackend {
 
 
     @Override
-    public final TraceeLogger getLogger(final Class<?> clazz) {
-        return new ThreadLocalTraceeLogger(clazz);
+    public final TraceeLoggerFactory getLoggerFactory() {
+		return new TraceeLoggerFactory() {
+			@Override
+			public TraceeLogger getLogger(Class<?> clazz) {
+				return new ThreadLocalTraceeLogger(clazz);
+			}
+		};
     }
 
 

@@ -52,9 +52,9 @@ public class AllFilterIT {
             if ("yes".equals(Tracee.getBackend().get("beforeRequest"))) {
                 Tracee.getBackend().put("beforeRequest", "no");
                 Tracee.getBackend().put("beforeResponse", "yes");
-                return Response.ok().build();
+                return Response.ok().entity("all good").build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Response.Status.BAD_REQUEST).entity("Could not find traceeValue beforeRequest").build();
             }
 
         }
@@ -67,7 +67,7 @@ public class AllFilterIT {
 
         Tracee.getBackend().put("beforeRequest", "yes");
         final Response response = client.target(ENDPOINT_URL).request().get();
-        assertThat(response.getStatus(), equalTo(200));
+        assertThat("response type",response.getStatusInfo().getFamily(), equalTo(Response.Status.Family.SUCCESSFUL));
         assertThat(Tracee.getBackend().get("beforeRequest"), equalTo("no"));
         assertThat(Tracee.getBackend().get("beforeResponse"), equalTo("yes"));
 

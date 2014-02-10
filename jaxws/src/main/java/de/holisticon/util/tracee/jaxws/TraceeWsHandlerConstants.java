@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.jaxws;
 import javax.xml.namespace.QName;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 06.12.13.
+ * @author Tobias Gindler (Holisticon AG)
  */
 public final class TraceeWsHandlerConstants {
 

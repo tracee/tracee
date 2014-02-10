@@ -1,13 +1,14 @@
 package de.holisticon.util.tracee.transport;
 
-import de.holisticon.util.tracee.TraceeBackend;
+
+import java.util.Map;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
 public interface TransportSerialization<T> {
 
-    void mergeToBackend(TraceeBackend backend, T serialized);
-    T render(TraceeBackend backend);
+    Map<String,String> parse(T serialized);
+    T render(Map<String,String> backend);
 
 }

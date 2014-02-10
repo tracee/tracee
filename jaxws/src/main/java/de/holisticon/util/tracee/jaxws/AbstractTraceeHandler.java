@@ -8,7 +8,7 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 06.12.13.
+ * @author Tobias Gindler (Holisticon AG)
  */
 public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
@@ -16,15 +16,15 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
 
     @Override
     public final boolean handleMessage(final SOAPMessageContext context) {
-        if (!this.isOutbound(context)) {
-            this.handleInbound(context);
+        if (!this.isOutgoing(context)) {
+            this.handleOutgoing(context);
         } else {
-            this.handleOutbound(context);
+            this.handleIncoming(context);
         }
         return true;
     }
 
-    private boolean isOutbound(MessageContext messageContext) {
+    private boolean isOutgoing(MessageContext messageContext) {
         return (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
         return traceeBackend;
     }
 
-    protected abstract void handleInbound(SOAPMessageContext context);
+    protected abstract void handleOutgoing(SOAPMessageContext context);
 
-    protected abstract void handleOutbound(SOAPMessageContext context);
+    protected abstract void handleIncoming(SOAPMessageContext context);
 }

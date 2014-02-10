@@ -3,13 +3,13 @@ package de.holisticon.util.tracee.jms.out;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -28,9 +28,12 @@ public class TraceeMessageProducer implements MessageProducer {
      * This method is idempotent.
      */
     protected final void writeTraceeContextToMessage(Message message) throws JMSException {
-        final TraceeBackend traceeProperties = Tracee.getBackend();
-        final TreeMap<String, String> defensiveCopy = new TreeMap<String, String>(traceeProperties);
-        message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, defensiveCopy);
+
+		final TraceeBackend backend = Tracee.getBackend();
+		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.AsyncDispatch)) {
+			final HashMap<String, String> defensiveCopy = new HashMap<String, String>(backend);
+			message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, defensiveCopy);
+		}
     }
 
     @Override

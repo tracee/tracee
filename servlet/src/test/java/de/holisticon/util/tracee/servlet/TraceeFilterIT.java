@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hamcrest.Matchers;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,26 +61,31 @@ public class TraceeFilterIT {
 	}
 
 	@Test
-	public void testRespondWithTraceeContext() throws Exception {
+	public void testCompleteRoundtrip() throws Exception {
 		traceeFilterHolder.setInitParameter(TraceeFilter.RESPOND_WITH_CONTEXT_KEY, "true");
 		server.start();
 
-		final Header traceeResponseHeader = get(ENDPOINT_URL).getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+		final Header traceeResponseHeader = get(ENDPOINT_URL,"{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inServlet\":\"yes\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
 	}
 
 	public static final class SillyServlet extends HttpServlet {
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			Assert.assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
 			Tracee.getBackend().put("inServlet", "yes");
 		}
 	}
 
-	private HttpResponse get(String url) throws IOException {
+	private HttpResponse get(String url, String traceeHeader) throws IOException {
 		final HttpClient client = new DefaultHttpClient();
 		final HttpGet httpGet = new HttpGet(ENDPOINT_URL);
+		if (traceeHeader != null) {
+			httpGet.setHeader(TraceeConstants.HTTP_HEADER_NAME, traceeHeader);
+		}
 		return client.execute(httpGet);
 	}
 

@@ -10,7 +10,7 @@ import de.holisticon.util.tracee.TraceeLogger;
  */
 public class CustomPreset implements PresetConfig{
 
-    private static final TraceeLogger LOGGER = Tracee.getBackend().getLogger(Preset.class);
+    private static final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(Preset.class);
 
     private final PresetConfig preset;
 
