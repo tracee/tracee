@@ -1,22 +1,18 @@
-# tracee   0.1-SNAPSHOT
+# TracEE 0.1-SNAPSHOT
 
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
 
-## Introduction
-
-Debugging distributed enterprise applications is difficult.
-
-...
+TL;DR, watch our [5 minutes slide deck](http://holisticon.github.io/tracee/docs/slides/)
 
 You may already aggregate all your machine logs in a single logging database (using logstash, elasticsearch or others) but it is still
 complicated to find all log entries that belong to a certain interaction with the system.
 
-*TracEE* is a framework that tries to ease this kind of interaction diagnosis by passing contextual information through your system and
-makes them visible in your logs. Therefore if contains adapters or interceptors for the most popular JavaEE technologies:
+*TracEE* is an integration framework that tries to ease this kind of interaction monitoring by passing contextual information
+through your whole system and makes them visible in your logs. Therefore if contains adapters or interceptors for the most popular JavaEE technologies:
 
 * servlet 2.5
 * jax-ws
-* jax-rs
+* jax-rs2
 * jms
 
 The following logging frameworks are supported as backends
@@ -29,7 +25,7 @@ This project is sill in early experimental alpha stage and the whole api may cha
 
 ## Getting started
 
-The steps to get tracee up and running pretty much depends on your application scenario. The most common use case would be to
+The steps to get TracEE up and running pretty much depends on your application scenario. The most common use case would be to
 propagate context information from a servlet container based frontend to an ejb based backend.
 
 
@@ -65,20 +61,20 @@ Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
 </dependencies>
 ```
 
-All tracEE artifacts are OSGI compliant.
+All tracEE artifacts are (hopefully) OSGI compliant.
 
-### Classloader
+### Classloader considerations
 
-You can bundle tracee with your application or install it as global library to your container. It does not make a big difference.
+You can bundle TracEE with your application or install it as global library to your container.
 
 
 ## Contributing
 
-We welcome any kind of suggestions and pull requests. Please notice that tracee is a framework and we will not support
-application specific features. We will rather try to enhance our api and empower you to tailor tracee to your needs.
+We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
+application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
 
 ### Setup a development environment
-tracee is built using Maven (at least version 3.0.4).
+TracEE is built using Maven (at least version 3.0.4).
 A simple import of the pom in your IDE should get you up and running:
 
 ``mvn clean install``
@@ -100,9 +96,6 @@ The likelihood of a pull request being used rises with the following properties:
 - Documentation
 - TODO: check if MDCIntertingServletFilter does the job.
 - OSGI compliance
-
-## Slides
-[to be completed](http://holisticon.github.io/tracee/docs/slides/)
 
 ## Sponsoring
 This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
