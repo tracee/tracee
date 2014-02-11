@@ -1,9 +1,9 @@
-> This document contains documentation for the tracee-api module. Click [here](../) to get an overview that TracEE is about.
+> This document contains documentation for the tracee-api module. Click [here](/README.md) to get an overview that TracEE is about.
 
 
 # tracee-api
 
-This module contains the
+This module contains the public api for users (applications) and service provider implementations.
 
 ## Manipulating the context from your application code
 
@@ -13,10 +13,10 @@ But it is still valid if your business code emits context information that you w
 _tracee-api_ contains a lightweight client api that allows you to put parameters into the current executing context.
 Use the `TraceeBackend#put(String key, String value)`-method to add a context parameter.
 
-
 The key shares a namespace with all MDC entries, so make sure it is unique in your business code and does not conflict
 with other frameworks MDC entries. It might help to choose a common prefix for your applications context parameters.
 
+The following example uses a `TraceeBackend` to
 
 ```java
 @Stateless
@@ -47,6 +47,7 @@ Be aware, that you _really should_ remove your custom context parameters as soon
 ## TracEE backends
 
 TracEE already ships with a number of adapters for popular logging frameworks, namely:
+
 	* [slf4j](../slf4j)
 	* [log4j](../log4j)
 	* [jboss-logging](../jboss-logging)
