@@ -20,14 +20,16 @@
 		<module>jboss-logging</module>
 		<module>threadlocal-store</module>
 
-		<!-- inbound -->
+		<!-- incoming filters -->
 		<module>servlet</module>
+
+		<!-- outgoing filters -->
+		<module>httpclient</module>
+
+		<!-- bidi filters -->
 		<module>jaxrs2</module>
 		<module>jaxws</module>
 		<module>jms</module>
-
-		<!-- outbound -->
-		<module>httpclient</module>
 
 		<!-- examples -->
 		<module>examples</module>
