@@ -7,7 +7,7 @@ import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 import java.util.Set;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 class JbossLoggingTraceeBackendProvider implements TraceeBackendProvider {
 
