@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.outbound.httpclient;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.apache.http.HttpException;
@@ -19,17 +20,27 @@ import java.io.IOException;
  */
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
-    private final TraceeBackend backend = Tracee.getBackend();
-    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+	public TraceeHttpRequestInterceptor() {
+		this(Tracee.getBackend());
+	}
 
-    @Override
-    public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
+	TraceeHttpRequestInterceptor(TraceeBackend backend) {
+		this.backend = backend;
+		this. transportSerialization =  new HttpJsonHeaderTransport(backend.getLoggerFactory());
+	}
 
-		if (!backend.isEmpty()) {
-            final String contextAsHeader = transportSerialization.render(backend);
-            httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
-        }
 
-    }
+	private final TraceeBackend backend;
+	private final TransportSerialization<String> transportSerialization;
+
+	@Override
+	public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
+
+		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingRequest)) {
+			final String contextAsHeader = transportSerialization.render(backend);
+			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
+		}
+
+	}
 
 }
