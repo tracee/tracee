@@ -46,9 +46,6 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
     /**
      * Converts a SOAPMessage instance to string representation.
-     *
-     * @param soapMessage
-     * @return
      */
     private String getSoapMessageAsString(SOAPMessage soapMessage) {
 
@@ -63,7 +60,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
 
     @Override
-    protected final void handleOutgoing(SOAPMessageContext context) {
+    protected final void handleIncoming(SOAPMessageContext context) {
         // Save soap request message in thread local storage for error logging
         SOAPMessage soapMessage = context.getMessage();
         if (soapMessage != null) {
@@ -74,7 +71,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     }
 
     @Override
-    protected final void handleIncoming(SOAPMessageContext context) {
+    protected final void handleOutgoing(SOAPMessageContext context) {
         // Do nothing
     }
 

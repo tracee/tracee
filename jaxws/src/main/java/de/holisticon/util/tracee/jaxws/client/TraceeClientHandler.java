@@ -30,7 +30,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
         return true;
     }
 
-    protected final void handleOutgoing(final SOAPMessageContext context) {
+    protected final void handleIncoming(final SOAPMessageContext context) {
 
         final SOAPMessage msg = context.getMessage();
         if (msg != null && getTraceeBackend().getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingRequest)) {
@@ -56,7 +56,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
     }
 
 
-    protected final void handleIncoming(final SOAPMessageContext context) {
+    protected final void handleOutgoing(final SOAPMessageContext context) {
 
         final SOAPMessage msg = context.getMessage();
         if (msg != null && getTraceeBackend().getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.IncomingResponse)) {

@@ -16,10 +16,10 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
 
     @Override
     public final boolean handleMessage(final SOAPMessageContext context) {
-        if (!this.isOutgoing(context)) {
-            this.handleOutgoing(context);
+        if (this.isOutgoing(context)) {
+			this.handleOutgoing(context);
         } else {
-            this.handleIncoming(context);
+			this.handleIncoming(context);
         }
         return true;
     }
@@ -37,7 +37,7 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
         return traceeBackend;
     }
 
-    protected abstract void handleOutgoing(SOAPMessageContext context);
-
     protected abstract void handleIncoming(SOAPMessageContext context);
+
+    protected abstract void handleOutgoing(SOAPMessageContext context);
 }

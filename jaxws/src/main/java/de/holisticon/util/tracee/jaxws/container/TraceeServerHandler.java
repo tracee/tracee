@@ -22,7 +22,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
 	private final SoapHeaderTransport transportSerialization = new SoapHeaderTransport();
 
-    protected final void handleOutgoing(SOAPMessageContext context) {
+    protected final void handleIncoming(SOAPMessageContext context) {
         try {
             final SOAPMessage msg = context.getMessage();
             final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -46,7 +46,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
         }
     }
 
-    protected final void handleIncoming(SOAPMessageContext context) {
+    protected final void handleOutgoing(SOAPMessageContext context) {
         try {
             final SOAPMessage msg = context.getMessage();
             if (msg != null && getTraceeBackend().getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingResponse)) {
@@ -76,7 +76,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
     @Override
     public final boolean handleFault(SOAPMessageContext context) {
-        this.handleIncoming(context);
+        this.handleOutgoing(context);
         return true;
     }
 
