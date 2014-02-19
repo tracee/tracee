@@ -17,7 +17,8 @@ import java.util.List;
 
 
 /**
- *
+ * Category for json output for servlet context specific data.
+ * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 
 @JsonAutoDetect(

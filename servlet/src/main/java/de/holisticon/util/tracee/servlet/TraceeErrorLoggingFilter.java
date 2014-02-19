@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
+import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,8 @@ public class TraceeErrorLoggingFilter implements Filter {
             HttpServletResponse servletResponse,
             Exception e) {
 
-        TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator().addServletCategory(servletRequest, servletResponse)
+        TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
+                .addServletCategory(ServletDataWrapper.wrap(servletRequest, servletResponse))
                 .addPrefixedMessage("TraceeErrorLoggingFilter - FAULT :")
                 .addCommonCategory()
                 .addExceptionCategory(e)

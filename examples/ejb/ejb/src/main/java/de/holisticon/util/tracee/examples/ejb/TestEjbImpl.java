@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee.examples.ejb;
 
+import de.holisticon.util.tracee.contextlogger.Watchdog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,11 @@ public class TestEjbImpl implements TestEjb{
     @Override
     public final int error(final int a, final int b) {
         LOGGER.info("trigger NullPointerException with parameters {} and {}", a, b);
+        return watchdogError(a,b);
+    }
+
+    @Watchdog
+    private final int watchdogError(final int a, final int b) {
         throw new NullPointerException("Tracee local Remote EJB example: Triggered exception with passed parameters '" + a + "' and '" +b + "'");
     }
 

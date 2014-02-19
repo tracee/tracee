@@ -19,6 +19,7 @@ import java.util.List;
         value = {
                 TraceeJsonEnvelope.CATEGORY_COMMON,
                 TraceeJsonEnvelope.CATEGORY_TRACEE,
+                TraceeJsonEnvelope.CATEGORY_WATCHDOG,
                 TraceeJsonEnvelope.CATEGORY_SERVLET,
                 TraceeJsonEnvelope.CATEGORY_JAXWS,
                 TraceeJsonEnvelope.CATEGORY_EXCEPTION
@@ -32,6 +33,7 @@ public final class TraceeJsonEnvelope {
     public static final String CATEGORY_EXCEPTION = "x-tracee-exception";
     public static final String CATEGORY_JAXWS = "x-tracee-jaxws";
     public static final String CATEGORY_SERVLET = "x-tracee-servlet";
+    public static final String CATEGORY_WATCHDOG = "x-tracee-watchdog";
 
 
     @JsonProperty(TraceeJsonEnvelope.CATEGORY_COMMON)
@@ -49,22 +51,27 @@ public final class TraceeJsonEnvelope {
     @JsonProperty(TraceeJsonEnvelope.CATEGORY_SERVLET)
     private final ServletCategory servlet;
 
+    @JsonProperty(TraceeJsonEnvelope.CATEGORY_WATCHDOG)
+    private final WatchdogCategory watchdog;
+
     @SuppressWarnings("unused")
     private TraceeJsonEnvelope() {
-        this(null, null, null, null, null);
+        this(null, null, null, null, null, null);
     }
 
     public TraceeJsonEnvelope(CommonCategory common,
                               List<TraceeContextValue> tracee,
                               ServletCategory servlet,
                               ExceptionCategory exception,
-                              JaxWsCategory jaxws) {
+                              JaxWsCategory jaxws,
+                              WatchdogCategory watchdog) {
 
         this.common = common;
         this.tracee = tracee;
         this.servlet = servlet;
         this.exception = exception;
         this.jaxws = jaxws;
+        this.watchdog = watchdog;
     }
 
     @SuppressWarnings("unused")

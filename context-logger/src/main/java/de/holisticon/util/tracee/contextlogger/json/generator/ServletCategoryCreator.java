@@ -1,25 +1,29 @@
 package de.holisticon.util.tracee.contextlogger.json.generator;
 
-import de.holisticon.util.tracee.contextlogger.json.beans.ServletCategory;
-import de.holisticon.util.tracee.contextlogger.json.beans.servlet.*;
-import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpHeader;
-import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpParameter;
-import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletRequestAttribute;
-import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletSessionAttribute;
-import de.holisticon.util.tracee.contextlogger.presets.Preset;
-
 import java.security.Principal;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import de.holisticon.util.tracee.contextlogger.json.beans.ServletCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletCookie;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletRemoteInfoSubCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletRequestEnhancedInfoSubCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletRequestSubCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletResponseSubCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletSessionSubCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpHeader;
+import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpParameter;
+import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletRequestAttribute;
+import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletSessionAttribute;
+import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
+import de.holisticon.util.tracee.contextlogger.presets.Preset;
 
 /**
  * Factory for servlet context specific data.
@@ -32,55 +36,42 @@ public final class ServletCategoryCreator {
         // hide constructor
     }
 
+    public static ServletCategory createServletCategory(final ServletDataWrapper servletDataWrapper) {
 
-    public static ServletCategory createServletCategory(ServletRequest request, ServletResponse response) {
+        final HttpServletRequest httpServletRequest = servletDataWrapper.getHttpServletRequest();
+        final HttpServletResponse httpServletResponse = servletDataWrapper.getHttpServletResponse();
 
+        final ServletRequestSubCategory servletRequestSubCategory = createRequestSubcategory(httpServletRequest);
+        final ServletResponseSubCategory servletResponseSubCategory = createServletResponseSubCategory(httpServletResponse);
+        final ServletSessionSubCategory servletSessionSubCategory = createServletSessionSubCategory(httpServletRequest);
+        final List<ServletRequestAttribute> servletRequestAttributes = createServletRequestAttributes(httpServletRequest);
 
-        if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        return new ServletCategory(Preset.getPreset().getPresetConfig().showServletRequest() ? servletRequestSubCategory : null, Preset.getPreset()
+                .getPresetConfig().showServletResponse() ? servletResponseSubCategory : null, Preset.getPreset().getPresetConfig().showServletSession()
+                ? servletSessionSubCategory : null, Preset.getPreset().getPresetConfig().showServletRequestAttributes() ? servletRequestAttributes
+                : null);
 
-            ServletRequestSubCategory servletRequestSubCategory = createRequestSubcategory(httpServletRequest);
-            ServletResponseSubCategory servletResponseSubCategory = createServletResponseSubCategory(httpServletResponse);
-            ServletSessionSubCategory servletSessionSubCategory = createServletSessionSubCategory(httpServletRequest);
-            List<ServletRequestAttribute> servletRequestAttributes = createServletRequestAttributes(httpServletRequest);
-
-            return new ServletCategory(
-                    Preset.getPreset().getPresetConfig().showServletRequest() ? servletRequestSubCategory : null,
-                    Preset.getPreset().getPresetConfig().showServletResponse() ? servletResponseSubCategory : null,
-                    Preset.getPreset().getPresetConfig().showServletSession() ? servletSessionSubCategory : null,
-                    Preset.getPreset().getPresetConfig().showServletRequestAttributes() ? servletRequestAttributes : null
-            );
-
-        } else {
-            return null;
-        }
 
     }
 
-    private static ServletRequestSubCategory createRequestSubcategory(HttpServletRequest request) {
+    private static ServletRequestSubCategory createRequestSubcategory(final HttpServletRequest request) {
 
         final String url = request.getRequestURL().toString();
         final String httpMethod = request.getMethod();
         final List<ServletHttpParameter> httpParameters = getHttpParameters(request);
         final List<ServletHttpHeader> httpHeaders = getRequestHttpHeaders(request);
 
-
         final ServletRemoteInfoSubCategory remoteInfo = createRequestRemoteInfo(request);
         final ServletRequestEnhancedInfoSubCategory enhancedRequestInfo = createServletRequestEnhancedInfoSubCategory(request);
         final List<ServletCookie> cookies = createServletCookies(request);
 
-
-        return new ServletRequestSubCategory(url,
-                httpMethod,
-                httpParameters,
-                Preset.getPreset().getPresetConfig().showServletRequestHttpHeaders() ? httpHeaders : null,
-                Preset.getPreset().getPresetConfig().showServletRequestRemoteInfo() ? remoteInfo : null,
-                Preset.getPreset().getPresetConfig().showServletRequestEnhancedInfo() ? enhancedRequestInfo : null,
-                Preset.getPreset().getPresetConfig().showServletRequestCookies() ? cookies : null);
+        return new ServletRequestSubCategory(url, httpMethod, httpParameters, Preset.getPreset().getPresetConfig().showServletRequestHttpHeaders()
+                ? httpHeaders : null, Preset.getPreset().getPresetConfig().showServletRequestRemoteInfo() ? remoteInfo : null, Preset.getPreset()
+                .getPresetConfig().showServletRequestEnhancedInfo() ? enhancedRequestInfo : null, Preset.getPreset().getPresetConfig()
+                .showServletRequestCookies() ? cookies : null);
     }
 
-    private static ServletRemoteInfoSubCategory createRequestRemoteInfo(HttpServletRequest request) {
+    private static ServletRemoteInfoSubCategory createRequestRemoteInfo(final HttpServletRequest request) {
 
         final String httpRemoteAddress = request.getRemoteAddr();
         final String httpRemoteHost = request.getRemoteHost();
@@ -89,7 +80,7 @@ public final class ServletCategoryCreator {
         return new ServletRemoteInfoSubCategory(httpRemoteAddress, httpRemoteHost, httpRemotePort);
     }
 
-    private static ServletRequestEnhancedInfoSubCategory createServletRequestEnhancedInfoSubCategory(HttpServletRequest request) {
+    private static ServletRequestEnhancedInfoSubCategory createServletRequestEnhancedInfoSubCategory(final HttpServletRequest request) {
 
         final String scheme = request.getScheme();
         final Boolean secure = request.isSecure();
@@ -100,12 +91,12 @@ public final class ServletCategoryCreator {
         return new ServletRequestEnhancedInfoSubCategory(scheme, secure, contentType, contentLength, locale);
     }
 
-    private static List<ServletCookie> createServletCookies(HttpServletRequest request) {
+    private static List<ServletCookie> createServletCookies(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             final List<ServletCookie> transformedCookies = new ArrayList<ServletCookie>();
 
-            for (Cookie cookie : cookies) {
+            for (final Cookie cookie : cookies) {
                 transformedCookies.add(new ServletCookie(cookie));
             }
 
@@ -115,10 +106,9 @@ public final class ServletCategoryCreator {
             return null;
         }
 
-
     }
 
-    private static ServletResponseSubCategory createServletResponseSubCategory(HttpServletResponse response) {
+    private static ServletResponseSubCategory createServletResponseSubCategory(final HttpServletResponse response) {
 
         try {
 
@@ -126,7 +116,7 @@ public final class ServletCategoryCreator {
             final List<ServletHttpHeader> httpHeaders = getResponseHttpHeaders(response);
 
             return new ServletResponseSubCategory(statusCode, Preset.getPreset().getPresetConfig().showServletResponseHttpHeaders() ? httpHeaders : null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
             // handle servlet apis &lt; 3.0
             return null;
@@ -134,7 +124,7 @@ public final class ServletCategoryCreator {
         }
     }
 
-    private static ServletSessionSubCategory createServletSessionSubCategory(HttpServletRequest request) {
+    private static ServletSessionSubCategory createServletSessionSubCategory(final HttpServletRequest request) {
 
         final Boolean sessionExists = (request.getSession(false) != null);
         String userName = null;
@@ -145,12 +135,11 @@ public final class ServletCategoryCreator {
             sessionAttributes = createServletSessionAttributes(request);
         }
 
-
-        return new ServletSessionSubCategory(sessionExists, userName, Preset.getPreset().getPresetConfig().showServletSessionAttributes() ? sessionAttributes : null);
+        return new ServletSessionSubCategory(sessionExists, userName, Preset.getPreset().getPresetConfig().showServletSessionAttributes()
+                ? sessionAttributes : null);
     }
 
-
-    private static List<ServletHttpHeader> getRequestHttpHeaders(HttpServletRequest httpServletRequest) {
+    private static List<ServletHttpHeader> getRequestHttpHeaders(final HttpServletRequest httpServletRequest) {
 
         final List<ServletHttpHeader> list = new ArrayList<ServletHttpHeader>();
 
@@ -163,29 +152,27 @@ public final class ServletCategoryCreator {
 
         }
 
-
         return list;
 
     }
 
-    private static List<ServletHttpHeader> getResponseHttpHeaders(HttpServletResponse httpServletResponse) {
+    private static List<ServletHttpHeader> getResponseHttpHeaders(final HttpServletResponse httpServletResponse) {
 
-        List<ServletHttpHeader> list = new ArrayList<ServletHttpHeader>();
+        final List<ServletHttpHeader> list = new ArrayList<ServletHttpHeader>();
 
-        Collection<String> httpHeaderNames = httpServletResponse.getHeaderNames();
-        for (String httpHeaderName : httpHeaderNames) {
+        final Collection<String> httpHeaderNames = httpServletResponse.getHeaderNames();
+        for (final String httpHeaderName : httpHeaderNames) {
 
-            String value = httpServletResponse.getHeader(httpHeaderName);
+            final String value = httpServletResponse.getHeader(httpHeaderName);
             list.add(new ServletHttpHeader(httpHeaderName, value));
 
         }
 
-
         return list;
 
     }
 
-    private static List<ServletHttpParameter> getHttpParameters(HttpServletRequest httpServletRequest) {
+    private static List<ServletHttpParameter> getHttpParameters(final HttpServletRequest httpServletRequest) {
 
         final List<ServletHttpParameter> list = new ArrayList<ServletHttpParameter>();
 
@@ -196,7 +183,7 @@ public final class ServletCategoryCreator {
 
             final String[] values = httpServletRequest.getParameterValues(httpHeaderName);
             if (values != null) {
-                for (String value : values) {
+                for (final String value : values) {
                     list.add(new ServletHttpParameter(httpHeaderName, value));
                 }
             }
@@ -207,18 +194,18 @@ public final class ServletCategoryCreator {
 
     }
 
-    private static List<ServletSessionAttribute> createServletSessionAttributes(HttpServletRequest request) {
+    private static List<ServletSessionAttribute> createServletSessionAttributes(final HttpServletRequest request) {
 
-        HttpSession session = request.getSession(false);
+        final HttpSession session = request.getSession(false);
 
-        List<ServletSessionAttribute> sessionAttributes = new ArrayList<ServletSessionAttribute>();
+        final List<ServletSessionAttribute> sessionAttributes = new ArrayList<ServletSessionAttribute>();
 
         if (session != null) {
-            Enumeration<String> attributeNames = session.getAttributeNames();
+            final Enumeration<String> attributeNames = session.getAttributeNames();
             while (attributeNames.hasMoreElements()) {
 
-                String key = attributeNames.nextElement();
-                Object value = session.getAttribute(key);
+                final String key = attributeNames.nextElement();
+                final Object value = session.getAttribute(key);
 
                 sessionAttributes.add(new ServletSessionAttribute(key, value != null ? value.toString() : null));
 
@@ -228,26 +215,24 @@ public final class ServletCategoryCreator {
         return (sessionAttributes.size() > 0 ? sessionAttributes : null);
     }
 
-    private static List<ServletRequestAttribute> createServletRequestAttributes(HttpServletRequest request) {
+    private static List<ServletRequestAttribute> createServletRequestAttributes(final HttpServletRequest request) {
 
+        final List<ServletRequestAttribute> requestAttributes = new ArrayList<ServletRequestAttribute>();
 
-        List<ServletRequestAttribute> requestAttributes = new ArrayList<ServletRequestAttribute>();
-
-        Enumeration<String> attributeNames = request.getAttributeNames();
+        final Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
 
-            String key = attributeNames.nextElement();
-            Object value = request.getAttribute(key);
+            final String key = attributeNames.nextElement();
+            final Object value = request.getAttribute(key);
 
             requestAttributes.add(new ServletRequestAttribute(key, value != null ? value.toString() : null));
 
         }
 
-
         return (requestAttributes.size() > 0 ? requestAttributes : null);
     }
 
-    private static String getUser(HttpServletRequest httpServletRequest) {
+    private static String getUser(final HttpServletRequest httpServletRequest) {
         final Principal userPrincipal = httpServletRequest.getUserPrincipal();
         final String user;
         if (userPrincipal != null) {
@@ -257,6 +242,5 @@ public final class ServletCategoryCreator {
         }
         return user;
     }
-
 
 }

@@ -13,6 +13,7 @@
 
 		<!-- contextual logging -->
 		<module>context-logger</module>
+		<module>context-logger-watchdog</module>
 
 		<!-- backends -->
 		<module>slf4j</module>

@@ -14,6 +14,46 @@
     <name>tracee-context-logger</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.3.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0.4</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>1.6</version>
+                                </requireJavaVersion>
+                                <bannedDependencies>
+                                    <searchTransitive>false</searchTransitive>
+                                    <excludes><exclude>*</exclude></excludes>
+                                    <includes>
+                                        <include>*:*:*:*:test:*</include>
+                                        <include>*:*:*:*:provided:*</include>
+                                        <include>de.holisticon.util.tracee:*</include>
+                                        <include>org.codehaus.jackson:jackson-core-asl:jar</include>
+                                        <include>org.codehaus.jackson:jackson-mapper-asl:jar</include>
+                                        <include>com.ning:async-http-client</include>
+                                    </includes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
@@ -34,6 +74,13 @@
             <version>1.0.0.Final</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.4</version>
+            <scope>provided</scope>
+        </dependency>
 
 
 
@@ -49,6 +96,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ning</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>1.8.2</version>
         </dependency>
 
         <dependency>
