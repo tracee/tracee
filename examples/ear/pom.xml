@@ -34,6 +34,8 @@
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
 				<configuration>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<modules>
 						<ejbModule>
 							<groupId>de.holisticon.util.tracee.examples</groupId>
