@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>de.holisticon.util.tracee.examples</groupId>
         <artifactId>tracee-examples</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -16,7 +16,7 @@
 
    <modules>
        <module>interface</module>
-       <module>ejb</module>
+	   <module>impl</module>
    </modules>
 
 

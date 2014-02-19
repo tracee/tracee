@@ -3,12 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>tracee-examples</artifactId>
+	<groupId>de.holisticon.util.tracee.examples</groupId>
 	<packaging>pom</packaging>
 
 	<modules>
 		<module>jaxws</module>
 		<module>webapp</module>
 		<module>ejb</module>
+		<module>ear</module>
 	</modules>
 
 	<parent>

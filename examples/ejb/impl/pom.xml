@@ -3,13 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tracee-examples-ejb-impl</artifactId>
-    <packaging>war</packaging>
+    <packaging>ejb</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>de.holisticon.util.tracee.examples</groupId>
         <artifactId>tracee-examples-ejb</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
+
+	<properties/>
 
     <name>tracee-examples-ejb-impl</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
@@ -17,12 +19,14 @@
     <build>
         <finalName>traceeTestEJB</finalName>
         <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<configuration>
+					<ejbVersion>3.0</ejbVersion>
+				</configuration>
+			</plugin>
+
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -58,7 +62,7 @@
         </dependency>
 
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>de.holisticon.util.tracee.examples</groupId>
             <artifactId>tracee-examples-ejb-interface</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
