@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
+	<javaee:handler-chain>
+		<javaee:handler>
+			<javaee:handler-class>de.holisticon.util.tracee.jaxws.container.TraceeServerHandler</javaee:handler-class>
+		</javaee:handler>
+	</javaee:handler-chain>
+</javaee:handler-chains>

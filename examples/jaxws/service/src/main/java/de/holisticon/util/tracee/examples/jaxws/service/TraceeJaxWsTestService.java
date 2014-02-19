@@ -1,19 +1,17 @@
 package de.holisticon.util.tracee.examples.jaxws.service;
 
-import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
-import java.io.File;
 
 @Stateless
 @WebService(serviceName = "TraceeJaxWsTestService", portName = "TraceeJaxWsTestPort",
         targetNamespace = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl",
         endpointInterface = "de.holisticon.util.tracee.examples.jaxws.service.TraceeJaxWsTestWS")
-@HandlerChain(file = TraceeWsHandlerConstants.TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL)
+@HandlerChain(file = "/traceeHandlerChain.xml")
 public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TraceeJaxWsTestService.class);

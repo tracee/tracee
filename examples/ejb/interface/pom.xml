@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>de.holisticon.util.tracee.examples</groupId>
         <artifactId>tracee-examples-ejb</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
