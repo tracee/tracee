@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.Map;
 
 /**
+ * Another Test for the connection factories.
  * Created by Tobias Gindler, holisticon AG on 20.02.14.
  */
 public class AdditionalConnectorFactoryTest {

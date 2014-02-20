@@ -43,6 +43,7 @@
                                         <include>org.codehaus.jackson:jackson-core-asl:jar</include>
                                         <include>org.codehaus.jackson:jackson-mapper-asl:jar</include>
                                         <include>com.ning:async-http-client</include>
+                                        <include>org.apache.commons:commons-lang3</include>
                                     </includes>
                                 </bannedDependencies>
                             </rules>
@@ -82,6 +83,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.2.1</version>
+        </dependency>
 
 
         <!-- dependecies for unittests -->

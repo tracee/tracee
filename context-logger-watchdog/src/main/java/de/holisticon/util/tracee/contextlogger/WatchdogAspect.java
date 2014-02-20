@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee.contextlogger;
 
+
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
+import org.aspectj.lang.reflect.MethodSignature;
 
 /**
  * Watchdog Assert class.
@@ -19,6 +21,8 @@ import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLogge
 
 @Aspect
 public class WatchdogAspect {
+
+    public static final boolean WATCHDOG_IS_ACTIVE = Boolean.valueOf(System.getProperty("de.holisticon.util.tracee.contextlogger.Watchdog.isActive", "true"));
 
     @Pointcut("(execution(* *(..)) && @annotation(de.holisticon.util.tracee.contextlogger.Watchdog))")
     void withinWatchdogAnnotatedMethods() {
@@ -42,26 +46,79 @@ public class WatchdogAspect {
         }
         catch (final Throwable e) {
 
-            // make sure that original exception will be passed through
-            try {
-                // Now create log output
-                final TraceeBackend traceeBackend = Tracee.getBackend();
+            // check if watchdog processing is flagged as active
+            if (WATCHDOG_IS_ACTIVE) {
+                // make sure that original exception will be passed through
+                try {
 
-                final TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
-                        .addPrefixedMessage("TRACEE WATCHDOG :")
-                        .addWatchdogCategory(WatchdogDataWrapper.wrap(proceedingJoinPoint))
-                        .addCommonCategory().addExceptionCategory(e).addTraceeCategory(traceeBackend);
+                    // Now create log output
+                    final TraceeBackend traceeBackend = Tracee.getBackend();
 
-                traceeBackend.getLoggerFactory().getLogger(WatchdogAspect.class).error(errorJsonCreator);
+                    // get watchdog annotation
+                    Watchdog watchdog = getWatchdogAnnotation(proceedingJoinPoint);
+                    String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
 
-            } catch (Throwable error) {
+                    boolean mustPreventExceptionLogging = mustSuppressException(proceedingJoinPoint, e);
 
+                    if (!watchdog.suppressThrowsExceptions() || (watchdog.suppressThrowsExceptions() && !mustPreventExceptionLogging)) {
+
+                        final TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
+                                .addPrefixedMessage("TRACEE WATCHDOG :")
+                                .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint))
+                                .addCommonCategory()
+                                .addExceptionCategory(e)
+                                .addTraceeCategory(traceeBackend);
+
+                        traceeBackend.getLoggerFactory().getLogger(WatchdogAspect.class).error(errorJsonCreator);
+
+                    }
+
+                } catch (Throwable error) {
+                    // will be ignored
+                }
             }
-
             // rethrow exception
             throw e;
         }
 
     }
+
+
+    private Watchdog getWatchdogAnnotation (final ProceedingJoinPoint proceedingJoinPoint) {
+
+        // get watchdog annotation at class
+        Watchdog clazzAnnotation = (Watchdog) proceedingJoinPoint.getSignature().getDeclaringType().getAnnotation(Watchdog.class);
+
+        // get watchdog annotation from method
+        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+        Watchdog methodAnnotation = methodSignature.getMethod().getAnnotation(Watchdog.class);
+
+        return methodAnnotation != null ? methodAnnotation : clazzAnnotation;
+
+    }
+
+    boolean mustSuppressException(final ProceedingJoinPoint proceedingJoinPoint, Throwable thrownException) {
+
+        // get watchdog annotation from method
+        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+
+        Class[] classes = methodSignature.getMethod().getExceptionTypes();
+
+        return checkClassIsThrowsException(classes, thrownException);
+    }
+
+    boolean checkClassIsThrowsException(Class[] classes, Throwable thrownException) {
+
+        for (Class clazz : classes) {
+
+            if (clazz.isInstance(thrownException ) ) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
 
 }

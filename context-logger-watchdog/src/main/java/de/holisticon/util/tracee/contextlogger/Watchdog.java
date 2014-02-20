@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = { ElementType.METHOD, ElementType.TYPE })
 public @interface Watchdog {
-
+    String id() default "";
+    boolean suppressThrowsExceptions() default false;
 }

@@ -23,6 +23,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(
         value = {
+                WatchdogCategory.ATTR_ID,
                 WatchdogCategory.ATTR_CLASS,
                 WatchdogCategory.ATTR_METHOD,
                 WatchdogCategory.ATTR_PARAMETERS,
@@ -32,10 +33,14 @@ import java.util.List;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class WatchdogCategory {
 
+    public static final String ATTR_ID = "id";
     public static final String ATTR_CLASS = "class";
     public static final String ATTR_METHOD = "method";
     public static final String ATTR_PARAMETERS = "parameters";
     public static final String ATTR_DESERIALIZED_INSTANCE = "deserialized-instance";
+
+    @JsonProperty(value = WatchdogCategory.ATTR_ID)
+    private final String id;
 
     @JsonProperty(value = WatchdogCategory.ATTR_CLASS)
     private final String clazz;
@@ -50,17 +55,24 @@ public class WatchdogCategory {
     private final String deserializedInstance;
 
     public WatchdogCategory(
+            String id,
             String clazz,
             String method,
             List<String> parameters,
             String deserializedInstance
     ) {
 
+        this.id = id;
         this.clazz = clazz;
         this.method = method;
         this.parameters = parameters;
         this.deserializedInstance = deserializedInstance;
 
+    }
+
+    @SuppressWarnings("unused")
+    public String getId() {
+        return id;
     }
 
     @SuppressWarnings("unused")
