@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.holisticon.util.tracee.contextlogger.json.beans.WatchdogCategory;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
+import de.holisticon.util.tracee.contextlogger.json.generator.util.RecursiveReflectionToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.reflect.MethodSignature;
 
@@ -26,7 +27,7 @@ public final class WatchdogCategoryCreator {
         // output parameters
         final List<String> parameters = new ArrayList<String>();
         for (final Object attr : watchdogDataWrapper.getProceedingJoinPoint().getArgs()) {
-            parameters.add(attr == null ? null : ReflectionToStringBuilder.reflectionToString(attr));
+            parameters.add(attr == null ? null : ReflectionToStringBuilder.reflectionToString(attr,new RecursiveReflectionToStringStyle()));
         }
 
         // output called instance
@@ -35,7 +36,7 @@ public final class WatchdogCategoryCreator {
         String deSerializedInstance;
         Object targetInstance = watchdogDataWrapper.getProceedingJoinPoint().getTarget();
         if (targetInstance != null) {
-            deSerializedInstance = ReflectionToStringBuilder.reflectionToString(targetInstance);
+            deSerializedInstance = ReflectionToStringBuilder.reflectionToString(targetInstance, new RecursiveReflectionToStringStyle());
         } else {
             deSerializedInstance = null;
         }
