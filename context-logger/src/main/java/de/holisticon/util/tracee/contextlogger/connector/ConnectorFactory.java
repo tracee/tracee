@@ -38,6 +38,10 @@ public final class ConnectorFactory {
         init();
     }
 
+    public static ConnectorFactory getInstance () {
+        return instance;
+    }
+
     public static void sendErrorReportToConnectors(Object json) {
         instance.localSendErrorReportToConnectors(json);
     }
@@ -76,9 +80,15 @@ public final class ConnectorFactory {
         }
 
         // Add mandatory logger
-        if (!isLogConnectorConfigured()) {
+        if (!isConnectorConfigured(LogConnector.class)) {
             Connector logConnector = new LogConnector();
             this.connectorMap.put("LOGGER", logConnector);
+        }
+
+        // Add mandatory tracee connector
+        if (!isConnectorConfigured(TraceeConnector.class)) {
+            Connector traceeConnector = new TraceeConnector();
+            this.connectorMap.put("TRACEE-CONNECTOR", traceeConnector);
         }
 
     }
@@ -182,12 +192,13 @@ public final class ConnectorFactory {
     /**
      * Checks whether the LogConnector is defined or not.
      *
+     * @param connectorClass the connector to check for
      * @return true, if LogConnector is already defined, otherwise false.
      */
-    private boolean isLogConnectorConfigured() {
+    private boolean isConnectorConfigured(Class connectorClass) {
         for (Connector connector : this.connectorMap.values()) {
 
-            if (connector instanceof LogConnector) {
+            if (connectorClass.isInstance(connector)) {
                 return true;
             }
 
