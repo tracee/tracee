@@ -11,18 +11,16 @@ import org.eclipse.jetty.server.DispatcherType;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.EnumSet;
 
@@ -65,7 +63,7 @@ public class TraceeFilterIT {
 		traceeFilterHolder.setInitParameter(TraceeFilter.RESPOND_WITH_CONTEXT_KEY, "true");
 		server.start();
 
-		final Header traceeResponseHeader = get(ENDPOINT_URL,"{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+		final Header traceeResponseHeader = get("{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inServlet\":\"yes\""));
@@ -80,7 +78,7 @@ public class TraceeFilterIT {
 		}
 	}
 
-	private HttpResponse get(String url, String traceeHeader) throws IOException {
+	private HttpResponse get(String traceeHeader) throws IOException {
 		final HttpClient client = new DefaultHttpClient();
 		final HttpGet httpGet = new HttpGet(ENDPOINT_URL);
 		if (traceeHeader != null) {
