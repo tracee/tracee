@@ -1,0 +1,23 @@
+<configuration debug="false">
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
+
+	<appender name="GELF" class="me.moocar.logbackgelf.GelfAppender">
+		<facility>logback-gelf-test</facility>
+		<graylog2ServerHost>$GRAYLOG_SERVER_GRAYLOG_SERVER_1_HOST</graylog2ServerHost>
+		<graylog2ServerPort>$GRAYLOG_SERVER_GRAYLOG_SERVER_1_GRAYLOG_PORT</graylog2ServerPort>
+		<useLoggerName>true</useLoggerName>
+		<useThreadName>true</useThreadName>
+		<useMarker>true</useMarker>
+		<graylog2ServerVersion>0.20.0</graylog2ServerVersion>
+		<chunkThreshold>1000</chunkThreshold>
+		<messagePattern>%m%rEx</messagePattern>
+		<shortMessagePattern>%.-100(%m%rEx)</shortMessagePattern>
+		<staticAdditionalField>_node_name:tracee-example/tomcat</staticAdditionalField>
+		<includeFullMDC>true</includeFullMDC>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="GELF" />
+	</root>
+</configuration>
