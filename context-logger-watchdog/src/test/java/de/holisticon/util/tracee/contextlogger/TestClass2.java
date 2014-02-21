@@ -1,4 +1,4 @@
-import de.holisticon.util.tracee.contextlogger.Watchdog;
+package de.holisticon.util.tracee.contextlogger;
 
 @Watchdog
 public class TestClass2 {
