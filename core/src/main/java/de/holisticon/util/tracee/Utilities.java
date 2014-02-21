@@ -11,9 +11,12 @@ import java.util.Random;
  */
 public final class Utilities {
 
+	private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
     private Utilities() {
         // hide constructor
     }
+
 
     public static String convertStacktraceToString(Throwable e) {
         StringWriter sw = new StringWriter();
@@ -45,10 +48,6 @@ public final class Utilities {
     }
 
 
-
-    private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-
-
     /**
      * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
      */
@@ -70,7 +69,4 @@ public final class Utilities {
         // ThreadLocalRandom.current().setSeed(hashCode);
         return createRandomAlphanumeric(length);
     }
-
-
-
 }
