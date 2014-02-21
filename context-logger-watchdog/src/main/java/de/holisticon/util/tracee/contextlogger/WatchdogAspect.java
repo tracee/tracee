@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.contextlogger;
 
 
+import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,7 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 /**
  * Watchdog Assert class.
  * This aspects logs method calls of Watchdog annotated classes and methods in case of an exception is thrown during the execution of the method.
- *
+ * <p/>
  * Created by Tobias Gindler, holisticon AG on 16.02.14.
  */
 
@@ -24,27 +25,30 @@ public class WatchdogAspect {
 
     public static final boolean WATCHDOG_IS_ACTIVE = Boolean.valueOf(System.getProperty("de.holisticon.util.tracee.contextlogger.Watchdog.isActive", "true"));
 
+    @SuppressWarnings("unused")
     @Pointcut("(execution(* *(..)) && @annotation(de.holisticon.util.tracee.contextlogger.Watchdog))")
     void withinWatchdogAnnotatedMethods() {
     }
 
+    @SuppressWarnings("unused")
     @Pointcut("within(@de.holisticon.util.tracee.contextlogger.Watchdog *)")
     void withinClassWithWatchdogAnnotation() {
 
     }
 
+    @SuppressWarnings("unused")
     @Pointcut("execution(public * *(..))")
     void publicMethods() {
 
     }
 
+    @SuppressWarnings("unused")
     @Around("withinWatchdogAnnotatedMethods() || (publicMethods() && withinClassWithWatchdogAnnotation()) ")
     public Object guard(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         try {
             return proceedingJoinPoint.proceed();
-        }
-        catch (final Throwable e) {
+        } catch (final Throwable e) {
 
             // check if watchdog processing is flagged as active
             if (WATCHDOG_IS_ACTIVE) {
@@ -69,12 +73,12 @@ public class WatchdogAspect {
                                 .addExceptionCategory(e)
                                 .addTraceeCategory(traceeBackend);
 
-                        traceeBackend.getLoggerFactory().getLogger(WatchdogAspect.class).error(errorJsonCreator);
-
+                        ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
                     }
 
                 } catch (Throwable error) {
                     // will be ignored
+                    Tracee.getBackend().getLoggerFactory().getLogger(WatchdogAspect.class).error("error",error);
                 }
             }
             // rethrow exception
@@ -84,7 +88,7 @@ public class WatchdogAspect {
     }
 
 
-    private Watchdog getWatchdogAnnotation (final ProceedingJoinPoint proceedingJoinPoint) {
+    private Watchdog getWatchdogAnnotation(final ProceedingJoinPoint proceedingJoinPoint) {
 
         // get watchdog annotation at class
         Watchdog clazzAnnotation = (Watchdog) proceedingJoinPoint.getSignature().getDeclaringType().getAnnotation(Watchdog.class);
@@ -111,7 +115,7 @@ public class WatchdogAspect {
 
         for (Class clazz : classes) {
 
-            if (clazz.isInstance(thrownException ) ) {
+            if (clazz.isInstance(thrownException)) {
                 return true;
             }
 

@@ -30,9 +30,7 @@ public final class WatchdogCategoryCreator {
             parameters.add(attr == null ? null : ReflectionToStringBuilder.reflectionToString(attr,new RecursiveReflectionToStringStyle()));
         }
 
-        // output called instance
-
-
+        // output invoked instance
         String deSerializedInstance;
         Object targetInstance = watchdogDataWrapper.getProceedingJoinPoint().getTarget();
         if (targetInstance != null) {

@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
 
@@ -57,8 +58,8 @@ public class TraceeErrorLoggingFilter implements Filter {
                 .addExceptionCategory(e)
                 .addTraceeCategory(traceeBackend);
 
-        // write log message
-        traceeLogger.error(errorJsonCreator);
+        // write message to connectors
+        ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
 
     }
 

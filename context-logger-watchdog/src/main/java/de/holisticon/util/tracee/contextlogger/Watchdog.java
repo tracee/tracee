@@ -10,8 +10,9 @@ import java.lang.annotation.Target;
  * Created by Tobias Gindler, holisticon AG on 16.02.14.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = { ElementType.METHOD, ElementType.TYPE })
+@Target(value = {ElementType.METHOD, ElementType.TYPE})
 public @interface Watchdog {
     String id() default "";
+
     boolean suppressThrowsExceptions() default false;
 }

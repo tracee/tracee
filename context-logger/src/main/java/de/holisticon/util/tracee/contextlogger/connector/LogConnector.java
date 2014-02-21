@@ -11,11 +11,11 @@ import java.util.Map;
  */
 public class LogConnector implements Connector{
 
-    private TraceeLogger logger;
+    private TraceeLogger logger = Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class);
 
     @Override
     public void init(Map<String, String> properties) {
-        logger = Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class);
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.jaxws.container;
 
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 
@@ -34,8 +35,8 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
                 .addCommonCategory()
                 .addTraceeCategory(getTraceeBackend());
 
-        // write log message
-        traceeLogger.error(errorJsonCreator);
+        // write message to connectors
+         ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
 
         // cleanup thread local request soap message
         THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
