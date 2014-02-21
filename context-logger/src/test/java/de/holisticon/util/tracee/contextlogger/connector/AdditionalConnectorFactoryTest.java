@@ -17,6 +17,7 @@ public class AdditionalConnectorFactoryTest {
     /**
      * Check extraction of properties for named connectors.
      */
+    @Ignore
     @Test
     public void testExtractionOfConnectorProperties() {
         final String name1 = "abc";
