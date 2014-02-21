@@ -60,20 +60,26 @@ public class WatchdogAspect {
 
                     // get watchdog annotation
                     Watchdog watchdog = getWatchdogAnnotation(proceedingJoinPoint);
-                    String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
 
-                    boolean mustPreventExceptionLogging = mustSuppressException(proceedingJoinPoint, e);
+                    // check if watchdog aspect processing is deactivated by annotation
+                    if (watchdog.isActive()) {
 
-                    if (!watchdog.suppressThrowsExceptions() || (watchdog.suppressThrowsExceptions() && !mustPreventExceptionLogging)) {
+                        String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
 
-                        final TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
-                                .addPrefixedMessage("TRACEE WATCHDOG :")
-                                .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint))
-                                .addCommonCategory()
-                                .addExceptionCategory(e)
-                                .addTraceeCategory(traceeBackend);
+                        boolean mustPreventExceptionLogging = mustSuppressException(proceedingJoinPoint, e);
 
-                        ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
+                        if (!watchdog.suppressThrowsExceptions() || (watchdog.suppressThrowsExceptions() && !mustPreventExceptionLogging)) {
+
+                            final TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
+                                    .addPrefixedMessage("TRACEE WATCHDOG :")
+                                    .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint))
+                                    .addCommonCategory()
+                                    .addExceptionCategory(e)
+                                    .addTraceeCategory(traceeBackend);
+
+                            ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
+                        }
+
                     }
 
                 } catch (Throwable error) {

@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.METHOD, ElementType.TYPE})
 public @interface Watchdog {
     String id() default "";
-
     boolean suppressThrowsExceptions() default false;
+    boolean isActive() default true;
 }
