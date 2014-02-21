@@ -65,6 +65,12 @@
 			<organization>holisticon AG</organization>
 			<organizationUrl>http://holisticon.de/</organizationUrl>
 		</developer>
+		<developer>
+			<name>Sven Bunge</name>
+			<email>sven.bunge@holisticon.de</email>
+			<organization>holisticon AG</organization>
+			<organizationUrl>http://holisticon.de/</organizationUrl>
+		</developer>
 	</developers>
 
 	<licenses>
