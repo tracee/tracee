@@ -1,7 +1,9 @@
 package de.holisticon.util.tracee;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Random;
@@ -13,60 +15,70 @@ public final class Utilities {
 
 	private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
-    private Utilities() {
-        // hide constructor
-    }
-
-
-    public static String convertStacktraceToString(Throwable e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        return sw.toString();
-    }
-
+	private Utilities() {
+		// hide constructor
+	}
 
 	public static boolean isNullOrEmptyString(String value) {
 		return value == null || value.trim().isEmpty();
 	}
 
-    /**
-     * Wraps an Iterable[T] as Enumeration[T]
-     */
-    public static <T> Enumeration<T> toEnumeration(Iterable<T> iterable) {
-        final Iterator<T> iterator = iterable.iterator();
-        return new Enumeration<T>() {
-            @Override
-            public boolean hasMoreElements() {
-                return iterator.hasNext();
-            }
+	/**
+	 * Wraps an Iterable[T] as Enumeration[T]
+	 */
+	public static <T> Enumeration<T> toEnumeration(Iterable<T> iterable) {
+		final Iterator<T> iterator = iterable.iterator();
+		return new Enumeration<T>() {
+			@Override
+			public boolean hasMoreElements() {
+				return iterator.hasNext();
+			}
 
-            @Override
-            public T nextElement() {
-                return iterator.next();
-            }
-        };
-    }
+			@Override
+			public T nextElement() {
+				return iterator.next();
+			}
+		};
+	}
 
 
-    /**
-     * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
-     */
-    public static String createRandomAlphanumeric(int length) {
-        final Random r = ThreadLocalRandom.current();
-        final char[] randomChars = new char[length];
-        for (int i=0; i<length; ++i) {
-            randomChars[i] = ALPHANUMERICS[r.nextInt(ALPHANUMERICS.length)];
-        }
-        return new String(randomChars);
-    }
+	/**
+	 * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
+	 */
+	public static String createRandomAlphanumeric(int length) {
+		final Random r = ThreadLocalRandom.current();
+		final char[] randomChars = new char[length];
+		for (int i = 0; i < length; ++i) {
+			randomChars[i] = ALPHANUMERICS[r.nextInt(ALPHANUMERICS.length)];
+		}
+		return new String(randomChars);
+	}
 
-    /**
-     * Creates a alphanumeric projection with a given length of the given object using its {@link Object#hashCode()}
-     */
-    public static String createAlphanumericHash(Object o, int length) {
-        final int hashCode = o.hashCode();
-        // TODO using seeds is not supported - a UnsupportedOperationException will be thrown
-        // ThreadLocalRandom.current().setSeed(hashCode);
-        return createRandomAlphanumeric(length);
-    }
+	/**
+	 * Creates a alphanumeric projection with a given length of the given object using its {@link Object#hashCode()}
+	 */
+	public static String createAlphanumericHash(String str, int length) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			final byte[] digest = md.digest(str.getBytes(Charset.forName("UTF-8")));
+			// To human
+			StringBuilder sb = new StringBuilder();
+			for (byte b : digest) {
+				if (b < 16) sb.append("0");
+				sb.append(Integer.toHexString(b & 0xff));
+			}
+			// repeat if to small
+			while (sb.length() < length) {
+				sb.append(sb.toString());
+			}
+			// truncation and return
+			return sb.delete(length, sb.length()).toString();
+		} catch (NoSuchAlgorithmException e) {
+			// Preferred hash algorithm is not available. We generate random string.
+			return createRandomAlphanumeric(length);
+		} catch (UnsupportedCharsetException e) {
+			// We should handle such error like the NoSuchAlgorithmException
+			return createRandomAlphanumeric(length);
+		}
+	}
 }
