@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.contextlogger.json.generator;
 
 import de.holisticon.util.tracee.TraceeBackend;
+import de.holisticon.util.tracee.contextlogger.connector.TraceeConnector;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.TraceeContextValue;
 
 import java.util.ArrayList;
@@ -26,8 +27,12 @@ public final class TraceeCategoryCreator {
         final Collection<String> keys = traceeBackend.keySet();
         if (keys != null) {
             for (String key : keys) {
-                final String value = traceeBackend.get(key);
-                list.add(new TraceeContextValue(key, value));
+
+                // prevent log explosion - exclude tracee stack information from output
+                if (!TraceeConnector.MDC_NAME.equals(key)) {
+                    final String value = traceeBackend.get(key);
+                    list.add(new TraceeContextValue(key, value));
+                }
             }
         }
         return list;

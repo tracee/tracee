@@ -17,6 +17,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(
         value = {
+                TraceeJsonEnvelope.REPORT_TYPE,
                 TraceeJsonEnvelope.CATEGORY_COMMON,
                 TraceeJsonEnvelope.CATEGORY_TRACEE,
                 TraceeJsonEnvelope.CATEGORY_WATCHDOG,
@@ -28,6 +29,7 @@ import java.util.List;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public final class TraceeJsonEnvelope {
 
+    public static final String REPORT_TYPE = "x-tracee-report-type";
     public static final String CATEGORY_COMMON = "x-tracee-common";
     public static final String CATEGORY_TRACEE = "x-tracee-tracee";
     public static final String CATEGORY_EXCEPTION = "x-tracee-exception";
@@ -35,6 +37,9 @@ public final class TraceeJsonEnvelope {
     public static final String CATEGORY_SERVLET = "x-tracee-servlet";
     public static final String CATEGORY_WATCHDOG = "x-tracee-watchdog";
 
+
+    @JsonProperty(TraceeJsonEnvelope.REPORT_TYPE)
+    private final String reportType;
 
     @JsonProperty(TraceeJsonEnvelope.CATEGORY_COMMON)
     private final CommonCategory common;
@@ -56,16 +61,17 @@ public final class TraceeJsonEnvelope {
 
     @SuppressWarnings("unused")
     private TraceeJsonEnvelope() {
-        this(null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null);
     }
 
-    public TraceeJsonEnvelope(CommonCategory common,
+    public TraceeJsonEnvelope(String reportType,
+                              CommonCategory common,
                               List<TraceeContextValue> tracee,
                               ServletCategory servlet,
                               ExceptionCategory exception,
                               JaxWsCategory jaxws,
                               WatchdogCategory watchdog) {
-
+        this.reportType = reportType;
         this.common = common;
         this.tracee = tracee;
         this.servlet = servlet;
@@ -93,5 +99,9 @@ public final class TraceeJsonEnvelope {
 
     public List<TraceeContextValue> getTracee() {
         return tracee;
+    }
+
+    public String getReportType() {
+        return reportType;
     }
 }

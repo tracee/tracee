@@ -42,19 +42,27 @@ public final class ConnectorFactory {
         return instance;
     }
 
-    public static void sendErrorReportToConnectors(Object json) {
-        instance.localSendErrorReportToConnectors(json);
+    public static void sendErrorReportToConnectors(PrintableByConnector printableByConnector) {
+        instance.localSendErrorReportToConnectors(printableByConnector);
     }
 
 
     /**
      * Send error report to all initialized connector instances.
      *
-     * @param json th json to pipe to the connectors
+     * @param printableByConnector th json to pipe to the connectors
      */
-    public void localSendErrorReportToConnectors(Object json) {
+    public void localSendErrorReportToConnectors(PrintableByConnector printableByConnector) {
+
+        String json = printableByConnector.toString();
         for (Connector connector : this.connectorMap.values()) {
-            connector.sendErrorReport(json.toString());
+
+            // prevent
+            if (LogConnector.class.isInstance(connector)) {
+                connector.sendErrorReport(printableByConnector.getPrefix() + json);
+            } else {
+                connector.sendErrorReport(json);
+            }
         }
     }
 
