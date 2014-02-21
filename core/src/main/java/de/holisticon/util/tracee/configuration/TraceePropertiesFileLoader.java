@@ -26,8 +26,6 @@ public final class TraceePropertiesFileLoader {
 			try {
 				stream = url.openStream();
 				propertiesFromFile.load(stream);
-			} catch (IOException e) {
-				throw e;
 			} finally {
 				try {
 					if (stream != null)
