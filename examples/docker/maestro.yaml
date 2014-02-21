@@ -1,0 +1,65 @@
+name: tracee-examples
+registries: {}
+  # Auth credentials for each registry that needs them (see below)
+ships:
+  localhost: {ip: 127.0.0.1}
+services:
+  tomcat:
+    image: tracee-examples-tomcat7
+    requires: [ jboss, graylog-server ]
+    instances:
+      tomcat-1:
+        ship: localhost
+        ports:
+          http: 8080
+          debug: 8000
+
+  jboss:
+    image: tracee-examples-jbossas7
+    requires: [graylog-server]
+    instances:
+      jboss-1:
+        ship: localhost
+        ports:
+          http:
+            exposed: 8080
+            external: 8081
+          http-management: 9990
+
+  graylog-server:
+    image: tracee-examples-graylog-server
+    requires: [graylog-mongodb, graylog-elasticsearch]
+    instances:
+      graylog-server-1:
+        ship: localhost
+        ports:
+          graylog: 12900
+
+  graylog-http:
+    image: tracee-examples-graylog-web
+    requires: [graylog-server]
+    instances:
+      graylog-http-1:
+        ship: localhost
+        ports:
+          http-graylog-web: 9000
+
+  graylog-mongodb:
+    image: tracee-examples-graylog-mongodb
+    instances:
+      graylog-mongodb-1:
+        ship: localhost
+        ports:
+          process : 27017
+          http-mongodb: 28017
+
+
+  graylog-elasticsearch:
+    image: dockerfile/elasticsearch
+    instances:
+      graylog-elasticsearch-1:
+        ship: localhost
+        ports:
+          http-elasticsearch : 9200
+          transport-elasticsearch: 9300
+
