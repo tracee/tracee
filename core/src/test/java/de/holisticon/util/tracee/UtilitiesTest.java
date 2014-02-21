@@ -2,6 +2,10 @@ package de.holisticon.util.tracee;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -10,11 +14,45 @@ import static org.hamcrest.Matchers.*;
  */
 public class UtilitiesTest {
 
-    @Test
-    public void shouldCreateStringWithSpecificLength() {
-        final String randomAlphanumeric = Utilities.createRandomAlphanumeric(32);
-        assertThat("length", randomAlphanumeric.length(), equalTo(32));
-    }
+	@Test
+	public void returnTrueIfNull() {
+		assertThat(Utilities.isNullOrEmptyString(null), is(true));
+	}
+	
+	@Test
+	public void returnTrueIfEmpty() {
+		assertThat(Utilities.isNullOrEmptyString(""), is(true));
+	}
+
+	@Test
+	public void returnTrueIfBlank() {
+		assertThat(Utilities.isNullOrEmptyString(" "), is(true));
+	}
+	
+	public void returnFalseIfSet() {
+		assertThat(Utilities.isNullOrEmptyString("A"), is(false));
+	}
+	
+	@Test
+	public void shouldTransformToEnumeration() {
+		final Enumeration<String> enuma = Utilities.toEnumeration(Arrays.asList("A", "B", "C"));
+		assertThat(enuma.hasMoreElements(), is(true));
+		assertThat(enuma.nextElement(), is(equalTo("A")));
+		assertThat(enuma.nextElement(), is(equalTo("B")));
+		assertThat(enuma.nextElement(), is(equalTo("C")));
+	}
+
+	@Test
+	public void shouldTransformEmptyList() {
+		final Enumeration<?> enuma = Utilities.toEnumeration(Collections.emptyList());
+		assertThat(enuma.hasMoreElements(), is(false));
+	}
+
+	@Test
+	public void shouldCreateStringWithSpecificLength() {
+		final String randomAlphanumeric = Utilities.createRandomAlphanumeric(32);
+		assertThat("length", randomAlphanumeric.length(), equalTo(32));
+	}
 	
 	@Test
 	public void shouldCreateRandomString() {
