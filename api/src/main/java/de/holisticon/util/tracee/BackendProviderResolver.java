@@ -62,23 +62,39 @@ class BackendProviderResolver {
 		return copyOnWriteMap;
 	}
 
+	/**
+	 * Loads the list of providers with the java ServiceLoader.<br />
+	 * <p>Test information:<br />
+	 * I tried to implement a test for such method. But it's really complicated:
+	 * * We have to implement an own "mocked" classloader that simulates ClassLoader#getResources() calls. The returned list of URLs
+	 * is opened by the ServiceLoader.<br />
+	 * * Because we couldn't simulate N different loader scenarios we should return URLs with an own URLStreamHandler.
+	 * Every StreamHandler returns a text InputStream on the getInputStream-Method and return a text that points to a classname.<br />
+	 * * Our mocked classloader could/should simulate such loader classes<br />
+	 * <br />
+	 * Due such cases I reviewed the code and keep it untested :-(
+	 * 
+	 * </p>
+	 * @param classloader the classloader that is searched for TraceeBackendProvider services
+	 * @return A list of available TraceeBackendProvider
+	 */
 	private List<TraceeBackendProvider> loadProviders(ClassLoader classloader) {
 		final ServiceLoader<TraceeBackendProvider> loader = ServiceLoader.load(TraceeBackendProvider.class, classloader);
 		final Iterator<TraceeBackendProvider> providerIterator = loader.iterator();
-		final List<TraceeBackendProvider> validationProviderList = new ArrayList<TraceeBackendProvider>();
+		final List<TraceeBackendProvider> traceeProvider = new ArrayList<TraceeBackendProvider>();
 		while (providerIterator.hasNext()) {
 			try {
-				validationProviderList.add(providerIterator.next());
+				traceeProvider.add(providerIterator.next());
 			} catch (ServiceConfigurationError e) {
 				// ignore, because it can happen when multiple
 				// providers are present and some of them are not class loader
 				// compatible with our API.
 			}
 		}
-		return validationProviderList;
+		return traceeProvider;
 	}
 
-	private static final class GetClassLoader implements PrivilegedAction<ClassLoader> {
+	static final class GetClassLoader implements PrivilegedAction<ClassLoader> {
 		private final Class<?> clazz;
 
 		private GetClassLoader(final Class<?> clazz) {
