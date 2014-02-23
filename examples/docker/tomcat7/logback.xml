@@ -4,8 +4,8 @@
 
 	<appender name="GELF" class="me.moocar.logbackgelf.GelfAppender">
 		<facility>logback-gelf-test</facility>
-		<graylog2ServerHost>$GRAYLOG_SERVER_GRAYLOG_SERVER_1_HOST</graylog2ServerHost>
-		<graylog2ServerPort>$GRAYLOG_SERVER_GRAYLOG_SERVER_1_GRAYLOG_PORT</graylog2ServerPort>
+		<graylog2ServerHost>${GRAYLOG_TCP_ADDR}</graylog2ServerHost>
+		<graylog2ServerPort>${GRAYLOG_TCP_PORT}</graylog2ServerPort>
 		<useLoggerName>true</useLoggerName>
 		<useThreadName>true</useThreadName>
 		<useMarker>true</useMarker>

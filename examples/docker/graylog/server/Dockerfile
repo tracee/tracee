@@ -24,9 +24,9 @@ ENTRYPOINT env \
   sed -i "s/MONGODB_PORT/$MONGO_PORT_27017_TCP_PORT/g" "/etc/graylog2.conf" \
   && sed -i "s/MONGODB_HOST/$MONGO_PORT_27017_TCP_ADDR/g" "/etc/graylog2.conf" \
   && sed -i "s/HOSTNAME/$ELASTICSEARCH_PORT_9300_TCP_ADDR/g" "/etc/graylog2.conf" \
-  && sed -i "s/ELASTICSEARCH_HOST/$ELASTICSEARCH_PORT_9200_TCP_ADDR/g" "/etc/graylog2.conf" \
-  && sed -i "s/ELASTICSEARCH_PORT/$ELASTICSEARCH_PORT_9200_TCP_PORT/g" "/etc/graylog2.conf" \
+  && sed -i "s/ELASTICSEARCH_HOST/$ELASTICSEARCH_PORT_9300_TCP_ADDR/g" "/etc/graylog2.conf" \
+  && sed -i "s/ELASTICSEARCH_PORT/$ELASTICSEARCH_PORT_9300_TCP_PORT/g" "/etc/graylog2.conf" \
   && env && ifconfig && cd /graylog2-server/ \
-  && /bin/bash
-  #&& java -jar graylog2-server.jar --debug
+  && java -jar graylog2-server.jar --debug
+  #//&& /bin/bash
 

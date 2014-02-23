@@ -43,4 +43,6 @@ ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g
 
 EXPOSE 8000 8080
 
-ENTRYPOINT env && /apache-tomcat/bin/catalina.sh run
+ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_TCP_ADDR=$GRAYLOG_PORT_12900_TCP_ADDR -DGRAYLOG_TCP_PORT=$GRAYLOG_PORT_12900_TCP_PORT" \
+ && env \
+ && /apache-tomcat/bin/catalina.sh run

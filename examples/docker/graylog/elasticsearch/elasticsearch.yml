@@ -1,4 +1,4 @@
-##################### Elasticsearch Configuration Example #####################
+##################### ElasticSearch Configuration Example #####################
 
 # This file contains an overview of various configuration settings,
 # targeted at operations staff. Application developers should
@@ -7,7 +7,7 @@
 # The installation procedure is covered at
 # <http://elasticsearch.org/guide/en/elasticsearch/reference/current/setup.html>.
 #
-# Elasticsearch comes with reasonable defaults for most settings,
+# ElasticSearch comes with reasonable defaults for most settings,
 # so you can try it out without bothering with configuration.
 #
 # Most of the time, these defaults are just fine for running a production
@@ -29,7 +29,7 @@
 # Cluster name identifies your cluster for auto-discovery. If you're running
 # multiple clusters on the same network, make sure you're using unique names.
 #
-cluster.name: graylog2
+cluster.name: graylog2-cluster
 
 
 #################################### Node #####################################
@@ -37,7 +37,7 @@ cluster.name: graylog2
 # Node names are generated dynamically on startup, so you're relieved
 # from configuring them manually. You can tie this node to a specific name:
 #
-node.name: "tracee-examples-graylog-elasticsearch-1"
+# node.name: "Franz Kafka"
 
 # Every node can be configured to allow or deny being eligible as the master,
 # and to allow or deny to store the data.
@@ -72,10 +72,8 @@ node.name: "tracee-examples-graylog-elasticsearch-1"
 # node.data: false
 
 # Use the Cluster Health API [http://localhost:9200/_cluster/health], the
-# Node Info API [http://localhost:9200/_nodes] or GUI tools
-# such as <http://www.elasticsearch.org/overview/marvel/>,
-# <http://github.com/karmi/elasticsearch-paramedic>,
-# <http://github.com/lukas-vlcek/bigdesk> and
+# Node Info API [http://localhost:9200/_cluster/nodes] or GUI tools
+# such as <http://github.com/lukas-vlcek/bigdesk> and
 # <http://mobz.github.com/elasticsearch-head> to inspect the cluster state.
 
 # A node can have generic attributes associated with it, which can later be used
@@ -130,7 +128,7 @@ node.name: "tracee-examples-graylog-elasticsearch-1"
 # The "number_of_replicas" can be increased or decreased anytime,
 # by using the Index Update Settings API.
 #
-# Elasticsearch takes care about load balancing, relocating, gathering the
+# ElasticSearch takes care about load balancing, relocating, gathering the
 # results from nodes, etc. Experiment with different settings to fine-tune
 # your setup.
 
@@ -176,7 +174,7 @@ node.name: "tracee-examples-graylog-elasticsearch-1"
 
 ################################### Memory ####################################
 
-# Elasticsearch performs poorly when JVM starts swapping: you should ensure that
+# ElasticSearch performs poorly when JVM starts swapping: you should ensure that
 # it _never_ swaps.
 #
 # Set this property to true to lock the memory:
@@ -185,15 +183,15 @@ node.name: "tracee-examples-graylog-elasticsearch-1"
 
 # Make sure that the ES_MIN_MEM and ES_MAX_MEM environment variables are set
 # to the same value, and that the machine has enough memory to allocate
-# for Elasticsearch, leaving enough memory for the operating system itself.
+# for ElasticSearch, leaving enough memory for the operating system itself.
 #
-# You should also make sure that the Elasticsearch process is allowed to lock
+# You should also make sure that the ElasticSearch process is allowed to lock
 # the memory, eg. by using `ulimit -l unlimited`.
 
 
 ############################## Network And HTTP ###############################
 
-# Elasticsearch, by default, binds itself to the 0.0.0.0 address, and listens
+# ElasticSearch, by default, binds itself to the 0.0.0.0 address, and listens
 # on port [9200-9300] for HTTP traffic and on port [9300-9400] for node-to-node
 # communication. (the range means that if the port is busy, it will automatically
 # try the next port).
@@ -318,7 +316,7 @@ node.name: "tracee-examples-graylog-elasticsearch-1"
 #
 # 1. Disable multicast discovery (enabled by default):
 #
-discovery.zen.ping.multicast.enabled: false
+# discovery.zen.ping.multicast.enabled: false
 #
 # 2. Configure an initial list of master nodes in the cluster
 #    to perform discovery when new nodes (master or data) are started:
@@ -335,17 +333,6 @@ discovery.zen.ping.multicast.enabled: false
 # See <http://elasticsearch.org/tutorials/elasticsearch-on-ec2/>
 # for a step-by-step tutorial.
 
-# GCE discovery allows to use Google Compute Engine API in order to perform discovery.
-#
-# You have to install the cloud-gce plugin for enabling the GCE discovery.
-#
-# For more information, see <https://github.com/elasticsearch/elasticsearch-cloud-gce>.
-
-# Azure discovery allows to use Azure API in order to perform discovery.
-#
-# You have to install the cloud-azure plugin for enabling the Azure discovery.
-#
-# For more information, see <https://github.com/elasticsearch/elasticsearch-cloud-azure>.
 
 ################################## Slow Log ##################################
 
