@@ -2,10 +2,7 @@ package de.holisticon.util.tracee.configuration;
 
 import de.holisticon.util.tracee.Utilities;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -13,41 +10,57 @@ import java.util.Properties;
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
 	public static final String CONFIGURATION_KEY_PREFIX = "tracee.";
-	public static final String GENERATE_REQUEST_ID = CONFIGURATION_KEY_PREFIX+"generatedRequestIdLength";
-	public static final String GENERATE_SESSION_ID = CONFIGURATION_KEY_PREFIX + "generatedSessionIdLength";
+	public static final String GENERATE_REQUEST_ID = CONFIGURATION_KEY_PREFIX + "requestIdLength";
+	public static final String GENERATE_SESSION_ID = CONFIGURATION_KEY_PREFIX + "sessionIdLength";
 
-	public PropertiesBasedTraceeFilterConfiguration(Properties traceeFileProperties) {
-		this.traceeFileProperties = traceeFileProperties;
-	}
+	private final PropertyChain properties;
 
-	private final Properties traceeFileProperties;
-
-
-	private String getPropertyWithFallback(String key) {
-		return System.getProperty(key, traceeFileProperties.getProperty(key));
+	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
+		this. properties = propertyChain;
 	}
 
 	@Override
-	public boolean shouldPropagate(String paramName, MessageType channel) {
-		final String messageTypePropertyValue = getPropertyWithFallback(CONFIGURATION_KEY_PREFIX + channel.name());
+	public boolean shouldProcessParam(String paramName, Channel channel) {
+		final String messageTypePropertyValue = properties.getProperty(CONFIGURATION_KEY_PREFIX + channel.name());
 		final List<String> patterns = extractPatterns(messageTypePropertyValue);
 		return anyPatternMatchesParamName(patterns, paramName);
 	}
 
 	@Override
-	public boolean shouldProcessContext(MessageType channel) {
-		final String messageTypePropertyValue = getPropertyWithFallback(CONFIGURATION_KEY_PREFIX + channel.name());
+	public boolean shouldProcessContext(Channel channel) {
+		final String messageTypePropertyValue = properties.getProperty(CONFIGURATION_KEY_PREFIX + channel.name());
 		return !Utilities.isNullOrEmptyString(messageTypePropertyValue);
 	}
 
 	@Override
+	public boolean shouldGenerateRequestId() {
+		return generatedRequestIdLength() > 0;
+	}
+
+	@Override
 	public int generatedRequestIdLength() {
-		return parseIntOrZero( getPropertyWithFallback(GENERATE_REQUEST_ID));
+		return parseIntOrZero( properties.getProperty(GENERATE_REQUEST_ID));
+	}
+
+	@Override
+	public boolean shouldGenerateSessionId() {
+		return generatedSessionIdLength() > 0;
 	}
 
 	@Override
 	public int generatedSessionIdLength() {
-		return parseIntOrZero( getPropertyWithFallback(GENERATE_SESSION_ID));
+		return parseIntOrZero( properties.getProperty(GENERATE_SESSION_ID));
+	}
+
+	@Override
+	public Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
+		final HashMap<String,String> filtered = new HashMap<String,String>(unfiltered.size());
+		for (Map.Entry<String, String> entry : unfiltered.entrySet()) {
+			if (shouldProcessParam(entry.getKey(), channel)) {
+				filtered.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return filtered;
 	}
 
 	private int parseIntOrZero(String intString) {

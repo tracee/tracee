@@ -1,17 +1,23 @@
 package de.holisticon.util.tracee.jaxws.client;
 
+import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
 import de.holisticon.util.tracee.jaxws.protocol.SoapHeaderTransport;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.*;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
 public class TraceeClientHandler extends AbstractTraceeHandler {
 
@@ -33,7 +39,8 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
     protected final void handleIncoming(final SOAPMessageContext context) {
 
         final SOAPMessage msg = context.getMessage();
-        if (msg != null && getTraceeBackend().getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingRequest)) {
+		final TraceeBackend backend = getTraceeBackend();
+        if (msg != null && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 
             try {
                 final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -42,8 +49,9 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
                 final SOAPHeader header = env.getHeader();
 
 				if (header != null) {
-					final Map<String, String> parsed = transportSerialization.parse(header);
-					getTraceeBackend().putAll(parsed);
+					final Map<String, String> parsedContext = transportSerialization.parse(header);
+					final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest);
+					getTraceeBackend().putAll(filteredContext);
 				}
 
             } catch (final SOAPException e) {
@@ -59,7 +67,8 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
     protected final void handleOutgoing(final SOAPMessageContext context) {
 
         final SOAPMessage msg = context.getMessage();
-        if (msg != null && getTraceeBackend().getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.IncomingResponse)) {
+        final TraceeBackend backend = getTraceeBackend();
+		if (msg != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 
             try {
                 final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -69,7 +78,9 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
                     header = env.addHeader();
                 }
 
-				transportSerialization.renderTo(getTraceeBackend(), header);
+				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, IncomingResponse);
+				transportSerialization.renderTo(filteredContext, header);
+
 				msg.saveChanges();
 
             } catch (final SOAPException e) {

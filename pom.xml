@@ -10,6 +10,7 @@
 	<modules>
 		<module>api</module>
 		<module>core</module>
+		<module>testhelper</module>
 
 		<!-- contextual logging -->
 		<module>context-logger</module>

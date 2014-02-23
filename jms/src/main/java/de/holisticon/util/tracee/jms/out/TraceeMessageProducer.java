@@ -10,6 +10,9 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import java.util.HashMap;
+import java.util.Map;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -18,10 +21,17 @@ public class TraceeMessageProducer implements MessageProducer {
 
 
     protected final MessageProducer delegate;
+	protected final TraceeBackend backend;
 
-    public TraceeMessageProducer(MessageProducer delegate) {
+    TraceeMessageProducer(MessageProducer delegate, TraceeBackend backend) {
         this.delegate = delegate;
-    }
+		this.backend = backend;
+	}
+
+	public TraceeMessageProducer(MessageProducer delegate) {
+		this.delegate = delegate;
+		this.backend = Tracee.getBackend();
+	}
 
     /**
      * Writes the current TraceeContext to the given jms message.
@@ -29,10 +39,9 @@ public class TraceeMessageProducer implements MessageProducer {
      */
     protected final void writeTraceeContextToMessage(Message message) throws JMSException {
 
-		final TraceeBackend backend = Tracee.getBackend();
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.AsyncDispatch)) {
-			final HashMap<String, String> defensiveCopy = new HashMap<String, String>(backend);
-			message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, defensiveCopy);
+		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(AsyncDispatch)) {
+			final Map<String,String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, AsyncDispatch);
+			message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, filteredContext);
 		}
     }
 

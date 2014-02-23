@@ -11,6 +11,8 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Map;
 
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
+
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
@@ -34,15 +36,16 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext containerRequestContext) throws IOException {
 		// generate request id if it doesn't exist
-		if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().generatedRequestIdLength() != 0) {
+		if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().shouldGenerateRequestId()) {
 			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
 		}
 
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingRequest)) {
+		if (backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final String serializedTraceeHeader = containerRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
 			if (serializedTraceeHeader != null) {
-				final Map<String, String> parse = transportSerialization.parse(serializedTraceeHeader);
-				backend.putAll(parse);
+				final Map<String, String> parsed = transportSerialization.parse(serializedTraceeHeader);
+				final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, OutgoingRequest);
+				backend.putAll(filtered);
 			}
 		}
 	}

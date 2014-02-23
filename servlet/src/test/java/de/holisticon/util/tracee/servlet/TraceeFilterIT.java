@@ -49,6 +49,7 @@ public class TraceeFilterIT {
 		traceeFilterHolder = context.addFilter(TraceeFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
 		server.setHandler(context);
+		server.start();
 
 	}
 
@@ -60,14 +61,12 @@ public class TraceeFilterIT {
 
 	@Test
 	public void testCompleteRoundtrip() throws Exception {
-		traceeFilterHolder.setInitParameter(TraceeFilter.RESPOND_WITH_CONTEXT_KEY, "true");
-		server.start();
-
 		final Header traceeResponseHeader = get("{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inServlet\":\"yes\""));
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\""));
 	}
 
 	public static final class SillyServlet extends HttpServlet {

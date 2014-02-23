@@ -11,47 +11,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
 /**
  * <h2>Configuration</h2>
- * You may configure the following init-parameters in servlet xml.
- * <ul>
- * <li>{@link de.holisticon.util.tracee.servlet.TraceeFilter#ACCEPT_INCOMING_CONTEXT_KEY}</li>
- * <li>{@link de.holisticon.util.tracee.servlet.TraceeFilter#HEADER_NAME_PARAM_KEY}</li>
- * <li>{@link de.holisticon.util.tracee.servlet.TraceeFilter#RESPOND_WITH_CONTEXT_KEY}</li>
- * </ul>
  *
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeFilter implements Filter {
 
-    public static final String TRACEE_CONTEXT_KEY = "de.holisticon.util.tracee.servlet.TRACEE_CONTEXT_KEY";
+    private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
 
-    /**
-     * Init-Param key to.
-     */
-    public static final String ACCEPT_INCOMING_CONTEXT_KEY =
-            "de.holisticon.util.tracee.servlet.TraceeFilter.acceptIncomingContext";
+	// VisibleForTesting
+	TraceeBackend backend = null;
 
-    /**
-     * Init-Param to configure if the.
-     */
-    public static final String RESPOND_WITH_CONTEXT_KEY =
-            "de.holisticon.util.tracee.servlet.TraceeFilter.respondWithContextKey";
+	// VisibleForTesting
+    TransportSerialization<String> httpJsonHeaderSerialization = null;
 
-    /**
-     * Init-Param key for the name of the request header that may contain the incoming
-     * (defaults to {@link de.holisticon.util.tracee.TraceeConstants#HTTP_HEADER_NAME}).
-     */
-    public static final String HEADER_NAME_PARAM_KEY = "de.holisticon.util.tracee.servlet.TraceeFilter.headerName";
-
-    private String headerName = TraceeConstants.HTTP_HEADER_NAME;
-    private boolean acceptIncomingContext = false;
-    private boolean respondWithContext = false;
-    private TraceeBackend backend = null;
-
-    private TransportSerialization<String> httpJsonHeaderSerialization = null;
 
 
     @Override
@@ -66,24 +46,30 @@ public class TraceeFilter implements Filter {
 
     private void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.IncomingRequest))
-        	mergeIncomingContextToBackend(request);
 
-        if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
-            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(32));
+		final TraceeFilterConfiguration configuration = backend.getConfiguration();
+
+		if (configuration.shouldProcessContext(IncomingRequest)) {
+			mergeIncomingContextToBackend(request, backend);
+		}
+
+        if (configuration.shouldGenerateRequestId() && !backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
+            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
         }
 
-        if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY)) {
+        if (configuration.shouldGenerateSessionId() && !backend.containsKey(TraceeConstants.SESSION_ID_KEY)) {
             final HttpSession session = request.getSession(false);
             if (session != null) {
-                backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId()));
+				//TODO: hashing with variable length
+                backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId(), configuration.generatedSessionIdLength()));
             }
         }
 
         try {
             filterChain.doFilter(request, response);
-            if (respondWithContext && !backend.isEmpty()) {
-                response.setHeader(headerName, httpJsonHeaderSerialization.render(backend));
+            if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+				response.setHeader(HTTP_HEADER_NAME, httpJsonHeaderSerialization.render(filteredContext));
             }
         } finally {
             // ensure cleanup
@@ -92,43 +78,39 @@ public class TraceeFilter implements Filter {
 
     }
 
-    private String anonymizedSessionKey(String sessionKey) {
-        return Utilities.createAlphanumericHash(sessionKey, 32);
+    private String anonymizedSessionKey(String sessionKey, int length) {
+        return Utilities.createAlphanumericHash(sessionKey, length);
     }
 
-    private void mergeIncomingContextToBackend(HttpServletRequest request) {
-        final Enumeration headers = request.getHeaders(headerName);
+    private void mergeIncomingContextToBackend(HttpServletRequest request, TraceeBackend backend) {
+        final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
         if (headers == null) {
             throw new IllegalStateException("Could not read headers with name '"
-                    + headerName + "'. The access seem to be forbidden by the container");
+                    + HTTP_HEADER_NAME + "'. The access seem to be forbidden by the container.");
         }
 
+		final Map<String,String> parsed = new HashMap<String, String>();
         while (headers.hasMoreElements()) {
-			final Map<String,String> parsed = httpJsonHeaderSerialization.parse((String) headers.nextElement());
-
-			backend.putAll(parsed);
+			parsed.putAll(httpJsonHeaderSerialization.parse((String) headers.nextElement()));
         }
+
+		final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, IncomingRequest);
+		backend.putAll(filtered);
     }
 
 
 
     @Override
     public final void init(FilterConfig filterConfig) throws ServletException {
-        //ensure spi scanning on filter initialization
+        //ensure spi implementation is available on filter initialization
         backend = Tracee.getBackend();
-        final String configuredHeaderName = filterConfig.getInitParameter(HEADER_NAME_PARAM_KEY);
-        if (configuredHeaderName != null)
-            headerName = configuredHeaderName;
-        if (Boolean.parseBoolean(filterConfig.getInitParameter(ACCEPT_INCOMING_CONTEXT_KEY)))
-            acceptIncomingContext = true;
-        if (Boolean.parseBoolean(filterConfig.getInitParameter(RESPOND_WITH_CONTEXT_KEY)))
-            respondWithContext = true;
-
 		httpJsonHeaderSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
     }
 
 
     @Override
     public final void destroy() {
+		backend = null;
+		httpJsonHeaderSerialization = null;
     }
 }

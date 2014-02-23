@@ -17,6 +17,9 @@ import java.util.Map;
  */
 public class SoapHeaderTransport  {
 
+	/**
+	 * Parses a context map from a given soap header.
+	 */
 	public Map<String, String> parse(SOAPHeader header) {
 		final NodeList nodeList = header.getElementsByTagName(
 				TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_TAG_NAME);
@@ -45,6 +48,9 @@ public class SoapHeaderTransport  {
 		return context;
 	}
 
+	/**
+	 * Renders a given context map into a given soapHeader
+	 */
 	public void renderTo(Map<String, String> context, SOAPHeader soapHeader) throws SOAPException {
 		// create soap header element for tracee entries
 		final SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(

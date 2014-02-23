@@ -12,13 +12,12 @@ import java.util.Properties;
 public final class TraceePropertiesFileLoader {
 
 
-	public static final String TRACEE_PROPERTIES_FILE = "tracee.properties";
 
-	public Properties loadTraceeProperties() throws IOException {
+
+	public Properties loadTraceeProperties(String traceePropertiesFile) throws IOException {
 		final Properties propertiesFromFile = new Properties();
 		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-		final Enumeration<URL> traceePropertyFiles = loader.getResources(TRACEE_PROPERTIES_FILE);
+		final Enumeration<URL> traceePropertyFiles = loader.getResources(traceePropertiesFile);
 
 		while (traceePropertyFiles.hasMoreElements()) {
 			final URL url = traceePropertyFiles.nextElement();

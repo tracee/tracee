@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee.outbound.httpclient;
 
+import de.holisticon.util.tracee.SimpleTraceeBackend;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
@@ -17,13 +18,13 @@ import static org.mockito.Mockito.mock;
  */
 public class TraceeHttpRequestInterceptorTest {
 
-    final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor();
+	final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor(backend);
 
     @Test
     public void testProcess() throws Exception {
         final HttpRequest httpRequest = new BasicHttpRequest("GET", "http://localhost/pew");
 
-        final TraceeBackend backend = Tracee.getBackend();
         backend.put("foo", "bar");
 
         unit.process(httpRequest, mock(HttpContext.class));

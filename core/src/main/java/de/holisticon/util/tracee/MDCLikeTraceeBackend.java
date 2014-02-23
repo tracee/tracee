@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee;
 
 import de.holisticon.util.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import de.holisticon.util.tracee.configuration.PropertyChain;
 import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.configuration.TraceePropertiesFileLoader;
 
@@ -14,22 +15,27 @@ import java.util.*;
 public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
 
+	public static final String TRACEE_PROPERTIES_FILE = "META-INF/tracee.properties";
+	public static final String TRACEE_DEFAULT_PROPERTIES_FILE = "META-INF/tracee.default.properties";
+
+
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend
 	 */
 	@Override
 	public final TraceeFilterConfiguration getConfiguration() {
-
-
 		if (lazyTraceeFilterConfiguration == null) {
+			final Properties traceeDefaultFileProperties;
+			final Properties traceeFileProperties;
 			try {
-				final Properties traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties();
-				lazyTraceeFilterConfiguration = new PropertiesBasedTraceeFilterConfiguration(traceeFileProperties);
+				traceeDefaultFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_DEFAULT_PROPERTIES_FILE);
+				traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_PROPERTIES_FILE);
+
 			} catch (IOException ioe) {
 				throw new IllegalStateException("Could not load TraceeProperties: "+ ioe.getMessage(), ioe);
 			}
-
-
+			final PropertyChain chain = PropertyChain.build(System.getProperties(), traceeFileProperties, traceeDefaultFileProperties);
+			lazyTraceeFilterConfiguration = new PropertiesBasedTraceeFilterConfiguration(chain);
 		}
 		return lazyTraceeFilterConfiguration;
 	}

@@ -12,6 +12,9 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
 /**
  * TO DO: how to use it.
@@ -36,8 +39,9 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 	@Override
 	public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
 
-		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingRequest)) {
-			final String contextAsHeader = transportSerialization.render(backend);
+		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
+			final Map<String,String> filteredParams = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
+			final String contextAsHeader = transportSerialization.render(filteredParams);
 			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}
 

@@ -11,46 +11,56 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.TreeMap;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
 
 /**
- * EJB interceptor that resembles a Tracee context from message properties and clears it after message processing.
+ * EJB interceptor that parses a TracEE context from message properties and cleans it after message processing.
  *
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeMessageListener {
 
-	private final TraceeBackend backend = Tracee.getBackend();
+	private final TraceeBackend backend;
 
-    @AroundInvoke
+	TraceeMessageListener(TraceeBackend backend) {
+		this.backend = backend;
+	}
+
+	public TraceeMessageListener() {
+		this(Tracee.getBackend());
+	}
+
+	@AroundInvoke
     public Object intercept(InvocationContext ctx) throws Exception {
-        final boolean provideContext = isMessageListenerOnMessageMethod(ctx.getMethod());
-        try {
-            if (provideContext) {
-                beforeProcessing(ctx, extractMessageParameter(ctx.getParameters()));
+        final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
+		try {
+            if (isMdbInvocation) {
+                beforeProcessing(extractMessageParameter(ctx.getParameters()));
             }
             return ctx.proceed();
         } finally {
-            if (provideContext) {
-                afterProcessing(ctx, extractMessageParameter(ctx.getParameters()));
+            if (isMdbInvocation) {
+				cleanUp();
             }
         }
     }
 
-    public void beforeProcessing(InvocationContext ctx, Message message) throws JMSException {
+    public void beforeProcessing(Message message) throws JMSException {
 
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.AsyncProcess)) {
+		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
 			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
 			if (encodedTraceeContext != null) {
-				final Map<String, String> encodedTraceeProperties = (Map<String, String>) encodedTraceeContext;
-				Tracee.getBackend().putAll(encodedTraceeProperties);
+				final Map<String, String> contextFromMessage = (Map<String, String>) encodedTraceeContext;
+				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess);
+				backend.putAll(filteredContext);
 			}
 		}
     }
 
-    public void afterProcessing(InvocationContext ctx, Message message) {
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.AsyncProcess)) {
-			Tracee.getBackend().clear();
+    void cleanUp() {
+		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
+			backend.clear();
 		}
     }
 

@@ -14,6 +14,8 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Map;
 
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
+
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
@@ -35,9 +37,10 @@ public class TraceeClientResponseFilter implements ClientResponseFilter {
 	@Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         final String serializedContext = responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
-        if (serializedContext != null && backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.IncomingResponse)) {
+        if (serializedContext != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 			final Map<String,String> parsed = transportSerialization.parse(serializedContext);
-			backend.putAll(parsed);
+			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, IncomingResponse);
+			backend.putAll(filtered);
 		}
 
     }

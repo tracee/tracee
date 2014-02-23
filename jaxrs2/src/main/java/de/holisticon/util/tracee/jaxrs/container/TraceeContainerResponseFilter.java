@@ -12,6 +12,9 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.util.Map;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -35,8 +38,9 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
-		if (backend.getConfiguration().shouldProcessContext(TraceeFilterConfiguration.MessageType.OutgoingResponse)) {
-			final String serializedContext = transportSerialization.render(backend);
+		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
+			final Map<String,String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+			final String serializedContext = transportSerialization.render(filtered);
 			if (serializedContext != null)
 				responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedContext);
 		}

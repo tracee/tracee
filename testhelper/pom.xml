@@ -2,9 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.holisticon.util.tracee.outbound</groupId>
-    <artifactId>tracee-httpclient</artifactId>
-    <packaging>bundle</packaging>
+    <artifactId>tracee-testhelper</artifactId>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
@@ -12,26 +11,15 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-httpclient</name>
+    <name>tracee-testhelper</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <dependencies>
-        <dependency>
-            <artifactId>tracee-core</artifactId>
-            <groupId>de.holisticon.util.tracee</groupId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.0.2</version>
-            <scope>provided</scope>
-        </dependency>
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
-			<artifactId>tracee-testhelper</artifactId>
+			<artifactId>tracee-api</artifactId>
 			<version>0.1-SNAPSHOT</version>
-			<scope>test</scope>
 		</dependency>
     </dependencies>
+
 </project>
