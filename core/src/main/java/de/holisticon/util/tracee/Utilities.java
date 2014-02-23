@@ -4,8 +4,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -22,25 +20,6 @@ public final class Utilities {
 	public static boolean isNullOrEmptyString(String value) {
 		return value == null || value.trim().isEmpty();
 	}
-
-	/**
-	 * Wraps an Iterable[T] as Enumeration[T]
-	 */
-	public static <T> Enumeration<T> toEnumeration(Iterable<T> iterable) {
-		final Iterator<T> iterator = iterable.iterator();
-		return new Enumeration<T>() {
-			@Override
-			public boolean hasMoreElements() {
-				return iterator.hasNext();
-			}
-
-			@Override
-			public T nextElement() {
-				return iterator.next();
-			}
-		};
-	}
-
 
 	/**
 	 * Creates a random Strings consisting of alphanumeric charaters with a length of 32.

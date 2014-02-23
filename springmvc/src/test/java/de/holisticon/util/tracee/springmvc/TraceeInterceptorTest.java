@@ -3,7 +3,6 @@ package de.holisticon.util.tracee.springmvc;
 import com.google.gson.Gson;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.Utilities;
 import de.holisticon.util.tracee.springmvc.testutils.TestLogBackend;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,7 +116,7 @@ public class TraceeInterceptorTest {
 		final Map<String, String> expected = new HashMap<String, String>();
 		expected.put("testkey", "testValue123");
 
-		final Enumeration<String> headers = Utilities.toEnumeration(Arrays.asList(new Gson().toJson(expected)));
+		final Enumeration<String> headers = Collections.enumeration(Arrays.asList(new Gson().toJson(expected)));
 		when(httpServletRequest.getHeaders(incomingHeader)).thenReturn(headers);
 		outInterceptor.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend).putAll(eq(expected));

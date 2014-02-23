@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
@@ -44,7 +45,7 @@ public class TraceeFilterTest {
 
     @Test
     public void testDoFilterRespondsWithRequestId() throws Exception {
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Utilities.toEnumeration(Arrays.asList()));
+		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
         unit.doFilter(httpServletRequest,httpServletResponse, filterChain);
 		verify(filterChain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
@@ -53,8 +54,8 @@ public class TraceeFilterTest {
 
 	@Test
 	public void testAcceptIncomingRequestId() throws Exception {
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Utilities.toEnumeration(
-				Arrays.asList("{ \""+TraceeConstants.REQUEST_ID_KEY+"\":\"123\"}")));
+		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(
+				Arrays.asList("{ \"" + TraceeConstants.REQUEST_ID_KEY + "\":\"123\"}")));
 
 		unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 
