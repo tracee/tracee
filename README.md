@@ -90,7 +90,7 @@ The likelihood of a pull request being used rises with the following properties:
 
 - (2013) Daniel Wegener (Holisticon AG)
 - (2013) Tobias Gindler (Holisticon AG)
-- (20149 Sven Bunge (Holisticon AG)
+- (2014) Sven Bunge (Holisticon AG)
 
 ## Sponsoring
 This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
