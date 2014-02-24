@@ -2,7 +2,6 @@ package de.holisticon.util.tracee;
 
 import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 
-import java.lang.ref.SoftReference;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
@@ -11,55 +10,71 @@ import java.util.*;
  * @author Sven Bunge, Holisticon AG
  */
 class BackendProviderResolver {
-	
-	private static Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> PROVIDERS_PER_CLASSLOADER =
-			new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>();
 
-	public List<TraceeBackendProvider> getContextProviders() {
-		final Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache = PROVIDERS_PER_CLASSLOADER;
+	// We should use weak references for our cache. otherwise we block class unloading.
+	private volatile static Map<ClassLoader, Set<TraceeBackendProvider>> PROVIDERS_PER_CLASSLOADER =
+			new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
 
-		final ClassLoader contextClassloader = GetClassLoader.fromContext();
+	/**
+	 * Find correct backend provider for the current context classloader. If no context classloader is available, a
+	 * fallback with the classloader of this resolver class is taken
+	 *
+	 * @return A bunch of TraceeBackendProvider registered and available in the current classloader
+	 */
+	public Set<TraceeBackendProvider> getBackendProviders() {
+		// Create a working copy of Cache. Reference is updated upon cache update.
+		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy = PROVIDERS_PER_CLASSLOADER;
 
-		// 1. take cached from context class loader
-		final List<TraceeBackendProvider> cachedContextClassLoaderProviders = getFromCache(cache, contextClassloader);
-		if (cachedContextClassLoaderProviders != null) {
-			return cachedContextClassLoaderProviders;
-		}
-
-		// 2. load from context class loader and cache if not empty. This is the expensive part.
-		final List<TraceeBackendProvider> contextClassLoaderProviders = loadProviders(contextClassloader);
-		if (!contextClassLoaderProviders.isEmpty()) {
-			PROVIDERS_PER_CLASSLOADER = updatedCache(PROVIDERS_PER_CLASSLOADER, contextClassloader, contextClassLoaderProviders);
-			return contextClassLoaderProviders;
+		// Try to determine TraceeBackendProvider by context classloader. Fallback: use classloader of class.
+		Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy, GetClassLoader.fromContext());
+		if (!providerFromContextClassLoader.isEmpty()) {
+			return providerFromContextClassLoader;
 		} else {
+			return getTraceeProviderFromClassloader(cacheCopy, GetClassLoader.fromClass(BackendProviderResolver.class));
+		}
+	}
 
-			// 3. take cached from current class loader
-			final ClassLoader classloader = GetClassLoader.fromClass(BackendProviderResolver.class);
-			final List<TraceeBackendProvider> cachedClassLoaderProviders = getFromCache(cache, classloader);
-			if (cachedClassLoaderProviders != null) {
-				// if already processed return the cached provider list
-				return cachedClassLoaderProviders;
-			}
-
-			// 4. load from current class loader and cache the result
-			final List<TraceeBackendProvider> classLoaderProviders = loadProviders(classloader);
-			PROVIDERS_PER_CLASSLOADER = updatedCache(PROVIDERS_PER_CLASSLOADER, classloader, classLoaderProviders);
-			return classLoaderProviders;
+	/**
+	 * Search for TraceeBackendProvider in the given classloader. The result is stored in a cache with the classloader 
+	 * as (weak) key. If no backendProvider could be found a special type of collection is stored in cache and is returned.
+	 * 
+	 * @param cacheCopy Working copy of the current cache (copy-on-write-cache)
+	 * @param classLoader the classloader we've to search for TraceeBackendProvider
+	 * @return A BackendProviderSet if we found at least one provider. Otherwise we return an EmptyBackendProviderSet.
+	 */
+	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
+																		final ClassLoader classLoader) {
+		// use cache to get TraceeBackendProvider or empty results from old lookups
+		Set<TraceeBackendProvider> classLoaderProviders = cacheCopy.get(classLoader);
+		if (isLookupNeeded(classLoaderProviders)) {
+			classLoaderProviders = loadProviders(classLoader);
+			updatedCache(classLoader, classLoaderProviders);
 		}
 
+		return classLoaderProviders;
 	}
 
-	private List<TraceeBackendProvider> getFromCache(Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache, ClassLoader classLoader) {
-		final SoftReference<List<TraceeBackendProvider>> entry = cache.get(classLoader);
-		return entry == null ? null : entry.get();
+	/*
+	 * Helper method for #getTraceeProviderFromClassloader 
+	 * We do a lookup / return true if result is null and when the result is not an instance of EmptyBackendProviderSet and empty.
+	 * In the last case the garbage collector kicked out our resolvers and we've to recreate them
+	 */
+	private boolean isLookupNeeded(Set<TraceeBackendProvider> classLoaderProviders) {
+		return classLoaderProviders == null || !(classLoaderProviders instanceof EmptyBackendProviderSet) && classLoaderProviders.isEmpty();
 	}
 
-	private Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> updatedCache(
-			Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> cache,
-			ClassLoader classLoader, List<TraceeBackendProvider> provider) {
-		final Map<ClassLoader, SoftReference<List<TraceeBackendProvider>>> copyOnWriteMap = new WeakHashMap<ClassLoader, SoftReference<List<TraceeBackendProvider>>>(cache);
-		copyOnWriteMap.put(classLoader, new SoftReference<List<TraceeBackendProvider>>(provider));
-		return copyOnWriteMap;
+	/*
+	 * Helper method to update the static class cache
+	 */
+	private void updatedCache(final ClassLoader classLoader, final Set<TraceeBackendProvider> provider) {
+		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap =
+				new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(PROVIDERS_PER_CLASSLOADER);
+		if (!provider.isEmpty()) {
+			copyOnWriteMap.put(classLoader, new BackendProviderSet(provider));
+		} else {
+			copyOnWriteMap.put(classLoader, new EmptyBackendProviderSet());
+		}
+		PROVIDERS_PER_CLASSLOADER = copyOnWriteMap;
 	}
 
 	/**
@@ -73,22 +88,22 @@ class BackendProviderResolver {
 	 * * Our mocked classloader could/should simulate such loader classes<br />
 	 * <br />
 	 * Due such cases I reviewed the code and keep it untested :-(
-	 * 
+	 * <p/>
 	 * </p>
+	 *
 	 * @param classloader the classloader that is searched for TraceeBackendProvider services
 	 * @return A list of available TraceeBackendProvider
 	 */
-	private List<TraceeBackendProvider> loadProviders(ClassLoader classloader) {
+	private Set<TraceeBackendProvider> loadProviders(ClassLoader classloader) {
 		final ServiceLoader<TraceeBackendProvider> loader = ServiceLoader.load(TraceeBackendProvider.class, classloader);
 		final Iterator<TraceeBackendProvider> providerIterator = loader.iterator();
-		final List<TraceeBackendProvider> traceeProvider = new ArrayList<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> traceeProvider = new HashSet<TraceeBackendProvider>();
 		while (providerIterator.hasNext()) {
 			try {
 				traceeProvider.add(providerIterator.next());
 			} catch (ServiceConfigurationError e) {
-				// ignore, because it can happen when multiple
-				// providers are present and some of them are not class loader
-				// compatible with our API.
+				// ignore, because it can happen when multiple providers are present and some of
+				// them are not class loader compatible with our API.
 			}
 		}
 		return traceeProvider;
@@ -126,6 +141,19 @@ class BackendProviderResolver {
 			} else {
 				return action.run();
 			}
+		}
+	}
+	
+	static final class EmptyBackendProviderSet extends AbstractSet<TraceeBackendProvider> {
+
+		@Override
+		public Iterator<TraceeBackendProvider> iterator() {
+			return Collections.<TraceeBackendProvider>emptyList().iterator();
+		}
+
+		@Override
+		public int size() {
+			return 0;
 		}
 	}
 }
