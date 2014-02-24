@@ -19,6 +19,7 @@ RUN cd / && wget -q https://github.com/Graylog2/graylog2-server/releases/downloa
 ADD graylog2.conf /etc/
 
 EXPOSE 12900
+EXPOSE 12201/udp
 
 ENTRYPOINT env \
   sed -i "s/MONGODB_PORT/$MONGO_PORT_27017_TCP_PORT/g" "/etc/graylog2.conf" \
