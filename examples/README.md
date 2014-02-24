@@ -2,4 +2,6 @@
 
 # tracee-examples
 
+You may use our [docker](docker/) descriptors to start the complete example on your development machine.
+
 TODO
