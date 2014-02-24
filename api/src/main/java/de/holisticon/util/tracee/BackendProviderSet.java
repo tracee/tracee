@@ -46,7 +46,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 		if (valid) {
 			return strongRefList.iterator();
 		}
-		return Collections.emptyIterator();
+		return Collections.<TraceeBackendProvider>emptyList().iterator();
 	}
 
 	@Override

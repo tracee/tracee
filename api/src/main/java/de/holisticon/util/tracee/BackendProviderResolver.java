@@ -148,7 +148,7 @@ class BackendProviderResolver {
 
 		@Override
 		public Iterator<TraceeBackendProvider> iterator() {
-			return Collections.emptyIterator();
+			return Collections.<TraceeBackendProvider>emptyList().iterator();
 		}
 
 		@Override
