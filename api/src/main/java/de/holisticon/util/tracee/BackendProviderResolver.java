@@ -15,6 +15,12 @@ class BackendProviderResolver {
 	private volatile static Map<ClassLoader, Set<TraceeBackendProvider>> PROVIDERS_PER_CLASSLOADER =
 			new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
 
+	/**
+	 * Find correct backend provider for the current context classloader. If no context classloader is available, a
+	 * fallback with the classloader of this resolver class is taken
+	 *
+	 * @return A bunch of TraceeBackendProvider registered and available in the current classloader
+	 */
 	public Set<TraceeBackendProvider> getBackendProviders() {
 		// Create a working copy of Cache. Reference is updated upon cache update.
 		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy = PROVIDERS_PER_CLASSLOADER;
@@ -28,31 +34,46 @@ class BackendProviderResolver {
 		}
 	}
 
+	/**
+	 * Search for TraceeBackendProvider in the given classloader. The result is stored in a cache with the classloader 
+	 * as (weak) key. If no backendProvider could be found a special type of collection is stored in cache and is returned.
+	 * 
+	 * @param cacheCopy Working copy of the current cache (copy-on-write-cache)
+	 * @param classLoader the classloader we've to search for TraceeBackendProvider
+	 * @return A BackendProviderSet if we found at least one provider. Otherwise we return an EmptyBackendProviderSet.
+	 */
 	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
-																																			final ClassLoader classLoader) {
+																		final ClassLoader classLoader) {
 		// use cache to get TraceeBackendProvider or empty results from old lookups
-		Set<TraceeBackendProvider> contextClassLoaderProviders = cacheCopy.get(classLoader);
-		// if null we have to lookup the provider for given classloader. if empty => lookup couldn't find any providers
-		if (contextClassLoaderProviders == null) {
-			contextClassLoaderProviders = loadProviders(classLoader);
-			updatedCache(classLoader, contextClassLoaderProviders);
+		Set<TraceeBackendProvider> classLoaderProviders = cacheCopy.get(classLoader);
+		if (isLookupNeeded(classLoaderProviders)) {
+			classLoaderProviders = loadProviders(classLoader);
+			updatedCache(classLoader, classLoaderProviders);
 		}
 
-		return contextClassLoaderProviders;
+		return classLoaderProviders;
 	}
 
+	/*
+	 * Helper method for #getTraceeProviderFromClassloader 
+	 * We do a lookup / return true if result is null and when the result is not an instance of EmptyBackendProviderSet and empty.
+	 * In the last case the garbage collector kicked out our resolvers and we've to recreate them
+	 */
+	private boolean isLookupNeeded(Set<TraceeBackendProvider> classLoaderProviders) {
+		return classLoaderProviders == null || !(classLoaderProviders instanceof EmptyBackendProviderSet) && classLoaderProviders.isEmpty();
+	}
+
+	/*
+	 * Helper method to update the static class cache
+	 */
 	private void updatedCache(final ClassLoader classLoader, final Set<TraceeBackendProvider> provider) {
 		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap =
 				new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(PROVIDERS_PER_CLASSLOADER);
-
-		// When we use weak references for the provider it will be garbage collected and the set is empty. In this case we don't
-		// search again because the set is empty (empty => we couldn't find any providers).
-		// To search for providers again is a bad idea. So we have to use a normal reference.
-		// Other possible solutions: Keep name URL of class and reinit it.
-		//final Set<TraceeBackendProvider> providerSet = Collections.newSetFromMap(new WeakHashMap<TraceeBackendProvider, Boolean>());
-		final Set<TraceeBackendProvider> providerSet = new HashSet<TraceeBackendProvider>();
-		providerSet.addAll(provider);
-		copyOnWriteMap.put(classLoader, providerSet);
+		if (!provider.isEmpty()) {
+			copyOnWriteMap.put(classLoader, new BackendProviderSet(provider));
+		} else {
+			copyOnWriteMap.put(classLoader, new EmptyBackendProviderSet());
+		}
 		PROVIDERS_PER_CLASSLOADER = copyOnWriteMap;
 	}
 
@@ -81,9 +102,8 @@ class BackendProviderResolver {
 			try {
 				traceeProvider.add(providerIterator.next());
 			} catch (ServiceConfigurationError e) {
-				// ignore, because it can happen when multiple
-				// providers are present and some of them are not class loader
-				// compatible with our API.
+				// ignore, because it can happen when multiple providers are present and some of
+				// them are not class loader compatible with our API.
 			}
 		}
 		return traceeProvider;
@@ -121,6 +141,19 @@ class BackendProviderResolver {
 			} else {
 				return action.run();
 			}
+		}
+	}
+	
+	static final class EmptyBackendProviderSet extends AbstractSet<TraceeBackendProvider> {
+
+		@Override
+		public Iterator<TraceeBackendProvider> iterator() {
+			return Collections.emptyIterator();
+		}
+
+		@Override
+		public int size() {
+			return 0;
 		}
 	}
 }
