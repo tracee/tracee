@@ -16,7 +16,8 @@ Use the `TraceeBackend#put(String key, String value)`-method to add a context pa
 The key shares a namespace with all MDC entries, so make sure it is unique in your business code and does not conflict
 with other frameworks MDC entries. It might help to choose a common prefix for your applications context parameters.
 
-The following example uses a `TraceeBackend` to
+The following example shows an EJB that uses a `TraceeBackend` to attach the context information of an _orderNumber_ to the current system
+interaction.
 
 ```java
 @Stateless
@@ -30,15 +31,17 @@ public class MyBusinessService {
   public void makeBigBusiness(Customer customer, Item ... items) {
 		final int orderNumber = orderService.getNextOrderNumber();
 		backend.set("MyBusiness.orderNumber", orderNumber);
-		final Order order = orderService.create(customer);
-		order.addItems(items);
-		orderService.processOrder();
-		backend.remove("MyBusiness.orderNumber");
+		try {
+		  final Order order = orderService.create(customer);
+		  order.addItems(items);
+		  orderService.processOrder();
+		} finally {
+		  backend.remove("MyBusiness.orderNumber");
+		}
   }
 
 }
 ```
-
 Be aware, that you _really should_ remove your custom context parameters as soon as the become invalid.
 
 > Please keep in mind that parameters in the TracEE-Context are ment for logging. Do not use it as a _hack_ to pass
