@@ -20,6 +20,8 @@ ADD graylog2-web-interface.conf /graylog2-web-interface/conf/
 
 EXPOSE 9000
 
+ENV JAVA_OPTS -Xms256m
+
 ENTRYPOINT env \
  && cd /graylog2-web-interface/ \
  && sed -i "s/GRAYLOG_PORT_12900_TCP_ADDR/$GRAYLOG_PORT_12900_TCP_ADDR/g" "/graylog2-web-interface/conf/graylog2-web-interface.conf" \
