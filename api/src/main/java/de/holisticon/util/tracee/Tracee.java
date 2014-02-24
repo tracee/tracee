@@ -5,6 +5,7 @@ import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -34,9 +35,9 @@ public final class Tracee {
     }
 	
 	protected static TraceeBackend getBackend(final BackendProviderResolver resolver) {
-		final List<TraceeBackendProvider> backendProviders;
+		final Set<TraceeBackendProvider> backendProviders;
 		try {
-			backendProviders = resolver.getContextProviders();
+			backendProviders = resolver.getBackendProviders();
 		} catch (RuntimeException e) {
 			throw new TraceeException("Unable to load available backend providers", e);
 		}
@@ -52,6 +53,6 @@ public final class Tracee {
 			throw new TraceeException("Multiple context providers found. Don't know which one of the following to use: "
 					+ providerClassNames);
 		}
-		return backendProviders.get(0).provideBackend();
+		return backendProviders.iterator().next().provideBackend();
 	}
 }

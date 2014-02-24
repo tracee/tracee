@@ -4,8 +4,8 @@ import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +28,7 @@ public class TraceeTest {
 
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowExceptionWithoutProviders() {
-		final BackendProviderResolver resolver = createTestBackendResolverWith(new ArrayList<TraceeBackendProvider>());
+		final BackendProviderResolver resolver = createTestBackendResolverWith(new HashSet<TraceeBackendProvider>());
 		try {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
@@ -39,7 +39,7 @@ public class TraceeTest {
 
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowExceptionWithMoreThenOneProvider() {
-		final ArrayList<TraceeBackendProvider> backendProvider = new ArrayList<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> backendProvider = new HashSet<TraceeBackendProvider>();
 		backendProvider.add(new TestBackendProvider());
 		backendProvider.add(new TestBackendProvider());
 
@@ -55,7 +55,7 @@ public class TraceeTest {
 
 	@Test
 	public void backendRetrievalShouldReturnBackendWithOneGivenProvider() {
-		final ArrayList<TraceeBackendProvider> backendProvider = new ArrayList<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> backendProvider = new HashSet<TraceeBackendProvider>();
 		backendProvider.add(new TestBackendProvider());
 
 		final TraceeBackend resolvedBackend = Tracee.getBackend(createTestBackendResolverWith(backendProvider));
@@ -63,9 +63,9 @@ public class TraceeTest {
 		assertThat(resolvedBackend, is(not(nullValue())));
 	}
 
-	private BackendProviderResolver createTestBackendResolverWith(List<TraceeBackendProvider> backendProvider) {
+	private BackendProviderResolver createTestBackendResolverWith(Set<TraceeBackendProvider> backendProvider) {
 		final BackendProviderResolver testBackendProvider = Mockito.mock(BackendProviderResolver.class);
-		when(testBackendProvider.getContextProviders()).thenReturn(backendProvider);
+		when(testBackendProvider.getBackendProviders()).thenReturn(backendProvider);
 		return testBackendProvider;
 	}
 
