@@ -41,6 +41,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>de.holisticon.util.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>de.holisticon.util.tracee.backend</groupId>
 			<artifactId>tracee-threadlocal-store</artifactId>
 			<version>0.1-SNAPSHOT</version>
