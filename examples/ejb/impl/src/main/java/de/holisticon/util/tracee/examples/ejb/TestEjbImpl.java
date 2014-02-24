@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class TestEjbImpl implements TestEjb{
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TestEjbImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestEjbImpl.class);
 
 
     @Override
@@ -35,7 +35,7 @@ public class TestEjbImpl implements TestEjb{
 
     @Watchdog
     private final int watchdogError(final int a, final int b) {
-        throw new NullPointerException("Tracee local Remote EJB example: Triggered exception with passed parameters '" + a + "' and '" +b + "'");
+        throw new NullPointerException("Tracee local Remote EJB example: Triggered exception with passed parameters '" + a + "' and '" + b + "'");
     }
 
 }

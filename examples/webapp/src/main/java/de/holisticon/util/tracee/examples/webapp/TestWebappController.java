@@ -17,9 +17,9 @@ import java.net.URL;
 public class TestWebappController {
 
 	public static final String TEST_SOAP_URL = "http://localhost:8080/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl";
-	final Logger LOGGER = LoggerFactory.getLogger(TestWebappController.class);
+	static final Logger LOGGER = LoggerFactory.getLogger(TestWebappController.class);
 
-    @ManagedProperty(value="#{payload}")
+    @ManagedProperty(value = "#{payload}")
     private TestWebappPayload payload;
 
     public void setPayload(TestWebappPayload payload) {

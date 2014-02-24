@@ -29,13 +29,13 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 
 	@Test
 	public void testShouldPropagateNegative() {
-		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX+ AsyncDispatch.name())).thenReturn("a,b,c");
+		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX + AsyncDispatch.name())).thenReturn("a,b,c");
 		assertFalse(unit.shouldProcessParam("foo", AsyncDispatch));
 	}
 
 	@Test
 	public void testShouldAllowRegexInPatterns() {
-		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX+ AsyncDispatch.name())).thenReturn("b[oa]+b");
+		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX + AsyncDispatch.name())).thenReturn("b[oa]+b");
 		assertTrue(unit.shouldProcessParam("baab", AsyncDispatch));
 		assertTrue(unit.shouldProcessParam("boob", AsyncDispatch));
 	}
@@ -47,13 +47,13 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 
 	@Test
 	public void testShouldProcessIfDisabledByConfiguration() {
-		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX+ AsyncDispatch.name())).thenReturn(" \t\n");
+		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX + AsyncDispatch.name())).thenReturn(" \t\n");
 		assertFalse(unit.shouldProcessContext(AsyncDispatch));
 	}
 
 	@Test
 	public void testShouldProcessIfAnyPatternIsGiven() {
-		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX+ AsyncDispatch.name())).thenReturn("a");
+		when(propertyChain.getProperty(CONFIGURATION_KEY_PREFIX + AsyncDispatch.name())).thenReturn("a");
 		assertTrue(unit.shouldProcessContext(AsyncDispatch));
 	}
 

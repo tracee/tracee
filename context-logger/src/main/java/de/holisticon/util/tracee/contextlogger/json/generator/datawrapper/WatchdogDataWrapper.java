@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.contextlogger.json.generator.datawrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
- * Wrapper class for ProceedingJointPoint. Decouples TraceeContextLoggerJsonCreator class from AspectJ dependencies.
+ * Wrapper class for ProceedingJointPoint. Decouples TraceeContextLoggerJsonBuilder class from AspectJ dependencies.
  * @author Tobias Gindler, holisticon AG
  */
 public class WatchdogDataWrapper {

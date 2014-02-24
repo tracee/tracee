@@ -3,7 +3,6 @@ package de.holisticon.util.tracee.jaxrs.container;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 
@@ -39,7 +38,7 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
-			final Map<String,String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
 			final String serializedContext = transportSerialization.render(filtered);
 			if (serializedContext != null)
 				responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedContext);

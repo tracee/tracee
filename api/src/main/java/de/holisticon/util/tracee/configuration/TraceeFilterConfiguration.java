@@ -25,7 +25,7 @@ public interface TraceeFilterConfiguration {
 	 * Returns a map that is a filtered copy of the given {@code unfiltered} map. It contains only keys, that
 	 * are allowed to be processed on this channel.
 	 */
-	Map<String,String> filterDeniedParams(Map<String,String> unfiltered, Channel channel);
+	Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel);
 
 	/**
 	 * @return {@code true} if the current configuration allows context processing on the given {@code channel} at all, {@code} false otherwise.

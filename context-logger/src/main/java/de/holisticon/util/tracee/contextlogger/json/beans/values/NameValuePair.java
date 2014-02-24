@@ -14,9 +14,7 @@ import org.codehaus.jackson.annotate.JsonPropertyOrder;
         isGetterVisibility = JsonAutoDetect.Visibility.NONE,
         fieldVisibility = JsonAutoDetect.Visibility.ANY
 )
-@JsonPropertyOrder(value = {NameValuePair.ATTR_NAME,
-        NameValuePair.ATTR_VALUE}
-)
+@JsonPropertyOrder(value = {NameValuePair.ATTR_NAME, NameValuePair.ATTR_VALUE })
 public class NameValuePair {
 
     public static final String ATTR_NAME = "name";

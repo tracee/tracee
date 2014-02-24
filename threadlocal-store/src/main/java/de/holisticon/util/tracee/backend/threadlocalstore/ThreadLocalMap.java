@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.backend.threadlocalstore;
 import java.util.HashMap;
 import java.util.Map;
 
-class ThreadLocalMap<K,V> extends InheritableThreadLocal<Map<K, V>> {
+class ThreadLocalMap<K, V> extends InheritableThreadLocal<Map<K, V>> {
 
     @Override
     protected final Map<K, V> initialValue() {

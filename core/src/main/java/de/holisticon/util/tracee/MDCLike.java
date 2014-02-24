@@ -9,12 +9,12 @@ public interface MDCLike {
 
     boolean containsKey(String key);
 
-    public void put(String key, String value);
+    void put(String key, String value);
 
-    public String get(String key);
+    String get(String key);
 
-    public void remove(String key);
+    void remove(String key);
 
-    public Map<String,String> getCopyOfContext();
+    Map<String, String> getCopyOfContext();
 
 }

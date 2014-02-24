@@ -16,16 +16,16 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
-import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
 import de.holisticon.util.tracee.contextlogger.presets.Preset;
 
 /**
- * Created by Tobias Gindler, holisticon AG
+ * Created by Tobias Gindler, holisticon AG.
  */
 public class TraceeErrorJsonCreateTest {
 
@@ -36,7 +36,7 @@ public class TraceeErrorJsonCreateTest {
 
         final NullPointerException npe = createException(new NullPointerException("TEST"));
 
-        final String json = TraceeContextLoggerJsonCreator.createJsonCreator().addExceptionCategory(npe).toString();
+        final String json = TraceeContextLoggerJsonBuilder.createJsonCreator().addExceptionCategory(npe).toString();
 
         final Pattern pattern = Pattern.compile(expectedJsonPattern);
         final Matcher matcher = pattern.matcher(json);
@@ -46,7 +46,6 @@ public class TraceeErrorJsonCreateTest {
 
     }
 
-    // @Ignore("pending implementation")
     @Test
     public void createCommonJsonTest() {
 
@@ -55,7 +54,7 @@ public class TraceeErrorJsonCreateTest {
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM, "FE");
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE, "DEV");
 
-        final String json = TraceeContextLoggerJsonCreator.createJsonCreator().addCommonCategory().toString();
+        final String json = TraceeContextLoggerJsonBuilder.createJsonCreator().addCommonCategory().toString();
 
         System.out.println(json);
 
@@ -73,7 +72,7 @@ public class TraceeErrorJsonCreateTest {
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM, "FE");
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE, "DEV");
 
-        final String json = TraceeContextLoggerJsonCreator.createJsonCreator().addJaxwsCategory("req", "res").toString();
+        final String json = TraceeContextLoggerJsonBuilder.createJsonCreator().addJaxwsCategory("req", "res").toString();
 
         final Pattern pattern = Pattern.compile(expectedJsonPattern);
         final Matcher matcher = pattern.matcher(json);
@@ -85,7 +84,6 @@ public class TraceeErrorJsonCreateTest {
 
     }
 
-    // @Ignore("to be fixed")
     @Test
     public void createServletJsonTest() {
 
@@ -101,8 +99,8 @@ public class TraceeErrorJsonCreateTest {
         final String expectedHttpParameterValue2 = "V2";
         final String expectedRequestAttributeName = "RA1";
         final String expectedRequestAttributeValue = "V1";
-        final String[] expectedHttpParameterValues1 = { expectedHttpParameterValue1, expectedHttpParameterValue2 };
-        final String[] expectedHttpParameterValues2 = { expectedHttpParameterValue2 };
+        final String[] expectedHttpParameterValues1 = {expectedHttpParameterValue1, expectedHttpParameterValue2};
+        final String[] expectedHttpParameterValues2 = {expectedHttpParameterValue2};
 
         final String expectedRemoteAddress = "1.1.1.1";
         final String expectedRemoteHost = "test.holisticon.de";
@@ -149,7 +147,7 @@ public class TraceeErrorJsonCreateTest {
         when(httpServletRequestMock.getAttributeNames()).thenReturn(expectedRequestAttributeNames);
         when(httpServletRequestMock.getAttribute(expectedRequestAttributeName)).thenReturn(expectedRequestAttributeValue);
 
-        final String json = TraceeContextLoggerJsonCreator.createJsonCreator()
+        final String json = TraceeContextLoggerJsonBuilder.createJsonCreator()
                 .addServletCategory(ServletDataWrapper.wrap(httpServletRequestMock, httpServletResponsetMock)).toString();
 
         assertThat(json, CoreMatchers.is(expectedJson));
@@ -178,7 +176,7 @@ public class TraceeErrorJsonCreateTest {
         final String expectedJsonPattern = ".*x-tracee-common.*x-tracee-jaxws.*x-tracee-exception.*";
         final NullPointerException npe = createException(new NullPointerException("TEST"));
 
-        final String json = TraceeContextLoggerJsonCreator.createJsonCreator().addCommonCategory().addExceptionCategory(npe).addJaxwsCategory("req", "res")
+        final String json = TraceeContextLoggerJsonBuilder.createJsonCreator().addCommonCategory().addExceptionCategory(npe).addJaxwsCategory("req", "res")
                 .toString();
 
         final Pattern pattern = Pattern.compile(expectedJsonPattern);
@@ -191,15 +189,12 @@ public class TraceeErrorJsonCreateTest {
 
     }
 
-    private <T> T createException(final T exception) {
-        T tmp = null;
+    private <T extends Throwable> T createException(final T exception) {
         try {
-            throw (Throwable)exception;
+            throw exception;
         }
         catch (final Throwable f) {
-            tmp = (T)f;
+            return (T) f;
         }
-        return tmp;
     }
-
 }

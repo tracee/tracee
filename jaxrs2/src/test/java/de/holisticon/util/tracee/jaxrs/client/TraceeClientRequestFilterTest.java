@@ -39,7 +39,7 @@ public class TraceeClientRequestFilterTest {
     public void testFilter() throws IOException {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
-        assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
                 containsString("\"foo\":\"bar\""));
     }
 
@@ -47,8 +47,8 @@ public class TraceeClientRequestFilterTest {
     public void testFilterCreatesRequestId() throws IOException {
         unit.filter(clientRequestContext);
         assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
-        assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\""));
+        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+                containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
     }
 
     @Test
@@ -56,8 +56,8 @@ public class TraceeClientRequestFilterTest {
         traceeBackend.put(TraceeConstants.REQUEST_ID_KEY, "foo");
         unit.filter(clientRequestContext);
         assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
-        assertThat((String)clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\"foo\""));
+        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+                containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\"foo\""));
     }
 
 }

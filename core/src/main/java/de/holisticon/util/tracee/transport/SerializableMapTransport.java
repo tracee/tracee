@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author Daniel Wegener (Holisticon AG)
  */
-public final class SerializableMapTransport implements TransportSerialization<Map<String,String> > {
+public final class SerializableMapTransport implements TransportSerialization<Map<String, String>> {
 
 	@Override
 	public Map<String, String> parse(Map<String, String> serialized) {

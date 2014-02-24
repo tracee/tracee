@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.jaxrs.client;
 
 import de.holisticon.util.tracee.*;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 
@@ -40,7 +39,7 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
         }
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
-			final Map<String,String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
+			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
 			final String serializedTraceeContext = transportSerialization.render(filtered);
 			if (serializedTraceeContext == null)
 				return;

@@ -11,7 +11,7 @@ public class TestClass {
         abc.equals(def);
     }
     public static void main(final String[] args) {
-        new TestClass().throwException(null,"abc");
+        new TestClass().throwException(null, "abc");
     }
 
 }

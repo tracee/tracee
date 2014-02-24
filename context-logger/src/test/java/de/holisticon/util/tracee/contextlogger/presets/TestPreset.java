@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.contextlogger.presets;
 /**
  * Created by Tobias Gindler, holisticon AG on 07.02.14.
  */
-public class TestPreset implements PresetConfig{
+public class TestPreset implements PresetConfig {
 
     @Override
     public boolean showCommon() {

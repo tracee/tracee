@@ -7,7 +7,7 @@ import javax.faces.bean.RequestScoped;
  * Created by Tobias Gindler, holisticon AG on 10.01.14.
  */
 
-@ManagedBean(name="payload")
+@ManagedBean(name = "payload")
 @RequestScoped
 public class TestWebappPayload {
 

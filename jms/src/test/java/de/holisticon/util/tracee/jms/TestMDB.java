@@ -3,8 +3,8 @@ package de.holisticon.util.tracee.jms;
 import javax.annotation.Resource;
 import javax.ejb.MessageDriven;
 import javax.interceptor.Interceptors;
-import javax.jms.*;
 import java.lang.IllegalStateException;
+import javax.jms.*;
 
 /**
  * @author Daniel Wegener (Holisticon AG)

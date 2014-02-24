@@ -35,10 +35,10 @@ public class JbossLoggingMdcLikeAdapter implements MDCLike {
     @Override
     public Map<String, String> getCopyOfContext() {
         final Map<String, Object> map = MDC.getMap();
-        final Map<String,String> copy = new HashMap<String, String>(map.size());
+        final Map<String, String> copy = new HashMap<String, String>(map.size());
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (!(entry.getValue() instanceof String )) continue;
-            copy.put(entry.getKey(), (String)entry.getValue());
+            if (!(entry.getValue() instanceof String)) continue;
+            copy.put(entry.getKey(), (String) entry.getValue());
         }
         return copy;
     }

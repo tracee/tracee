@@ -40,7 +40,7 @@ public final class ServletRemoteInfoSubCategory {
         this(null, null, null);
     }
 
-    public ServletRemoteInfoSubCategory (String httpRemoteAddress,
+    public ServletRemoteInfoSubCategory(String httpRemoteAddress,
                                          String httpRemoteHost,
                                          Integer httpRemotePort) {
         this.httpRemoteAddress = httpRemoteAddress;

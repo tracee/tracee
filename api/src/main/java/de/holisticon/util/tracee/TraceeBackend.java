@@ -68,7 +68,7 @@ public interface TraceeBackend extends Map<String,String> {
      * @return a view over all
      */
     @Override
-    Set<Map.Entry<String,String>> entrySet();
+    Set<Map.Entry<String, String>> entrySet();
 
     /**
      * Puts a key into this backend.

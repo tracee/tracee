@@ -10,7 +10,7 @@ public class FullPreset implements PresetConfig{
     /**
      * Empty constructor does nothing.
      */
-    FullPreset () {
+    FullPreset() {
 
     }
 

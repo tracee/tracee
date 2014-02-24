@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.jaxws.protocol;
 
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
-import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -23,7 +22,7 @@ public class SoapHeaderTransport  {
 	public Map<String, String> parse(SOAPHeader header) {
 		final NodeList nodeList = header.getElementsByTagName(
 				TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_TAG_NAME);
-		final Map<String,String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<String, String>();
 		if (nodeList.getLength() > 0) {
 			for (int i = 0; i < nodeList.getLength(); i++) {
 
@@ -49,7 +48,7 @@ public class SoapHeaderTransport  {
 	}
 
 	/**
-	 * Renders a given context map into a given soapHeader
+	 * Renders a given context map into a given soapHeader.
 	 */
 	public void renderTo(Map<String, String> context, SOAPHeader soapHeader) throws SOAPException {
 		// create soap header element for tracee entries

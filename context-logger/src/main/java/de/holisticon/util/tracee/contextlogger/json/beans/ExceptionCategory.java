@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonPropertyOrder;
         fieldVisibility = JsonAutoDetect.Visibility.ANY
 )
 @JsonPropertyOrder(
-        value = {ExceptionCategory.ATTR_MESSAGE, ExceptionCategory.ATTR_STACKTRACE}
+        value = { ExceptionCategory.ATTR_MESSAGE, ExceptionCategory.ATTR_STACKTRACE }
 )
 public final class ExceptionCategory {
 

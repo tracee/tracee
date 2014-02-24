@@ -37,13 +37,13 @@ public class TraceeContainerResponseFilterTest {
     public void testFilterWritesContextToResponse() throws IOException {
         backend.put("foo", "bar");
         unit.filter(null, responseContext);
-        assertThat((String)responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+        assertThat((String) responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
                 equalTo("{\"foo\":\"bar\"}"));
     }
 
     @Test
     public void testFilterCleansUpBackend() throws IOException {
-        backend.put("random","stuff");
+        backend.put("random", "stuff");
         unit.filter(null, responseContext);
         assertTrue("backend is empty", backend.isEmpty());
     }

@@ -20,15 +20,10 @@ import java.util.Enumeration;
 public class TraceeInterceptor implements HandlerInterceptor {
 
 	private final TraceeBackend backend;
-	
 	private final TransportSerialization<String> httpJsonHeaderSerialization;
-
 	private String outgoingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
-	
 	private String incomingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
-	
 	private boolean acceptIncomingContext = false;
-	
 	private boolean respondWithContext = false;
 
 	public TraceeInterceptor() {

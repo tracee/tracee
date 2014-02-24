@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger;
 
 
 import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
+import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,7 +11,6 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonCreator;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
@@ -70,7 +70,7 @@ public class WatchdogAspect {
 
                         if (!watchdog.suppressThrowsExceptions() || (watchdog.suppressThrowsExceptions() && !mustPreventExceptionLogging)) {
 
-                            final TraceeContextLoggerJsonCreator errorJsonCreator = TraceeContextLoggerJsonCreator.createJsonCreator()
+                            final TraceeContextLoggerJsonBuilder errorJsonCreator = TraceeContextLoggerJsonBuilder.createJsonCreator()
                                     .addPrefixedMessage("TRACEE WATCHDOG :")
                                     .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint))
                                     .addCommonCategory()

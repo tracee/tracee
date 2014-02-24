@@ -1,14 +1,14 @@
 package de.holisticon.util.tracee.contextlogger.presets;
 
 /**
- * Created by Tobias Gindler, holisticon AG on 07.02.14.
+ * Created by Tobias Gindler (Holisticon AG).
  */
-public class EnhancedPreset extends FullPreset{
+public class EnhancedPreset extends FullPreset {
 
     /**
      * Empty constructor does nothing.
      */
-    EnhancedPreset () {
+    EnhancedPreset() {
         super();
     }
 

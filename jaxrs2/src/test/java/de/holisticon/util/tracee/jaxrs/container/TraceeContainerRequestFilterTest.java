@@ -41,7 +41,7 @@ public class TraceeContainerRequestFilterTest {
 
     @Test
     public void testFilterDeserializesExistingRequestId() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\""+TraceeConstants.REQUEST_ID_KEY+"\":\"foo\"}");
+        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"" + TraceeConstants.REQUEST_ID_KEY + "\":\"foo\"}");
         unit.filter(requestContext);
         assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
     }

@@ -40,7 +40,7 @@ public class CustomPreset implements PresetConfig{
      * Gets the wrapped presetConfig instance.
      * @return the wrapped preset instance
      */
-    public PresetConfig getWrappedPresetConfig () {
+    public PresetConfig getWrappedPresetConfig() {
         return preset;
     }
 

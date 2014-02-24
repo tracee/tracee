@@ -16,7 +16,7 @@ public class Slf4jMdcAdapter implements MDCLike {
 
     @Override
     public void put(String key, String value) {
-        MDC.put(key,value);
+        MDC.put(key, value);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class Slf4jMdcAdapter implements MDCLike {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, String> getCopyOfContext() {
-        return (Map<String,String>)MDC.getCopyOfContextMap();
+        return (Map<String, String>) MDC.getCopyOfContextMap();
     }
 }

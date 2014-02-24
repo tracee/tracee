@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface Connector {
 
-    void init(Map<String,String> properties);
-    void sendErrorReport (String json);
+    void init(Map<String, String> properties);
+    void sendErrorReport(String json);
 
 }

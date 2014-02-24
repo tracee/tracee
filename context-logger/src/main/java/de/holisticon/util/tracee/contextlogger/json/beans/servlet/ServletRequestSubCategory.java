@@ -63,14 +63,14 @@ public final class ServletRequestSubCategory {
         this(null, null, null, null, null, null, null);
     }
 
-    public ServletRequestSubCategory (String url,
-                                      String httpMethod,
-                                      List<ServletHttpParameter> httpParameters,
-                                      List<ServletHttpHeader> httpRequestHeaders,
-                                      ServletRemoteInfoSubCategory remoteInfo,
-                                      ServletRequestEnhancedInfoSubCategory enhancedRequestInfo,
-                                      List<ServletCookie> cookies
-                                      ) {
+    public ServletRequestSubCategory(String url,
+                                     String httpMethod,
+                                     List<ServletHttpParameter> httpParameters,
+                                     List<ServletHttpHeader> httpRequestHeaders,
+                                     ServletRemoteInfoSubCategory remoteInfo,
+                                     ServletRequestEnhancedInfoSubCategory enhancedRequestInfo,
+                                     List<ServletCookie> cookies
+                                    ) {
         this.url = url;
         this.httpMethod = httpMethod;
         this.httpParameters = httpParameters;

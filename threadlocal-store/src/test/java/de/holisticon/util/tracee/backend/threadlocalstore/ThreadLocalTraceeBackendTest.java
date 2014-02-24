@@ -1,8 +1,6 @@
 package de.holisticon.util.tracee.backend.threadlocalstore;
 
 import de.holisticon.util.tracee.ThreadLocalHashSet;
-import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -15,9 +13,8 @@ import static org.hamcrest.Matchers.hasEntry;
  */
 public class ThreadLocalTraceeBackendTest {
 
-    private ThreadLocalMap<String,String> backedMap = new ThreadLocalMap<String,String>();
+    private ThreadLocalMap<String, String> backedMap = new ThreadLocalMap<String,String>();
     private MdcLikeThreadLocalMapAdapter adapter = new MdcLikeThreadLocalMapAdapter(backedMap);
-
     private ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend(adapter, new ThreadLocalHashSet<String>());
 
     @Test

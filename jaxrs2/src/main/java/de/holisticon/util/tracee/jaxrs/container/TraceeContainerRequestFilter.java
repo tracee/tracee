@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.jaxrs.container;
 
 import de.holisticon.util.tracee.*;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 

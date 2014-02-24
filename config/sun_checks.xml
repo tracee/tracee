@@ -53,7 +53,7 @@
 
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
-    <module name="FileTabCharacter"/>
+    <!--<module name="FileTabCharacter"/>-->
 
     <!-- Miscellaneous other checks.                   -->
     <!-- See http://checkstyle.sf.net/config_misc.html -->
@@ -106,7 +106,7 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
-            <property name="max" value="120"/>
+            <property name="max" value="140"/>
         </module>
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>

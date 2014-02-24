@@ -9,7 +9,7 @@ import java.util.Map;
  * A Connector to send error reports to the logger.
  * Created by Tobias Gindler, holisticon AG on 07.02.14.
  */
-public class LogConnector implements Connector{
+public class LogConnector implements Connector {
 
     private TraceeLogger logger = Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class);
 

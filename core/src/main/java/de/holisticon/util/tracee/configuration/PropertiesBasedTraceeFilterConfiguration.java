@@ -16,7 +16,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	private final PropertyChain properties;
 
 	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
-		this. properties = propertyChain;
+		this.properties = propertyChain;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public int generatedRequestIdLength() {
-		return parseIntOrZero( properties.getProperty(GENERATE_REQUEST_ID));
+		return parseIntOrZero(properties.getProperty(GENERATE_REQUEST_ID));
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public int generatedSessionIdLength() {
-		return parseIntOrZero( properties.getProperty(GENERATE_SESSION_ID));
+		return parseIntOrZero(properties.getProperty(GENERATE_SESSION_ID));
 	}
 
 	@Override
 	public Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
-		final HashMap<String,String> filtered = new HashMap<String,String>(unfiltered.size());
+		final HashMap<String, String> filtered = new HashMap<String, String>(unfiltered.size());
 		for (Map.Entry<String, String> entry : unfiltered.entrySet()) {
 			if (shouldProcessParam(entry.getKey(), channel)) {
 				filtered.put(entry.getKey(), entry.getValue());

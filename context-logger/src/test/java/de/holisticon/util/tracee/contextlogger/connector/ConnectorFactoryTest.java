@@ -1,15 +1,11 @@
 package de.holisticon.util.tracee.contextlogger.connector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
+import java.util.Set;
 
 /**
  * Test for ConnectorFactory.

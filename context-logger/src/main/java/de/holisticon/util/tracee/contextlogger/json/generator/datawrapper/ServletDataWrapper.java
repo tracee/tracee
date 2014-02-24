@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Wrapper class for servlet data
+ * Wrapper class for servlet data.
  * 
  * @author Tobias Gindler, holisticon AG
  */

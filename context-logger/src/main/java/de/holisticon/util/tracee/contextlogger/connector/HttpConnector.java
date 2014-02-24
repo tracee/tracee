@@ -85,8 +85,7 @@ public class HttpConnector implements Connector {
             final ProxyServer proxy;
             if (proxyUser != null && proxyPassword != null) {
                 proxy = new ProxyServer(proxyHost, proxyPort, proxyUser, proxyPassword);
-            }
-            else {
+            } else {
                 proxy = new ProxyServer(proxyHost, proxyPort);
             }
 
@@ -134,8 +133,7 @@ public class HttpConnector implements Connector {
             if (value != null) {
                 return Integer.valueOf(value);
             }
-        }
-        catch (final NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             // ignore
         }
         return defaultValue;

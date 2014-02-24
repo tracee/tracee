@@ -40,7 +40,7 @@ public final class ServletSessionSubCategory {
         this(null, null, null);
     }
 
-    public ServletSessionSubCategory (
+    public ServletSessionSubCategory(
             Boolean sessionExists,
             String userName,
             List<ServletSessionAttribute> sessionAttributes

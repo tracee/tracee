@@ -3,7 +3,6 @@ package de.holisticon.util.tracee.jaxrs.client;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 
@@ -38,7 +37,7 @@ public class TraceeClientResponseFilter implements ClientResponseFilter {
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         final String serializedContext = responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
         if (serializedContext != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
-			final Map<String,String> parsed = transportSerialization.parse(serializedContext);
+			final Map<String, String> parsed = transportSerialization.parse(serializedContext);
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, IncomingResponse);
 			backend.putAll(filtered);
 		}

@@ -10,10 +10,10 @@ import java.util.Map;
  * A testhelper for TraceeBackend dependent tests.
  * @author Daniel Wegener (Holisticon AG)
  */
-public class SimpleTraceeBackend extends HashMap<String,String> implements TraceeBackend {
+public class SimpleTraceeBackend extends HashMap<String, String> implements TraceeBackend {
 
 
-	private Map<String,String> valuesBeforeLastClear = Collections.emptyMap();
+	private Map<String, String> valuesBeforeLastClear = Collections.emptyMap();
 
 	public static SimpleTraceeBackend createNonLoggingAllPermittingBackend() {
 		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration(), new NoopTraceeLoggerFactory());

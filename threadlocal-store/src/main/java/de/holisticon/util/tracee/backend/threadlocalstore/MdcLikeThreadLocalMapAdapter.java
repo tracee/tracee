@@ -10,9 +10,9 @@ import java.util.Map;
  */
 class MdcLikeThreadLocalMapAdapter implements MDCLike {
 
-    private final ThreadLocalMap<String,String> threadLocalMap;
+    private final ThreadLocalMap<String, String> threadLocalMap;
 
-    public MdcLikeThreadLocalMapAdapter(ThreadLocalMap<String,String> threadLocalMap) {
+    public MdcLikeThreadLocalMapAdapter(ThreadLocalMap<String, String> threadLocalMap) {
         this.threadLocalMap = threadLocalMap;
     }
 
@@ -24,7 +24,7 @@ class MdcLikeThreadLocalMapAdapter implements MDCLike {
 
     @Override
     public void put(String key, String value) {
-        threadLocalMap.get().put(key,value);
+        threadLocalMap.get().put(key, value);
     }
 
     @Override

@@ -9,7 +9,7 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 	public static final NoopTraceeLoggerFactory INSTANCE = new NoopTraceeLoggerFactory();
 
 	@Override
-	public TraceeLogger getLogger(Class<?> clazz) {
+	public final TraceeLogger getLogger(Class<?> clazz) {
 		return new TraceeLogger() {
 			@Override
 			public void debug(Object message) {

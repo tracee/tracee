@@ -11,37 +11,37 @@ public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfigura
 
 
 	@Override
-	public boolean shouldProcessParam(String paramName, Channel channel) {
+	public final boolean shouldProcessParam(String paramName, Channel channel) {
 		return true;
 	}
 
 	@Override
-	public Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
+	public final Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
 		return unfiltered;
 	}
 
 	@Override
-	public boolean shouldProcessContext(Channel channel) {
+	public final boolean shouldProcessContext(Channel channel) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldGenerateRequestId() {
+	public final boolean shouldGenerateRequestId() {
 		return true;
 	}
 
 	@Override
-	public int generatedRequestIdLength() {
+	public final int generatedRequestIdLength() {
 		return 32;
 	}
 
 	@Override
-	public boolean shouldGenerateSessionId() {
+	public final boolean shouldGenerateSessionId() {
 		return true;
 	}
 
 	@Override
-	public int generatedSessionIdLength() {
+	public final int generatedSessionIdLength() {
 		return 32;
 	}
 }

@@ -10,17 +10,17 @@ public final class TraceeContextLoggerConstants {
         // hide constructor
     }
 
-    public final static String SYSTEM_PROPERTY_PREFIX = "de.holisticon.util.tracee.contextlogger.";
-    public final static String SYSTEM_PROPERTY_CONNECTOR_PREFIX = SYSTEM_PROPERTY_PREFIX + "connector.";
+    public static final String SYSTEM_PROPERTY_PREFIX = "de.holisticon.util.tracee.contextlogger.";
+    public static final String SYSTEM_PROPERTY_CONNECTOR_PREFIX = SYSTEM_PROPERTY_PREFIX + "connector.";
 
-    public final static String SYSTEM_PROPERTY_NAME_STAGE = SYSTEM_PROPERTY_PREFIX + "tracee-standard-stage";
-    public final static String SYSTEM_PROPERTY_NAME_SYSTEM = SYSTEM_PROPERTY_PREFIX + "tracee-standard-system";
+    public static final String SYSTEM_PROPERTY_NAME_STAGE = SYSTEM_PROPERTY_PREFIX + "tracee-standard-stage";
+    public static final String SYSTEM_PROPERTY_NAME_SYSTEM = SYSTEM_PROPERTY_PREFIX + "tracee-standard-system";
 
-    public final static String SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET = SYSTEM_PROPERTY_PREFIX + "preset";
-    public final static String SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS = SYSTEM_PROPERTY_PREFIX + "preset.class";
+    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET = SYSTEM_PROPERTY_PREFIX + "preset";
+    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS = SYSTEM_PROPERTY_PREFIX + "preset.class";
 
-    public final static String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE = "class";
-    public final static String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN = "de\\.holisticon\\.util\\.tracee\\.contextlogger\\.connector\\.(\\w*?)\\."+ SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
+    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE = "class";
+    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN = "de\\.holisticon\\.util\\.tracee\\.contextlogger\\.connector\\.(\\w*?)\\."+ SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
 
 
 }

@@ -1,11 +1,9 @@
 package de.holisticon.util.tracee.outbound.httpclient;
 
 import de.holisticon.util.tracee.SimpleTraceeBackend;
-import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import org.apache.http.*;
-import org.apache.http.message.BasicHttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HttpContext;
@@ -20,8 +18,8 @@ import static org.mockito.Mockito.mock;
  */
 public class TraceeHttpResponseInterceptorTest {
 
-	final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    final TraceeHttpResponseInterceptor unit = new TraceeHttpResponseInterceptor(backend);
+	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+    private final TraceeHttpResponseInterceptor unit = new TraceeHttpResponseInterceptor(backend);
 
     @Test
     public void testProcess() throws Exception {

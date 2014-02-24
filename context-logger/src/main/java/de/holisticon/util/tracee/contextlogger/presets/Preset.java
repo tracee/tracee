@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.contextlogger.presets;
 
 import de.holisticon.util.tracee.Tracee;
-import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 
@@ -27,25 +26,18 @@ public enum Preset {
     }
 
     public PresetConfig createOrGetPresetConfig() {
-        PresetConfig tmpPreset = null;
-
         switch (this) {
             case FULL:
-                tmpPreset = new FullPreset();
-                break;
+                return new FullPreset();
             case BASIC:
-                tmpPreset = new BasicPreset();
-                break;
+                return new BasicPreset();
             case ENHANCED:
-                tmpPreset = new EnhancedPreset();
-                break;
+                return new EnhancedPreset();
             case CUSTOM:
-                tmpPreset = new CustomPreset(Preset.useCustomPreset(), Preset.getCustomClassName());
-                break;
+                return new CustomPreset(Preset.useCustomPreset(), Preset.getCustomClassName());
+			default:
+				return null;
         }
-
-
-        return tmpPreset;
     }
 
 

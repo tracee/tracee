@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by Tobias Gindler, holisticon AG on 21.02.14.
  */
-public class TraceeConnector implements Connector{
+public class TraceeConnector implements Connector {
 
     public static final String MDC_NAME = "context-info-stack";
     public static final String SEPARATOR = "|||---|||";

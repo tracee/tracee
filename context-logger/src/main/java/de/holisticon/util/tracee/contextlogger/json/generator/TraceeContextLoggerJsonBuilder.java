@@ -18,7 +18,7 @@ import de.holisticon.util.tracee.contextlogger.presets.Preset;
  * Creator class to generate context json via a fluent api.
  * Created by Tobias Gindler, holisticon AG on 17.12.13.
  */
-public class TraceeContextLoggerJsonCreator implements PrintableByConnector{
+public class TraceeContextLoggerJsonBuilder implements PrintableByConnector{
 
     public enum TYPE {
         ENDPOINT,
@@ -35,49 +35,49 @@ public class TraceeContextLoggerJsonCreator implements PrintableByConnector{
     private WatchdogCategory watchdogCategory = null;
     private String reportType = null;
 
-    private TraceeContextLoggerJsonCreator() {
+    private TraceeContextLoggerJsonBuilder() {
     }
 
-    public static TraceeContextLoggerJsonCreator createJsonCreator() {
-        return new TraceeContextLoggerJsonCreator();
+    public static TraceeContextLoggerJsonBuilder createJsonCreator() {
+        return new TraceeContextLoggerJsonBuilder();
     }
 
-    public final TraceeContextLoggerJsonCreator addCommonCategory() {
+    public final TraceeContextLoggerJsonBuilder addCommonCategory() {
         this.categoryCommon = CommonCategoryCreator.createCommonCategory();
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addExceptionCategory(final Throwable throwable) {
+    public final TraceeContextLoggerJsonBuilder addExceptionCategory(final Throwable throwable) {
         this.categoryException = ExceptionCategoryCreator.createExceptionCategory(throwable);
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addJaxwsCategory(final String soapRequest, final String soapResponse) {
+    public final TraceeContextLoggerJsonBuilder addJaxwsCategory(final String soapRequest, final String soapResponse) {
         this.categoryJaxws = JaxWsCategoryCreator.createJaxWsCategory(soapRequest, soapResponse);
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addServletCategory(final ServletDataWrapper servletDataWrapper) {
+    public final TraceeContextLoggerJsonBuilder addServletCategory(final ServletDataWrapper servletDataWrapper) {
         this.categoryServlet = ServletCategoryCreator.createServletCategory(servletDataWrapper);
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addTraceeCategory(final TraceeBackend traceeBackend) {
+    public final TraceeContextLoggerJsonBuilder addTraceeCategory(final TraceeBackend traceeBackend) {
         this.categoryTracee = TraceeCategoryCreator.createTraceeCategory(traceeBackend);
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addPrefixedMessage(final String prefixedMessage) {
+    public final TraceeContextLoggerJsonBuilder addPrefixedMessage(final String prefixedMessage) {
         this.prefixedMessage = prefixedMessage;
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addWatchdogCategory(final WatchdogDataWrapper watchdogData) {
+    public final TraceeContextLoggerJsonBuilder addWatchdogCategory(final WatchdogDataWrapper watchdogData) {
         this.watchdogCategory = WatchdogCategoryCreator.createWatchdogCategory(watchdogData);
         return this;
     }
 
-    public final TraceeContextLoggerJsonCreator addReportType (final TYPE type) {
+    public final TraceeContextLoggerJsonBuilder addReportType (final TYPE type) {
         this.reportType = type != null ? type.name() : null;
         return this;
     }

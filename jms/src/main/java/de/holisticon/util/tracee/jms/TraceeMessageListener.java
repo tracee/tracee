@@ -3,7 +3,6 @@ package de.holisticon.util.tracee.jms;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -27,6 +26,7 @@ public class TraceeMessageListener {
 		this.backend = backend;
 	}
 
+	@SuppressWarnings("unused")
 	public TraceeMessageListener() {
 		this(Tracee.getBackend());
 	}
@@ -46,6 +46,7 @@ public class TraceeMessageListener {
         }
     }
 
+	@SuppressWarnings("unchecked")
     public void beforeProcessing(Message message) throws JMSException {
 
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {

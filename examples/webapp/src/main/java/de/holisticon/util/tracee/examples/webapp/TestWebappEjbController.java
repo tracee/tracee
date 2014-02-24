@@ -17,12 +17,12 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class TestWebappEjbController {
 
-    final Logger LOGGER = LoggerFactory.getLogger(TestWebappEjbController.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(TestWebappEjbController.class);
 
     @EJB
     private TestEjb testEjb;
 
-    @ManagedProperty(value="#{payload}")
+    @ManagedProperty(value = "#{payload}")
     private TestWebappPayload payload;
 
     public void setPayload(TestWebappPayload payload) {
@@ -32,7 +32,7 @@ public class TestWebappEjbController {
     public String multiplyEjbRemotely() {
         LOGGER.info("call multiply on remote ejb method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
-            payload.setResult(testEjb.multiply(payload.getFirstArgument(),payload.getSecondArgument()));
+            payload.setResult(testEjb.multiply(payload.getFirstArgument(), payload.getSecondArgument()));
         }
         return null;
     }
@@ -40,14 +40,14 @@ public class TestWebappEjbController {
     public String sumEjbRemotely() {
         LOGGER.info("call sum on remote ejb method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
-            payload.setResult(testEjb.sum(payload.getFirstArgument(),payload.getSecondArgument()));
+            payload.setResult(testEjb.sum(payload.getFirstArgument(), payload.getSecondArgument()));
         }
         return null;
     }
 
     public String triggerEjbRemoteError() {
         LOGGER.info("Trigger remote ejb error");
-        testEjb.error(payload.getFirstArgument(),payload.getSecondArgument());
+        testEjb.error(payload.getFirstArgument(), payload.getSecondArgument());
         return null;
     }
 

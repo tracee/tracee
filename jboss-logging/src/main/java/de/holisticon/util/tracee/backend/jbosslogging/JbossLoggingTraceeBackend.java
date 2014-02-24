@@ -4,12 +4,10 @@ import de.holisticon.util.tracee.MDCLike;
 import de.holisticon.util.tracee.MDCLikeTraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.TraceeLoggerFactory;
-import org.jboss.logging.MDC;
-
 import java.util.Set;
 
 /**
- * TraceeBackend provided using the jboss logging {@link MDC}.
+ * TraceeBackend provided using the {@link org.jboss.logging.MDC}.
  *
  * @author Daniel
  */
@@ -20,7 +18,7 @@ final class JbossLoggingTraceeBackend extends MDCLikeTraceeBackend {
     }
 
     @Override
-    public final TraceeLoggerFactory getLoggerFactory() {
+    public TraceeLoggerFactory getLoggerFactory() {
 		return new TraceeLoggerFactory() {
 			@Override
 			public TraceeLogger getLogger(Class<?> clazz) {

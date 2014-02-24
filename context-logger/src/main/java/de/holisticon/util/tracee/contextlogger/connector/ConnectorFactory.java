@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
  */
 public final class ConnectorFactory {
 
-    private final static Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
-    private final static String CONNECTOR_PROPERTY_GRABBER_PATTERN = TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
+    private static final Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
+    private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN = TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
 
-    private final static TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(ConnectorFactory.class);
+    private static final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(ConnectorFactory.class);
 
-    private final static Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
+    private static final Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
 
     static {
         WELL_KNOW_CONNECTOR_MAPPINGS.put(HttpConnector.class.getName(), HttpConnector.class.getCanonicalName());
@@ -29,7 +29,7 @@ public final class ConnectorFactory {
 
     private final Map<String, Connector> connectorMap = new HashMap<String, Connector>();
 
-    private final static ConnectorFactory instance = new ConnectorFactory();
+    private static final ConnectorFactory INSTANCE = new ConnectorFactory();
 
     /**
      * private Constructor. Handles initialization of connectors.
@@ -38,12 +38,12 @@ public final class ConnectorFactory {
         init();
     }
 
-    public static ConnectorFactory getInstance () {
-        return instance;
+    public static ConnectorFactory getInstance() {
+        return INSTANCE;
     }
 
     public static void sendErrorReportToConnectors(PrintableByConnector printableByConnector) {
-        instance.localSendErrorReportToConnectors(printableByConnector);
+		INSTANCE.localSendErrorReportToConnectors(printableByConnector);
     }
 
 

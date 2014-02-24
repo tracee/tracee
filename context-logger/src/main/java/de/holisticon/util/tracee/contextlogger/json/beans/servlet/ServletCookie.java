@@ -46,7 +46,7 @@ public final class ServletCookie {
         this(null);
     }
 
-    public ServletCookie (Cookie cookie) {
+    public ServletCookie(Cookie cookie) {
 
         this.name = cookie.getName();
         this.value = cookie.getValue();

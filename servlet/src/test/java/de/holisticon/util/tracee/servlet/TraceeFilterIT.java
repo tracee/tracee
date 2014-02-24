@@ -66,7 +66,7 @@ public class TraceeFilterIT {
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inServlet\":\"yes\""));
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
-		assertThat(traceeResponseHeader.getValue(), containsString("\""+TraceeConstants.REQUEST_ID_KEY+"\":\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
 	}
 
 	public static final class SillyServlet extends HttpServlet {

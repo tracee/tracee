@@ -18,7 +18,7 @@ final class Log4jTraceeBackend extends MDCLikeTraceeBackend {
     }
 
     @Override
-    public final TraceeLoggerFactory getLoggerFactory() {
+    public TraceeLoggerFactory getLoggerFactory() {
 		return new TraceeLoggerFactory() {
 			@Override
 			public TraceeLogger getLogger(Class<?> clazz) {

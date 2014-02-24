@@ -41,7 +41,7 @@ public class ServletResponseSubCategory {
     }
 
 
-    public ServletResponseSubCategory (Integer httpStatusCode, List<ServletHttpHeader> httpResponseHeaders) {
+    public ServletResponseSubCategory(Integer httpStatusCode, List<ServletHttpHeader> httpResponseHeaders) {
 
         this.httpStatusCode = httpStatusCode;
         this.httpResponseHeaders = httpResponseHeaders;

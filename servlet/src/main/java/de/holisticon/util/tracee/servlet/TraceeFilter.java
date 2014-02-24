@@ -18,8 +18,6 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
 /**
- * <h2>Configuration</h2>
- *
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeFilter implements Filter {
@@ -60,7 +58,6 @@ public class TraceeFilter implements Filter {
         if (configuration.shouldGenerateSessionId() && !backend.containsKey(TraceeConstants.SESSION_ID_KEY)) {
             final HttpSession session = request.getSession(false);
             if (session != null) {
-				//TODO: hashing with variable length
                 backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId(), configuration.generatedSessionIdLength()));
             }
         }

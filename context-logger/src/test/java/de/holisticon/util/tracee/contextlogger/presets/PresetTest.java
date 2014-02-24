@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 public class PresetTest {
 
     @Test
-    public void testSystemPropertyPreset () {
+    public void testSystemPropertyPreset() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.CUSTOM.name());
         Preset.reload();
@@ -22,7 +22,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testSystemPropertyPresetNonCustom () {
+    public void testSystemPropertyPresetNonCustom() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.BASIC.name());
         Preset.reload();
@@ -31,7 +31,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testSystemPropertyPresetClass () {
+    public void testSystemPropertyPresetClass() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, TestPreset.class.getCanonicalName());
         Preset.reload();
@@ -40,7 +40,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testFallbackCustomPresetWithEmptyClass () {
+    public void testFallbackCustomPresetWithEmptyClass() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.CUSTOM.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, "");
@@ -56,7 +56,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testFallbackCustomPresetWithNonexistingClass () {
+    public void testFallbackCustomPresetWithNonexistingClass() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.CUSTOM.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, "abc");
@@ -72,7 +72,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testCustomPresetWithExistingClass () {
+    public void testCustomPresetWithExistingClass() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.CUSTOM.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, TestPreset.class.getCanonicalName());
@@ -89,7 +89,7 @@ public class PresetTest {
     }
 
     @Test
-         public void testBasicPrese () {
+         public void testBasicPrese() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.BASIC.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, "");
@@ -104,7 +104,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testEnhancredPrese () {
+    public void testEnhancredPrese() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.ENHANCED.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, "");
@@ -119,7 +119,7 @@ public class PresetTest {
     }
 
     @Test
-    public void testFullPrese () {
+    public void testFullPrese() {
 
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET, Preset.FULL.name());
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS, "");

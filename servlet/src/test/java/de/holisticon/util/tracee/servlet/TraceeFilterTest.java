@@ -2,8 +2,6 @@ package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -46,7 +44,7 @@ public class TraceeFilterTest {
     @Test
     public void testDoFilterRespondsWithRequestId() throws Exception {
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
-        unit.doFilter(httpServletRequest,httpServletResponse, filterChain);
+        unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 		verify(filterChain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
                 contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));

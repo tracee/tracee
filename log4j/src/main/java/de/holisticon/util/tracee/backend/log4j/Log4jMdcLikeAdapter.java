@@ -25,7 +25,7 @@ public class Log4jMdcLikeAdapter implements MDCLike {
 
     @Override
     public String get(String key) {
-        return (String)MDC.get(key);
+        return (String) MDC.get(key);
     }
 
     @Override
@@ -35,12 +35,12 @@ public class Log4jMdcLikeAdapter implements MDCLike {
 
     @Override
     public Map<String, String> getCopyOfContext() {
-        final HashMap<String,String> copy = new HashMap<String, String>();
+        final HashMap<String, String> copy = new HashMap<String, String>();
         final Hashtable context = MDC.getContext();
         final Enumeration keys = context.keys();
         while (keys.hasMoreElements()) {
-            final String key = (String)keys.nextElement();
-            copy.put(key, (String)context.get(key));
+            final String key = (String) keys.nextElement();
+            copy.put(key, (String) context.get(key));
         }
         return copy;
     }

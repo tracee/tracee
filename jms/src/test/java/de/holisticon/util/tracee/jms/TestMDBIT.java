@@ -12,7 +12,6 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -48,6 +47,7 @@ public class TestMDBIT {
     }
 
     @Test
+	@SuppressWarnings("unchecked")
     public void testContextIsPropagatedForthAndBack() throws JMSException, InterruptedException {
 
         Tracee.getBackend().put("foo", "bar");
