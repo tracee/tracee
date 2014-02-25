@@ -1,4 +1,4 @@
-# JBoss7 with deployed tracee-examples-jaxws and tracee-examples-ejb
+# Tomcat7 with deployed tracee-examples-webapp
 #
 # VERSION       1.0
 
@@ -6,10 +6,6 @@ FROM dockerfile/java
 MAINTAINER Daniel Wegener "daniel.wegener@holisticon.de"
 
 ENV DEBIAN_FRONTEND noninteractive
-
-# Installing maestro-ng helpers
-RUN apt-get -y install python python-pip git
-RUN pip install git+git://github.com/signalfuse/maestro-ng
 
 # Download & install Tomcat 7
 RUN cd / && wget -q http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz \
@@ -37,12 +33,14 @@ ADD http://repo1.maven.org/maven2/com/google/code/gson/gson/2.2.1/gson-2.2.1.jar
 ENV CATALINA_OPTS -Dlogback.configurationFile=file:$CATALINA_HOME/conf/logback.xml
 
 ADD logback.xml $CATALINA_HOME/conf/
-
-# Download tracee-artifacts
-ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-webapp&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-frontend.war
+ADD tomcat-users.xml $CATALINA_HOME/conf/
 
 EXPOSE 8000 8080
 
 ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_TCP_ADDR=$GRAYLOG_PORT_12900_TCP_ADDR -DGRAYLOG_TCP_PORT=$GRAYLOG_PORT_12900_TCP_PORT" \
  && env \
+ && ifconfig \
  && /apache-tomcat/bin/catalina.sh run
+
+# Download and install latest tracee snapshot artifacts
+ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-webapp&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-frontend.war

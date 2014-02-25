@@ -4,10 +4,10 @@
 
 TL;DR, watch our [5 minutes slide deck](http://holisticon.github.io/tracee/docs/slides/)
 
-You may already aggregate all your machine logs in a single logging database (using logstash, elasticsearch or others) but it is still
-complicated to find all log entries that belong to a certain interaction with the system.
+You may already aggregate all your application logs at a single place (using greylog, logstash+kibana or others) but it is still
+complicated to gather relevant log entries that belong to a certain interaction with the system.
 
-*TracEE* is an integration framework that tries to ease this kind of interaction monitoring by passing contextual information
+*TracEE* is an integration framework that eases this kind of interaction monitoring of JavaEE applications by passing contextual information
 through your whole system and makes them visible in your logs. Therefore if contains adapters or interceptors for the most popular JavaEE technologies:
 
 * servlet 2.5
