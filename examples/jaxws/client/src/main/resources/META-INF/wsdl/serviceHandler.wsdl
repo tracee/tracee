@@ -1,132 +1,124 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  name="TraceeJaxWsTestService"
-                  targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl">
-    <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                   xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl"
-                   elementFormDefault="unqualified"
-                   targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" version="1.0">
-            <xs:element name="error" type="tns:error"/>
-            <xs:element name="errorResponse" type="tns:errorResponse"/>
-            <xs:element name="multiply" type="tns:multiply"/>
-            <xs:element name="multiplyResponse" type="tns:multiplyResponse"/>
-            <xs:element name="sum" type="tns:sum"/>
-            <xs:element name="sumResponse" type="tns:sumResponse"/>
-            <xs:complexType name="sum">
-                <xs:sequence>
-                    <xs:element name="arg0" type="xs:int"/>
-                    <xs:element name="arg1" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="sumResponse">
-                <xs:sequence>
-                    <xs:element name="return" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="error">
-                <xs:sequence>
-                    <xs:element name="arg0" type="xs:int"/>
-                    <xs:element name="arg1" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="errorResponse">
-                <xs:sequence>
-                    <xs:element name="return" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="multiply">
-                <xs:sequence>
-                    <xs:element name="arg0" type="xs:int"/>
-                    <xs:element name="arg1" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:complexType name="multiplyResponse">
-                <xs:sequence>
-                    <xs:element name="return" type="xs:int"/>
-                </xs:sequence>
-            </xs:complexType>
-        </xs:schema>
-    </wsdl:types>
-    <wsdl:message name="multiplyResponse">
-        <wsdl:part element="tns:multiplyResponse" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="error">
-        <wsdl:part element="tns:error" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="sumResponse">
-        <wsdl:part element="tns:sumResponse" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="multiply">
-        <wsdl:part element="tns:multiply" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="sum">
-        <wsdl:part element="tns:sum" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="errorResponse">
-        <wsdl:part element="tns:errorResponse" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:portType name="TraceeJaxWsTestWS">
-        <wsdl:operation name="sum">
-            <wsdl:input message="tns:sum" name="sum">
-            </wsdl:input>
-            <wsdl:output message="tns:sumResponse" name="sumResponse">
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="error">
-            <wsdl:input message="tns:error" name="error">
-            </wsdl:input>
-            <wsdl:output message="tns:errorResponse" name="errorResponse">
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="multiply">
-            <wsdl:input message="tns:multiply" name="multiply">
-            </wsdl:input>
-            <wsdl:output message="tns:multiplyResponse" name="multiplyResponse">
-            </wsdl:output>
-        </wsdl:operation>
-    </wsdl:portType>
-    <wsdl:binding name="TraceeJaxWsTestServiceSoapBinding" type="tns:TraceeJaxWsTestWS">
-        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="error">
-            <soap:operation soapAction="" style="document"/>
-            <wsdl:input name="error">
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output name="errorResponse">
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="sum">
-            <soap:operation soapAction="" style="document"/>
-            <wsdl:input name="sum">
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output name="sumResponse">
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="multiply">
-            <soap:operation soapAction="" style="document"/>
-            <wsdl:input name="multiply">
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output name="multiplyResponse">
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
-    </wsdl:binding>
-    <wsdl:service name="TraceeJaxWsTestService">
-        <wsdl:port binding="tns:TraceeJaxWsTestServiceSoapBinding" name="TraceeJaxWsTestPort">
-            <soap:address location="http://localhost:8080/traceeJaxwsTestService/webservices/TraceeJaxWsTestService"/>
-        </wsdl:port>
-    </wsdl:service>
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="TraceeJaxWsTestService" targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema elementFormDefault="unqualified" targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" version="1.0" xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name="error" type="tns:error"/>
+			<xs:element name="errorResponse" type="tns:errorResponse"/>
+			<xs:element name="multiply" type="tns:multiply"/>
+			<xs:element name="multiplyResponse" type="tns:multiplyResponse"/>
+			<xs:element name="sum" type="tns:sum"/>
+			<xs:element name="sumResponse" type="tns:sumResponse"/>
+			<xs:complexType name="sum">
+				<xs:sequence>
+					<xs:element name="arg0" type="xs:int"/>
+					<xs:element name="arg1" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="sumResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="multiply">
+				<xs:sequence>
+					<xs:element name="arg0" type="xs:int"/>
+					<xs:element name="arg1" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="multiplyResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="error">
+				<xs:sequence>
+					<xs:element name="arg0" type="xs:int"/>
+					<xs:element name="arg1" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="errorResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="multiplyResponse">
+		<wsdl:part element="tns:multiplyResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="error">
+		<wsdl:part element="tns:error" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sumResponse">
+		<wsdl:part element="tns:sumResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multiply">
+		<wsdl:part element="tns:multiply" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sum">
+		<wsdl:part element="tns:sum" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="errorResponse">
+		<wsdl:part element="tns:errorResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="TraceeJaxWsTestWS">
+		<wsdl:operation name="sum">
+			<wsdl:input message="tns:sum" name="sum">
+			</wsdl:input>
+			<wsdl:output message="tns:sumResponse" name="sumResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multiply">
+			<wsdl:input message="tns:multiply" name="multiply">
+			</wsdl:input>
+			<wsdl:output message="tns:multiplyResponse" name="multiplyResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="error">
+			<wsdl:input message="tns:error" name="error">
+			</wsdl:input>
+			<wsdl:output message="tns:errorResponse" name="errorResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="TraceeJaxWsTestServiceSoapBinding" type="tns:TraceeJaxWsTestWS">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="sum">
+			<soap:operation soapAction="sumAction" style="document"/>
+			<wsdl:input name="sum">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="sumResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multiply">
+			<soap:operation soapAction="multiplyAction" style="document"/>
+			<wsdl:input name="multiply">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="multiplyResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="error">
+			<soap:operation soapAction="errorAction" style="document"/>
+			<wsdl:input name="error">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="errorResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TraceeJaxWsTestService">
+		<wsdl:port binding="tns:TraceeJaxWsTestServiceSoapBinding" name="TraceeJaxWsTestPort">
+			<soap:address location="http://tracee-example-jbossas7-1:8080/tracee-examples-jaxws-service-0.1-SNAPSHOT/TraceeJaxWsTestService/TraceeJaxWsTestService"/>
+		</wsdl:port>
+	</wsdl:service>
 </wsdl:definitions>
