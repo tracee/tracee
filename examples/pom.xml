@@ -11,6 +11,7 @@
 		<module>webapp</module>
 		<module>ejb</module>
 		<module>ear</module>
+		<module>springmvc</module>
 	</modules>
 
 	<parent>
