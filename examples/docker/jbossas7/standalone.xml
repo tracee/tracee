@@ -26,6 +26,9 @@
         <extension module="org.jboss.as.webservices"/>
         <extension module="org.jboss.as.weld"/>
     </extensions>
+	<system-properties>
+		<property name="org.apache.cxf.logging.enabled" value="true"/>
+	</system-properties>
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
