@@ -10,25 +10,36 @@ ENV DEBIAN_FRONTEND noninteractive
 # Download & install Tomcat 7
 RUN cd / && wget -q http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz \
 && tar -xf apache-tomcat-7.0.52.tar.gz && rm apache-tomcat-7.0.52.tar.gz \
-&& ln -s apache-tomcat-7.0.52 apache-tomcat
+&& ln -s apache-tomcat-7.0.52 apache-tomcat \
+&& rm -rf /apache-tomcat/webapps/examples
 
 # Enable Tomcat remote debugging
 ENV JPDA_ADDRESS 8000
 ENV JPDA_TRANSPORT dt_socket
 ENV CATALINA_HOME /apache-tomcat
 
-# Download logback
+# Adding additional logging support
+ADD http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli.jar $CATALINA_HOME/bin/
+ADD http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli-adapters.jar $CATALINA_HOME/lib/
+
+
+# Download slf4j and logback
 ADD http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.6.6/slf4j-api-1.6.6.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/org/slf4j/jul-to-slf4j/1.6.6/jul-to-slf4j-1.6.6.jar $CATALINA_HOME/lib/
+ADD http://repo1.maven.org/maven2/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.6.6/jcl-over-slf4j-1.6.6.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/0.9.30/logback-classic-0.9.30.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/ch/qos/logback/logback-core/0.9.30/logback-core-0.9.30.jar $CATALINA_HOME/lib/
-ADD http://repo1.maven.org/maven2/net/logstash/logback/logstash-logback-encoder/2.4/logstash-logback-encoder-2.4.jar $CATALINA_HOME/lib/
-ADD http://repo1.maven.org/maven2/me/moocar/logback-gelf/0.10p2/logback-gelf-0.10p2.jar $CATALINA_HOME/lib/
-ADD http://repo1.maven.org/maven2/com/google/code/gson/gson/2.2.1/gson-2.2.1.jar $CATALINA_HOME/lib/
 
-# Bridge JUL to Logback
-# ADD logging.properties /apache-tomcat/conf/logging.properties
+# Add logstash gelf appender
+ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.2.6/logstash-gelf-1.2.6.jar $CATALINA_HOME/lib/
+ADD http://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar $CATALINA_HOME/lib/
+
+# Disable jcl
+RUN rm /apache-tomcat/conf/logging.properties
+# Add logback configuration
+ADD logback.xml $CATALINA_HOME/lib/
+
 
 ENV CATALINA_OPTS -Dlogback.configurationFile=file:$CATALINA_HOME/conf/logback.xml
 
@@ -37,7 +48,7 @@ ADD tomcat-users.xml $CATALINA_HOME/conf/
 
 EXPOSE 8000 8080
 
-ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_TCP_ADDR=$GRAYLOG_PORT_12900_TCP_ADDR -DGRAYLOG_TCP_PORT=$GRAYLOG_PORT_12900_TCP_PORT" \
+ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_UDP_ADDR=$GRAYLOG_PORT_12201_UDP_ADDR -DGRAYLOG_UDP_PORT=$GRAYLOG_PORT_12201_UDP_PORT" \
  && env \
  && ifconfig \
  && /apache-tomcat/bin/catalina.sh run

@@ -1,0 +1,10 @@
+{
+	"title": "GELF UDP",
+	"type": "org.graylog2.inputs.gelf.udp.GELFUDPInput",
+	"global": true,
+	"configuration": {
+		"port": 12201,
+		"bind_address": "0.0.0.0"
+	},
+	"creator_user_id": "admin"
+}

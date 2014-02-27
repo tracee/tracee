@@ -1,23 +1,37 @@
-<configuration debug="false">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
 
+<configuration debug="true">
+	<jmxConfigurator/>
 	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
-
-	<appender name="GELF" class="me.moocar.logbackgelf.GelfAppender">
-		<facility>logback-gelf-test</facility>
-		<graylog2ServerHost>${GRAYLOG_TCP_ADDR}</graylog2ServerHost>
-		<graylog2ServerPort>${GRAYLOG_TCP_PORT}</graylog2ServerPort>
-		<useLoggerName>true</useLoggerName>
-		<useThreadName>true</useThreadName>
-		<useMarker>true</useMarker>
-		<graylog2ServerVersion>0.20.0</graylog2ServerVersion>
-		<chunkThreshold>1000</chunkThreshold>
-		<messagePattern>%m%rEx</messagePattern>
-		<shortMessagePattern>%.-100(%m%rEx)</shortMessagePattern>
-		<staticAdditionalField>_node_name:tracee-example/tomcat</staticAdditionalField>
-		<includeFullMDC>true</includeFullMDC>
+	<appender name="gelf" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
+		<host>udp:${GRAYLOG_UDP_ADDR}</host>
+		<port>${GRAYLOG_UDP_PORT}</port>
+		<facility>tomcat7</facility>
+		<extractStackTrace>true</extractStackTrace>
+		<filterStackTrace>true</filterStackTrace>
+		<mdcProfiling>true</mdcProfiling>
+		<timestampPattern>yyyy-MM-dd HH:mm:ss,SSSS</timestampPattern>
+		<maximumMessageSize>8192</maximumMessageSize>
+		<mdcFields>TracEE-requestId,TracEE-sessionId</mdcFields>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 	</appender>
 
-	<root level="debug">
-		<appender-ref ref="GELF" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type
+			 ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<root level="DEBUG">
+		<appender-ref ref="gelf"/>
+		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

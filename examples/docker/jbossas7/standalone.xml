@@ -86,13 +86,13 @@
                 <level name="INFO"/>
                 <handlers>
                     <handler name="CONSOLE"/>
-                    <handler name="FILE"/>
+					<handler name="GelfLogger" />
                 </handlers>
             </root-logger>
 			<custom-handler name="GelfLogger" class="biz.paluch.logging.gelf.jboss7.JBoss7GelfLogHandler" module="biz.paluch.logging">
 				<level name="INFO" />
 				<properties>
-					<property name="threshold" value="INFO" />
+					<property name="level" value="INFO" />
 					<property name="host" value="udp:GRAYLOG_PORT_12201_UDP_ADDR" />
 					<property name="port" value="GRAYLOG_PORT_12201_UDP_PORT" />
 					<property name="facility" value="java-test" />
@@ -101,7 +101,6 @@
 					<property name="mdcProfiling" value="true" />
 					<property name="timestampPattern" value="yyyy-MM-dd HH:mm:ss,SSSS" />
 					<property name="maximumMessageSize" value="8192" />
-					<property name="additionalFields" value="fieldName1=fieldValue1,fieldName2=fieldValue2" />
 					<property name="mdcFields" value="TracEE-requestId,TracEE-sessionId" />
 				</properties>
 			</custom-handler>
