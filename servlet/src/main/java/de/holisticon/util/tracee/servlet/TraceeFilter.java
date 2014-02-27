@@ -23,6 +23,7 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
 public class TraceeFilter implements Filter {
 
     private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
+	private FilterConfig filterConfig = null;
 
 	// VisibleForTesting
 	TraceeBackend backend = null;
@@ -63,11 +64,13 @@ public class TraceeFilter implements Filter {
         }
 
         try {
-            filterChain.doFilter(request, response);
+			// we need to eagerly write ResponseHeaders since the inner servlets may flush the output stream
+			// and writing of response headers become impossible afterwards. This is a best effort trade-off.
+			writeContextToResponse(response, configuration);
+			filterChain.doFilter(request, response);
         } finally {
-			if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
-				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
-				response.setHeader(HTTP_HEADER_NAME, httpJsonHeaderSerialization.render(filteredContext));
+			if (!response.isCommitted()) {
+				writeContextToResponse(response, configuration);
 			}
             // ensure cleanup
             backend.clear();
@@ -75,7 +78,14 @@ public class TraceeFilter implements Filter {
 
     }
 
-    private String anonymizedSessionKey(String sessionKey, int length) {
+	private void writeContextToResponse(HttpServletResponse response, TraceeFilterConfiguration configuration) {
+		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+			final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+			response.setHeader(HTTP_HEADER_NAME, httpJsonHeaderSerialization.render(filteredContext));
+		}
+	}
+
+	private String anonymizedSessionKey(String sessionKey, int length) {
         return Utilities.createAlphanumericHash(sessionKey, length);
     }
 
@@ -102,6 +112,7 @@ public class TraceeFilter implements Filter {
         //ensure spi implementation is available on filter initialization
         backend = Tracee.getBackend();
 		httpJsonHeaderSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.filterConfig = filterConfig;
     }
 
 

@@ -45,7 +45,8 @@ public class TraceeFilterIT {
 		server = new Server(JETTY_PORT);
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SECURITY);
 		context.setContextPath("/");
-		context.addServlet(SillyServlet.class, "/*");
+		context.addServlet(SillyServlet.class, "/sillyServlet");
+		context.addServlet(SillyServlet.class, "/sillyFlushingServlet");
 		traceeFilterHolder = context.addFilter(TraceeFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
 		server.setHandler(context);
@@ -61,10 +62,19 @@ public class TraceeFilterIT {
 
 	@Test
 	public void testCompleteRoundtrip() throws Exception {
-		final Header traceeResponseHeader = get("{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+		final Header traceeResponseHeader = get("sillyServlet","{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inServlet\":\"yes\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
+	}
+
+	@Test
+	public void testRoundtripWithPrematurlyFlushedBuffer() throws Exception {
+		final Header traceeResponseHeader = get("sillyFlushingServlet","{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+
+		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
 		assertThat(traceeResponseHeader.getValue(), containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
 	}
@@ -77,9 +87,19 @@ public class TraceeFilterIT {
 		}
 	}
 
-	private HttpResponse get(String traceeHeader) throws IOException {
+	public static final class SillyFlushingServlet extends HttpServlet {
+		@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			Assert.assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
+			Tracee.getBackend().put("inServlet", "yes");
+			resp.getWriter().append("Hello World");
+			resp.flushBuffer();
+		}
+	}
+
+	private HttpResponse get(String servlet, String traceeHeader) throws IOException {
 		final HttpClient client = new DefaultHttpClient();
-		final HttpGet httpGet = new HttpGet(ENDPOINT_URL);
+		final HttpGet httpGet = new HttpGet(ENDPOINT_URL+servlet);
 		if (traceeHeader != null) {
 			httpGet.setHeader(TraceeConstants.HTTP_HEADER_NAME, traceeHeader);
 		}

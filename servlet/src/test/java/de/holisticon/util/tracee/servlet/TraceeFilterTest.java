@@ -1,8 +1,9 @@
 package de.holisticon.util.tracee.servlet;
 
-import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.SimpleTraceeBackend;
+import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -19,10 +20,11 @@ import java.util.Collections;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.contains;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 
 /**
@@ -49,7 +51,7 @@ public class TraceeFilterTest {
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
         unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 		verify(filterChain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
-		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
+		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
                 contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
     }
 
@@ -62,7 +64,7 @@ public class TraceeFilterTest {
 
 		assertThat(backend.getValuesBeforeLastClear(), hasEntry(TraceeConstants.REQUEST_ID_KEY, "123"));
 
-		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
+		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
 				contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
 	}
 
@@ -78,7 +80,7 @@ public class TraceeFilterTest {
 			fail("Expected RuntimeException");
 		} catch (RuntimeException e) {}
 
-		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
+		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
 				contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
 	}
 
