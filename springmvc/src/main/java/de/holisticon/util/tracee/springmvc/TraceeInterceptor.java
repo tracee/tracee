@@ -62,11 +62,12 @@ public class TraceeInterceptor implements HandlerInterceptor {
 		if (respondWithContext && !backend.isEmpty()) {
 			response.setHeader(outgoingHeaderName, httpJsonHeaderSerialization.render(backend));
 		}
+		backend.clear();
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-		backend.clear();
+
 	}
 
 	private void mergeIncomingContextToBackend(HttpServletRequest request) {
