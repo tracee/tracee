@@ -71,7 +71,7 @@
 
         <dependency>
             <groupId>de.holisticon.util.tracee.inbound</groupId>
-            <artifactId>tracee-servlet</artifactId>
+            <artifactId>tracee-springmvc</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
 
