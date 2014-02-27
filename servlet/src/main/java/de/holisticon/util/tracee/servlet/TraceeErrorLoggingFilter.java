@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.servlet;
 
-import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.Tracee;
+import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
@@ -18,14 +19,10 @@ public class TraceeErrorLoggingFilter implements Filter {
 
 
     private TraceeBackend traceeBackend = null;
-    private TraceeLogger traceeLogger = null;
 
     @Override
     public final void init(FilterConfig filterConfig) throws ServletException {
-
         traceeBackend = Tracee.getBackend();
-        traceeLogger = traceeBackend.getLoggerFactory().getLogger(TraceeErrorLoggingFilter.class);
-
     }
 
     @Override
@@ -40,8 +37,10 @@ public class TraceeErrorLoggingFilter implements Filter {
 
 			if (e instanceof RuntimeException) {
 				throw (RuntimeException) e;
-			} else {
-				throw new ServletException(e);
+			} else if (e instanceof ServletException) {
+				throw (ServletException)e;
+			} else if (e instanceof IOException) {
+				throw (IOException)e;
 			}
         }
     }
