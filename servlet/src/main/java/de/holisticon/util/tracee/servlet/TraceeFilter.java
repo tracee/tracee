@@ -64,11 +64,11 @@ public class TraceeFilter implements Filter {
 
         try {
             filterChain.doFilter(request, response);
-            if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+        } finally {
+			if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
 				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
 				response.setHeader(HTTP_HEADER_NAME, httpJsonHeaderSerialization.render(filteredContext));
-            }
-        } finally {
+			}
             // ensure cleanup
             backend.clear();
         }
