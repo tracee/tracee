@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.servlet;
 
 import de.holisticon.util.tracee.*;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,7 +18,9 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -58,6 +61,22 @@ public class TraceeFilterTest {
 		unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 
 		assertThat(backend.getValuesBeforeLastClear(), hasEntry(TraceeConstants.REQUEST_ID_KEY, "123"));
+
+		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
+				contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
+	}
+
+	@Test
+	public void testWriteResponseHeaderEvenIfFilterChainThrowsAnException() throws Exception {
+		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(
+				Arrays.asList("{ \"" + TraceeConstants.REQUEST_ID_KEY + "\":\"123\"}")));
+
+		doThrow(new RuntimeException("Bad is bad")).when(filterChain).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
+
+		try {
+			unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
+			fail("Expected RuntimeException");
+		} catch (RuntimeException e) {}
 
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
 				contains("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
