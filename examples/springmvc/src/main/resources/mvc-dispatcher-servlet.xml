@@ -37,7 +37,10 @@
 	</bean>
 
 	<mvc:interceptors>
-		<bean class="de.holisticon.util.tracee.springmvc.TraceeInterceptor" />
+		<bean class="de.holisticon.util.tracee.springmvc.TraceeInterceptor">
+			<property name="acceptIncomingContext" value="true" />
+			<property name="respondWithContext" value="true" />
+		</bean>
 	</mvc:interceptors>
 
 </beans>
