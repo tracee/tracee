@@ -59,7 +59,7 @@ class BackendProviderResolver {
 	 * We do a lookup / return true if result is null and when the result is not an instance of EmptyBackendProviderSet and empty.
 	 * In the last case the garbage collector kicked out our resolvers and we've to recreate them
 	 */
-	private boolean isLookupNeeded(Set<TraceeBackendProvider> classLoaderProviders) {
+	boolean isLookupNeeded(Set<TraceeBackendProvider> classLoaderProviders) {
 		return classLoaderProviders == null || !(classLoaderProviders instanceof EmptyBackendProviderSet) && classLoaderProviders.isEmpty();
 	}
 

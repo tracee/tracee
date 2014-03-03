@@ -42,6 +42,11 @@ public class BackendProviderResolverGetClassLoaderTest {
 		final ClassLoader cl = GetClassLoader.fromClass(this.getClass());
 		assertThat(cl, is(this.getClass().getClassLoader()));
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowIAEifClassNull() {
+		GetClassLoader.fromClass(null);
+	}
 	
 	@After
 	public void after() {

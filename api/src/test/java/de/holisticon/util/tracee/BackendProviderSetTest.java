@@ -23,7 +23,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
  * @author Sven Bunge, Holisticon AG
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({BackendProviderSet.class})
+@PrepareForTest(BackendProviderSet.class)
 public class BackendProviderSetTest {
 	
 	@Test
