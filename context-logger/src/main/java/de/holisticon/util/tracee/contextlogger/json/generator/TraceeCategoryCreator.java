@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.contextlogger.json.generator;
 
 import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.contextlogger.connector.TraceeConnector;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.TraceeContextValue;
 
 import java.util.ArrayList;
