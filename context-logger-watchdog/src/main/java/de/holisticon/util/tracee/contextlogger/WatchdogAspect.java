@@ -23,10 +23,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class WatchdogAspect {
 
-    public static final boolean WATCHDOG_IS_ACTIVE = Boolean.valueOf(System.getProperty("de.holisticon.util.tracee.contextlogger.Watchdog.isActive", "true"));
+    public static final boolean WATCHDOG_IS_ACTIVE = Boolean.valueOf(System.getProperty(Constants.SYSTEM_PROPERTY_IS_ACTIVE, "true"));
 
-    public static final String MDC_NAME = "context-info-stack";
-    public static final String SEPARATOR = "|||---|||";
+
 
     @SuppressWarnings("unused")
     @Pointcut("(execution(* *(..)) && @annotation(de.holisticon.util.tracee.contextlogger.Watchdog))")
@@ -104,8 +103,8 @@ public class WatchdogAspect {
                 .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
 
         String json = errorJsonCreator.toString();
-        String existingContent = traceeBackend.get(MDC_NAME);
-        traceeBackend.put(MDC_NAME, existingContent != null ? new StringBuilder(existingContent).append(SEPARATOR).append(json).toString() : json);
+        String existingContent = traceeBackend.get(Constants.TRACEE_ATTRIBUTE_NAME);
+        traceeBackend.put(Constants.TRACEE_ATTRIBUTE_NAME, existingContent != null ? existingContent + Constants.SEPARATOR + json : json);
 
     }
 
@@ -151,9 +150,9 @@ public class WatchdogAspect {
 
     /**
      * Checks whether the passed Throwable must be suppressed.
-     * @param proceedingJoinPoint
-     * @param thrownException
-     * @return
+     * @param proceedingJoinPoint The aspectj join point
+     * @param thrownException The Throwable which must be looked for
+     * @return true if Throwable was found and must be suppressed, otherwise false
      */
     boolean mustSuppressException(final ProceedingJoinPoint proceedingJoinPoint, Throwable thrownException) {
 
@@ -169,7 +168,7 @@ public class WatchdogAspect {
      * Checks whether the passed Throwable is defined included in passed classes array or is subtype of one of the included classes.
      * @param classes the classes to search
      * @param thrownException the Throwable which must be searched for
-     * @return
+     * @return true if Throwable was found, otherwise false
      */
     boolean checkClassIsDefinedInThrowsException(Class[] classes, Throwable thrownException) {
 
