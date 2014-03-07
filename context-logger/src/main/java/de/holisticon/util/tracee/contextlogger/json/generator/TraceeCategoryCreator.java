@@ -27,11 +27,9 @@ public final class TraceeCategoryCreator {
         if (keys != null) {
             for (String key : keys) {
 
-                // prevent log explosion - exclude tracee stack information from output
-                if (!TraceeConnector.MDC_NAME.equals(key)) {
-                    final String value = traceeBackend.get(key);
-                    list.add(new TraceeContextValue(key, value));
-                }
+                final String value = traceeBackend.get(key);
+                list.add(new TraceeContextValue(key, value));
+
             }
         }
         return list;
