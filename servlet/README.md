@@ -2,4 +2,28 @@
 
 # tracee-servlet
 
-TODO wrapper for [Java Servlet 2.5+ (JSR154)](https://www.jcp.org/en/jsr/detail?id=154)
+tracee-servlet contains Servlet-Filters and -Listeners that allows you to parse a TracEE-Context from a ServletHttpRequest-Header and write an enrichted TracEE-Context back to the ServletHttpResponse-Header.
+
+## Installation
+
+Its super-easy for Servlet3+-Containers. Just add tracee-servlet-VERSION.jar to your webapp-classpath (`WEB-INF/lib` or as maven runtime dependency). tracee-servlet contains a [web-fragment.xml](src/main/resources/META-INF/web-fragment.xml) that registers all required filters and event listeners.
+
+If you are on a servlet Servlet<3-Container, you need to register the following filters in your web.xml:
+
+```
+    <filter>
+        <filter-name>traceeFilter</filter-name>
+        <filter-class>de.holisticon.util.tracee.servlet.TraceeFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>traceeFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	<listener>
+		<listener-class>de.holisticon.util.tracee.servlet.TraceeServletRequestListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>de.holisticon.util.tracee.servlet.TraceeSessionListener</listener-class>
+	</listener>
+```
+You may change the filter-mapping:url-pattern according to your needs.
