@@ -13,7 +13,7 @@
 		<mdcProfiling>true</mdcProfiling>
 		<timestampPattern>yyyy-MM-dd HH:mm:ss,SSSS</timestampPattern>
 		<maximumMessageSize>8192</maximumMessageSize>
-		<mdcFields>TracEE-requestId,TracEE-sessionId</mdcFields>
+		<dynamicMdcFields>TracEE-.*</dynamicMdcFields>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
 		</filter>

@@ -101,7 +101,7 @@
 					<property name="mdcProfiling" value="true" />
 					<property name="timestampPattern" value="yyyy-MM-dd HH:mm:ss,SSSS" />
 					<property name="maximumMessageSize" value="8192" />
-					<property name="mdcFields" value="TracEE-requestId,TracEE-sessionId" />
+					<property name="dynamicMdcFields" value="TracEE-.*" />
 				</properties>
 			</custom-handler>
         </subsystem>

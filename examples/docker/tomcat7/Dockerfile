@@ -32,7 +32,7 @@ ADD http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/0.9.30/logback-
 ADD http://repo1.maven.org/maven2/ch/qos/logback/logback-core/0.9.30/logback-core-0.9.30.jar $CATALINA_HOME/lib/
 
 # Add logstash gelf appender
-ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.2.6/logstash-gelf-1.2.6.jar $CATALINA_HOME/lib/
+ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.3.2/logstash-gelf-1.3.2.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar $CATALINA_HOME/lib/
 
 # Disable jcl

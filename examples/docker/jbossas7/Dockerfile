@@ -13,10 +13,10 @@ RUN cd / &&  wget -q http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/
   &&  ln -s jboss-as-7.1.1.Final jboss-as
 
 # Download logstash-gelf-logging as jboss7 module (see https://github.com/mp911de/logstash-gelf#jboss-7-configuration)
-ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.2.6/logstash-gelf-1.2.6-logging-module.zip /
-RUN unzip /logstash-gelf-1.2.6-logging-module.zip -d / \
-  && mv /logstash-gelf-1.2.6/* /jboss-as/modules \
-  && rm -rf /logstash-gelf-1.2.6*
+ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.3.2/logstash-gelf-1.3.2-logging-module.zip /
+RUN unzip /logstash-gelf-1.3.2-logging-module.zip -d / \
+  && mv /logstash-gelf-1.3.2/* /jboss-as/modules \
+  && rm -rf /logstash-gelf-1.3.2*
 
 
 ADD standalone.xml /jboss-as/standalone/configuration/
