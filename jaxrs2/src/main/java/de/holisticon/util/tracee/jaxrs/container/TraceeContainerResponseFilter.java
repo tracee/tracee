@@ -24,13 +24,14 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 	private final TraceeBackend backend;
 	private final TransportSerialization<String> transportSerialization;
 
-	TraceeContainerResponseFilter(TraceeBackend backend) {
+	TraceeContainerResponseFilter(TraceeBackend backend, TransportSerialization<String> transportSerialization) {
 		this.backend = backend;
-		this.transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.transportSerialization = transportSerialization;
 	}
 
+	@SuppressWarnings("unused")
 	public TraceeContainerResponseFilter() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
 

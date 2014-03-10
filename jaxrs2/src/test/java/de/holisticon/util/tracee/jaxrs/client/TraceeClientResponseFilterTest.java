@@ -1,8 +1,10 @@
 package de.holisticon.util.tracee.jaxrs.client;
 
+import de.holisticon.util.tracee.NoopTraceeLoggerFactory;
 import de.holisticon.util.tracee.SimpleTraceeBackend;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientResponseFilterTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend);
+    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
     private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
     private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<String, String>();
 
@@ -33,7 +35,7 @@ public class TraceeClientResponseFilterTest {
     }
 
     @Test
-    public void testFilter() throws IOException {
+    public void testFilterParsesContextFromHeaderToBackend() throws IOException {
         headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"foo\":\"bar\"}");
         unit.filter(null, clientResponseContext);
         assertThat(backend.get("foo"), equalTo("bar"));

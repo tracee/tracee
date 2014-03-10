@@ -1,8 +1,10 @@
 package de.holisticon.util.tracee.jaxrs.container;
 
+import de.holisticon.util.tracee.NoopTraceeLoggerFactory;
 import de.holisticon.util.tracee.SimpleTraceeBackend;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class TraceeContainerResponseFilterTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeContainerResponseFilter unit = new TraceeContainerResponseFilter(backend);
+    private final TraceeContainerResponseFilter unit = new TraceeContainerResponseFilter(backend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
     private final ContainerResponseContext responseContext = Mockito.mock(ContainerResponseContext.class);
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 

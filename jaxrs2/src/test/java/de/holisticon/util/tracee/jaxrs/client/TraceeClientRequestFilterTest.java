@@ -1,8 +1,10 @@
 package de.holisticon.util.tracee.jaxrs.client;
 
+import de.holisticon.util.tracee.NoopTraceeLoggerFactory;
 import de.holisticon.util.tracee.SimpleTraceeBackend;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -23,20 +25,17 @@ import static org.mockito.Mockito.when;
 public class TraceeClientRequestFilterTest {
 
     private final TraceeBackend traceeBackend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend);
-    private ClientRequestContext clientRequestContext = Mockito.mock(ClientRequestContext.class);
-
-
+    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
+    private final ClientRequestContext clientRequestContext = Mockito.mock(ClientRequestContext.class);
 
     @Before
     public void setUp() {
         final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
         when(clientRequestContext.getHeaders()).thenReturn(headers);
-
     }
 
     @Test
-    public void testFilter() throws IOException {
+    public void testFilterWritesBackendToRequestContextHeaders() throws IOException {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
