@@ -23,8 +23,15 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class WatchdogAspect {
 
-    public static final boolean WATCHDOG_IS_ACTIVE = Boolean.valueOf(System.getProperty(Constants.SYSTEM_PROPERTY_IS_ACTIVE, "true"));
+    private final boolean active;
 
+	public WatchdogAspect() {
+		this(Boolean.valueOf(System.getProperty(Constants.SYSTEM_PROPERTY_IS_ACTIVE, "true")));
+	}
+
+	WatchdogAspect(boolean active) {
+		this.active = active;
+	}
 
 
     @SuppressWarnings("unused")
@@ -53,7 +60,7 @@ public class WatchdogAspect {
         } catch (final Throwable e) {
 
             // check if watchdog processing is flagged as active
-            if (WATCHDOG_IS_ACTIVE) {
+            if (active) {
 
                 // Now create log output
                 final TraceeBackend traceeBackend = Tracee.getBackend();

@@ -28,12 +28,12 @@ public class WatchdogAspectEnabledOrDisabledViaAnnotationTest {
 
     }
 
-    private static Watchdog activeWatchdog;
-    private static Watchdog inactiveWatchdog;
+    private Watchdog activeWatchdog;
+    private Watchdog inactiveWatchdog;
 
-    static {
+    {
         try {
-            activeWatchdog = WatchdogAspectEnabledOrDisabledViaAnnotationTest.class.getMethod("activeWatchdogMethod", new Class[0]).getAnnotation(Watchdog.class);
+			activeWatchdog = WatchdogAspectEnabledOrDisabledViaAnnotationTest.class.getMethod("activeWatchdogMethod", new Class[0]).getAnnotation(Watchdog.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
