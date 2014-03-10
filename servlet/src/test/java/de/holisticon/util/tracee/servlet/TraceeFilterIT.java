@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.jetty.server.DispatcherType;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -37,19 +36,20 @@ public class TraceeFilterIT {
 	private static final int JETTY_PORT = 4204;
 
 	private Server server;
-	private FilterHolder traceeFilterHolder;
 	private static final String ENDPOINT_URL = "http://localhost:4204/";
 
 	@Before
 	public void startJetty() throws Exception {
 		server = new Server(JETTY_PORT);
-		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SECURITY);
-		context.setContextPath("/");
-		context.addServlet(SillyServlet.class, "/sillyServlet");
-		context.addServlet(SillyServlet.class, "/sillyFlushingServlet");
-		traceeFilterHolder = context.addFilter(TraceeFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
+		ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.NO_SECURITY);
+		contextHandler.setContextPath("/");
+		contextHandler.addServlet(SillyServlet.class, "/sillyServlet");
+		contextHandler.addServlet(SillyServlet.class, "/sillyFlushingServlet");
 
-		server.setHandler(context);
+		contextHandler.addFilter(TraceeFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
+		contextHandler.addEventListener(new TraceeServletRequestListener());
+
+		server.setHandler(contextHandler);
 		server.start();
 
 	}
