@@ -79,8 +79,6 @@
         </dependency>
 
 
-
-
         <!-- dependecies for unittests -->
         <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
@@ -101,5 +99,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
