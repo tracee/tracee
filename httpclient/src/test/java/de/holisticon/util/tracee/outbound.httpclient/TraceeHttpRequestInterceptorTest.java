@@ -20,14 +20,14 @@ public class TraceeHttpRequestInterceptorTest {
 	private final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor(backend);
 
     @Test
-    public void testProcess() throws Exception {
+    public void testRequestInterceptorWritesTraceeContextToRequestHeader() throws Exception {
         final HttpRequest httpRequest = new BasicHttpRequest("GET", "http://localhost/pew");
 
         backend.put("foo", "bar");
 
         unit.process(httpRequest, mock(HttpContext.class));
 
-        assertThat("HttpRequest has Tracee Header", httpRequest.containsHeader(TraceeConstants.HTTP_HEADER_NAME), equalTo(true));
+        assertThat("HttpRequest contains X-TracEE-Context-Header", httpRequest.containsHeader(TraceeConstants.HTTP_HEADER_NAME), equalTo(true));
         assertThat(httpRequest.getFirstHeader(TraceeConstants.HTTP_HEADER_NAME).getValue(), equalTo("{\"foo\":\"bar\"}"));
     }
 
