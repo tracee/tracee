@@ -62,39 +62,10 @@ Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
 
 All tracEE artifacts are (hopefully) OSGI compliant.
 
-## Contributing
-
-We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
-application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
-
-### Setup a development environment
-TracEE is built using Maven (at least version 3.0.4).
-A simple import of the pom in your IDE should get you up and running:
-
-``mvn clean install``
-
-### Requirements
-The likelihood of a pull request being used rises with the following properties:
-
-- You have used a feature branch.
-- You have included a test that demonstrates the functionality added or fixed.
-- You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
-
-### Contributions
-
-- (2013) Daniel Wegener (Holisticon AG)
-- (2013) Tobias Gindler (Holisticon AG)
-- (2014) Sven Bunge (Holisticon AG)
-
-## Sponsoring
-This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
-
-## License
-This project is released under the revised [BSD License](LICENSE).
-
 # Integration manual
 
 ## The logging MDC
+
 The Mapped Diagnosis Context (MDC) is a logging concept that allows printing of contextual information in log messages
 without explicitly passing them them to each log statement. A MDC is bound to its executing thread (in fact they are backed by thread locals).
 
@@ -155,3 +126,36 @@ that allow you to selectively decide at which point in your application you want
 ### Classloader considerations
 
 You can bundle TracEE with your application or install it as global library to your container.
+
+
+# Contributing
+
+We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
+application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
+
+## Building TracEE
+
+TracEE is built using Maven (at least version 3.0.4).
+A simple import of the pom in your IDE should get you up and running. To build TracEE on the commandline, just run `mvn clean install`
+
+### Requirements
+
+The likelihood of a pull request being used rises with the following properties:
+
+- You have used a feature branch.
+- You have included a test that demonstrates the functionality added or fixed.
+- You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
+
+## Contributions
+
+- (2013) Daniel Wegener (Holisticon AG)
+- (2013) Tobias Gindler (Holisticon AG)
+- (2014) Sven Bunge (Holisticon AG)
+
+## Sponsoring
+
+This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
+
+# License
+
+This project is released under the revised [BSD License](LICENSE).
