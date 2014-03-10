@@ -6,9 +6,6 @@
 	<groupId>de.holisticon.util.tracee.inbound</groupId>
 	<artifactId>tracee-springmvc</artifactId>
 	<packaging>bundle</packaging>
-	<properties>
-		<spring.version>3.0.7.RELEASE</spring.version>
-	</properties>
 	
 	<parent>
 		<artifactId>tracee-parent</artifactId>
@@ -37,8 +34,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
