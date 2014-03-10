@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.servlet;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.Utilities;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -33,11 +34,18 @@ public class TraceeSessionListener implements HttpSessionListener {
 
     @Override
     public final void sessionCreated(HttpSessionEvent httpSessionEvent) {
-		backend.put(TraceeConstants.SESSION_ID_KEY, httpSessionEvent.getSession().getId());
-    }
+		if (backend.getConfiguration().shouldGenerateSessionId()) {
+			final String sessionId = httpSessionEvent.getSession().getId();
+			backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(sessionId, backend.getConfiguration().generatedSessionIdLength()));
+		}
+	}
 
     @Override
     public final void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 		backend.remove(TraceeConstants.SESSION_ID_KEY);
     }
+
+	private String anonymizedSessionKey(String sessionKey, int length) {
+		return Utilities.createAlphanumericHash(sessionKey, length);
+	}
 }
