@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tracee-examples-webapp</artifactId>
@@ -8,7 +7,7 @@
     <parent>
         <groupId>de.holisticon.util.tracee.examples</groupId>
         <artifactId>tracee-examples</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
 
     <name>tracee-examples-webapp</name>
@@ -92,37 +91,37 @@
         <dependency>
             <groupId>de.holisticon.util.tracee.examples</groupId>
             <artifactId>tracee-examples-ejb-interface</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-api</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-jaxws</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee.inbound</groupId>
             <artifactId>tracee-servlet</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee.examples</groupId>
             <artifactId>tracee-examples-jaxws-client</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
