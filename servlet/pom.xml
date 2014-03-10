@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
 
     <name>tracee-servlet</name>
@@ -18,17 +18,17 @@
         <dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-api</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-core</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-context-logger</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>javax.servlet</groupId>
@@ -37,13 +37,13 @@
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
         <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
             <artifactId>tracee-threadlocal-store</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 		<dependency>
