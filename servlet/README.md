@@ -2,7 +2,11 @@
 
 # tracee-servlet
 
-tracee-servlet contains Servlet-Filters and -Listeners that allows you to parse a TracEE-Context from a ServletHttpRequest-Header and write an enrichted TracEE-Context back to the ServletHttpResponse-Header.
+tracee-servlet contains Servlet-Listeners and -Filters that allows you to use TracEE Context Propagation with Servlets.
+
+ * __TraceeServletRequestListener__: Parses a TracEE-Context from a ServletHttpRequest-Header before a request is processed by a servlet. It also cleans the TraceeBackend when the request processing is finished by the container.
+ * __TraceeFilter__: Writes a TracEE-Context back to a ServletHttpResponse-Header.
+ * __TraceeSessionListener__: Listens on `Session.create()` and `Session.destroy()` events and creates and deletes the tracee-sessionId from the TracEE-Backend accordingly.
 
 ## Installation
 
@@ -27,3 +31,4 @@ If you are on a servlet Servlet<3-Container, you need to register the following 
 	</listener>
 ```
 You may change the filter-mapping:url-pattern according to your needs.
+
