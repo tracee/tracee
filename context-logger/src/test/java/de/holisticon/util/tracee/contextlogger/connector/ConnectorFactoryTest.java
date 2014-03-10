@@ -7,6 +7,11 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.notNullValue;
+
 /**
  * Test for ConnectorFactory.
  * Created by Tobias Gindler, holisticon AG on 14.02.14.
@@ -32,7 +37,7 @@ public class ConnectorFactoryTest {
 
         final Set<String> names = ConnectorFactory.getInstance().getConnectorConfigurationNames();
 
-        MatcherAssert.assertThat(names, Matchers.containsInAnyOrder(name1, name2, name3));
+        assertThat(names, containsInAnyOrder(name1, name2, name3));
 
     }
 
@@ -56,8 +61,8 @@ public class ConnectorFactoryTest {
 
         final Connector connector = ConnectorFactory.getInstance().createConnector(name1);
 
-        MatcherAssert.assertThat(connector, Matchers.notNullValue());
-        MatcherAssert.assertThat(connector, Matchers.instanceOf(LogConnector.class));
+        assertThat(connector, notNullValue());
+        assertThat(connector, instanceOf(LogConnector.class));
 
     }
 
@@ -81,8 +86,8 @@ public class ConnectorFactoryTest {
 
         final Connector connector = ConnectorFactory.getInstance().createConnector(name1);
 
-        MatcherAssert.assertThat(connector, Matchers.notNullValue());
-        MatcherAssert.assertThat(connector, Matchers.instanceOf(LogConnector.class));
+        assertThat(connector, notNullValue());
+        assertThat(connector, instanceOf(LogConnector.class));
 
     }
 

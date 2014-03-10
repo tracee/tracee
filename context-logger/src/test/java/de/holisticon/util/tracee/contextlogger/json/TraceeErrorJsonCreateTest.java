@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.contextlogger.json;
 
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -56,11 +57,11 @@ public class TraceeErrorJsonCreateTest {
 
         final String json = TraceeContextLoggerJsonBuilder.createJsonCreator().addCommonCategory().toString();
 
-        System.out.println(json);
-
         final Pattern pattern = Pattern.compile(expectedJsonPattern);
         final Matcher matcher = pattern.matcher(json);
+
         final boolean matches = matcher.matches();
+		assertTrue("json: "+json+" matches pattern: "+pattern, matches);
 
     }
 
@@ -77,8 +78,6 @@ public class TraceeErrorJsonCreateTest {
         final Pattern pattern = Pattern.compile(expectedJsonPattern);
         final Matcher matcher = pattern.matcher(json);
         final boolean matches = matcher.matches();
-
-        System.out.println(json);
 
         assertThat(matches, CoreMatchers.is(true));
 
@@ -183,12 +182,10 @@ public class TraceeErrorJsonCreateTest {
         final Matcher matcher = pattern.matcher(json);
         final boolean matches = matcher.matches();
 
-        System.out.println(json);
-
         assertThat(matches, CoreMatchers.is(true));
-
     }
 
+	@SuppressWarnings("unchecked")
     private <T extends Throwable> T createException(final T exception) {
         try {
             throw exception;
