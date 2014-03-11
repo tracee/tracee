@@ -42,7 +42,7 @@ public final class Tracee {
 			throw new TraceeException("Unable to load available backend providers", e);
 		}
 		if (backendProviders.isEmpty()) {
-			throw new TraceeException("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath.");
+			throw new TraceeException("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath.");
 		}
 		if (backendProviders.size() > 1) {
 			final List<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());
@@ -50,7 +50,7 @@ public final class Tracee {
 				providerClasses.add(backendProvider.getClass());
 			}
 			final String providerClassNames = Arrays.toString(providerClasses.toArray());
-			throw new TraceeException("Multiple context providers found. Don't know which one of the following to use: "
+			throw new TraceeException("Multiple TracEE providers found. Don't know which one of the following to use: "
 					+ providerClassNames);
 		}
 		return backendProviders.iterator().next().provideBackend();
