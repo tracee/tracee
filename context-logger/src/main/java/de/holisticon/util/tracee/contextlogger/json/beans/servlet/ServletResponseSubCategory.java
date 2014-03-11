@@ -1,9 +1,7 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.servlet;
 
+import com.google.gson.annotations.SerializedName;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpHeader;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 import java.util.List;
 
@@ -12,26 +10,14 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletResponseSubCategory.ATTR_HTTP_STATUS_CODE,
-                ServletResponseSubCategory.ATTR_HTTP_RESPONSE_HEADERS
-        }
-)
 public class ServletResponseSubCategory {
 
     public static final String ATTR_HTTP_STATUS_CODE = "http-status-code";
     public static final String ATTR_HTTP_RESPONSE_HEADERS = "http-response-headers";
 
-
-    @JsonProperty(value = ServletResponseSubCategory.ATTR_HTTP_STATUS_CODE)
+    @SerializedName(ServletResponseSubCategory.ATTR_HTTP_STATUS_CODE)
     private final Integer httpStatusCode;
-    @JsonProperty(value = ServletResponseSubCategory.ATTR_HTTP_RESPONSE_HEADERS)
+    @SerializedName(ServletResponseSubCategory.ATTR_HTTP_RESPONSE_HEADERS)
     private final List<ServletHttpHeader> httpResponseHeaders;
 
 

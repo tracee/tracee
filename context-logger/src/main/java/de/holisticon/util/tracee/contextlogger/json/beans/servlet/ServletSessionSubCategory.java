@@ -1,8 +1,7 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.servlet;
 
+import com.google.gson.annotations.SerializedName;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletSessionAttribute;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 import java.util.List;
 
@@ -11,29 +10,18 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletSessionSubCategory.ATTR_SESSION_EXISTS,
-                ServletSessionSubCategory.ATTR_USER_NAME,
-                ServletSessionSubCategory.ATTR_SESSION_ATTRIBUTES
-        }
-)
 public final class ServletSessionSubCategory {
 
     public static final String ATTR_SESSION_EXISTS = "session-exists";
     public static final String ATTR_USER_NAME = "user-name";
     public static final String ATTR_SESSION_ATTRIBUTES = "attributes";
 
+	@SerializedName(ATTR_SESSION_EXISTS)
     private final Boolean sessionExists;
+	@SerializedName(ATTR_USER_NAME)
     private final String userName;
+	@SerializedName(ATTR_SESSION_ATTRIBUTES)
     private final List<ServletSessionAttribute> sessionAttributes;
-
-
 
     @SuppressWarnings("unused")
     private ServletSessionSubCategory() {

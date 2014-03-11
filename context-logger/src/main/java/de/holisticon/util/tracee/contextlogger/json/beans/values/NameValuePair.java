@@ -1,34 +1,24 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.values;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Abstract value class for JSON generation.
  * Created by Tobias Gindler on 20.12.13.
  */
-
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(value = {NameValuePair.ATTR_NAME, NameValuePair.ATTR_VALUE })
 public class NameValuePair {
 
     public static final String ATTR_NAME = "name";
     public static final String ATTR_VALUE = "value";
 
-    @JsonProperty(value = NameValuePair.ATTR_NAME)
+    @SerializedName(value = NameValuePair.ATTR_NAME)
     private final String name;
 
-    @JsonProperty(value = NameValuePair.ATTR_VALUE)
+    @SerializedName(value = NameValuePair.ATTR_VALUE)
     private final String value;
 
     @SuppressWarnings("unused")
     private NameValuePair() {
-        // used by jackson
         this(null, null);
     }
 

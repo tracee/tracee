@@ -118,7 +118,6 @@
 		<log4j.version>1.2.4</log4j.version>
 		<logback.version>0.9.30</logback.version>
 		<gson.version>2.2.4</gson.version>
-		<jackson.version>1.7.4</jackson.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 	</properties>
 
@@ -155,8 +154,6 @@
 										<include>*:*:*:*:provided:*</include>
 										<include>de.holisticon.util.tracee:*</include>
 										<include>com.google.code.gson:gson:jar</include>
-										<include>org.codehaus.jackson:jackson-core-asl:jar</include>
-										<include>org.codehaus.jackson:jackson-mapper-asl:jar</include>
 									</includes>
 								</bannedDependencies>
 							</rules>
@@ -328,17 +325,6 @@
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<version>${gson.version}</version>
-			</dependency>
-			<!-- TODO: Is jackson really needed? Try to use gson instead! -->
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-asl</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${jackson.version}</version>
 			</dependency>
 
 			<!-- Provided dependencies -->

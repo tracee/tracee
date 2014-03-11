@@ -1,8 +1,6 @@
 package de.holisticon.util.tracee.contextlogger.json.beans;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -10,16 +8,6 @@ import java.util.Date;
  * Category for json output for common context specific data like system name, stage and timestamp.
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(value = {CommonCategory.ATTR_SYSTEMNAME,
-        CommonCategory.ATTR_STAGE,
-        CommonCategory.ATTR_TIMESTAMP,
-        CommonCategory.ATTR_THREADNAME}
-)
 public final class CommonCategory {
 
     public static final String ATTR_TIMESTAMP = "timestamp";
@@ -29,15 +17,15 @@ public final class CommonCategory {
     public static final String ATTR_THREADID = "thread-id";
 
 
-    @JsonProperty(value = CommonCategory.ATTR_TIMESTAMP)
+    @SerializedName(CommonCategory.ATTR_TIMESTAMP)
     private final Date timestamp;
-    @JsonProperty(value = CommonCategory.ATTR_SYSTEMNAME)
+    @SerializedName(CommonCategory.ATTR_SYSTEMNAME)
     private final String systemName;
-    @JsonProperty(value = CommonCategory.ATTR_STAGE)
+    @SerializedName(CommonCategory.ATTR_STAGE)
     private final String stage;
-    @JsonProperty(value = CommonCategory.ATTR_THREADNAME)
+    @SerializedName(CommonCategory.ATTR_THREADNAME)
     private final String threadName;
-    @JsonProperty(value = CommonCategory.ATTR_THREADID)
+    @SerializedName(CommonCategory.ATTR_THREADID)
     private final Long threadId;
 
     @SuppressWarnings("unused")
@@ -84,4 +72,30 @@ public final class CommonCategory {
     public Long getThreadId() {
         return threadId;
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		CommonCategory that = (CommonCategory) o;
+
+		if (stage != null ? !stage.equals(that.stage) : that.stage != null) return false;
+		if (systemName != null ? !systemName.equals(that.systemName) : that.systemName != null) return false;
+		if (threadId != null ? !threadId.equals(that.threadId) : that.threadId != null) return false;
+		if (threadName != null ? !threadName.equals(that.threadName) : that.threadName != null) return false;
+		if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = timestamp != null ? timestamp.hashCode() : 0;
+		result = 31 * result + (systemName != null ? systemName.hashCode() : 0);
+		result = 31 * result + (stage != null ? stage.hashCode() : 0);
+		result = 31 * result + (threadName != null ? threadName.hashCode() : 0);
+		result = 31 * result + (threadId != null ? threadId.hashCode() : 0);
+		return result;
+	}
 }

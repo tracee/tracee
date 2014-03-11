@@ -1,18 +1,20 @@
 package de.holisticon.util.tracee.contextlogger.json.generator;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
-
-import de.holisticon.util.tracee.contextlogger.connector.PrintableByConnector;
-import de.holisticon.util.tracee.contextlogger.json.beans.*;
-import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.google.gson.GsonBuilder;
 import de.holisticon.util.tracee.TraceeBackend;
+import de.holisticon.util.tracee.contextlogger.connector.PrintableByConnector;
+import de.holisticon.util.tracee.contextlogger.json.beans.CommonCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.ExceptionCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.JaxWsCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.ServletCategory;
+import de.holisticon.util.tracee.contextlogger.json.beans.TraceeJsonEnvelope;
+import de.holisticon.util.tracee.contextlogger.json.beans.WatchdogCategory;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.TraceeContextValue;
 import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
+import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
 import de.holisticon.util.tracee.contextlogger.presets.Preset;
+
+import java.util.List;
 
 /**
  * Creator class to generate context json via a fluent api.
@@ -92,10 +94,6 @@ public class TraceeContextLoggerJsonBuilder implements PrintableByConnector{
         return this.createJson(false);
     }
 
-    public final String toStringWithPrefix() {
-        return this.createJson(true);
-    }
-
     private String createJson(boolean withPrefix) {
 
         final TraceeJsonEnvelope envelope = new TraceeJsonEnvelope(reportType, Preset.getPreset().getPresetConfig().showCommon() ? categoryCommon : null, Preset
@@ -103,23 +101,7 @@ public class TraceeContextLoggerJsonBuilder implements PrintableByConnector{
                 : null, Preset.getPreset().getPresetConfig().showException() ? categoryException : null, Preset.getPreset().getPresetConfig().showJaxWs()
                 ? categoryJaxws : null, watchdogCategory );
 
-        final StringWriter stringWriter = new StringWriter();
-        if (withPrefix && this.prefixedMessage != null) {
-            stringWriter.append(this.prefixedMessage).append(" - ");
-        }
-
-        try {
-
-            final ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(stringWriter, envelope);
-
-            return stringWriter.toString();
-
-        }
-        catch (final IOException e) {
-            throw new RuntimeException("Couldn't create JSON for error output", e);
-        }
-
+		return new GsonBuilder().create().toJson(envelope);
     }
 
 }

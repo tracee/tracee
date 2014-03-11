@@ -4,14 +4,11 @@ package de.holisticon.util.tracee.contextlogger.json.beans;
  * Created by Tobias Gindler, holisticon AG on 19.12.13.
  */
 
+import com.google.gson.annotations.SerializedName;
 import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletRequestSubCategory;
 import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletResponseSubCategory;
 import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletSessionSubCategory;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletRequestAttribute;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.List;
 
@@ -20,21 +17,6 @@ import java.util.List;
  * Category for json output for servlet context specific data.
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
-
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletCategory.ATTR_REQUEST,
-                ServletCategory.ATTR_RESPONSE,
-                ServletCategory.ATTR_SESSION,
-                ServletCategory.ATTR_REQUEST_ATTRIBUTES
-        }
-)
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public final class ServletCategory {
 
     public static final String ATTR_REQUEST = "request";
@@ -42,16 +24,16 @@ public final class ServletCategory {
     public static final String ATTR_SESSION = "session";
     public static final String ATTR_REQUEST_ATTRIBUTES = "request-attributes";
 
-    @JsonProperty(value = ServletCategory.ATTR_REQUEST)
+    @SerializedName(ServletCategory.ATTR_REQUEST)
     private final ServletRequestSubCategory request;
 
-    @JsonProperty(value = ServletCategory.ATTR_RESPONSE)
+    @SerializedName(ServletCategory.ATTR_RESPONSE)
     private final ServletResponseSubCategory response;
 
-    @JsonProperty(value = ServletCategory.ATTR_SESSION)
+    @SerializedName(ServletCategory.ATTR_SESSION)
     private final ServletSessionSubCategory session;
 
-    @JsonProperty(value = ServletCategory.ATTR_REQUEST_ATTRIBUTES)
+    @SerializedName(ServletCategory.ATTR_REQUEST_ATTRIBUTES)
     private final List<ServletRequestAttribute> requestAttributes;
 
     @SuppressWarnings("unused")

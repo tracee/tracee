@@ -1,13 +1,6 @@
 package de.holisticon.util.tracee.contextlogger.json.beans;
 
-import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletRequestSubCategory;
-import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletResponseSubCategory;
-import de.holisticon.util.tracee.contextlogger.json.beans.servlet.ServletSessionSubCategory;
-import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletRequestAttribute;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -16,21 +9,6 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                WatchdogCategory.ATTR_ID,
-                WatchdogCategory.ATTR_CLASS,
-                WatchdogCategory.ATTR_METHOD,
-                WatchdogCategory.ATTR_PARAMETERS,
-                WatchdogCategory.ATTR_DESERIALIZED_INSTANCE
-        }
-)
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class WatchdogCategory {
 
     public static final String ATTR_ID = "id";
@@ -39,19 +17,19 @@ public class WatchdogCategory {
     public static final String ATTR_PARAMETERS = "parameters";
     public static final String ATTR_DESERIALIZED_INSTANCE = "deserialized-instance";
 
-    @JsonProperty(value = WatchdogCategory.ATTR_ID)
+    @SerializedName(WatchdogCategory.ATTR_ID)
     private final String id;
 
-    @JsonProperty(value = WatchdogCategory.ATTR_CLASS)
+    @SerializedName(WatchdogCategory.ATTR_CLASS)
     private final String clazz;
 
-    @JsonProperty(value = WatchdogCategory.ATTR_METHOD)
+    @SerializedName(WatchdogCategory.ATTR_METHOD)
     private final String method;
 
-    @JsonProperty(value = WatchdogCategory.ATTR_PARAMETERS)
+    @SerializedName(WatchdogCategory.ATTR_PARAMETERS)
     private final List<String> parameters;
 
-    @JsonProperty(value = WatchdogCategory.ATTR_DESERIALIZED_INSTANCE)
+    @SerializedName(WatchdogCategory.ATTR_DESERIALIZED_INSTANCE)
     private final String deserializedInstance;
 
     public WatchdogCategory(

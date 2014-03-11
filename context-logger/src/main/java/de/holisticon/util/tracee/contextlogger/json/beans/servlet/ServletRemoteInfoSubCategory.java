@@ -1,37 +1,21 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.servlet;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletRemoteInfoSubCategory.ATTR_HTTP_REMOTE_ADDRESS,
-                ServletRemoteInfoSubCategory.ATTR_HTTP_REMOTE_HOST,
-                ServletRemoteInfoSubCategory.ATTR_HTTP_REMOTE_PORT
-        }
-)
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public final class ServletRemoteInfoSubCategory {
 
     public static final String ATTR_HTTP_REMOTE_ADDRESS = "http-remote-address";
     public static final String ATTR_HTTP_REMOTE_HOST = "http-remote-host";
     public static final String ATTR_HTTP_REMOTE_PORT = "http-remote-port";
 
-    @JsonProperty(value = ATTR_HTTP_REMOTE_ADDRESS)
+    @SerializedName(ATTR_HTTP_REMOTE_ADDRESS)
     private final String httpRemoteAddress;
-    @JsonProperty(value = ATTR_HTTP_REMOTE_HOST)
+    @SerializedName(ATTR_HTTP_REMOTE_HOST)
     private final String httpRemoteHost;
-    @JsonProperty(value = ATTR_HTTP_REMOTE_PORT)
+    @SerializedName(ATTR_HTTP_REMOTE_PORT)
     private final Integer httpRemotePort;
 
 

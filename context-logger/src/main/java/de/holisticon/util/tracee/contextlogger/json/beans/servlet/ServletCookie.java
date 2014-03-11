@@ -1,29 +1,12 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.servlet;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.google.gson.annotations.SerializedName;
 
 import javax.servlet.http.Cookie;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
-
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletCookie.ATTR_NAME,
-                ServletCookie.ATTR_VALUE,
-                ServletCookie.ATTR_DOMAIN,
-                ServletCookie.ATTR_PATH,
-                ServletCookie.ATTR_SECURE,
-                ServletCookie.ATTR_MAXAGE
-        }
-)
 public final class ServletCookie {
 
     public static final String ATTR_NAME = "name";
@@ -33,12 +16,17 @@ public final class ServletCookie {
     public static final String ATTR_SECURE = "secure";
     public static final String ATTR_MAXAGE = "max-age";
 
-
+	@SerializedName(ATTR_NAME)
     private final String name;
+	@SerializedName(ATTR_VALUE)
     private final String value;
-    private final String domain;
+	@SerializedName(ATTR_DOMAIN)
+	private final String domain;
+	@SerializedName(ATTR_PATH)
     private final String path;
+	@SerializedName(ATTR_SECURE)
     private final Boolean secure;
+	@SerializedName(ATTR_MAXAGE)
     private final Integer maxAge;
 
     @SuppressWarnings("unused")

@@ -1,11 +1,8 @@
 package de.holisticon.util.tracee.contextlogger.json.beans.servlet;
 
+import com.google.gson.annotations.SerializedName;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpHeader;
 import de.holisticon.util.tracee.contextlogger.json.beans.values.ServletHttpParameter;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.List;
 
@@ -14,23 +11,6 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 
-@JsonAutoDetect(
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-        fieldVisibility = JsonAutoDetect.Visibility.ANY
-)
-@JsonPropertyOrder(
-        value = {
-                ServletRequestSubCategory.ATTR_URL,
-                ServletRequestSubCategory.ATTR_HTTP_METHOD,
-                ServletRequestSubCategory.ATTR_HTTP_PARAMETERS,
-                ServletRequestSubCategory.ATTR_HTTP_REQUEST_HEADERS,
-                ServletRequestSubCategory.ATTR_COOKIES,
-                ServletRequestSubCategory.ATTR_REMOTE_INFO,
-                ServletRequestSubCategory.ATTR_ENHANCED_REQUEST_INFO
-        }
-)
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public final class ServletRequestSubCategory {
 
     public static final String ATTR_URL = "url";
@@ -42,19 +22,19 @@ public final class ServletRequestSubCategory {
     public static final String ATTR_COOKIES = "cookies";
 
 
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_URL)
+    @SerializedName(ServletRequestSubCategory.ATTR_URL)
     private final String url;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_HTTP_METHOD)
+    @SerializedName(ServletRequestSubCategory.ATTR_HTTP_METHOD)
     private final String httpMethod;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_HTTP_PARAMETERS)
+    @SerializedName(ServletRequestSubCategory.ATTR_HTTP_PARAMETERS)
     private final List<ServletHttpParameter> httpParameters;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_HTTP_REQUEST_HEADERS)
+    @SerializedName(ServletRequestSubCategory.ATTR_HTTP_REQUEST_HEADERS)
     private final List<ServletHttpHeader> httpRequestHeaders;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_REMOTE_INFO)
+    @SerializedName(ServletRequestSubCategory.ATTR_REMOTE_INFO)
     private final ServletRemoteInfoSubCategory remoteInfo;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_ENHANCED_REQUEST_INFO)
+    @SerializedName(ServletRequestSubCategory.ATTR_ENHANCED_REQUEST_INFO)
     private final ServletRequestEnhancedInfoSubCategory enhancedRequestInfo;
-    @JsonProperty(value = ServletRequestSubCategory.ATTR_COOKIES)
+    @SerializedName(ServletRequestSubCategory.ATTR_COOKIES)
     private final List<ServletCookie> cookies;
 
 
