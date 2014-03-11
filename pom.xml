@@ -14,6 +14,7 @@
 		<!-- contextual logging -->
 		<module>context-logger</module>
 		<module>context-logger-watchdog</module>
+		<module>context-logger-servlet</module>
 
 		<!-- backends -->
 		<module>slf4j</module>

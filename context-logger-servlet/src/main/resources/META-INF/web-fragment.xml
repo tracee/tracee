@@ -5,24 +5,16 @@
               xmlns:webfragment="http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
-			  id="TRACEE_SERVLET_FILTER" version="3.0">
+			  id="TRACEE_ERROR_LOGGING_SERVLET_FILTER" version="3.0">
 
 	<filter>
-		<filter-name>traceeFilter</filter-name>
-		<filter-class>de.holisticon.util.tracee.servlet.TraceeFilter</filter-class>
+		<filter-name>traceeErrorLoggingFilter</filter-name>
+		<filter-class>de.holisticon.util.tracee.contextlogger.servlet.TraceeErrorLoggingFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
-		<filter-name>traceeFilter</filter-name>
+		<filter-name>traceeErrorLoggingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeServletRequestListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeSessionListener</listener-class>
-	</listener>
-
 
 </web-fragment>

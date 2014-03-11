@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.servlet;
+package de.holisticon.util.tracee.contextlogger.servlet;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;

@@ -92,8 +92,8 @@ your logging context without polluting your business logic.
 ## Shipped context information
 TracEE creates the following context identfiers on the fly if not configured otherwise:
 
-    * TraceeServlet generates a pseudo-unique request id (configurable length)
-    * sessionid ... continue here
+    * it generates a pseudo-unique request id (configurable length)
+    * it generates a session id base on the servlet session id. Since the servlet session id is a secure
 
 
 ## Performance considerations
