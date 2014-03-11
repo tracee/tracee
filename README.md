@@ -1,4 +1,4 @@
-# TracEE 0.1-SNAPSHOT
+# TracEE 0.1.0
 
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
 
@@ -30,13 +30,13 @@ propagate context information from a servlet container based frontend to an ejb 
 
 ### Maven artifacts
 
-Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
+Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 ```xml
 <dependencies>
     <dependency>
         <groupId>de.holisticon.util.tracee</groupId>
-        <artifactId>tracee-parent</artifactId>
-        <version>0.1</version>
+        <artifactId>tracee-servlet</artifactId>
+        <version>0.1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -54,8 +54,8 @@ Just add a maven/gradle/sbt dependency (__NOT YET RELEASED__):
 <dependencies>
     <dependency>
         <groupId>de.holisticon.util.tracee</groupId>
-        <artifactId>tracee-parent</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <artifactId>tracee-servlet</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
