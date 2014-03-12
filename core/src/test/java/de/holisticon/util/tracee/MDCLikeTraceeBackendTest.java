@@ -50,7 +50,7 @@ public class MDCLikeTraceeBackendTest {
 
 	@Test
 	public void clearAlsoRemovesTheThreadLocalTraceeKeys() {
-		when(traceeKeysSet.iterator()).thenReturn(Collections.<String>emptyIterator());
+		when(traceeKeysSet.iterator()).thenReturn(Collections.<String>emptyList().iterator());
 		unit.clear();
 		verify(traceeKeysMock).remove();
 	}
