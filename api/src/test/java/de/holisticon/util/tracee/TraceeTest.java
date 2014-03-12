@@ -21,7 +21,7 @@ public class TraceeTest {
 		try {
 			Tracee.getBackend();
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), equalTo("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath."));
+			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
 			throw e;
 		}
 	}
@@ -32,7 +32,7 @@ public class TraceeTest {
 		try {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), equalTo("Unable to find a tracee backend provider. Make sure that you have a implementation on your classpath."));
+			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
 			throw e;
 		}
 	}
@@ -47,7 +47,7 @@ public class TraceeTest {
 		try {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), allOf(startsWith("Multiple context providers found. Don't know which one of the following to use:"),
+			assertThat(e.getMessage(), allOf(startsWith("Multiple TracEE backend providers found. Don't know which one of the following to use:"),
 					containsString(TestBackendProvider.class.getSimpleName())));
 			throw e;
 		}

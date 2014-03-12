@@ -50,7 +50,7 @@ public final class Tracee {
 				providerClasses.add(backendProvider.getClass());
 			}
 			final String providerClassNames = Arrays.toString(providerClasses.toArray());
-			throw new TraceeException("Multiple TracEE providers found. Don't know which one of the following to use: "
+			throw new TraceeException("Multiple TracEE backend providers found. Don't know which one of the following to use: "
 					+ providerClassNames);
 		}
 		return backendProviders.iterator().next().provideBackend();
