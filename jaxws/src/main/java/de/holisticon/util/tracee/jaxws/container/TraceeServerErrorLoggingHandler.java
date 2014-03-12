@@ -1,8 +1,8 @@
 package de.holisticon.util.tracee.jaxws.container;
 
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.contextlogger.PrintableByConnector;
 import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
-import de.holisticon.util.tracee.contextlogger.connector.PrintableByConnector;
 import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aspectj>
+
+
+    <aspects>
+
+        <aspect name="de.holisticon.util.tracee.contextlogger.WatchdogAspect" />
+
+    </aspects>
+
+    <weaver options="-XlazyTjp">
+        <include within="*"/>
+    </weaver>
+</aspectj>

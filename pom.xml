@@ -12,9 +12,7 @@
 		<module>testhelper</module>
 
 		<!-- contextual logging -->
-		<module>context-logger</module>
-		<module>context-logger-watchdog</module>
-		<module>context-logger-servlet</module>
+		<module>context-logger</module>		
 
 		<!-- backends -->
 		<module>slf4j</module>
