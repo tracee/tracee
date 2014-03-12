@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class JbossLoggingMdcLikeAdapter implements MDCLike {
+final class JbossLoggingMdcLikeAdapter implements MDCLike {
 
     @Override
     public boolean containsKey(String key) {

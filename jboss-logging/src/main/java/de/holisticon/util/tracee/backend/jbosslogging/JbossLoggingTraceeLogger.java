@@ -6,15 +6,15 @@ import org.jboss.logging.Logger;
 /**
  * TraceeLogger Abstraction for Jboss Logging.
  *
- * @author Tobias Gindler, holisticon AG
+ * @author Tobias Gindler (Holisticon AG)
  */
 
-public final class JbossLoggingTraceeLogger implements TraceeLogger {
+final class JbossLoggingTraceeLogger implements TraceeLogger {
 
     private final Logger logger;
 
-    public JbossLoggingTraceeLogger(final Class<?> clazz) {
-        this.logger = Logger.getLogger(clazz);
+    public JbossLoggingTraceeLogger(Logger logger) {
+        this.logger = logger;
     }
 
     public void debug(final Object message) {
@@ -30,7 +30,7 @@ public final class JbossLoggingTraceeLogger implements TraceeLogger {
     }
 
     public void error(final Object message, final Throwable t) {
-        this.logger.debug(message, t);
+        this.logger.error(message, t);
     }
 
     public void info(final Object message) {

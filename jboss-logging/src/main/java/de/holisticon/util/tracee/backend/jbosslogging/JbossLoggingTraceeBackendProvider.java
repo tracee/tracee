@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-class JbossLoggingTraceeBackendProvider implements TraceeBackendProvider {
+public final class JbossLoggingTraceeBackendProvider implements TraceeBackendProvider {
 
     private final JbossLoggingMdcLikeAdapter jbossLoggingMdcLikeAdapter = new JbossLoggingMdcLikeAdapter();
     private final ThreadLocal<Set<String>> traceeKeys = new ThreadLocalHashSet<String>();
