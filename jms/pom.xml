@@ -13,22 +13,6 @@
     <name>tracee-jms</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <artifactId>tracee-api</artifactId>

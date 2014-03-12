@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TestMDBIT {
+public class TraceeMessageListenerAndProducerIT {
 
     @Resource
     private ConnectionFactory connectionFactory;
