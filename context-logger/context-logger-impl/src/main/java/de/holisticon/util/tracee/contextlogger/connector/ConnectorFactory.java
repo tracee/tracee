@@ -96,12 +96,6 @@ public final class ConnectorFactory {
             this.connectorMap.put("LOGGER", logConnector);
         }
 
-        // Add mandatory tracee connector
-        if (!isConnectorConfigured(TraceeConnector.class)) {
-            Connector traceeConnector = new TraceeConnector();
-            this.connectorMap.put("TRACEE-CONNECTOR", traceeConnector);
-        }
-
     }
 
     /**
