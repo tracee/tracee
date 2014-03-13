@@ -30,7 +30,7 @@ public final class Log4JTraceeLogger implements TraceeLogger {
     }
 
     public void error(final Object message, final Throwable t) {
-        this.logger.error(message, t);
+        this.logger.debug(message, t);
     }
 
     public void info(final Object message) {
@@ -48,4 +48,6 @@ public final class Log4JTraceeLogger implements TraceeLogger {
     public void warn(final Object message, final Throwable t) {
         this.logger.warn(message, t);
     }
+
+
 }
