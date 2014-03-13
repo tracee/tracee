@@ -27,7 +27,6 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.3.1</version>
 				<executions>
 					<execution>
 						<id>enforce</id>
@@ -36,12 +35,6 @@
 						</goals>
 						<configuration>
 							<rules>
-								<requireMavenVersion>
-									<version>3.0.4</version>
-								</requireMavenVersion>
-								<requireJavaVersion>
-									<version>1.6</version>
-								</requireJavaVersion>
 								<bannedDependencies>
 									<searchTransitive>false</searchTransitive>
 									<includes>
@@ -62,4 +55,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<dependencies>
+		
+	</dependencies>
 </project>
