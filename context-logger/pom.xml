@@ -18,6 +18,7 @@
 		<module>context-logger-connectors</module>
 		<module>context-logger-impl</module>
 		<module>context-logger-servlet</module>
+		<module>context-logger-jms</module>
 		<module>context-logger-watchdog</module>		
 	</modules>	
 
