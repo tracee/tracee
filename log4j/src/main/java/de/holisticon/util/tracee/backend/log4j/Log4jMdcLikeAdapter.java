@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class Log4jMdcLikeAdapter implements MDCLike {
+class Log4jMdcLikeAdapter implements MDCLike {
 
     @Override
     public boolean containsKey(String key) {
