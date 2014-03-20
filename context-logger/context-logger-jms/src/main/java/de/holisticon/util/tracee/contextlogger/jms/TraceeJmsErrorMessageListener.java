@@ -37,7 +37,7 @@ public class TraceeJmsErrorMessageListener {
         } catch (Exception e) {
 
             if (isMdbInvocation) {
-                
+
                 Message message = extractMessageParameter(ctx.getParameters());
 
                 // TODO should write contextual log information (for example message)
