@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.builder.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.CommonDataProvider;
 import de.holisticon.util.tracee.contextlogger.testdata.AnnotationTestClass;
@@ -12,10 +13,19 @@ import org.junit.Test;
 
 import org.hamcrest.MatcherAssert;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
 /**
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public class TraceeGenericGsonSerializerTest {
+
 
     @Before
     public void init() {
@@ -47,8 +57,11 @@ public class TraceeGenericGsonSerializerTest {
         String json = gson.toJson(new CommonDataProvider());
 
         MatcherAssert.assertThat(json, Matchers.notNullValue());
-        MatcherAssert.assertThat(json.matches("\\{\\\"timestamp\\\":\\\".*?\\\",\\\"stage\\\":\\\"DEBUG\\\",\\\"system-name\\\":\\\"SYSTEM_1\\\",\\\"thread-name\\\":\\\"main\\\",\\\"thread-id\\\":1\\}"), Matchers.equalTo(true));
+        MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"timestamp\\\":\\\".*?\\\",\\\"stage\\\":\\\"DEBUG\\\",\\\"system-name\\\":\\\"SYSTEM_1\\\",\\\"thread-name\\\":\\\"main\\\",\\\"thread-id\\\":1\\}"));
 
     }
+
+
+
 
 }

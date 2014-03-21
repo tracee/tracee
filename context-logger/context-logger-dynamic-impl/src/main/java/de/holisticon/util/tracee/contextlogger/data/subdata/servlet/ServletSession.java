@@ -3,9 +3,8 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.servlet;
 import de.holisticon.util.tracee.contextlogger.api.Flatten;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
-import de.holisticon.util.tracee.contextlogger.data.Order;
-import de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair;
-import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
+import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -17,25 +16,38 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
 @TraceeContextLogProvider(displayName = "servletSession")
-public class ServletSession {
+public class ServletSession implements WrappedContextData<HttpSession> {
 
-    final HttpSession session;
+    HttpSession session;
 
-    public ServletSession (HttpSession session) {
+    public ServletSession() {
+    }
+
+    public ServletSession(HttpSession session) {
         this.session = session;
+    }
+
+    @Override
+    public void setContextData(Object instance) throws ClassCastException {
+        this.session = (HttpSession) instance;
+    }
+
+    @Override
+    public Class<HttpSession> getWrappedType() {
+        return HttpSession.class;
     }
 
 
     @SuppressWarnings("unused")
     @Flatten
     @TraceeContextLogProviderMethod(displayName = "DYNAMIC", propertyName = "DYNAMIC")
-    public List<NameValuePair> getSessionAttributes() {
+    public List<NameStringValuePair> getSessionAttributes() {
 
         if (session == null) {
             return null;
         }
 
-        final List<NameValuePair> sessionAttributes = new ArrayList<NameValuePair>();
+        final List<NameStringValuePair> sessionAttributes = new ArrayList<NameStringValuePair>();
 
         if (session != null) {
             final Enumeration<String> attributeNames = session.getAttributeNames();
@@ -44,7 +56,7 @@ public class ServletSession {
                 final String key = attributeNames.nextElement();
                 final Object value = session.getAttribute(key);
 
-                sessionAttributes.add(new NameValuePair(key, value != null ? value.toString() : null));
+                sessionAttributes.add(new NameStringValuePair(key, value != null ? value.toString() : null));
 
             }
         }
@@ -52,5 +64,6 @@ public class ServletSession {
         return (sessionAttributes.size() > 0 ? sessionAttributes : null);
 
     }
+
 
 }

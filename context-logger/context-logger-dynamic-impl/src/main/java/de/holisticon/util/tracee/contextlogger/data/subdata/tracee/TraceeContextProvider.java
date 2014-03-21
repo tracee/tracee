@@ -1,11 +1,14 @@
 package de.holisticon.util.tracee.contextlogger.data.subdata.tracee;
 
+import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.api.Flatten;
+import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.data.Order;
-import de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import java.util.ArrayList;
@@ -18,14 +21,18 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @TraceeContextLogProvider(displayName = "tracee", order = Order.TRACEE)
-public class TraceeContextProvider {
+public class TraceeContextProvider implements ImplicitContextData {
 
     private final TraceeBackend traceeBackend;
 
-    public TraceeContextProvider(final TraceeBackend traceeBackend) {
-        this.traceeBackend = traceeBackend;
+    public TraceeContextProvider() {
+        this.traceeBackend = Tracee.getBackend();
     }
 
+    @Override
+    public ImplicitContext getImplicitContext() {
+        return ImplicitContext.TRACEE;
+    }
 
     @SuppressWarnings("unused")
     @Flatten
@@ -33,16 +40,16 @@ public class TraceeContextProvider {
             displayName = "DYNAMIC",
             propertyName = ProfilePropertyNames.TRACEE,
             order = 10)
-    public List<NameValuePair> getNameValuePairs() {
+    public List<NameStringValuePair> getNameValuePairs() {
 
-        final List<NameValuePair> list = new ArrayList<NameValuePair>();
+        final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
 
         final Collection<String> keys = traceeBackend.keySet();
         if (keys != null) {
             for (String key : keys) {
 
                 final String value = traceeBackend.get(key);
-                list.add(new NameValuePair(key, value));
+                list.add(new NameStringValuePair(key, value));
 
             }
         }

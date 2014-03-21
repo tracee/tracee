@@ -11,6 +11,8 @@ public final class TraceeContextLoggerConstants {
         // hide constructor
     }
 
+    public static final String WRAPPER_CLASS_RESOURCE_URL ="/de.holisticon.util.tracee.contextlogger.wrapperclasses";
+
     public static final String SYSTEM_PROPERTY_PREFIX = "de.holisticon.util.tracee.contextlogger.";
     public static final String SYSTEM_PROPERTY_CONNECTOR_PREFIX = SYSTEM_PROPERTY_PREFIX + "connector.";
 

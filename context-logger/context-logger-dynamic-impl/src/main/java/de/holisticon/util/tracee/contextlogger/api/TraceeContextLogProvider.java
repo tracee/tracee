@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to mark classes that can be processed via the {@link de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer}.
+ * Annotation to mark classes that can be processed by a context log provider implementation
+ * ( for example the {@link de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer} ).
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -14,6 +15,7 @@ import java.lang.annotation.Target;
 public @interface TraceeContextLogProvider {
 
     String displayName();
+
     int order() default 100;
 
 }

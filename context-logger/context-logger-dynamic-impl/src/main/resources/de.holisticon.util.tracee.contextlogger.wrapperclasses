@@ -1,0 +1,14 @@
+de.holisticon.util.tracee.contextlogger.data.subdata.aspectj.AspectjProceedingJoinPoint
+de.holisticon.util.tracee.contextlogger.data.subdata.ejb.EjbInvocationContext
+de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable
+de.holisticon.util.tracee.contextlogger.data.subdata.servlet.ServletCookie
+de.holisticon.util.tracee.contextlogger.data.subdata.servlet.ServletRequest
+de.holisticon.util.tracee.contextlogger.data.subdata.servlet.ServletResponse
+de.holisticon.util.tracee.contextlogger.data.subdata.servlet.ServletSession
+de.holisticon.util.tracee.contextlogger.data.subdata.tracee.CommonDataProvider
+de.holisticon.util.tracee.contextlogger.data.subdata.tracee.ObjectArrayContextProvider
+de.holisticon.util.tracee.contextlogger.data.subdata.tracee.TraceeContextProvider
+de.holisticon.util.tracee.contextlogger.data.subdata.tracee.WatchdogContextProvider
+de.holisticon.util.tracee.contextlogger.data.NameValuePair
+
+

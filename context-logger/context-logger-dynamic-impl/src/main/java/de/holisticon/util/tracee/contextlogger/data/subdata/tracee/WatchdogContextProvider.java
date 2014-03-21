@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.tracee;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.wrapper.WatchdogDataWrapper;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
@@ -18,13 +19,26 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @TraceeContextLogProvider(displayName = "watchdog", order = Order.WATCHDOG)
-public final class WatchdogContextProvider {
+public final class WatchdogContextProvider implements WrappedContextData<WatchdogDataWrapper>{
 
-    private final WatchdogDataWrapper watchdogDataWrapper;
+    private WatchdogDataWrapper watchdogDataWrapper;
+
+    public WatchdogContextProvider() {
+    }
 
     @SuppressWarnings("unused")
     public WatchdogContextProvider(final WatchdogDataWrapper watchdogDataWrapper) {
         this.watchdogDataWrapper = watchdogDataWrapper;
+    }
+
+    @Override
+    public void setContextData(Object instance) throws ClassCastException {
+        this.watchdogDataWrapper = (WatchdogDataWrapper) instance;
+    }
+
+    @Override
+    public Class<WatchdogDataWrapper> getWrappedType() {
+        return WatchdogDataWrapper.class;
     }
 
     @SuppressWarnings("unused")

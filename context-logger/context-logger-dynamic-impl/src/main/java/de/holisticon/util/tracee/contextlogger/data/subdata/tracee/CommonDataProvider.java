@@ -1,7 +1,8 @@
 package de.holisticon.util.tracee.contextlogger.data.subdata.tracee;
 
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
-import de.holisticon.util.tracee.contextlogger.api.Flatten;
+import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.data.Order;
@@ -15,7 +16,12 @@ import java.util.Date;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @TraceeContextLogProvider(displayName = "common", order = Order.COMMON)
-public class CommonDataProvider {
+public class CommonDataProvider implements ImplicitContextData {
+
+    @Override
+    public ImplicitContext getImplicitContext() {
+        return ImplicitContext.COMMON;
+    }
 
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(

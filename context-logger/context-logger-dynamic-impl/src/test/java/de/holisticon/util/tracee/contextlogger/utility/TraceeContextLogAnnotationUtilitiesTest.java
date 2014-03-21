@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities}.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public class TraceeContextLogAnnotationUtilitiesTest {
@@ -139,10 +140,10 @@ public class TraceeContextLogAnnotationUtilitiesTest {
     }
 
     @Test
-     public void checkIsPublic_should_return_false_for_protected_method() throws NoSuchMethodException {
+    public void checkIsPublic_should_return_false_for_protected_method() throws NoSuchMethodException {
 
-         Method method = TestClassWithMethods.class.getDeclaredMethod("protectedMethod", null);
-         boolean result = TraceeContextLogAnnotationUtilities.checkIsPublic(method);
+        Method method = TestClassWithMethods.class.getDeclaredMethod("protectedMethod", null);
+        boolean result = TraceeContextLogAnnotationUtilities.checkIsPublic(method);
         MatcherAssert.assertThat(result, Matchers.equalTo(false));
 
     }
@@ -162,7 +163,7 @@ public class TraceeContextLogAnnotationUtilitiesTest {
     }
 
     @Test
-     public void checkIsPublic_should_return_false_for_package_private_method() throws NoSuchMethodException{
+    public void checkIsPublic_should_return_false_for_package_private_method() throws NoSuchMethodException {
         Method method = TestClassWithMethods.class.getDeclaredMethod("packagePrivateMethod", null);
         boolean result = TraceeContextLogAnnotationUtilities.checkIsPublic(method);
         MatcherAssert.assertThat(result, Matchers.equalTo(false));

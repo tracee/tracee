@@ -11,19 +11,19 @@ import java.util.List;
 /**
  * Created by Tobias Gindler, holisticon AG on 16.03.14.
  */
-public class NameValuePairComparatorTest {
+public class NameStringValuePairComparatorTest {
 
-    public static final NameValuePair NAME_VALUE_PAIR_1 = new NameValuePair("C", "C");
-    public static final NameValuePair NAME_VALUE_PAIR_2 = new NameValuePair("A", "A");
-    public static final NameValuePair NAME_VALUE_PAIR_3 = new NameValuePair("B", "B");
+    public static final NameStringValuePair NAME_VALUE_PAIR_1 = new NameStringValuePair("C", "C");
+    public static final NameStringValuePair NAME_VALUE_PAIR_2 = new NameStringValuePair("A", "A");
+    public static final NameStringValuePair NAME_VALUE_PAIR_3 = new NameStringValuePair("B", "B");
 
-    public static final NameValuePair BROKEN_NAME_VALUE_PAIR = new NameValuePair(null, "B");
+    public static final NameStringValuePair BROKEN_NAME_VALUE_PAIR = new NameStringValuePair(null, "B");
 
 
     @Test
     public void should_sort_name_value_pairs_correctly () {
 
-        List<NameValuePair> list = new ArrayList<NameValuePair>();
+        List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
         list.add(NAME_VALUE_PAIR_1);
         list.add(NAME_VALUE_PAIR_2);
         list.add(NAME_VALUE_PAIR_3);
@@ -39,7 +39,7 @@ public class NameValuePairComparatorTest {
     @Test
     public void should_sort_name_value_pairs_with_one_null_valued_name_correctly () {
 
-        List<NameValuePair> list = new ArrayList<NameValuePair>();
+        List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
         list.add(NAME_VALUE_PAIR_1);
         list.add(NAME_VALUE_PAIR_2);
         list.add(BROKEN_NAME_VALUE_PAIR);

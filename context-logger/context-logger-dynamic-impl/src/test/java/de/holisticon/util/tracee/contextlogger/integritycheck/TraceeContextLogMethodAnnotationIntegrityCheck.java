@@ -3,12 +3,11 @@ package de.holisticon.util.tracee.contextlogger.integritycheck;
 import de.holisticon.util.tracee.contextlogger.api.Flatten;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
-import de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.testdata.AnnotationTestClass;
 import de.holisticon.util.tracee.contextlogger.testdata.TestClassWithMethods;
 import de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.reflections.Reflections;
@@ -61,8 +60,8 @@ public class TraceeContextLogMethodAnnotationIntegrityCheck {
                         Assert.fail(clazz.getCanonicalName() + "." + method.getName() + " method has void as return type.");
                     }
 
-                    if (isFlattenAnnotationSet && (!List.class.isAssignableFrom(method.getReturnType()) || !method.getGenericReturnType().toString().contains(NameValuePair.class.getCanonicalName()))) {
-                        Assert.fail(clazz.getCanonicalName() + "." + method.getName() + " Method annotated with Flatten but has no return type of List<NameValuePair>.");
+                    if (isFlattenAnnotationSet && (!List.class.isAssignableFrom(method.getReturnType()) || ( !method.getGenericReturnType().toString().contains(NameStringValuePair.class.getCanonicalName()) && !method.getGenericReturnType().toString().contains(NameObjectValuePair.class.getCanonicalName())) ) ) {
+                        Assert.fail(clazz.getCanonicalName() + "." + method.getName() + " Method annotated with Flatten but has no return type of List<NameStringValuePair>.");
                     }
 
                 } else if (isFlattenAnnotationSet){

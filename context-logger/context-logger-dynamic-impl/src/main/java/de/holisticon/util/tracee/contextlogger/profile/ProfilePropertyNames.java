@@ -38,6 +38,7 @@ public final class ProfilePropertyNames {
     public static final String SERVLET_REQUEST_URL = "servlet.servletRequest.url";
     public static final String SERVLET_REQUEST_HTTP_METHOD = "servlet.servletRequest.httpMethod";
     public static final String SERVLET_REQUEST_HTTP_HEADER = "servlet.servletRequest.httpHeaders";
+    public static final String SERVLET_REQUEST_ATTRIBUTES = "servlet.servletRequest.attributes";
     public static final String SERVLET_REQUEST_COOKIES = "servlet.servletRequest.cookies";
 
     public static final String SERVLET_REQUEST_SCHEME = "servlet.servletRequest.scheme";

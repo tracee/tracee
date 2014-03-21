@@ -1,10 +1,9 @@
 package de.holisticon.util.tracee.contextlogger.data.subdata;
 
-import de.holisticon.util.tracee.contextlogger.builder.gson.MethodAnnotationPair;
-
 import java.util.Comparator;
 
 /**
+ * Comparator for {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair}.
  * Created by Tobias Gindler, holisticon AG on 16.03.14.
  */
 public class NameValuePairComparator implements Comparator<NameValuePair> {

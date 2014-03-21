@@ -2,8 +2,9 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.servlet;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
-import de.holisticon.util.tracee.contextlogger.data.Order;
-import de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair;
+import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
+import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import javax.servlet.http.Cookie;
@@ -18,54 +19,34 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "request")
-public class ServletRequest {
+public class ServletRequest implements WrappedContextData<HttpServletRequest> {
 
-    public static final String ATTR_URL = "url";
-    public static final String ATTR_HTTP_METHOD = "http-method";
-    public static final String ATTR_HTTP_PARAMETERS = "http-parameters";
-    public static final String ATTR_HTTP_REQUEST_HEADERS = "http-request-headers";
-    public static final String ATTR_COOKIES = "cookies";
 
-    public static final String ATTR_HTTP_REMOTE_ADDRESS = "http-remote-address";
-    public static final String ATTR_HTTP_REMOTE_HOST = "http-remote-host";
-    public static final String ATTR_HTTP_REMOTE_PORT = "http-remote-port";
+    HttpServletRequest request;
 
-    public static final String ATTR_SCHEMA = "scheme";
-    public static final String ATTR_IS_SECURE = "is-secure";
-    public static final String ATTR_CONTENT_TYPE = "content-type";
-    public static final String ATTR_CONTENT_LENGTH = "content-length";
-    public static final String ATTR_LOCALE = "locale";
+    public ServletRequest() {
 
-    public static final int ORDER_URL = 10;
-    public static final int ORDER_HTTP_METHOD = 20;
-    public static final int ORDER_HTTP_PARAMETERS = 30;
-    public static final int ORDER_HTTP_REQUEST_HEADERS = 40;
-    public static final int ORDER_ENHANCED_REQUEST_INFO = 60;
-    public static final int ORDER_COOKIES = 70;
+    }
 
-    // Remote Info
-    public static final int ORDER_HTTP_REMOTE_ADDRESS = 150;
-    public static final int ORDER_HTTP_REMOTE_HOST = 160;
-    public static final int ORDER_HTTP_REMOTE_PORT = 170;
-
-    public static final int ORDER_SCHEMA = 140;
-    public static final int ORDER_IS_SECURE = 142;
-    public static final int ORDER_CONTENT_TYPE = 144;
-    public static final int ORDER_CONTENT_LENGTH = 146;
-    public static final int ORDER_LOCALE = 148;
-
-    final HttpServletRequest request;
-
-    public ServletRequest(final HttpServletRequest request
-    ) {
+    public ServletRequest(final HttpServletRequest request) {
         this.request = request;
+    }
+
+    @Override
+    public void setContextData(Object instance) throws ClassCastException {
+        this.request = (HttpServletRequest) instance;
+    }
+
+    @Override
+    public Class<HttpServletRequest> getWrappedType() {
+        return HttpServletRequest.class;
     }
 
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "url",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_URL ,
-            order = ORDER_URL)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_URL,
+            order = 10)
     public String getUrl() {
         return request.getRequestURL().toString();
     }
@@ -73,41 +54,20 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "http-method",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_METHOD ,
-            order = ORDER_HTTP_METHOD)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_METHOD,
+            order = 20)
     public String getHttpMethod() {
         return this.request.getMethod();
     }
 
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
-            displayName = "http-request-headers",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_HEADER ,
-            order = ORDER_HTTP_REQUEST_HEADERS)
-    public List<NameValuePair> getHttpRequestHeaders() {
-
-        final List<NameValuePair> list = new ArrayList<NameValuePair>();
-
-        final Enumeration<String> httpHeaderNamesEnum = this.request.getHeaderNames();
-        while (httpHeaderNamesEnum.hasMoreElements()) {
-
-            final String httpHeaderName = httpHeaderNamesEnum.nextElement();
-            final String value =  this.request.getHeader(httpHeaderName);
-            list.add(new NameValuePair(httpHeaderName, value));
-
-        }
-
-        return list;
-    }
-
-    @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
             displayName = "http-parameters",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_PARAMETERS ,
-            order = ORDER_HTTP_PARAMETERS)
-    public List<NameValuePair> getHttpParameters() {
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_PARAMETERS,
+            order = 30)
+    public List<NameStringValuePair> getHttpParameters() {
 
-        final List<NameValuePair> list = new ArrayList<NameValuePair>();
+        final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
 
         final Enumeration<String> httpHeaderNamesEnum = this.request.getParameterNames();
         while (httpHeaderNamesEnum.hasMoreElements()) {
@@ -117,7 +77,7 @@ public class ServletRequest {
             final String[] values = this.request.getParameterValues(httpHeaderName);
             if (values != null) {
                 for (final String value : values) {
-                    list.add(new NameValuePair(httpHeaderName, value));
+                    list.add(new NameStringValuePair(httpHeaderName, value));
                 }
             }
 
@@ -127,15 +87,59 @@ public class ServletRequest {
 
     }
 
+    @SuppressWarnings("unused")
+    @TraceeContextLogProviderMethod(
+            displayName = "http-request-headers",
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_HEADER,
+            order = 40)
+    public List<NameStringValuePair> getHttpRequestHeaders() {
+
+        final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
+
+        final Enumeration<String> httpHeaderNamesEnum = this.request.getHeaderNames();
+        while (httpHeaderNamesEnum.hasMoreElements()) {
+
+            final String httpHeaderName = httpHeaderNamesEnum.nextElement();
+            final String value = this.request.getHeader(httpHeaderName);
+            list.add(new NameStringValuePair(httpHeaderName, value));
+
+        }
+
+        return list;
+    }
+
+    @SuppressWarnings("unused")
+    @TraceeContextLogProviderMethod(
+            displayName = "http-request-attributes",
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_ATTRIBUTES,
+            order = 45)
+    public List<NameObjectValuePair> getHttpRequestAttributes() {
+
+        final List<NameObjectValuePair> list = new ArrayList<NameObjectValuePair>();
+
+        final Enumeration<String> attributeNames = this.request.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+
+            final String attributeName = attributeNames.nextElement();
+            final Object value = this.request.getAttribute(attributeName);
+            list.add(new NameObjectValuePair(attributeName, value));
+
+        }
+
+        return list;
+    }
 
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(displayName = "cookies", propertyName = ProfilePropertyNames.SERVLET_REQUEST_COOKIES , order = ORDER_COOKIES)
+    @TraceeContextLogProviderMethod(
+            displayName = "cookies",
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_COOKIES,
+            order = 50)
     public List<ServletCookie> getCookies() {
 
         List<ServletCookie> wrappedCookies = new ArrayList<ServletCookie>();
 
-        for (Cookie cookie : request.getCookies()){
+        for (Cookie cookie : request.getCookies()) {
             wrappedCookies.add(new ServletCookie(cookie));
         }
 
@@ -146,8 +150,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "http-remote-address",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_ADDRESS ,
-            order = ORDER_HTTP_REMOTE_ADDRESS)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_ADDRESS,
+            order = 150)
     public String getHttpRemoteAddress() {
         return request.getRemoteAddr();
     }
@@ -155,8 +159,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "http-remote-host",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_HOST ,
-            order = ORDER_HTTP_REMOTE_HOST)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_HOST,
+            order = 160)
     public String getHttpRemoteHost() {
         return this.request.getRemoteHost();
     }
@@ -164,8 +168,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "http-remote-port",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_PORT ,
-            order = ORDER_HTTP_REMOTE_PORT)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_PORT,
+            order = 170)
     public Integer getHttpRemotePort() {
         return this.request.getRemotePort();
     }
@@ -173,8 +177,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "scheme",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_SCHEME ,
-            order = ORDER_SCHEMA)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_SCHEME,
+            order = 200)
     public String getScheme() {
         return this.request.getScheme();
     }
@@ -182,8 +186,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "is-secure",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_IS_SECURE ,
-            order = ORDER_IS_SECURE)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_IS_SECURE,
+            order = 210)
     public Boolean getSecure() {
         return this.request.isSecure();
     }
@@ -191,8 +195,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "content-type",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_TYPE ,
-            order = ORDER_CONTENT_TYPE)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_TYPE,
+            order = 220)
     public String getContentType() {
         return this.request.getContentType();
     }
@@ -201,7 +205,7 @@ public class ServletRequest {
     @TraceeContextLogProviderMethod(
             displayName = "content-length",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_LENGTH,
-            order = ORDER_CONTENT_LENGTH)
+            order = 230)
     public Integer getContentLength() {
         return this.request.getContentLength();
     }
@@ -209,8 +213,8 @@ public class ServletRequest {
     @SuppressWarnings("unused")
     @TraceeContextLogProviderMethod(
             displayName = "locale",
-            propertyName = ProfilePropertyNames.SERVLET_REQUEST_LOCALE ,
-            order = ORDER_LOCALE)
+            propertyName = ProfilePropertyNames.SERVLET_REQUEST_LOCALE,
+            order = 240)
     public String getLocale() {
         return this.request.getLocale().toString();
     }

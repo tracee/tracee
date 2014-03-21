@@ -1,35 +1,44 @@
 package de.holisticon.util.tracee.contextlogger.data.subdata;
 
-import com.google.gson.annotations.SerializedName;
+import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
+import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 
 /**
- * Abstract value class for JSON generation.
- * Created by Tobias Gindler on 20.12.13.
+ * Main Interface for name value pairs.
+ * Created by Tobias Gindler on 21.03.14.
  */
-public class NameValuePair {
+@TraceeContextLogProvider(displayName = "name-value-pair")
+public abstract class NameValuePair<T> {
 
     public static final String ATTR_NAME = "name";
     public static final String ATTR_VALUE = "value";
 
     private final String name;
+    private final T value;
 
-    private final String value;
-
-    @SuppressWarnings("unused")
-    private NameValuePair() {
-        this(null, null);
-    }
-
-    public NameValuePair(String name, String value) {
+    public NameValuePair (final String name, final T value) {
         this.name = name;
         this.value = value;
     }
 
-    public final String getName() {
-        return name;
+    /**
+     * Gets the name for the value.
+     *
+     * @return the name for the value
+     */
+    @TraceeContextLogProviderMethod(displayName = "name", propertyName = "", order=1)
+    public String getName() {
+        return this.name;
     }
 
-    public final String getValue() {
-        return value;
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
+    @TraceeContextLogProviderMethod(displayName = "value", propertyName = "", order=2)
+    public T getValue() {
+        return this.value;
     }
+
 }

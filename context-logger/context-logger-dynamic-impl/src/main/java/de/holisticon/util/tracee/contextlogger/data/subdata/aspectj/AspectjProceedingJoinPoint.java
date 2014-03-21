@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.aspectj;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -15,13 +16,25 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextLogProvider(displayName = "proceedingJoinPoint")
-public class AspectjProceedingJoinPoint {
+public class AspectjProceedingJoinPoint implements WrappedContextData<ProceedingJoinPoint> {
 
-    private final ProceedingJoinPoint proceedingJoinPoint;
+    private ProceedingJoinPoint proceedingJoinPoint;
+
+    @SuppressWarnings("unused")
+    public AspectjProceedingJoinPoint() {
+    }
 
     @SuppressWarnings("unused")
     public AspectjProceedingJoinPoint(final ProceedingJoinPoint proceedingJoinPoint) {
         this.proceedingJoinPoint = proceedingJoinPoint;
+    }
+
+    public void setContextData(Object instance) throws ClassCastException {
+        this.proceedingJoinPoint = (ProceedingJoinPoint) instance;
+    }
+
+    public Class<ProceedingJoinPoint> getWrappedType () {
+        return ProceedingJoinPoint.class;
     }
 
     @SuppressWarnings("unused")

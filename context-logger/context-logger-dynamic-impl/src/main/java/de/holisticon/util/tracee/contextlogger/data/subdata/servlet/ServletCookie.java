@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.servlet;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import javax.servlet.http.Cookie;
@@ -11,12 +12,25 @@ import javax.servlet.http.Cookie;
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 @TraceeContextLogProvider(displayName = "cookies")
-public final class ServletCookie {
+public final class ServletCookie implements WrappedContextData<Cookie> {
 
-    final Cookie cookie;
+    private Cookie cookie;
+
+    public ServletCookie() {
+    }
 
     public ServletCookie(Cookie cookie) {
         this.cookie = cookie;
+    }
+
+    @Override
+    public void setContextData(Object instance) throws ClassCastException {
+        this.cookie = (Cookie) instance;
+    }
+
+    @Override
+    public Class<Cookie> getWrappedType() {
+        return Cookie.class;
     }
 
     @SuppressWarnings("unused")
