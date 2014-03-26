@@ -1,6 +1,9 @@
 package de.holisticon.util.tracee.contextlogger.builder.gson;
 
+import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import de.holisticon.util.tracee.contextlogger.profile.Profile;
+import de.holisticon.util.tracee.contextlogger.profile.ProfileSettings;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +13,7 @@ import java.lang.reflect.Method;
  * <p/>
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
-public final class MethodAnnotationPair {
+public class MethodAnnotationPair {
 
     private final TraceeContextLogProviderMethod annotation;
     private final Method method;
@@ -18,6 +21,13 @@ public final class MethodAnnotationPair {
     public MethodAnnotationPair(final Method method, final TraceeContextLogProviderMethod annotation) {
         this.method = method;
         this.annotation = annotation;
+    }
+
+    public boolean shouldBeProcessed (final ProfileSettings profileSettings) {
+
+        TraceeContextLogProviderMethod annotation = this.getAnnotation();
+        return annotation == null || annotation.propertyName().isEmpty() || profileSettings.getPropertyValue(annotation.propertyName());
+
     }
 
     public TraceeContextLogProviderMethod getAnnotation() {

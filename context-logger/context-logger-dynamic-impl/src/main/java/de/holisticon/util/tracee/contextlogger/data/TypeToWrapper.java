@@ -1,6 +1,8 @@
 package de.holisticon.util.tracee.contextlogger.data;
 
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
+import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 
 import java.io.*;
@@ -78,6 +80,58 @@ public final class TypeToWrapper {
 
     }
 
+    public static Set<ImplicitContextData> getImplicitWrappers() {
+        Set<ImplicitContextData> result = new HashSet<ImplicitContextData>();
+
+
+        BufferedReader bufferedReader = null;
+        try {
+
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(
+                            TypeToWrapper.class.getResourceAsStream(
+                                    TraceeContextLoggerConstants.WRAPPER_CLASS_RESOURCE_URL)
+                    )
+            );
+
+            String line = bufferedReader.readLine();
+            while (line != null) {
+
+                try {
+
+                    Class clazz = Class.forName(line);
+                    if (ImplicitContextData.class.isAssignableFrom(clazz)) {
+                        ImplicitContextData instance = (ImplicitContextData) clazz.newInstance();
+
+                        result.add(instance);
+                    }
+
+                } catch (Exception e) {
+                    // to be ignored
+                } catch (NoClassDefFoundError error) {
+                    // to be ignored
+                }
+
+                line = bufferedReader.readLine();
+            }
+
+
+
+        } catch (Exception e) {
+
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
+        }
+
+
+        return result;
+    }
 
     /**
      * Class to get all available wrappers
@@ -105,14 +159,18 @@ public final class TypeToWrapper {
 
                     Class clazz = Class.forName(line);
 
-                    // try to create instance to get the wrapped type
-                    WrappedContextData instance = (WrappedContextData) clazz.newInstance();
+                    if (WrappedContextData.class.isAssignableFrom(clazz)) {
+                        // try to create instance to get the wrapped type
+                        WrappedContextData instance = (WrappedContextData) clazz.newInstance();
 
-                    Class wrappedType = instance.getWrappedType();
+                        Class wrappedType = instance.getWrappedType();
 
-                    result.add(new TypeToWrapper(wrappedType,clazz));
+                        result.add(new TypeToWrapper(wrappedType,clazz));
+                    }
 
                 } catch (Exception e) {
+                    // to be ignored
+                } catch (NoClassDefFoundError error) {
                     // to be ignored
                 }
 

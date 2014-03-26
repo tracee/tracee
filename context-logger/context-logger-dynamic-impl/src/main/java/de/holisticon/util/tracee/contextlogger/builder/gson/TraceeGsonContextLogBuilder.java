@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.builder.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.holisticon.util.tracee.contextlogger.builder.AbstractContextLogBuilder;
+import de.holisticon.util.tracee.contextlogger.profile.ProfileSettings;
 
 /**
  * Context Logger implementation for gson.
@@ -25,7 +26,7 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 
             final GsonBuilder gsonBuilder = new GsonBuilder();
 
-            final TraceeGenericGsonSerializer gsonSerializer = new TraceeGenericGsonSerializer();
+            final TraceeGenericGsonSerializer gsonSerializer = new TraceeGenericGsonSerializer(new ProfileSettings());
 
             for (Class clazz : this.getWrapperClasses()) {
                 gsonBuilder.registerTypeAdapter(clazz, gsonSerializer);

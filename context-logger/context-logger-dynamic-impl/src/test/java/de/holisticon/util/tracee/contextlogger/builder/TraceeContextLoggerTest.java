@@ -1,11 +1,11 @@
 package de.holisticon.util.tracee.contextlogger.builder;
 
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.ObjectArrayContextProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -22,10 +22,10 @@ public class TraceeContextLoggerTest {
     @Test
     public void should_create_context_log () {
         try {
-            throw new NullPointerException();
+            throw new NullPointerException("acd");
         } catch (NullPointerException e) {
 
-            String json = TraceeContextLogger.log(e);
+            String json = TraceeContextLogger.toJson(e);
 
             MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\"stacktrace\":\"java.lang.NullPointerException.*\"\\}"));
 
@@ -41,7 +41,7 @@ public class TraceeContextLoggerTest {
 
             TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
             Set<Class> classes = new HashSet<Class>();
-            classes.add(ObjectArrayContextProvider.class);
+            classes.add(PassedContextDataProvider.class);
 
             logBuilder.setWrapperClasses(classes);
 
@@ -50,9 +50,22 @@ public class TraceeContextLoggerTest {
             Object instance3 = new JavaThrowable(e);
 
 
-            String json = TraceeContextLogger.log(instance1, instance2, 212, instance3, 212.2);
+            String json = TraceeContextLogger.toJson(instance1, instance2, 212, instance3, 212.2);
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"stacktrace\\\":\\\"java.lang.NullPointerException.*TATA\\\",212,\\{\\\"stacktrace\\\":\\\"java.lang.NullPointer.*\\\"\\},212.2\\]"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"throwable\\\":\\{\"stacktrace\":\"java.lang.NullPointerException.*\\\"java.lang.Double\\\":\\\"212.2\\\",\\\"java.lang.Integer\\\":\\\"212\\\",\\\"java.lang.String\\\":\\\"TATA\\\"\\}\\]"));
+
+        }
+    }
+
+    @Test
+    public void should_create_context_log_with_implicit_logs () {
+        try {
+            throw new NullPointerException("test");
+        } catch (NullPointerException e) {
+
+            String json = TraceeContextLogger.toJson(ImplicitContext.COMMON, ImplicitContext.TRACEE, e);
+
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"common\\\".*tracee.*throwable.*\\}\\]"));
 
 
         }

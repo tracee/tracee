@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Does a integrity check for all (@link Flatten), {@link de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider}
+ * and {@link de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod} annotated  classes and methods.
  * Created by Tobias Gindler, holisticon AG on 18.03.14.
  */
 public class TraceeContextLogMethodAnnotationIntegrityCheck {

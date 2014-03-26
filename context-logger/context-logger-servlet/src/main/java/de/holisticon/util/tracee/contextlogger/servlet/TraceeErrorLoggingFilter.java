@@ -2,9 +2,8 @@ package de.holisticon.util.tracee.contextlogger.servlet;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
-import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
-import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.ServletDataWrapper;
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
+import de.holisticon.util.tracee.contextlogger.builder.TraceeContextLogger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -31,17 +30,17 @@ public class TraceeErrorLoggingFilter implements Filter {
         try {
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (Exception e) {
-			if (servletRequest instanceof HttpServletRequest) {
+            if (servletRequest instanceof HttpServletRequest) {
                 handleHttpServletRequest((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, e);
             }
 
-			if (e instanceof RuntimeException) {
-				throw (RuntimeException) e;
-			} else if (e instanceof ServletException) {
-				throw (ServletException)e;
-			} else if (e instanceof IOException) {
-				throw (IOException)e;
-			}
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof ServletException) {
+                throw (ServletException) e;
+            } else if (e instanceof IOException) {
+                throw (IOException) e;
+            }
         }
     }
 
@@ -50,15 +49,7 @@ public class TraceeErrorLoggingFilter implements Filter {
             HttpServletResponse servletResponse,
             Exception e) {
 
-        TraceeContextLoggerJsonBuilder errorJsonCreator = TraceeContextLoggerJsonBuilder.createJsonCreator()
-                .addServletCategory(ServletDataWrapper.wrap(servletRequest, servletResponse))
-                .addPrefixedMessage("TraceeErrorLoggingFilter - FAULT :")
-                .addCommonCategory()
-                .addExceptionCategory(e)
-                .addTraceeCategory(traceeBackend);
-
-        // write message to connectors
-        ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
+        TraceeContextLogger.logJsonWithMessagePrefix("TraceeServletErrorLoggingFilter - FAULT : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, e);
 
     }
 

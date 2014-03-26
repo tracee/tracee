@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.data.TypeToWrapper}.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 public class TypeToWrapperTest {

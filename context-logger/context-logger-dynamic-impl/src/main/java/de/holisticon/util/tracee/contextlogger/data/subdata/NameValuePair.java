@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
 
 /**
  * Main Interface for name value pairs.
@@ -10,14 +11,13 @@ import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMetho
 @TraceeContextLogProvider(displayName = "name-value-pair")
 public abstract class NameValuePair<T> {
 
-    public static final String ATTR_NAME = "name";
-    public static final String ATTR_VALUE = "value";
+    protected final static String DEFAULT_NAME = "<null>";
 
     private final String name;
     private final T value;
 
     public NameValuePair (final String name, final T value) {
-        this.name = name;
+        this.name = name != null ? name : DEFAULT_NAME;
         this.value = value;
     }
 
@@ -40,5 +40,8 @@ public abstract class NameValuePair<T> {
     public T getValue() {
         return this.value;
     }
+
+
+
 
 }

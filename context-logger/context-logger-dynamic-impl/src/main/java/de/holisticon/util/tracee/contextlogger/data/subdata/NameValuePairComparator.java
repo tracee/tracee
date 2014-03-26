@@ -14,9 +14,9 @@ public class NameValuePairComparator implements Comparator<NameValuePair> {
         if (instance1 == null && instance2 == null) {
             return 0;
         } else if (instance1 != null && instance2 == null) {
-            return 1;
+            return -1;
         } else if (instance1 == null && instance2 != null) {
-            return 0;
+            return 1;
         } else {
 
             String name1 = instance1.getName();
@@ -25,9 +25,9 @@ public class NameValuePairComparator implements Comparator<NameValuePair> {
             if (name1 == null && name2 == null) {
                 return 0;
             } else if (name1 != null && name2 == null) {
-                return 1;
+                return -1;
             } else if (name1 == null && name2 != null) {
-                return 0;
+                return 1;
             } else {
                 return name1.compareTo(name2);
             }

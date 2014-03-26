@@ -10,10 +10,10 @@ import java.util.Properties;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public enum Profile {
-    BASIC ("/BasicProfile.properties"),
-    ENHANCED("/EnhancedProfile.properties"),
-    FULL("/FullProfile.properties"),
-    CUSTOM("/CustomProfile.properties");
+    BASIC ("/TraceeContextLoggerBasicProfile.properties"),
+    ENHANCED("/TraceeContextLoggerEnhancedProfile.properties"),
+    FULL("/TraceeContextLoggerFullProfile.properties"),
+    CUSTOM("/TraceeContextLoggerCustomProfile.properties");
 
     private final String resourceFileName;
 

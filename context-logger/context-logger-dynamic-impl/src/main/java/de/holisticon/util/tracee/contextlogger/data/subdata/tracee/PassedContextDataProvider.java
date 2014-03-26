@@ -5,10 +5,13 @@ import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
+import de.holisticon.util.tracee.contextlogger.utility.PassedContextDataElementWrapper;
+import de.holisticon.util.tracee.contextlogger.utility.PassedContextDataElementWrapperComparator;
 import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,15 +20,15 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "contexts")
-public class ObjectArrayContextProvider implements WrappedContextData<Object[]>{
+public class PassedContextDataProvider implements WrappedContextData<Object[]>{
 
     private Object[] instances;
 
-    public ObjectArrayContextProvider () {
+    public PassedContextDataProvider() {
 
     }
 
-    public ObjectArrayContextProvider (Object[] instances) {
+    public PassedContextDataProvider(Object[] instances) {
         this.instances = instances;
     }
 
@@ -48,12 +51,23 @@ public class ObjectArrayContextProvider implements WrappedContextData<Object[]>{
             return null;
         }
 
+        // sort NameObjectValuePairs
+        List<PassedContextDataElementWrapper> toSortList = new ArrayList<PassedContextDataElementWrapper>();
+        for (Object entry : instances) {
+
+            if (entry != null) {
+                toSortList.add(new PassedContextDataElementWrapper(new NameObjectValuePair(entry)));
+            }
+
+        }
+        Collections.sort(toSortList,new PassedContextDataElementWrapperComparator());
+
+        // Now create the List of NameObjectPairs
         List<NameObjectValuePair> nameObjectValuePairs = new ArrayList<NameObjectValuePair>();
 
-
-        for (Object entry :  instances) {
+        for (PassedContextDataElementWrapper entry :  toSortList) {
             if (entry != null) {
-                nameObjectValuePairs.add(new NameObjectValuePair(entry.getClass().getName(), entry));
+                nameObjectValuePairs.add(entry.getNameObjectValuePair());
             }
         }
 

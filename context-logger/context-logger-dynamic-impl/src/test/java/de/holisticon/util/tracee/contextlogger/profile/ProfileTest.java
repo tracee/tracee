@@ -18,7 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.Properties;
 
 /**
- * Test class for Profile
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.profile.Profile}.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @RunWith(PowerMockRunner.class)

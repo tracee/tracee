@@ -1,12 +1,9 @@
 package de.holisticon.util.tracee.contextlogger.builder.gson;
 
-import com.google.gson.GsonBuilder;
 import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.ObjectArrayContextProvider;
-import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -32,7 +29,7 @@ public class TraceeGsonContextLogBuilderTest {
 
             String json = logBuilder.log(new JavaThrowable(e));
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\"stacktrace\":\"java.lang.NullPointerException.*\"\\}"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"stacktrace\\\":\\\"java.lang.Null.*\\}\\]"));
 
 
         }
@@ -46,20 +43,20 @@ public class TraceeGsonContextLogBuilderTest {
 
             TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
             Set<Class> classes = new HashSet<Class>();
-            classes.add(ObjectArrayContextProvider.class);
+            classes.add(PassedContextDataProvider.class);
+            classes.add(JavaThrowable.class);
 
             logBuilder.setWrapperClasses(classes);
 
-            Object[] oarray = new Object[3];
-            oarray[0] = e;
+            Object[] oarray = new Object[2];
+            oarray[0] = new JavaThrowable(e);
             oarray[1] = "TATA";
-            oarray[2] = new JavaThrowable(e);
-            ObjectArrayContextProvider cp = new ObjectArrayContextProvider(oarray);
+            PassedContextDataProvider cp = new PassedContextDataProvider(oarray);
 
 
             String json = logBuilder.log(cp);
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"java.lang.NullPointerException\\\":\\\"NullPointerException.*\\\"java.lang.String\\\":\\\"TATA.*java.lang.NullPointerException\\]\\\"\\}"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"throwable\\\":\\{\\\"stacktrace\\\":\\\"java.lang.NullPointerException.*java.lang.String\\\":\\\"TATA\\\"\\}\\]"));
 
 
         }

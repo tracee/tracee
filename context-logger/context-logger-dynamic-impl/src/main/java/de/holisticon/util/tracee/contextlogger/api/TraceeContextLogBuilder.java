@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.contextlogger.api;
 import java.util.Set;
 
 /**
- * Annotation to mark class as log builder implementations.
+ * Annotation to mark class as toJson builder implementations.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 public interface TraceeContextLogBuilder {

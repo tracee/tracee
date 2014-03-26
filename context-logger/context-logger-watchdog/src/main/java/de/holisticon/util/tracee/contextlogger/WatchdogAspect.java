@@ -1,8 +1,8 @@
 package de.holisticon.util.tracee.contextlogger;
 
 
-import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
-import de.holisticon.util.tracee.contextlogger.json.generator.datawrapper.WatchdogDataWrapper;
+import de.holisticon.util.tracee.contextlogger.builder.TraceeContextLogger;
+import de.holisticon.util.tracee.contextlogger.data.wrapper.WatchdogDataWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
@@ -62,7 +61,7 @@ public class WatchdogAspect {
             // check if watchdog processing is flagged as active
             if (active) {
 
-                // Now create log output
+                // Now create toJson output
                 final TraceeBackend traceeBackend = Tracee.getBackend();
 
                 // make sure that original exception will be passed through
@@ -106,10 +105,7 @@ public class WatchdogAspect {
      */
     void writeMethodCallToMdc (final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId ) {
 
-        final TraceeContextLoggerJsonBuilder errorJsonCreator = TraceeContextLoggerJsonBuilder.createJsonCreator()
-                .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
-
-        String json = errorJsonCreator.toString();
+        String json = TraceeContextLogger.toJson(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
         String existingContent = traceeBackend.get(Constants.TRACEE_ATTRIBUTE_NAME);
         traceeBackend.put(Constants.TRACEE_ATTRIBUTE_NAME, existingContent != null ? existingContent + Constants.SEPARATOR + json : json);
 
@@ -122,16 +118,7 @@ public class WatchdogAspect {
      * @param annotatedId the id defined in the watchdog annotation
      */
     void sendErrorReportToConnectors (final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId, final Throwable e ) {
-
-        final TraceeContextLoggerJsonBuilder errorJsonCreator = TraceeContextLoggerJsonBuilder.createJsonCreator()
-                .addPrefixedMessage("TRACEE WATCHDOG :")
-                .addWatchdogCategory(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint))
-                .addCommonCategory()
-                .addExceptionCategory(e)
-                .addTraceeCategory(traceeBackend);
-
-        ConnectorFactory.sendErrorReportToConnectors(errorJsonCreator);
-
+        TraceeContextLogger.logJsonWithMessagePrefix("TRACEE WATCHDOG :", ImplicitContext.COMMON,ImplicitContext.TRACEE,WatchdogDataWrapper.wrap(annotatedId,proceedingJoinPoint),e);
     }
 
 

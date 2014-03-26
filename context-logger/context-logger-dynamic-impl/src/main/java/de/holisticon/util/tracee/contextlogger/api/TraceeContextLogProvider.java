@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to mark classes that can be processed by a context log provider implementation
+ * Annotation to mark classes that can be processed by a context toJson provider implementation
  * ( for example the {@link de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer} ).
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */

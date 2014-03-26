@@ -5,7 +5,7 @@ import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogBuilder;
 import java.util.Set;
 
 /**
- * Abstract base class for all context log builder implementations.
+ * Abstract base class for all context toJson builder implementations.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 public abstract class AbstractContextLogBuilder implements TraceeContextLogBuilder{

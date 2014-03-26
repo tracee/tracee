@@ -2,9 +2,8 @@ package de.holisticon.util.tracee.contextlogger.jms;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.contextlogger.PrintableByConnector;
-import de.holisticon.util.tracee.contextlogger.connector.ConnectorFactory;
-import de.holisticon.util.tracee.contextlogger.json.generator.TraceeContextLoggerJsonBuilder;
+import de.holisticon.util.tracee.contextlogger.ImplicitContext;
+import de.holisticon.util.tracee.contextlogger.builder.TraceeContextLogger;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -40,9 +39,8 @@ public class TraceeJmsErrorMessageListener {
 
                 Message message = extractMessageParameter(ctx.getParameters());
 
-                // TODO should write contextual log information (for example message)
-                PrintableByConnector printable = TraceeContextLoggerJsonBuilder.createJsonCreator().addTraceeCategory(backend).addCommonCategory().addExceptionCategory(e);
-                ConnectorFactory.sendErrorReportToConnectors(printable);
+                TraceeContextLogger.logJsonWithMessagePrefix("JmsInterceptor : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
+
             }
 
             throw e;

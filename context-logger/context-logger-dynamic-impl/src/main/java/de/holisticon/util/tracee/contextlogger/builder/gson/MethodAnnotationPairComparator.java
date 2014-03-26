@@ -16,7 +16,7 @@ public class MethodAnnotationPairComparator implements Comparator<MethodAnnotati
         } else if (instance1 != null && instance2 == null){
             return 1;
         } else if (instance1 == null && instance2 != null) {
-            return 0;
+            return -1;
         } else  {
 
             int result = Integer.compare(instance1.getAnnotation().order(), instance2.getAnnotation().order());
