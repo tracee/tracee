@@ -153,7 +153,10 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
         // now try to find instance type in known wrapper types map
         Class knownWrapperType = contextLoggerConfiguration.getClassToWrapperMap().get(instance.getClass());
         if (knownWrapperType != null) {
-            return createInstance(knownWrapperType);
+            Object wrappedInstance = createInstance(knownWrapperType);
+            if (WrappedContextData.class.isAssignableFrom(knownWrapperType)) {
+                ((WrappedContextData)wrappedInstance).setContextData(instance);
+            }
         }
 
         // now try to find instance type in TypeToWrapper List

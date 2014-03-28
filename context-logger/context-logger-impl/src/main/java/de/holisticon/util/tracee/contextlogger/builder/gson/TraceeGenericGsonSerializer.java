@@ -6,6 +6,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
@@ -27,18 +28,6 @@ import java.util.Set;
  * Created by Tobias Gindler on 14.03.14.
  */
 public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
-
-    private final static Set<Class> IGNORED_AT_DESERIALIZATION = new HashSet<Class>();
-
-    static {
-        IGNORED_AT_DESERIALIZATION.add(String.class);
-        IGNORED_AT_DESERIALIZATION.add(Boolean.class);
-        IGNORED_AT_DESERIALIZATION.add(Integer.class);
-        IGNORED_AT_DESERIALIZATION.add(Double.class);
-        IGNORED_AT_DESERIALIZATION.add(Long.class);
-        IGNORED_AT_DESERIALIZATION.add(Float.class);
-        IGNORED_AT_DESERIALIZATION.add(Byte.class);
-    }
 
     private final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(TraceeGenericGsonSerializer.class);
 
@@ -68,7 +57,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
             // sort those methods
             Collections.sort(entriesToPrint, new MethodAnnotationPairComparator());
 
-            // now create json object and add those items
+            // now wrap json object and add those items
             result = new JsonObject();
 
 
@@ -193,7 +182,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
      * @return true if passed instance is null or type of passed instance is in IGNORED_AT_DESERIALIZATION set.
      */
     static boolean shouldBeIgnoreAtDeSerialization(final Object instance) {
-        return instance == null || IGNORED_AT_DESERIALIZATION.contains(instance.getClass());
+        return instance == null || TraceeContextLoggerConstants.IGNORED_AT_DESERIALIZATION.contains(instance.getClass());
     }
 
 

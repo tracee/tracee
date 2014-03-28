@@ -18,7 +18,7 @@ public class JaxWsWrapper {
 
     }
 
-    public static JaxWsWrapper create(final String soapRequest, final String soapResponse) {
+    public static JaxWsWrapper wrap(final String soapRequest, final String soapResponse) {
         return new JaxWsWrapper(soapRequest,soapResponse);
     }
 

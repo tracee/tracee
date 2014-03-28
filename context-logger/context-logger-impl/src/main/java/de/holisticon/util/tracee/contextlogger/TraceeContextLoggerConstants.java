@@ -1,5 +1,9 @@
 package de.holisticon.util.tracee.contextlogger;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Common Constants used by Tracee Context logging.
  * Created by Tobias Gindler, holisticon AG on 16.12.13.
@@ -9,6 +13,23 @@ public final class TraceeContextLoggerConstants {
     @SuppressWarnings("unused")
     private TraceeContextLoggerConstants() {
         // hide constructor
+    }
+
+    public final static Set<Class> IGNORED_AT_DESERIALIZATION;
+
+    static {
+
+        Set<Class> tmpIgnoredAtDeserialization = new HashSet<Class>();
+
+        tmpIgnoredAtDeserialization.add(String.class);
+        tmpIgnoredAtDeserialization.add(Boolean.class);
+        tmpIgnoredAtDeserialization.add(Integer.class);
+        tmpIgnoredAtDeserialization.add(Double.class);
+        tmpIgnoredAtDeserialization.add(Long.class);
+        tmpIgnoredAtDeserialization.add(Float.class);
+        tmpIgnoredAtDeserialization.add(Byte.class);
+
+        IGNORED_AT_DESERIALIZATION = Collections.unmodifiableSet(tmpIgnoredAtDeserialization);
     }
 
     public static final String WRAPPER_CLASS_RESOURCE_URL ="/de.holisticon.util.tracee.contextlogger.wrapperclasses";

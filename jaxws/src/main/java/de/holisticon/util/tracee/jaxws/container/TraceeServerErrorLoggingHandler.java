@@ -34,7 +34,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
                 "TRACEE JMS ERROR CONTEXT LISTENER",
                 ImplicitContext.COMMON,
                 ImplicitContext.TRACEE,
-                JaxWsWrapper.create(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
+                JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
                         getSoapMessageAsString(soapMessage)));
 
         // cleanup thread local request soap message
