@@ -79,7 +79,7 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
 
     @Override
     public ConfigBuilder disable(String... contexts) {
-        fillManualContextOverrideMap(contexts, true);
+        fillManualContextOverrideMap(contexts, false);
         return this;
     }
 

@@ -36,8 +36,8 @@ public class ProfileSettings {
         // check system property override
         if (manualContextOverrides != null) {
             Boolean manualOverrideCheck = manualContextOverrides.get(propertyKey);
-            if (manualOverrideCheck != null && manualOverrideCheck.booleanValue()) {
-                return true;
+            if (manualOverrideCheck != null) {
+                return manualOverrideCheck;
             }
         }
 
