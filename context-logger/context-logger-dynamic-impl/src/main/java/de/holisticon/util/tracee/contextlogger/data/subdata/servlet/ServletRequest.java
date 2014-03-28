@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.servlet;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 
-@TraceeContextLogProvider(displayName = "request")
+@TraceeContextLogProvider(displayName = "servletRequest", order = Order.SERVLET)
 public class ServletRequest implements WrappedContextData<HttpServletRequest> {
 
 

@@ -4,6 +4,7 @@ import de.holisticon.util.tracee.contextlogger.api.Flatten;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +16,7 @@ import java.util.List;
  * Context provider for HttpSession.
  * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
-@TraceeContextLogProvider(displayName = "servletSession")
+@TraceeContextLogProvider(displayName = "servletSession", order = Order.SERVLET)
 public class ServletSession implements WrappedContextData<HttpSession> {
 
     HttpSession session;

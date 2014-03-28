@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.servlet;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Context provider for HttpServletResponse.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-@TraceeContextLogProvider(displayName = "servletResponse")
+@TraceeContextLogProvider(displayName = "servletResponse", order = Order.SERVLET)
 public class ServletResponse implements WrappedContextData<HttpServletResponse> {
 
     HttpServletResponse response;
