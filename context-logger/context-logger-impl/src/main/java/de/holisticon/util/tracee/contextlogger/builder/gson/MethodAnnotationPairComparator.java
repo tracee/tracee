@@ -15,18 +15,13 @@ public class MethodAnnotationPairComparator implements Comparator<MethodAnnotati
             return 0;
         } else if (instance1 != null && instance2 == null){
             return 1;
-        } else if (instance1 == null && instance2 != null) {
+        } else if (instance1 == null) {
             return -1;
         } else  {
-
-            int result = Integer.compare(instance1.getAnnotation().order(), instance2.getAnnotation().order());
-
+            int result = Integer.valueOf(instance1.getAnnotation().order()).compareTo(instance2.getAnnotation().order());
             if (result == 0) {
-
                 result = instance1.getAnnotation().displayName().compareTo(instance2.getAnnotation().displayName());
-
             }
-
             return result;
         }
 
