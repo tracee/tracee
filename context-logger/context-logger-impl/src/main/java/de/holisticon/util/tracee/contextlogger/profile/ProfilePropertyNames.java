@@ -87,6 +87,9 @@ public final class ProfilePropertyNames {
     public static final String EJB_INVOCATION_CONTEXT_TARGET_INSTANCE = "ejb.invocationContext.targetInstance";
     public static final String EJB_INVOCATION_CONTEXT_DATA = "ejb.invocationContext.contextData";
 
+    // jaxws
+    public static final String JAXWS_SOAP_REQUEST = "jaxws.soapRequest";
+    public static final String JAXWS_SOAP_RESPONSE = "jaxws.soapResponse";
 
 
 }
