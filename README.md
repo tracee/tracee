@@ -1,6 +1,7 @@
 # TracEE 0.1.0
 
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
+[![Coverage Status](https://coveralls.io/repos/holisticon/tracee/badge.png)](https://coveralls.io/r/holisticon/tracee)
 
 TL;DR, watch our [5 minutes slide deck](http://holisticon.github.io/tracee/docs/slides/)
 

@@ -1,15 +1,13 @@
 language: java
-
 jdk:
 - openjdk6
-
-# Running surefire and failsafe
 script: mvn verify -B
-
-after_success:
-  "[[ $TRAVIS_BRANCH == \"master\" && $TRAVIS_REPO_SLUG == \"holisticon/tracee\" && $TRAVIS_PULL_REQUEST == \"false\" ]] && { curl https://raw.github.com/holisticon/travis-configuration/master/settings.xml --create-dirs -o target/travis/settings.xml; } && { mvn deploy --settings target/travis/settings.xml -Dgpg.skip=true; }"
-
+after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/tracee"
+  && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.github.com/holisticon/travis-configuration/master/settings.xml
+  --create-dirs -o target/travis/settings.xml; } && { mvn cobertura:cobertura coveralls:cobertura deploy --settings target/travis/settings.xml
+  -Dgpg.skip=true; }'
 env:
   global:
   - secure: Ixk3qUo+E+ypPRqbY6aaNzsE8fn2OgoEeGpXmSYSm7R8969+ugnNGGX+Hg8tUUNxVPZcIeoJYfNELR1yEDDAf0YSLfB439cOT1cfSe8dldbgmpzj2Bk78UjmwmOtPD3uLXFBiZoxxPcyjtViB3noau6ylddQW0SbVnxZdhsIdeY=
   - secure: kuymmqE/mDtSfIgmeQuJsqzw6SLilPVYp6qa+WjnH5jZVQA8Pw3K+T5gCXnhZL0Ksw0173pJEWYPpj1cpoV8AM0PRUd7VGLRe/0OJXv/k1cs75SrhyXBU4WWSXkHoqDBvEgX9nk9uvg1w+xq7nT59MMGFktKHDkubfu7nmGHryU=
+  - secure: WjkUN4/TSD09REfXnojEfaQkvue2RLdgV9+NrXd4SpZnpPPW5wkbWyhnm/LIWTFT0+aHoaxV44R0q6Ul0KY3c312RsdnIH68XulahuV9PsbO04URS/je9n49O2P/P2Oq5nAIpABje1jLd/nwud+JAneNmz9XnrdUJxtX5ASZz0o=
