@@ -43,7 +43,7 @@ public class TraceeGenericGsonSerializerTest {
     @Ignore
     public void should_return_json_representation () {
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(AnnotationTestClass.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile()))).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(AnnotationTestClass.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile(),null))).create();
         String json = gson.toJson(new AnnotationTestClass());
 
         MatcherAssert.assertThat(json, Matchers.notNullValue());
@@ -57,7 +57,7 @@ public class TraceeGenericGsonSerializerTest {
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE, "DEBUG");
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM, "SYSTEM_1");
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(CommonDataProvider.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile()))).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(CommonDataProvider.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile(),null))).create();
         String json = gson.toJson(new CommonDataProvider());
 
         MatcherAssert.assertThat(json, Matchers.notNullValue());

@@ -105,7 +105,7 @@ public class WatchdogAspect {
      */
     void writeMethodCallToMdc (final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId ) {
 
-        String json = TraceeContextLogger.toJson(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
+        String json = TraceeContextLogger.createDefault().createJson(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
         String existingContent = traceeBackend.get(Constants.TRACEE_ATTRIBUTE_NAME);
         traceeBackend.put(Constants.TRACEE_ATTRIBUTE_NAME, existingContent != null ? existingContent + Constants.SEPARATOR + json : json);
 
@@ -118,7 +118,7 @@ public class WatchdogAspect {
      * @param annotatedId the id defined in the watchdog annotation
      */
     void sendErrorReportToConnectors (final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId, final Throwable e ) {
-        TraceeContextLogger.logJsonWithMessagePrefix("TRACEE WATCHDOG :", ImplicitContext.COMMON,ImplicitContext.TRACEE,WatchdogDataWrapper.wrap(annotatedId,proceedingJoinPoint),e);
+        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :", ImplicitContext.COMMON,ImplicitContext.TRACEE,WatchdogDataWrapper.wrap(annotatedId,proceedingJoinPoint),e);
     }
 
 

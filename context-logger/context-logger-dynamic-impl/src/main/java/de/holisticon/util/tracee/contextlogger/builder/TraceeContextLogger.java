@@ -1,14 +1,13 @@
 package de.holisticon.util.tracee.contextlogger.builder;
 
 import de.holisticon.util.tracee.contextlogger.*;
-import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
 import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.profile.Profile;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The main context logger class.
@@ -17,47 +16,31 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 
-public final class TraceeContextLogger {
+public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBuilder , ContextLogger{
 
     private static TraceeContextLogger instance;
 
     private ConnectorFactory connectorsWrapper;
 
     // Context log builder
-    private Map<Class, Class> classToWrapperMap = new ConcurrentHashMap<Class, Class>();
-    private Map<ImplicitContext, Class> implicitContextClassMap = new ConcurrentHashMap<ImplicitContext, Class>();
-    private List<TypeToWrapper> wrapperList;
     private TraceeGsonContextLogBuilder traceeGsonContextLogBuilder;
+
+    private final ContextLoggerConfiguration contextLoggerConfiguration;
+
+    // manual configuaration
+    private Profile profile;
+    private Map<String,Boolean> manualContextOverrides = new HashMap<String, Boolean>();
 
 
     //Connector
     private final Map<String, Connector> connectorMap = new HashMap<String, Connector>();
 
     TraceeContextLogger() {
-        initContextDataCreator();
+
+        // get the log configuration
+        this.contextLoggerConfiguration = ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration();
         initConnectors();
-    }
 
-    /**
-     * Does the initialization stuff like Creating the lookup map and bind the wrapper classes.
-     */
-    private void initContextDataCreator() {
-        wrapperList = TypeToWrapper.getTypeToWrapper();
-
-        // now iterate over types and fill map
-        for (TypeToWrapper wrapper : wrapperList) {
-            classToWrapperMap.put(wrapper.getWrappedInstanceType(), wrapper.getWrapperType());
-        }
-
-        traceeGsonContextLogBuilder = new TraceeGsonContextLogBuilder();
-        Set<Class> wrapperClasses = TypeToWrapper.findWrapperClasses();
-        Set<ImplicitContextData> implicitContextWrapperClasses = TypeToWrapper.getImplicitWrappers();
-        for (ImplicitContextData instance : implicitContextWrapperClasses) {
-            implicitContextClassMap.put(instance.getImplicitContext(), instance.getClass());
-            wrapperClasses.add(instance.getClass());
-        }
-
-        traceeGsonContextLogBuilder.setWrapperClasses(wrapperClasses);
     }
 
     /**
@@ -66,6 +49,89 @@ public final class TraceeContextLogger {
     private void initConnectors() {
         connectorsWrapper = new ConnectorFactory();
     }
+
+    public static ContextLoggerBuilder create () {
+        return new TraceeContextLogger();
+    }
+
+    public static ContextLogger createDefault () {
+        return create().build();
+    }
+
+    @Override
+    public ContextLogger build () {
+        traceeGsonContextLogBuilder = createGsonLogBuilder();
+        return this;
+    }
+
+
+    @Override
+    public ConfigBuilder enforceProfile(Profile profile) {
+        this.profile = profile;
+        return this;
+    }
+
+    @Override
+    public ConfigBuilder enable(String... contexts) {
+        fillManualContextOverrideMap(contexts, true);
+        return this;
+    }
+
+    @Override
+    public ConfigBuilder disable(String... contexts) {
+        fillManualContextOverrideMap(contexts, true);
+        return this;
+    }
+
+    @Override
+    public ContextLoggerBuilder apply() {
+        return (ContextLoggerBuilder) this;
+    }
+
+    @Override
+    public ConfigBuilder config() {
+        return (ConfigBuilder)this;
+    }
+
+    @Override
+    public String createJson(Object... instancesToLog) {
+        return this.propagateToContextLogBuilder(instancesToLog);
+    }
+
+    @Override
+    public void logJson(Object ...  instancesToLog) {
+        this.logJsonWithPrefixedMessage(null, instancesToLog);
+    }
+
+    @Override
+    public void logJsonWithPrefixedMessage(String prefixedMessage, Object... instancesToLog) {
+        this.connectorsWrapper.sendErrorReportToConnectors(prefixedMessage, createJson(instancesToLog));
+    }
+
+    /**
+     * This method handles the wrapping of the incoming object and passes them to the context toJson builder implementation.
+     *
+     * @param instancesToLog an array of objects to wrap
+     * @return the contextual toJson information as a String
+     */
+
+    String propagateToContextLogBuilder(Object[] instancesToLog) {
+
+        Object[] propagateArray = null;
+        if (instancesToLog != null) {
+            propagateArray = new Object[instancesToLog.length];
+
+            for (int i = 0; i < instancesToLog.length; i++) {
+
+                propagateArray[i] = wrapInstance(instancesToLog[i]);
+
+            }
+
+        }
+
+        return traceeGsonContextLogBuilder.logPassedContext(new PassedContextDataProvider(propagateArray));
+    }
+
 
     /**
      * tries to wrap a single instance into known wrapper class instances.
@@ -81,26 +147,27 @@ public final class TraceeContextLogger {
 
         // check for implicit instances
         if (instance instanceof ImplicitContext) {
-            return createInstance(implicitContextClassMap.get(instance));
+            return createInstance(contextLoggerConfiguration.getImplicitContextClassMap().get(instance));
         }
 
         // now try to find instance type in known wrapper types map
-        Class knownWrapperType = classToWrapperMap.get(instance.getClass());
+        Class knownWrapperType = contextLoggerConfiguration.getClassToWrapperMap().get(instance.getClass());
         if (knownWrapperType != null) {
             return createInstance(knownWrapperType);
         }
 
         // now try to find instance type in TypeToWrapper List
-        for (TypeToWrapper wrapper : wrapperList) {
+        for (TypeToWrapper wrapper : contextLoggerConfiguration.getWrapperList()) {
             if (wrapper.getWrappedInstanceType().isAssignableFrom(instance.getClass())) {
                 try {
                     WrappedContextData wrapperInstance = (WrappedContextData) createInstance(wrapper.getWrapperType());
                     wrapperInstance.setContextData(instance);
 
-                    if (wrapperInstance != null) {
-                        // add class to map for future usage
-                        classToWrapperMap.put(instance.getClass(), wrapper.getWrapperType());
-                    }
+                    // THIS WON'T WORK ANYMORE BECAUSE MAP IS IMMUTABLE
+                    //if (wrapperInstance != null) {
+                    // add class to map for future usage
+                    //classToWrapperMap.put(instance.getClass(), wrapper.getWrapperType());
+                    //}
 
                     return wrapperInstance;
                 } catch (Exception e) {
@@ -113,6 +180,20 @@ public final class TraceeContextLogger {
 
         // if instance can't be wrapped pass instance as is
         return instance;
+    }
+
+    /**
+     * Creates a TraceeGsonContextLogBuilder instance which can be used for creating the log message.
+     * @return An instance of TraceeGsonContextLogBuilder
+     */
+    private TraceeGsonContextLogBuilder createGsonLogBuilder () {
+
+        TraceeGsonContextLogBuilder tmpTraceeGsonContextLogBuilder = new TraceeGsonContextLogBuilder();
+        tmpTraceeGsonContextLogBuilder.setWrapperClasses(contextLoggerConfiguration.getWrapperClasses());
+        tmpTraceeGsonContextLogBuilder.setManualContextOverrides(manualContextOverrides);
+        tmpTraceeGsonContextLogBuilder.setProfile(this.profile != null ? profile : this.contextLoggerConfiguration.getProfile());
+
+        return tmpTraceeGsonContextLogBuilder;
     }
 
     /**
@@ -132,62 +213,23 @@ public final class TraceeContextLogger {
         return null;
     }
 
-
-    public static void logJsonWithMessagePrefix(String prefix, Object ... instancesToLog){
-        getInstance().connectorsWrapper.sendErrorReportToConnectors(prefix, toJson(instancesToLog));
-    }
-
-    public static void logJson(Object ...  instancesToLog) {
-        getInstance().connectorsWrapper.sendErrorReportToConnectors(null, toJson(instancesToLog));
-    }
-
     /**
-     * This static method is used to create the contextual logging String
-     *
-     * @param instancesToLog
-     * @return
+     * Adds passed contexts value pairs to manualContextOverrides.
+     * @param contexts The property name of the context data.
+     * @param value the value which should be set.
      */
-    public static String toJson(Object... instancesToLog) {
-        return getInstance().propagateToJson(instancesToLog);
-    }
+    private void fillManualContextOverrideMap (final String[] contexts, final boolean value) {
+        if (contexts != null) {
 
-    private static TraceeContextLogger getInstance () {
-        final TraceeContextLogger localInstance;
-        if (instance == null) {
+            for (String context : contexts) {
 
-            localInstance = new TraceeContextLogger();
-            instance = localInstance;
-
-        } else {
-            localInstance = instance;
-        }
-        return localInstance;
-    }
-
-    /**
-     * This method handles the wrapping of the incoming object and passes them to the context toJson builder implementation.
-     *
-     * @param instancesToLog an array of objects to wrap
-     * @return the contextual toJson information as a String
-     */
-
-    String propagateToJson(Object[] instancesToLog) {
-
-        Object[] propagateArray = null;
-        if (instancesToLog != null) {
-            propagateArray = new Object[instancesToLog.length];
-
-            for (int i = 0; i < instancesToLog.length; i++) {
-
-                propagateArray[i] = wrapInstance(instancesToLog[i]);
+                if (!context.isEmpty()) {
+                    this.manualContextOverrides.put(context,value);
+                }
 
             }
 
         }
-
-        return traceeGsonContextLogBuilder.log(new PassedContextDataProvider(propagateArray));
     }
-
-
 
 }

@@ -10,6 +10,7 @@ import java.util.Properties;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public enum Profile {
+    NONE(null),
     BASIC ("/TraceeContextLoggerBasicProfile.properties"),
     ENHANCED("/TraceeContextLoggerEnhancedProfile.properties"),
     FULL("/TraceeContextLoggerFullProfile.properties"),
@@ -83,7 +84,7 @@ public enum Profile {
             try {
                 result = Profile.valueOf(systemPropertyProfileName);
             } catch (IllegalArgumentException e) {
-                Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee ContextLogger profile property ('" + ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '" +systemPropertyProfileName + "' ==> Use default profile");
+                Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee ContextLoggerBuilder profile property ('" + ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '" +systemPropertyProfileName + "' ==> Use default profile");
             }
         }
 
@@ -107,7 +108,7 @@ public enum Profile {
                     try {
                         result = Profile.valueOf(profileFromProperties);
                     } catch (IllegalArgumentException e) {
-                        Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee custom ContextLogger profile property ('" + ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY + "') is set to the invalid value '" + profileFromProperties + "' and will be ignored");
+                        Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee custom ContextLoggerBuilder profile property ('" + ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY + "') is set to the invalid value '" + profileFromProperties + "' and will be ignored");
                     }
                 }
             }

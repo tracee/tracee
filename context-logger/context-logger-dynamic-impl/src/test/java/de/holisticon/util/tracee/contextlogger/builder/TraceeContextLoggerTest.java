@@ -5,6 +5,8 @@ import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable;
 import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.profile.Profile;
+import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -25,9 +27,9 @@ public class TraceeContextLoggerTest {
             throw new NullPointerException("acd");
         } catch (NullPointerException e) {
 
-            String json = TraceeContextLogger.toJson(e);
+            String json = TraceeContextLogger.createDefault().createJson(e);
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\"stacktrace\":\"java.lang.NullPointerException.*\"\\}"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"message\":\"acd\",\"stacktrace\":\"java.lang.NullPointerException.*\\}"));
 
 
         }
@@ -50,9 +52,9 @@ public class TraceeContextLoggerTest {
             Object instance3 = new JavaThrowable(e);
 
 
-            String json = TraceeContextLogger.toJson(instance1, instance2, 212, instance3, 212.2);
+            String json = TraceeContextLogger.createDefault().createJson(instance1, instance2, 212, instance3, 212.2);
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"throwable\\\":\\{\"stacktrace\":\"java.lang.NullPointerException.*\\\"java.lang.Double\\\":\\\"212.2\\\",\\\"java.lang.Integer\\\":\\\"212\\\",\\\"java.lang.String\\\":\\\"TATA\\\"\\}\\]"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"stacktrace\":\"java.lang.NullPointerException.*\\\"java.lang.Double\\\":\\\"212.2\\\",\\\"java.lang.Integer\\\":\\\"212\\\",\\\"java.lang.String\\\":\\\"TATA\\\"\\}"));
 
         }
     }
@@ -63,14 +65,55 @@ public class TraceeContextLoggerTest {
             throw new NullPointerException("test");
         } catch (NullPointerException e) {
 
-            String json = TraceeContextLogger.toJson(ImplicitContext.COMMON, ImplicitContext.TRACEE, e);
+            String json = TraceeContextLogger.createDefault().createJson(ImplicitContext.COMMON, ImplicitContext.TRACEE, e);
 
-            MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"common\\\".*tracee.*throwable.*\\}\\]"));
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"common\\\".*tracee.*throwable.*\\}"));
 
 
         }
     }
 
 
+    @Test
+    public void should_return_empty_throwable_context_element_for_none_profile_by_fluent_api() {
+        try {
+            throw new NullPointerException("acd");
+        } catch (NullPointerException e) {
+
+            String json = TraceeContextLogger.create().config().enforceProfile(Profile.NONE).apply().build().createJson(e);
+
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\\}\\}"));
+
+
+        }
+    }
+
+    @Test
+    public void should_return_throwable_context_element_with_message_for_none_profile_by_fluent_api() {
+        try {
+            throw new NullPointerException("acd");
+        } catch (NullPointerException e) {
+
+            String json = TraceeContextLogger.create().config().enforceProfile(Profile.NONE).enable(ProfilePropertyNames.EXCEPTION_MESSAGE).apply().build().createJson(e);
+
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"message\":\"acd\"\\}\\}"));
+
+
+        }
+    }
+
+    @Test
+    public void should_return_throwable_context_element_with_message_for_basic_profile_with_disabled_stacktrace_by_fluent_api() {
+        try {
+            throw new NullPointerException("acd");
+        } catch (NullPointerException e) {
+
+            String json = TraceeContextLogger.create().config().enforceProfile(Profile.BASIC).disable(ProfilePropertyNames.EXCEPTION_STACKTRACE).apply().build().createJson(e);
+
+            MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"message\":\"acd\"\\}\\}"));
+
+
+        }
+    }
 
 }

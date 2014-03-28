@@ -1,6 +1,7 @@
 package de.holisticon.util.tracee.contextlogger.profile;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -10,18 +11,20 @@ import java.util.Properties;
 public class ProfileSettings {
 
     private Properties profileProperties = null;
+    private Map<String, Boolean> manualContextOverrides = null;
 
-    public ProfileSettings() {
-        this(Profile.getCurrentProfile());
-    }
+    public ProfileSettings(Profile profile, Map<String, Boolean> manualContextOverrides) {
 
-    public ProfileSettings(Profile profile) {
+        // if passed profile is null then use default profile
+        Profile tmpProfile = profile != null ? profile : Profile.getCurrentProfile();
+
         try {
-            this.profileProperties = profile.getProperties();
+            this.profileProperties = tmpProfile.getProperties();
         } catch (IOException e) {
             // shouldn't occur for non CUSTOM profiles
         }
 
+        this.manualContextOverrides = manualContextOverrides;
     }
 
     public boolean getPropertyValue (final String propertyKey) {
@@ -31,11 +34,20 @@ public class ProfileSettings {
         }
 
         // check system property override
+        if (manualContextOverrides != null) {
+            Boolean manualOverrideCheck = manualContextOverrides.get(propertyKey);
+            if (manualOverrideCheck != null && manualOverrideCheck.booleanValue()) {
+                return true;
+            }
+        }
 
         // check profile properties
-        String value = this.profileProperties.getProperty(propertyKey,"false");
-        return Boolean.valueOf(value);
+        if (profileProperties != null) {
+            String value = this.profileProperties.getProperty(propertyKey,"false");
+            return Boolean.valueOf(value);
+        }
 
+        return false;
     }
 
 }

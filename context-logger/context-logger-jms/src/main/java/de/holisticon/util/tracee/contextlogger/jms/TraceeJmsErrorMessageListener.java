@@ -39,7 +39,7 @@ public class TraceeJmsErrorMessageListener {
 
                 Message message = extractMessageParameter(ctx.getParameters());
 
-                TraceeContextLogger.logJsonWithMessagePrefix("JmsInterceptor : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
+                TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE JMS ERROR CONTEXT LISTENER  : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
 
             }
 
