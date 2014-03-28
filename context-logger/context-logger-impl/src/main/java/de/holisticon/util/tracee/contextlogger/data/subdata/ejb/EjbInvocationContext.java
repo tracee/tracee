@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.data.subdata.ejb;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
+import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Context provider for ProceedingJoinPoint.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-@TraceeContextLogProvider(displayName = "invocationContext")
+@TraceeContextLogProvider(displayName = "invocationContext", order = Order.EJB)
 public class EjbInvocationContext implements WrappedContextData<InvocationContext> {
 
     private InvocationContext invocationContext;

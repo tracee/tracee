@@ -14,6 +14,8 @@ public final class Order {
     public static final int WATCHDOG = 15;
     public static final int SERVLET = 20;
     public static final int JAXWS = 30;
+    public static final int EJB = 40;
+    public static final int JMS = 41;
     public static final int EXCEPTION = 80;
 
 }

@@ -49,7 +49,7 @@ public class TraceeErrorLoggingFilter implements Filter {
             HttpServletResponse servletResponse,
             Exception e) {
 
-        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE SERVLET ERROR CONTEXT LISTENER  : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, e);
+        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE SERVLET ERROR CONTEXT LOGGING LISTENER  : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, e);
 
     }
 

@@ -1,16 +1,18 @@
 package de.holisticon.util.tracee.examples.ejb;
 
 import de.holisticon.util.tracee.contextlogger.Watchdog;
+import de.holisticon.util.tracee.contextlogger.jms.TraceeEjbErrorContextLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 16.01.14.
  */
 @Stateless
-public class TestEjbImpl implements TestEjb{
+public class TestEjbImpl implements TestEjb {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestEjbImpl.class);
 
@@ -28,9 +30,10 @@ public class TestEjbImpl implements TestEjb{
     }
 
     @Override
+    @Interceptors({TraceeEjbErrorContextLoggingInterceptor.class})
     public final int error(final int a, final int b) {
         LOGGER.info("trigger NullPointerException with parameters {} and {}", a, b);
-        return watchdogError(a,b);
+        return watchdogError(a, b);
     }
 
     @Watchdog
