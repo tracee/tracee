@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +32,7 @@ public class TraceeMessageProducerTest {
 	public void testWriteTraceeContextToMessage() throws Exception {
 		backend.put("random", "entry");
 		unit.writeTraceeContextToMessage(message);
-
-		final Map<String,String> expectedObjectProperty = new HashMap<String, String>();
-		expectedObjectProperty.put("random","entry");
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), eq(expectedObjectProperty));
+		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), eq(Collections.singletonMap("random","entry")));
 	}
 
 	@Test
