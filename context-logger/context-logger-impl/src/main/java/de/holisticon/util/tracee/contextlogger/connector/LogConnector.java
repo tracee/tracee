@@ -2,6 +2,7 @@ package de.holisticon.util.tracee.contextlogger.connector;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 import de.holisticon.util.tracee.contextlogger.Connector;
 
 import java.util.Map;
@@ -12,7 +13,16 @@ import java.util.Map;
  */
 public class LogConnector implements Connector {
 
-    private TraceeLogger logger = Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class);
+
+	public LogConnector() {
+		this(Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class));
+	}
+
+	LogConnector(TraceeLogger logger) {
+		this.logger = logger;
+	}
+
+    private final TraceeLogger logger;
 
     @Override
     public void init(Map<String, String> properties) {
