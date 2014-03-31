@@ -10,11 +10,11 @@ import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import javax.servlet.http.Cookie;
 
 /**
- * JaxWs context provider
+ * JaxWsContextProvider context provider
  * Created by Tobias Gindler, holisticon AG on 28.03.14.
  */
 @TraceeContextLogProvider(displayName = "jaxWs", order = Order.JAXWS)
-public class JaxWs implements WrappedContextData<JaxWsWrapper> {
+public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
 
     private JaxWsWrapper jaxWsWrapper;
 
@@ -36,7 +36,10 @@ public class JaxWs implements WrappedContextData<JaxWsWrapper> {
             propertyName = ProfilePropertyNames.JAXWS_SOAP_REQUEST,
             order = 40)
     public String getSoapRequest() {
-        return jaxWsWrapper.getSoapRequest();
+        if (jaxWsWrapper != null) {
+            return jaxWsWrapper.getSoapRequest();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -45,6 +48,9 @@ public class JaxWs implements WrappedContextData<JaxWsWrapper> {
             propertyName = ProfilePropertyNames.JAXWS_SOAP_RESPONSE,
             order = 50)
     public String getSoapResponse() {
-        return jaxWsWrapper.getSoapResponse();
+        if (jaxWsWrapper != null) {
+            return jaxWsWrapper.getSoapResponse();
+        }
+        return null;
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.CommonDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.CommonDataContextProvider;
 import de.holisticon.util.tracee.contextlogger.profile.Profile;
 import de.holisticon.util.tracee.contextlogger.profile.ProfileSettings;
 import de.holisticon.util.tracee.contextlogger.testdata.AnnotationTestClass;
@@ -15,14 +15,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import org.hamcrest.MatcherAssert;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
@@ -57,8 +49,8 @@ public class TraceeGenericGsonSerializerTest {
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE, "DEBUG");
         System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM, "SYSTEM_1");
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(CommonDataProvider.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile(),null))).create();
-        String json = gson.toJson(new CommonDataProvider());
+        Gson gson = new GsonBuilder().registerTypeAdapter(CommonDataContextProvider.class, new TraceeGenericGsonSerializer(new ProfileSettings(Profile.getCurrentProfile(),null))).create();
+        String json = gson.toJson(new CommonDataContextProvider());
 
         MatcherAssert.assertThat(json, Matchers.notNullValue());
         MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"timestamp\\\":\\\".*?\\\",\\\"stage\\\":\\\"DEBUG\\\",\\\"system-name\\\":\\\"SYSTEM_1\\\",\\\"thread-name\\\":\\\"main\\\",\\\"thread-id\\\":1\\}"));

@@ -17,14 +17,14 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
 @TraceeContextLogProvider(displayName = "servletSession", order = Order.SERVLET)
-public class ServletSession implements WrappedContextData<HttpSession> {
+public class ServletSessionContextProvider implements WrappedContextData<HttpSession> {
 
     HttpSession session;
 
-    public ServletSession() {
+    public ServletSessionContextProvider() {
     }
 
-    public ServletSession(HttpSession session) {
+    public ServletSessionContextProvider(HttpSession session) {
         this.session = session;
     }
 

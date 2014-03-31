@@ -3,8 +3,8 @@ package de.holisticon.util.tracee.contextlogger.builder;
 import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.RegexMatcher;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
-import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import de.holisticon.util.tracee.contextlogger.profile.Profile;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import org.hamcrest.MatcherAssert;
@@ -43,13 +43,13 @@ public class TraceeContextLoggerTest {
 
             TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
             Set<Class> classes = new HashSet<Class>();
-            classes.add(PassedContextDataProvider.class);
+            classes.add(PassedDataContextProvider.class);
 
             logBuilder.setWrapperClasses(classes);
 
             Object instance1 = e;
             Object instance2 = "TATA";
-            Object instance3 = new JavaThrowable(e);
+            Object instance3 = new JavaThrowableContextProvider(e);
 
 
             String json = TraceeContextLogger.createDefault().createJson(instance1, instance2, 212, instance3, 212.2);

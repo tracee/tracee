@@ -53,7 +53,7 @@ public class TraceeContextProvider implements ImplicitContextData {
 
             }
         }
-        return list;
+        return list.size() > 0 ? list : null;
 
     }
 

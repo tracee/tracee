@@ -4,15 +4,9 @@ import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.data.Order;
-import de.holisticon.util.tracee.contextlogger.data.subdata.aspectj.AspectjProceedingJoinPoint;
+import de.holisticon.util.tracee.contextlogger.data.subdata.aspectj.AspectjProceedingJoinPointContextProvider;
 import de.holisticon.util.tracee.contextlogger.data.wrapper.WatchdogDataWrapper;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
-import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.aspectj.lang.ProceedingJoinPoint;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Watchdog context data provider.
@@ -59,9 +53,9 @@ public final class WatchdogContextProvider implements WrappedContextData<Watchdo
             displayName = "aspectj.proceedingJoinPoint",
             propertyName = ProfilePropertyNames.WATCHDOG_ASPECTJ_CONTEXT,
             order = 20)
-    public AspectjProceedingJoinPoint getProceedingJoinPoint() {
-        if (watchdogDataWrapper != null) {
-            return AspectjProceedingJoinPoint.wrap(watchdogDataWrapper.getProceedingJoinPoint());
+    public AspectjProceedingJoinPointContextProvider getProceedingJoinPoint() {
+        if (watchdogDataWrapper != null && watchdogDataWrapper.getProceedingJoinPoint() != null) {
+            return AspectjProceedingJoinPointContextProvider.wrap(watchdogDataWrapper.getProceedingJoinPoint());
         }
         return null;
     }

@@ -1,8 +1,8 @@
 package de.holisticon.util.tracee.contextlogger.builder.gson;
 
 import de.holisticon.util.tracee.contextlogger.RegexMatcher;
-import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowable;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -23,11 +23,11 @@ public class TraceeGsonContextLogBuilderTest {
 
             TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
             Set<Class> classes = new HashSet<Class>();
-            classes.add(JavaThrowable.class);
+            classes.add(JavaThrowableContextProvider.class);
 
             logBuilder.setWrapperClasses(classes);
 
-            String json = logBuilder.log(new JavaThrowable(e));
+            String json = logBuilder.log(new JavaThrowableContextProvider(e));
 
             MatcherAssert.assertThat(json, RegexMatcher.matches("\\[\\{\\\"stacktrace\\\":\\\"java.lang.Null.*\\}\\]"));
 
@@ -43,15 +43,15 @@ public class TraceeGsonContextLogBuilderTest {
 
             TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
             Set<Class> classes = new HashSet<Class>();
-            classes.add(PassedContextDataProvider.class);
-            classes.add(JavaThrowable.class);
+            classes.add(PassedDataContextProvider.class);
+            classes.add(JavaThrowableContextProvider.class);
 
             logBuilder.setWrapperClasses(classes);
 
             Object[] oarray = new Object[2];
-            oarray[0] = new JavaThrowable(e);
+            oarray[0] = new JavaThrowableContextProvider(e);
             oarray[1] = "TATA";
-            PassedContextDataProvider cp = new PassedContextDataProvider(oarray);
+            PassedDataContextProvider cp = new PassedDataContextProvider(oarray);
 
 
             String json = logBuilder.log(cp);

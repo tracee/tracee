@@ -9,18 +9,18 @@ import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 import javax.servlet.http.Cookie;
 
 /**
- * Context provider for ServletCookie.
+ * Context provider for ServletCookieContextProvider.
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
 @TraceeContextLogProvider(displayName = "servletCookies", order = Order.SERVLET)
-public final class ServletCookie implements WrappedContextData<Cookie> {
+public final class ServletCookieContextProvider implements WrappedContextData<Cookie> {
 
     private Cookie cookie;
 
-    public ServletCookie() {
+    public ServletCookieContextProvider() {
     }
 
-    public ServletCookie(Cookie cookie) {
+    public ServletCookieContextProvider(Cookie cookie) {
         this.cookie = cookie;
     }
 

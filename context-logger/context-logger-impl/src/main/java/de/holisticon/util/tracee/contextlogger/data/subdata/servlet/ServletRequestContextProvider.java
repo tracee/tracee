@@ -20,16 +20,16 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "servletRequest", order = Order.SERVLET)
-public class ServletRequest implements WrappedContextData<HttpServletRequest> {
+public class ServletRequestContextProvider implements WrappedContextData<HttpServletRequest> {
 
 
     HttpServletRequest request;
 
-    public ServletRequest() {
+    public ServletRequestContextProvider() {
 
     }
 
-    public ServletRequest(final HttpServletRequest request) {
+    public ServletRequestContextProvider(final HttpServletRequest request) {
         this.request = request;
     }
 
@@ -136,12 +136,12 @@ public class ServletRequest implements WrappedContextData<HttpServletRequest> {
             displayName = "cookies",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_COOKIES,
             order = 50)
-    public List<ServletCookie> getCookies() {
+    public List<ServletCookieContextProvider> getCookies() {
 
-        List<ServletCookie> wrappedCookies = new ArrayList<ServletCookie>();
+        List<ServletCookieContextProvider> wrappedCookies = new ArrayList<ServletCookieContextProvider>();
 
         for (Cookie cookie : request.getCookies()) {
-            wrappedCookies.add(new ServletCookie(cookie));
+            wrappedCookies.add(new ServletCookieContextProvider(cookie));
         }
 
         return wrappedCookies;

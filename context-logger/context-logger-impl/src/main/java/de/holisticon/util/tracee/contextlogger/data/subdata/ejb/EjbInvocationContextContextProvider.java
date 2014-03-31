@@ -19,14 +19,14 @@ import java.util.Map;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextLogProvider(displayName = "invocationContext", order = Order.EJB)
-public class EjbInvocationContext implements WrappedContextData<InvocationContext> {
+public class EjbInvocationContextContextProvider implements WrappedContextData<InvocationContext> {
 
     private InvocationContext invocationContext;
 
-    public EjbInvocationContext() {
+    public EjbInvocationContextContextProvider() {
     }
 
-    public EjbInvocationContext(final InvocationContext invocationContext) {
+    public EjbInvocationContextContextProvider(final InvocationContext invocationContext) {
         this.invocationContext = invocationContext;
     }
 
@@ -40,7 +40,7 @@ public class EjbInvocationContext implements WrappedContextData<InvocationContex
 
     @TraceeContextLogProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
     public String getMethodName() {
-        return this.invocationContext != null ? this.invocationContext.getMethod().getName() : null;
+        return this.invocationContext != null && this.invocationContext.getMethod() != null ? this.invocationContext.getMethod().getName() : null;
     }
 
     @TraceeContextLogProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_PARAMETERS, order = 20)

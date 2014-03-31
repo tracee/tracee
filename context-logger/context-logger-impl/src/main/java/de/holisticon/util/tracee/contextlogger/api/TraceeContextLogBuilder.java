@@ -1,6 +1,6 @@
 package de.holisticon.util.tracee.contextlogger.api;
 
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 
 import java.util.Set;
 
@@ -16,6 +16,6 @@ public interface TraceeContextLogBuilder {
 
     String log(final Object... instancesToLog);
 
-    String logPassedContext(final PassedContextDataProvider passedContextData);
+    String logPassedContext(final PassedDataContextProvider passedContextData);
 
 }

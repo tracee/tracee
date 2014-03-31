@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @TraceeContextLogProvider(displayName = "common", order = Order.COMMON)
-public class CommonDataProvider implements ImplicitContextData {
+public class CommonDataContextProvider implements ImplicitContextData {
 
     @Override
     public ImplicitContext getImplicitContext() {

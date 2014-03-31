@@ -16,17 +16,17 @@ import java.io.StringWriter;
  */
 @SuppressWarnings("unused")
 @TraceeContextLogProvider(displayName = "throwable", order = Order.EXCEPTION)
-public final class JavaThrowable implements WrappedContextData<Throwable> {
+public final class JavaThrowableContextProvider implements WrappedContextData<Throwable> {
 
 
     private Throwable throwable;
 
     @SuppressWarnings("unused")
-    public JavaThrowable() {
+    public JavaThrowableContextProvider() {
     }
 
     @SuppressWarnings("unused")
-    public JavaThrowable(final Throwable throwable) {
+    public JavaThrowableContextProvider(final Throwable throwable) {
         this.throwable = throwable;
     }
 

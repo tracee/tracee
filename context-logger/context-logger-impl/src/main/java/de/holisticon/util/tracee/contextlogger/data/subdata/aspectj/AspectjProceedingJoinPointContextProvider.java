@@ -17,16 +17,16 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextLogProvider(displayName = "proceedingJoinPoint")
-public class AspectjProceedingJoinPoint implements WrappedContextData<ProceedingJoinPoint> {
+public class AspectjProceedingJoinPointContextProvider implements WrappedContextData<ProceedingJoinPoint> {
 
     private ProceedingJoinPoint proceedingJoinPoint;
 
     @SuppressWarnings("unused")
-    public AspectjProceedingJoinPoint() {
+    public AspectjProceedingJoinPointContextProvider() {
     }
 
     @SuppressWarnings("unused")
-    public AspectjProceedingJoinPoint(final ProceedingJoinPoint proceedingJoinPoint) {
+    public AspectjProceedingJoinPointContextProvider(final ProceedingJoinPoint proceedingJoinPoint) {
         this.proceedingJoinPoint = proceedingJoinPoint;
     }
 
@@ -38,8 +38,8 @@ public class AspectjProceedingJoinPoint implements WrappedContextData<Proceeding
         return ProceedingJoinPoint.class;
     }
 
-    public static AspectjProceedingJoinPoint wrap (final ProceedingJoinPoint proceedingJoinPoint) {
-        return new AspectjProceedingJoinPoint(proceedingJoinPoint);
+    public static AspectjProceedingJoinPointContextProvider wrap(final ProceedingJoinPoint proceedingJoinPoint) {
+        return new AspectjProceedingJoinPointContextProvider(proceedingJoinPoint);
     }
 
     @SuppressWarnings("unused")
@@ -48,7 +48,7 @@ public class AspectjProceedingJoinPoint implements WrappedContextData<Proceeding
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_CLASS,
             order = 20)
     public String getClazz() {
-        if (proceedingJoinPoint != null) {
+        if (proceedingJoinPoint != null && proceedingJoinPoint.getSignature() != null) {
             return proceedingJoinPoint.getSignature().getDeclaringTypeName();
         }
         return null;
@@ -60,7 +60,7 @@ public class AspectjProceedingJoinPoint implements WrappedContextData<Proceeding
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_METHOD,
             order = 30)
     public String getMethod() {
-        if (proceedingJoinPoint != null) {
+        if (proceedingJoinPoint != null && proceedingJoinPoint.getSignature() != null) {
             return proceedingJoinPoint.getSignature().getName();
         }
         return null;
@@ -73,7 +73,7 @@ public class AspectjProceedingJoinPoint implements WrappedContextData<Proceeding
             order = 40)
     public List<String> getParameters() {
 
-        if (proceedingJoinPoint != null) {
+        if (proceedingJoinPoint != null && proceedingJoinPoint.getArgs() != null) {
             // output parameters
             final List<String> parameters = new ArrayList<String>();
             for (final Object attr : proceedingJoinPoint.getArgs()) {

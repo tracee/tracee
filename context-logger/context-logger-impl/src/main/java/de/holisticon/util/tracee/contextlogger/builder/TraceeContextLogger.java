@@ -4,7 +4,7 @@ import de.holisticon.util.tracee.contextlogger.*;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import de.holisticon.util.tracee.contextlogger.profile.Profile;
 
 import java.util.*;
@@ -129,7 +129,7 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
 
         }
 
-        return traceeGsonContextLogBuilder.logPassedContext(new PassedContextDataProvider(propagateArray));
+        return traceeGsonContextLogBuilder.logPassedContext(new PassedDataContextProvider(propagateArray));
     }
 
 

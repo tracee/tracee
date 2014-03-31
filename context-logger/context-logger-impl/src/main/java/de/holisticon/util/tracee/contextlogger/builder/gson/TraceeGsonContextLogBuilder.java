@@ -3,7 +3,7 @@ package de.holisticon.util.tracee.contextlogger.builder.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.holisticon.util.tracee.contextlogger.builder.AbstractContextLogBuilder;
-import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedContextDataProvider;
+import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import de.holisticon.util.tracee.contextlogger.profile.ProfileSettings;
 
 /**
@@ -47,7 +47,7 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
     }
 
     @Override
-    public String logPassedContext(PassedContextDataProvider passedContextData) {
+    public String logPassedContext(PassedDataContextProvider passedContextData) {
         return getOrCreateGson().toJson(passedContextData);
     }
 

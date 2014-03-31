@@ -20,15 +20,15 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "contexts")
-public class PassedContextDataProvider implements WrappedContextData<Object[]>{
+public class PassedDataContextProvider implements WrappedContextData<Object[]>{
 
     private Object[] instances;
 
-    public PassedContextDataProvider() {
+    public PassedDataContextProvider() {
 
     }
 
-    public PassedContextDataProvider(Object[] instances) {
+    public PassedDataContextProvider(Object[] instances) {
         this.instances = instances;
     }
 
