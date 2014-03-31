@@ -39,10 +39,7 @@ public class TraceeServletRequestListener implements ServletRequestListener {
 
 	@Override
 	public void requestDestroyed(ServletRequestEvent sre) {
-		final ServletRequest servletRequest = sre.getServletRequest();
-		if (servletRequest instanceof HttpServletRequest) {
-			httpRequestDestroyed();
-		}
+		backend.clear();
 	}
 
 	@Override
@@ -70,10 +67,6 @@ public class TraceeServletRequestListener implements ServletRequestListener {
 				backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId(), configuration.generatedSessionIdLength()));
 			}
 		}
-	}
-
-	void httpRequestDestroyed() {
-		backend.clear();
 	}
 
 

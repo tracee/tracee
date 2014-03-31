@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -23,9 +25,7 @@ import static de.holisticon.util.tracee.TraceeConstants.REQUEST_ID_KEY;
 import static de.holisticon.util.tracee.TraceeConstants.SESSION_ID_KEY;
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 /**
@@ -94,7 +94,7 @@ public class TraceeServletRequestListenerTest {
 
 	@Test
 	public void testClearsBackendAfterProcessing() {
-		unit.httpRequestDestroyed();
+		unit.requestDestroyed(new ServletRequestEvent(mock(ServletContext.class), httpServletRequest));
 		verify(backend, atLeastOnce()).clear();
 	}
 
