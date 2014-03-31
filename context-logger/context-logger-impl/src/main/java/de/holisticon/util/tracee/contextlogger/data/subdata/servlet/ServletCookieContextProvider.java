@@ -40,7 +40,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             propertyName = ProfilePropertyNames.COOKIE_NAME,
             order = 10)
     public String getName() {
-        return cookie.getName();
+        if (cookie != null){
+            return cookie.getName();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -49,7 +52,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             propertyName = ProfilePropertyNames.COOKIE_VALUE,
             order = 20)
     public String getValue() {
-        return cookie.getValue();
+        if (cookie != null){
+            return cookie.getValue();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -58,7 +64,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             propertyName = ProfilePropertyNames.COOKIE_DOMAIN,
             order = 30)
     public String getDomain() {
-        return cookie.getDomain();
+        if (cookie != null){
+            return cookie.getDomain();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -68,7 +77,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             order = 40
     )
     public String getPath() {
-        return cookie.getPath();
+        if (cookie != null){
+            return cookie.getPath();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -77,7 +89,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             propertyName = ProfilePropertyNames.COOKIE_SECURE,
             order = 50)
     public Boolean getSecure() {
-        return cookie.getSecure();
+        if (cookie != null){
+            return cookie.getSecure();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -86,7 +101,10 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
             propertyName = ProfilePropertyNames.COOKIE_MAXAGE,
             order = 60)
     public Integer getMaxAge() {
-        return cookie.getMaxAge();
+        if (cookie != null){
+            return cookie.getMaxAge();
+        }
+        return null;
     }
 
 }

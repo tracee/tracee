@@ -45,7 +45,10 @@ public class ServletResponseContextProvider implements WrappedContextData<HttpSe
             order = 10
     )
     public Integer getHttpStatusCode() {
-        return this.response.getStatus();
+        if (this.response != null) {
+            return this.response.getStatus();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -57,7 +60,8 @@ public class ServletResponseContextProvider implements WrappedContextData<HttpSe
     public List<NameStringValuePair> getHttpResponseHeaders() {
         final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
 
-        if (this.response != null) {
+
+        if (this.response != null && this.response.getHeaderNames() != null) {
             final Collection<String> httpHeaderNames = this.response.getHeaderNames();
             for (final String httpHeaderName : httpHeaderNames) {
 
