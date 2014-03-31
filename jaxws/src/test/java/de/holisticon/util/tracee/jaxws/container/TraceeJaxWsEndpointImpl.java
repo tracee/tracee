@@ -14,7 +14,7 @@ import java.util.*;
 @WebService(serviceName = "TraceeJaxWsEndpoint", portName = "TraceeJaxWsEndpointPort",
         targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS,
         endpointInterface = "de.holisticon.util.tracee.jaxws.container.TraceeJaxWsEndpoint")
-@HandlerChain(file = TraceeWsHandlerConstants.TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL)
+@HandlerChain(file = TraceeWsHandlerConstants.TRACEE_HANDLER_CHAIN_URL)
 public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
 
 

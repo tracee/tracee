@@ -1,10 +1,7 @@
 package de.holisticon.util.tracee.jaxws.container;
 
 
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeConstants;
-import de.holisticon.util.tracee.TraceeLogger;
-import de.holisticon.util.tracee.Utilities;
+import de.holisticon.util.tracee.*;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
 import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
 import de.holisticon.util.tracee.jaxws.protocol.SoapHeaderTransport;
@@ -28,7 +25,15 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
 	private final SoapHeaderTransport transportSerialization = new SoapHeaderTransport();
 
-    protected final void handleIncoming(SOAPMessageContext context) {
+	public TraceeServerHandler() {
+		this(Tracee.getBackend());
+	}
+
+	TraceeServerHandler(TraceeBackend traceeBackend) {
+		super(traceeBackend);
+	}
+
+	protected final void handleIncoming(SOAPMessageContext context) {
         try {
             final SOAPMessage msg = context.getMessage();
             final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -92,12 +97,5 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
     public final boolean handleFault(SOAPMessageContext context) {
         this.handleOutgoing(context);
         return true;
-    }
-
-    @Override
-    public final Set<QName> getHeaders() {
-        HashSet<QName> set = new HashSet<QName>();
-        set.add(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
-        return set;
     }
 }

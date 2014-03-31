@@ -19,8 +19,7 @@ public final class TraceeWsHandlerConstants {
 
     public static final String TRACEE_HANDLER_CHAIN_URL =
             "/de/holisticon/util/tracee/jaxws/TraceeHandlerChain.xml";
-    public static final String TRACEE_WITH_ERROR_LOGGING_HANDLER_CHAIN_URL =
-            "/de/holisticon/util/tracee/jaxws/TraceeWithErrorLoggingHandlerChain.xml";
+
 
 
 }

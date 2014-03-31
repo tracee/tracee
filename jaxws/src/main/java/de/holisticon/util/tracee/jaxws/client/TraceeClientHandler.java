@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee.jaxws.client;
 
+import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
@@ -25,11 +26,13 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
 	private final SoapHeaderTransport transportSerialization = new SoapHeaderTransport();
 
-    public final Set<QName> getHeaders() {
-        HashSet<QName> set = new HashSet<QName>();
-        set.add(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
-        return set;
-    }
+	public TraceeClientHandler() {
+		this(Tracee.getBackend());
+	}
+
+	TraceeClientHandler(TraceeBackend traceeBackend) {
+		super(traceeBackend);
+	}
 
     @Override
     public final boolean handleFault(final SOAPMessageContext context) {
@@ -49,9 +52,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
                 final SOAPHeader header = env.getHeader();
 
 				if (header != null) {
-					final Map<String, String> parsedContext = transportSerialization.parse(header);
-					final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest);
-					getTraceeBackend().putAll(filteredContext);
+					parseSoapHeaderToBackend(header);
 				}
 
             } catch (final SOAPException e) {
@@ -62,6 +63,12 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
         }
     }
+
+	final void parseSoapHeaderToBackend(SOAPHeader soapHeader) {
+		final Map<String, String> parsedContext = transportSerialization.parse(soapHeader);
+		final Map<String, String> filteredContext = getTraceeBackend().getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest);
+		getTraceeBackend().putAll(filteredContext);
+	}
 
 
     protected final void handleOutgoing(final SOAPMessageContext context) {

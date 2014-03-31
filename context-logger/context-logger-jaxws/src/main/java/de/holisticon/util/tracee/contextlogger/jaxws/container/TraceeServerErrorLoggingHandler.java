@@ -1,10 +1,13 @@
-package de.holisticon.util.tracee.jaxws.container;
+package de.holisticon.util.tracee.contextlogger.jaxws.container;
 
+import de.holisticon.util.tracee.Tracee;
+import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.builder.TraceeContextLogger;
 import de.holisticon.util.tracee.contextlogger.data.wrapper.JaxWsWrapper;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
+import de.holisticon.util.tracee.jaxws.container.TraceeServerHandler;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
@@ -24,7 +27,15 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
     private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
 
-    @Override
+	TraceeServerErrorLoggingHandler(TraceeBackend traceeBackend) {
+		super(traceeBackend);
+	}
+
+	public TraceeServerErrorLoggingHandler() {
+		this(Tracee.getBackend());
+	}
+
+	@Override
     public final boolean handleFault(SOAPMessageContext context) {
 
         // Must pipe out Soap envelope
