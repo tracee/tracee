@@ -3,6 +3,9 @@ package de.holisticon.util.tracee.backend.threadlocalstore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Daniel Wegener (Holisticon AG)
+ */
 class ThreadLocalMap<K, V> extends InheritableThreadLocal<Map<K, V>> {
 
     @Override

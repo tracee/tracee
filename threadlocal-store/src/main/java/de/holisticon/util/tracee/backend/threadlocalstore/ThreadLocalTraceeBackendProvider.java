@@ -5,7 +5,7 @@ import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.spi.TraceeBackendProvider;
 
 /**
- * @author Daniel
+ * @author Daniel Wegener (Holisticon AG)
  */
 public class ThreadLocalTraceeBackendProvider implements TraceeBackendProvider {
 
