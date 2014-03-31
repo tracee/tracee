@@ -90,6 +90,12 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>de.holisticon.util.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
 </project>

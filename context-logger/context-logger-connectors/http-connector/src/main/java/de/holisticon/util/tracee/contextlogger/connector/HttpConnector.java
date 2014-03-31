@@ -1,23 +1,5 @@
 package de.holisticon.util.tracee.contextlogger.connector;
 
-/*
- * import de.holisticon.util.tracee.Tracee;
- * import de.holisticon.util.tracee.TraceeLogger;
- * import org.apache.http.HttpResponse;
- * import org.apache.http.entity.ContentType;
- * import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
- * import org.apache.http.impl.nio.client.HttpAsyncClients;
- * import org.apache.http.nio.IOControl;
- * import org.apache.http.nio.client.methods.AsyncCharConsumer;
- * import org.apache.http.nio.client.methods.HttpAsyncMethods;
- * import org.apache.http.protocol.HttpContext;
- * import java.io.IOException;
- * import java.nio.CharBuffer;
- * import java.util.HashMap;
- * import java.util.Map;
- * import java.util.concurrent.Future;
- */
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -32,6 +14,7 @@ import com.ning.http.client.Response;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeLogger;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 import de.holisticon.util.tracee.contextlogger.Connector;
 
 /**
@@ -52,7 +35,17 @@ public class HttpConnector implements Connector {
     public static final int DEFAULT_REQUEST_TIMEOUT = 10000;
     public static final int DEFAULT_REQUEST_IDLE_TIMEOUT = 500;
 
-    private static final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(HttpConnector.class);
+	private final TraceeLogger logger;
+	private final AsyncHttpClientProvider asyncHttpClientProvider;
+
+	public HttpConnector() {
+		this(Tracee.getBackend().getLoggerFactory(), new SimpleAsyncHttpProvider());
+	}
+
+	HttpConnector(TraceeLoggerFactory loggerFactory, AsyncHttpClientProvider asyncHttpClientProvider) {
+		this.asyncHttpClientProvider = asyncHttpClientProvider;
+		logger = loggerFactory.getLogger(HttpConnector.class);
+	}
 
     private String url;
 
@@ -101,35 +94,35 @@ public class HttpConnector implements Connector {
     @Override
     public void sendErrorReport(final String json) {
 
-        final String tmpUrl = this.url;
+        final String targetUrl = this.url;
 
         try {
             @SuppressWarnings("resource")
-            final AsyncHttpClient asyncHttpClient = new AsyncHttpClient(builder.build());
-            asyncHttpClient.preparePost(this.url).setBody(json).setHeader("Content-type", "text/json;charset=utf-8").setBodyEncoding("UTF-8")
+            final AsyncHttpClient asyncHttpClient = asyncHttpClientProvider.provideHttpClient(builder.build());
+            asyncHttpClient.preparePost(targetUrl).setBody(json).setHeader("Content-type", "text/json;charset=utf-8").setBodyEncoding("UTF-8")
                     .execute(new AsyncCompletionHandler<Response>() {
 
                         @Override
                         public Response onCompleted(final Response response) throws Exception {
-                            LOGGER.info("Error report send via HTTP to '" + tmpUrl + "'");
+                            logger.info("Error report send via HTTP to '" + targetUrl + "'");
                             return response;
                         }
 
                         @Override
                         public void onThrowable(final Throwable t) {
                             // Something wrong happened.
-                            LOGGER.error("An error occurred while sending the error report via HTTP to '" + tmpUrl + "'", t);
+                            logger.error("An error occurred while sending the error report via HTTP to '" + targetUrl + "'", t);
                         }
                     });
 
         }
         catch (final IOException e) {
-            LOGGER.error("An error occurred while sending the error report via HTTP to '" + this.url + "'", e);
+            logger.error("An error occurred while sending the error report via HTTP to '" + this.url + "'", e);
         }
 
     }
 
-    private Integer convertStringToInt(final String value, final Integer defaultValue) {
+    Integer convertStringToInt(final String value, final Integer defaultValue) {
         try {
             if (value != null) {
                 return Integer.valueOf(value);
