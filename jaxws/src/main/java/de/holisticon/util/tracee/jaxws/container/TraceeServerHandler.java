@@ -63,18 +63,15 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
     }
 
     protected final void handleOutgoing(SOAPMessageContext context) {
-        try {
+		final TraceeBackend backend = getTraceeBackend();
+		try {
             final SOAPMessage msg = context.getMessage();
-			final TraceeBackend backend = getTraceeBackend();
             if (msg != null && backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
                 try {
                     final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
 
                     // get or create header
-                    SOAPHeader header = env.getHeader();
-                    if (header == null) {
-                        header = env.addHeader();
-                    }
+                    final SOAPHeader header = getOrCreateHeader(env);
 
 					final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
 					transportSerialization.renderTo(filteredContext, header);
@@ -89,9 +86,18 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
         } finally {
             // must reset tracee context
-            getTraceeBackend().clear();
+            backend.clear();
         }
     }
+
+	SOAPHeader getOrCreateHeader(SOAPEnvelope soapEnvelope) throws SOAPException {
+		final SOAPHeader header = soapEnvelope.getHeader();
+		if (header != null) {
+			return header;
+		} else {
+			return soapEnvelope.addHeader();
+		}
+	}
 
     @Override
     public final boolean handleFault(SOAPMessageContext context) {

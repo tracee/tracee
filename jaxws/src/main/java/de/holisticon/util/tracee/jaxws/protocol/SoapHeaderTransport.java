@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class SoapHeaderTransport  {
+public class SoapHeaderTransport {
 
 	/**
 	 * Parses a context map from a given soap header.
@@ -23,25 +23,20 @@ public class SoapHeaderTransport  {
 		final NodeList nodeList = header.getElementsByTagName(
 				TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_TAG_NAME);
 		final Map<String, String> context = new HashMap<String, String>();
-		if (nodeList.getLength() > 0) {
-			for (int i = 0; i < nodeList.getLength(); i++) {
 
-				final Node node = nodeList.item(i);
-				final NodeList childNodeList = node.getChildNodes();
-				if (childNodeList.getLength() > 0) {
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			final Node node = nodeList.item(i);
+			final NodeList childNodeList = node.getChildNodes();
 
-					for (int j = 0; j < childNodeList.getLength(); j++) {
-						final Node childNode = childNodeList.item(j);
-						final String attributeName = childNode.getNodeName();
-						final String value = childNode.getTextContent();
-						if (attributeName != null
-								&& !attributeName.isEmpty()
-								&& !"#text".equals(attributeName)) {
-							context.put(attributeName, value);
-						}
-					}
+			for (int j = 0; j < childNodeList.getLength(); j++) {
+				final Node childNode = childNodeList.item(j);
+				final String attributeName = childNode.getNodeName();
+				final String value = childNode.getTextContent();
+				if (attributeName != null
+						&& !attributeName.isEmpty()
+						&& !"#text".equals(attributeName)) {
+					context.put(attributeName, value);
 				}
-
 			}
 		}
 		return context;
