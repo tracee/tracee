@@ -23,10 +23,16 @@ public class MethodAnnotationPair {
         this.annotation = annotation;
     }
 
+    /**
+     * Determines if a method should be processed. This will either be if no {@link de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod} annotation
+     * is present or if an empty property name is defined in the annotation or if passed profileSettings are null
+     * or if the property name is disabled in the {@link de.holisticon.util.tracee.contextlogger.profile.ProfileSettings}.
+     * @param profileSettings The profile sttings object which should be used to check against.
+     * @return true if the result of the method should be processed, otherwise false.
+     */
     public boolean shouldBeProcessed (final ProfileSettings profileSettings) {
 
-        TraceeContextLogProviderMethod annotation = this.getAnnotation();
-        return annotation == null || annotation.propertyName().isEmpty() || profileSettings.getPropertyValue(annotation.propertyName());
+        return annotation == null || annotation.propertyName().isEmpty() || profileSettings == null || profileSettings.getPropertyValue(annotation.propertyName());
 
     }
 

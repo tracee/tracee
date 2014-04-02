@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.hamcrest.MatcherAssert;
 
 /**
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer}.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public class TraceeGenericGsonSerializerTest {

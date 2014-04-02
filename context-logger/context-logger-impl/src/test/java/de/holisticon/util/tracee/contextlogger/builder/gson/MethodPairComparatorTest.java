@@ -16,6 +16,7 @@ import java.util.List;
 import static java.util.Collections.sort;
 
 /**
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.builder.gson.MethodAnnotationPair}.
  * Created by Tobias Gindler, holistcon AG on 14.03.14.
  */
 public class MethodPairComparatorTest {

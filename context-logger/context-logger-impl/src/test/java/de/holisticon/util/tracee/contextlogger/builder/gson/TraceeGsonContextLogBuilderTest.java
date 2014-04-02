@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Test class for {@link de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder}.
  * Created by Tobias Gindler on 20.03.14.
  */
 public class TraceeGsonContextLogBuilderTest {

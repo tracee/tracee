@@ -49,7 +49,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_URL,
             order = 10)
     public String getUrl() {
-        return request.getRequestURL().toString();
+        if (this.request != null && request.getRequestURL() != null) {
+            return request.getRequestURL().toString();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -58,7 +61,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_METHOD,
             order = 20)
     public String getHttpMethod() {
-        return this.request.getMethod();
+        if (this.request != null) {
+            return this.request.getMethod();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -70,21 +76,23 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
 
         final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
 
-        final Enumeration<String> httpHeaderNamesEnum = this.request.getParameterNames();
-        while (httpHeaderNamesEnum.hasMoreElements()) {
+        if (this.request != null) {
+            final Enumeration<String> httpHeaderNamesEnum = this.request.getParameterNames();
+            while (httpHeaderNamesEnum.hasMoreElements()) {
 
-            final String httpHeaderName = httpHeaderNamesEnum.nextElement();
+                final String httpHeaderName = httpHeaderNamesEnum.nextElement();
 
-            final String[] values = this.request.getParameterValues(httpHeaderName);
-            if (values != null) {
-                for (final String value : values) {
-                    list.add(new NameStringValuePair(httpHeaderName, value));
+                final String[] values = this.request.getParameterValues(httpHeaderName);
+                if (values != null) {
+                    for (final String value : values) {
+                        list.add(new NameStringValuePair(httpHeaderName, value));
+                    }
                 }
-            }
 
+            }
         }
 
-        return list;
+        return list.size() > 0 ? list : null;
 
     }
 
@@ -97,16 +105,18 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
 
         final List<NameStringValuePair> list = new ArrayList<NameStringValuePair>();
 
-        final Enumeration<String> httpHeaderNamesEnum = this.request.getHeaderNames();
-        while (httpHeaderNamesEnum.hasMoreElements()) {
+        if (this.request != null) {
+            final Enumeration<String> httpHeaderNamesEnum = this.request.getHeaderNames();
+            while (httpHeaderNamesEnum.hasMoreElements()) {
 
-            final String httpHeaderName = httpHeaderNamesEnum.nextElement();
-            final String value = this.request.getHeader(httpHeaderName);
-            list.add(new NameStringValuePair(httpHeaderName, value));
+                final String httpHeaderName = httpHeaderNamesEnum.nextElement();
+                final String value = this.request.getHeader(httpHeaderName);
+                list.add(new NameStringValuePair(httpHeaderName, value));
 
+            }
         }
 
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
     @SuppressWarnings("unused")
@@ -118,16 +128,18 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
 
         final List<NameObjectValuePair> list = new ArrayList<NameObjectValuePair>();
 
-        final Enumeration<String> attributeNames = this.request.getAttributeNames();
-        while (attributeNames.hasMoreElements()) {
+        if (this.request != null) {
+            final Enumeration<String> attributeNames = this.request.getAttributeNames();
+            while (attributeNames.hasMoreElements()) {
 
-            final String attributeName = attributeNames.nextElement();
-            final Object value = this.request.getAttribute(attributeName);
-            list.add(new NameObjectValuePair(attributeName, value));
+                final String attributeName = attributeNames.nextElement();
+                final Object value = this.request.getAttribute(attributeName);
+                list.add(new NameObjectValuePair(attributeName, value));
 
+            }
         }
 
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
 
@@ -140,11 +152,13 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
 
         List<ServletCookieContextProvider> wrappedCookies = new ArrayList<ServletCookieContextProvider>();
 
-        for (Cookie cookie : request.getCookies()) {
-            wrappedCookies.add(new ServletCookieContextProvider(cookie));
+        if (this.request != null) {
+            for (Cookie cookie : request.getCookies()) {
+                wrappedCookies.add(new ServletCookieContextProvider(cookie));
+            }
         }
 
-        return wrappedCookies;
+        return wrappedCookies.size() > 0 ? wrappedCookies : null;
     }
 
 
@@ -154,7 +168,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_ADDRESS,
             order = 150)
     public String getHttpRemoteAddress() {
-        return request.getRemoteAddr();
+        if (this.request != null) {
+            return request.getRemoteAddr();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -163,7 +180,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_HOST,
             order = 160)
     public String getHttpRemoteHost() {
-        return this.request.getRemoteHost();
+        if (this.request != null) {
+            return this.request.getRemoteHost();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -172,7 +192,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_PORT,
             order = 170)
     public Integer getHttpRemotePort() {
-        return this.request.getRemotePort();
+        if (this.request != null) {
+            return this.request.getRemotePort();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -181,7 +204,11 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_SCHEME,
             order = 200)
     public String getScheme() {
-        return this.request.getScheme();
+        if (this.request != null) {
+            return this.request.getScheme();
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -190,7 +217,11 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_IS_SECURE,
             order = 210)
     public Boolean getSecure() {
-        return this.request.isSecure();
+        if (this.request != null) {
+            return this.request.isSecure();
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -199,7 +230,11 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_TYPE,
             order = 220)
     public String getContentType() {
-        return this.request.getContentType();
+        if (this.request != null) {
+            return this.request.getContentType();
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -208,7 +243,10 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_LENGTH,
             order = 230)
     public Integer getContentLength() {
-        return this.request.getContentLength();
+        if (this.request != null) {
+            return this.request.getContentLength();
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -217,6 +255,9 @@ public class ServletRequestContextProvider implements WrappedContextData<HttpSer
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_LOCALE,
             order = 240)
     public String getLocale() {
-        return this.request.getLocale().toString();
+        if (this.request != null && this.request.getLocale() != null) {
+            return this.request.getLocale().toString();
+        }
+        return null;
     }
 }

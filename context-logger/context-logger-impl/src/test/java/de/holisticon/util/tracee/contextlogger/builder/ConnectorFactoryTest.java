@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Test for ConnectorFactory.
+ * Test for {@link de.holisticon.util.tracee.contextlogger.builder.ConnectorFactory}.
  * Created by Tobias Gindler, holisticon AG on 14.02.14.
  */
 public class ConnectorFactoryTest {
