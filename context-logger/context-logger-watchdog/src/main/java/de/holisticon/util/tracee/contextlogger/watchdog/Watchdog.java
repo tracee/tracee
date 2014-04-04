@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.contextlogger;
+package de.holisticon.util.tracee.contextlogger.watchdog;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

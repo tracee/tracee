@@ -1,6 +1,6 @@
 package de.holisticon.util.tracee.examples.ejb;
 
-import de.holisticon.util.tracee.contextlogger.Watchdog;
+import de.holisticon.util.tracee.contextlogger.watchdog.Watchdog;
 import de.holisticon.util.tracee.contextlogger.jms.TraceeEjbErrorContextLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

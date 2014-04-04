@@ -4,7 +4,7 @@
 
     <aspects>
 
-        <aspect name="de.holisticon.util.tracee.contextlogger.WatchdogAspect" />
+        <aspect name="de.holisticon.util.tracee.contextlogger.watchdog.WatchdogAspect" />
 
     </aspects>
 

@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.contextlogger;
+package de.holisticon.util.tracee.contextlogger.watchdog;
 
 /**
  * Created by TGI on 17.02.14.

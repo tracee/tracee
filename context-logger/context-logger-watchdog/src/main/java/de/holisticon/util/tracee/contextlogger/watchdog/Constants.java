@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.contextlogger;
+package de.holisticon.util.tracee.contextlogger.watchdog;
 
 /**
  * Constants class for watchdog.
@@ -11,7 +11,7 @@ public final class Constants {
 
     }
 
-    public static final String SYSTEM_PROPERTY_IS_ACTIVE = "de.holisticon.util.tracee.contextlogger.Watchdog.isActive";
+    public static final String SYSTEM_PROPERTY_IS_ACTIVE = "de.holisticon.util.tracee.contextlogger.watchdog.Watchdog.isActive";
     public static final String TRACEE_ATTRIBUTE_NAME = "context-info-stack";
     public static final String SEPARATOR = "|||---|||";
 
