@@ -14,29 +14,29 @@ import java.util.Map;
  */
 public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 
-    private final Gson gson = new Gson();
+	private final Gson gson = new Gson();
 	private final TraceeLogger logger;
 
 	public HttpJsonHeaderTransport(TraceeLoggerFactory traceeLoggerFactory) {
 		logger = traceeLoggerFactory.getLogger(HttpJsonHeaderTransport.class);
 	}
 
-    @Override
-    public Map<String, String> parse(String serialized) {
-        try {
-            return gson.fromJson(serialized, new TypeToken<Map<String, String>>() { } .getType());
-        } catch (JsonParseException e) {
+	@Override
+	public Map<String, String> parse(String serialized) {
+		try {
+			return gson.fromJson(serialized, new TypeToken<Map<String, String>>() {
+			}.getType());
+		} catch (JsonParseException e) {
 			logger.debug("Failed to parse header. Ignoring: \"" + serialized + "\"");
 			return Collections.emptyMap();
-        }
-    }
+		}
+	}
 
-    @Override
-    public String render(Map<String, String> backend) {
-		if (backend.isEmpty()) 
+	@Override
+	public String render(Map<String, String> backend) {
+		if (backend.isEmpty())
 			return null;
-        
-		return gson.toJson(backend);
-    }
 
+		return gson.toJson(backend);
+	}
 }
