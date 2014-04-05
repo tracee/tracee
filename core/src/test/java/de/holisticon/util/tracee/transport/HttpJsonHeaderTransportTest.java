@@ -1,30 +1,48 @@
 package de.holisticon.util.tracee.transport;
 
-import de.holisticon.util.tracee.NoopTraceeLoggerFactory;
+import de.holisticon.util.tracee.TraceeLoggerFactory;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
 
 /**
- * @author Daniel Wegener (Holisticon AG)
+ * @author Sven Bunge (Holisticon AG)
  */
 public class HttpJsonHeaderTransportTest {
 
-	private final HttpJsonHeaderTransport unit = new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory());
-
+	private HttpJsonHeaderTransport transport = new HttpJsonHeaderTransport(mock(TraceeLoggerFactory.class));
 
 	@Test
-	public void testParse() throws Exception {
-		assertThat(unit.parse("{ \"foo\":\"bar\" }"), equalTo(Collections.singletonMap("foo", "bar")));
+	public void dontRenderEmptyMap() {
+		String renderedMap = transport.render(Collections.<String, String>emptyMap());
+		assertThat(renderedMap, is(nullValue()));
 	}
 
 	@Test
-	public void testRender() throws Exception {
+	public void renderMapToString() {
+		final Map<String, String> testMap = new HashMap<String, String>();
+		testMap.put("keyA", "valueA");
+		testMap.put("keyB", "valueB");
+		assertThat(transport.render(testMap), equalTo("{\"keyA\":\"valueA\",\"keyB\":\"valueB\"}"));
+	}
 
-		assertThat(unit.render(Collections.singletonMap("foo","bar")), equalTo("{\"foo\":\"bar\"}"));
+	@Test
+	public void parseEmptyJsonToNull() {
+		assertThat(transport.parse(""), is(nullValue()));
+	}
 
+	@Test
+	public void parseJsonToMap() {
+		final String testJson = "{\"keyA\":\"valueA\",\"keyB\":\"valueB\"}";
+		final Map<String, String> assertMap = new HashMap<String, String>();
+		assertMap.put("keyA", "valueA");
+		assertMap.put("keyB", "valueB");
+		assertThat(transport.parse(testJson), equalTo(assertMap));
 	}
 }
