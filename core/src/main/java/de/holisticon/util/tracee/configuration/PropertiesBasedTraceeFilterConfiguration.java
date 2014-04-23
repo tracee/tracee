@@ -11,7 +11,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	public static final String TRACEE_CONFIG_PREFIX = "tracee.";
 
-	private static final String DEFAULT_PROFILE_PREFIX = DEFAULT_PROFILE+".";
+	static final String DEFAULT_PROFILE_PREFIX = DEFAULT_PROFILE+".";
 	public static final String GENERATE_REQUEST_ID = "requestIdLength";
 	public static final String GENERATE_SESSION_ID = "sessionIdLength";
 
