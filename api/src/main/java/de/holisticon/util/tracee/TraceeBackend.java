@@ -14,6 +14,14 @@ import java.util.Set;
 public interface TraceeBackend extends Map<String,String> {
 
 
+	/**
+	 * Gets the TraceeFilterConfiguration for a given profile.
+	 */
+	TraceeFilterConfiguration getConfiguration(String profileName);
+
+	/**
+	 * Gets the default TraceeFilterConfiguration.
+	 */
 	TraceeFilterConfiguration getConfiguration();
 
     @Override

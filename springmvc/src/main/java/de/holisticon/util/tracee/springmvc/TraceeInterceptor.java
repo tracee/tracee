@@ -4,6 +4,7 @@ import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
 import de.holisticon.util.tracee.Utilities;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.Map;
+
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
 /**
  * @author Sven Bunge, Holisticon AG
@@ -23,8 +28,7 @@ public class TraceeInterceptor implements HandlerInterceptor {
 	private final TransportSerialization<String> httpJsonHeaderSerialization;
 	private String outgoingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
 	private String incomingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
-	private boolean acceptIncomingContext = false;
-	private boolean respondWithContext = false;
+	private String profileName;
 
 	public TraceeInterceptor() {
 		this(Tracee.getBackend());
@@ -38,19 +42,21 @@ public class TraceeInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 
-		if (acceptIncomingContext)
-			mergeIncomingContextToBackend(request);
+		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
+
+		if (configuration.shouldProcessContext(IncomingRequest))
+			mergeIncomingContextToBackend(request, configuration);
 		
 		// create random RequestId if not already set
-		if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && backend.getConfiguration().shouldGenerateRequestId()) {
-			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
+		if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && configuration.shouldGenerateRequestId()) {
+			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
 		}
 
 		// create another random id to identify the http session 
-		if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY) && backend.getConfiguration().shouldGenerateSessionId()) {
+		if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY) && configuration.shouldGenerateSessionId()) {
 			final HttpSession session = request.getSession(false);
 			if (session != null) {
-				backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(session.getId(), backend.getConfiguration().generatedSessionIdLength()));
+				backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(session.getId(), configuration.generatedSessionIdLength()));
 			}
 		}
 
@@ -59,8 +65,11 @@ public class TraceeInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
-		if (respondWithContext && !backend.isEmpty()) {
-			response.setHeader(outgoingHeaderName, httpJsonHeaderSerialization.render(backend));
+		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
+
+		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend, OutgoingResponse);
+			response.setHeader(outgoingHeaderName, httpJsonHeaderSerialization.render(filteredContext));
 		}
 		backend.clear();
 	}
@@ -70,7 +79,7 @@ public class TraceeInterceptor implements HandlerInterceptor {
 
 	}
 
-	private void mergeIncomingContextToBackend(HttpServletRequest request) {
+	private void mergeIncomingContextToBackend(HttpServletRequest request, TraceeFilterConfiguration configuration) {
 		final Enumeration headers = request.getHeaders(incomingHeaderName);
 		if (headers == null) {
 			throw new IllegalStateException("Could not read headers with name '"
@@ -78,6 +87,7 @@ public class TraceeInterceptor implements HandlerInterceptor {
 		}
 		while (headers.hasMoreElements()) {
 			backend.putAll(httpJsonHeaderSerialization.parse((String) headers.nextElement()));
+
 		}
 	}
 
@@ -85,15 +95,15 @@ public class TraceeInterceptor implements HandlerInterceptor {
 		this.outgoingHeaderName = outgoingHeaderName;
 	}
 
-	public void setAcceptIncomingContext(boolean acceptIncomingContext) {
-		this.acceptIncomingContext = acceptIncomingContext;
-	}
-
 	public void setIncomingHeaderName(String incomingHeaderName) {
 		this.incomingHeaderName = incomingHeaderName;
 	}
 
-	public void setRespondWithContext(boolean respondWithContext) {
-		this.respondWithContext = respondWithContext;
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
 	}
 }

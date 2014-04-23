@@ -18,6 +18,7 @@ import java.util.Map;
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 
 /**
+ * Manages the TracEE lifecycle
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeServletRequestListener implements ServletRequestListener {

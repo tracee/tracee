@@ -18,29 +18,37 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 	public static final String TRACEE_PROPERTIES_FILE = "META-INF/tracee.properties";
 	public static final String TRACEE_DEFAULT_PROPERTIES_FILE = "META-INF/tracee.default.properties";
 
+	private PropertyChain lazyPropertyChain = null;
 
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.
 	 */
 	@Override
 	public final TraceeFilterConfiguration getConfiguration() {
-		if (lazyTraceeFilterConfiguration == null) {
-			final Properties traceeDefaultFileProperties;
-			final Properties traceeFileProperties;
-			try {
-				traceeDefaultFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_DEFAULT_PROPERTIES_FILE);
-				traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_PROPERTIES_FILE);
-
-			} catch (IOException ioe) {
-				throw new IllegalStateException("Could not load TraceeProperties: " + ioe.getMessage(), ioe);
-			}
-			final PropertyChain chain = PropertyChain.build(System.getProperties(), traceeFileProperties, traceeDefaultFileProperties);
-			lazyTraceeFilterConfiguration = new PropertiesBasedTraceeFilterConfiguration(chain);
+		if (lazyPropertyChain == null) {
+			lazyPropertyChain = loadPropertyChain();
 		}
-		return lazyTraceeFilterConfiguration;
+		return new PropertiesBasedTraceeFilterConfiguration(lazyPropertyChain);
 	}
 
-	private TraceeFilterConfiguration lazyTraceeFilterConfiguration = null;
+	@Override
+	public TraceeFilterConfiguration getConfiguration(String profileName) {
+		if (lazyPropertyChain == null) {
+			lazyPropertyChain = loadPropertyChain();
+		}
+		return new PropertiesBasedTraceeFilterConfiguration(lazyPropertyChain, profileName);
+	}
+
+	private PropertyChain loadPropertyChain() {
+		try {
+			final Properties traceeDefaultFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_DEFAULT_PROPERTIES_FILE);
+			final Properties traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_PROPERTIES_FILE);
+			return PropertyChain.build(System.getProperties(), traceeFileProperties, traceeDefaultFileProperties);
+		} catch (IOException ioe) {
+			throw new IllegalStateException("Could not load TraceeProperties: " + ioe.getMessage(), ioe);
+		}
+
+	}
 
 	protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
         this.mdcAdapter = mdcAdapter;
@@ -49,8 +57,6 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
     private final MDCLike mdcAdapter;
 
     private final ThreadLocal<Set<String>> traceeKeys;
-
-
 
 
     @Override

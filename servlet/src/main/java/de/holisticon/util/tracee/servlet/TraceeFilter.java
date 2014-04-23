@@ -18,7 +18,11 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
  */
 public class TraceeFilter implements Filter {
 
+	public static final String PROFILE_INIT_PARAM = "profile";
+
     private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
+
+	private String profile = TraceeFilterConfiguration.DEFAULT_PROFILE;
 
 	public TraceeFilter() {
 		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
@@ -46,7 +50,7 @@ public class TraceeFilter implements Filter {
 
     void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-		final TraceeFilterConfiguration configuration = backend.getConfiguration();
+		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 
         try {
 			// we need to eagerly write ResponseHeaders since the inner servlets may flush the output stream
@@ -62,13 +66,19 @@ public class TraceeFilter implements Filter {
 
 	private void writeContextToResponse(HttpServletResponse response, TraceeFilterConfiguration configuration) {
 		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
-			final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+			final Map<String, String> filteredContext = backend.getConfiguration(profile).filterDeniedParams(backend, OutgoingResponse);
 			response.setHeader(HTTP_HEADER_NAME, transportSerialization.render(filteredContext));
 		}
 	}
 
     @Override
-    public final void init(FilterConfig filterConfig) throws ServletException { }
+    public final void init(FilterConfig filterConfig) throws ServletException {
+		final String profileInitParameter = filterConfig.getInitParameter(PROFILE_INIT_PARAM);
+		if (profileInitParameter != null) {
+			profile = profileInitParameter;
+		}
+
+	}
 
     @Override
     public final void destroy() { }

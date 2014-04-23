@@ -9,8 +9,9 @@
 
 	<mvc:interceptors>
 		<bean id="traceeInterceptor" class="de.holisticon.util.tracee.springmvc.TraceeInterceptor">
-			<property name="acceptIncomingContext" value="true"/>
-			<property name="respondWithContext" value="true"/>
+			<!-- Default profile allows propagation on all channels and all directions. It does not have to be configured
+			 explicitly. The property is accessed just to ensure the field did not got removed accidently. -->
+			<property name="profileName" value="default"/>
 		</bean>
 	</mvc:interceptors>
 

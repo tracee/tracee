@@ -28,6 +28,15 @@ public class SimpleTraceeBackend extends HashMap<String, String> implements Trac
 
 	private final TraceeLoggerFactory loggerFactory;
 
+	/**
+	 * {@inheritDoc}
+	 * <br /><strong>This implementation ignores profiles and always uses the default configuration.</strong>
+	 */
+	@Override
+	public TraceeFilterConfiguration getConfiguration(String profileName) {
+		return configuration;
+	}
+
 	@Override
 	public TraceeFilterConfiguration getConfiguration() {
 		return configuration;

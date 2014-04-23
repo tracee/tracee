@@ -9,26 +9,43 @@ import java.util.*;
  */
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
-	public static final String CONFIGURATION_KEY_PREFIX = "tracee.";
-	public static final String GENERATE_REQUEST_ID = CONFIGURATION_KEY_PREFIX + "requestIdLength";
-	public static final String GENERATE_SESSION_ID = CONFIGURATION_KEY_PREFIX + "sessionIdLength";
+	public static final String TRACEE_CONFIG_PREFIX = "tracee.";
 
-	private final PropertyChain properties;
+	private static final String DEFAULT_PROFILE_PREFIX = DEFAULT_PROFILE+".";
+	public static final String GENERATE_REQUEST_ID = "requestIdLength";
+	public static final String GENERATE_SESSION_ID = "sessionIdLength";
+
+	private final PropertyChain propertyChain;
+	private final String profileName;
 
 	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
-		this.properties = propertyChain;
+		this(propertyChain, null);
+	}
+
+	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain, String profileName) {
+		this.propertyChain = propertyChain;
+		this.profileName = profileName;
+	}
+
+	private String getProfiledOrDefaultProperty(String propertyName) {
+		if (profileName != null) {
+			final String profiledProperty = propertyChain.getProperty(TRACEE_CONFIG_PREFIX + profileName + "." + propertyName);
+			if (profiledProperty != null)
+				return profiledProperty;
+		}
+		return propertyChain.getProperty(TRACEE_CONFIG_PREFIX + DEFAULT_PROFILE_PREFIX + propertyName);
 	}
 
 	@Override
 	public boolean shouldProcessParam(String paramName, Channel channel) {
-		final String messageTypePropertyValue = properties.getProperty(CONFIGURATION_KEY_PREFIX + channel.name());
+		final String messageTypePropertyValue = getProfiledOrDefaultProperty(channel.name());
 		final List<String> patterns = extractPatterns(messageTypePropertyValue);
 		return anyPatternMatchesParamName(patterns, paramName);
 	}
 
 	@Override
 	public boolean shouldProcessContext(Channel channel) {
-		final String messageTypePropertyValue = properties.getProperty(CONFIGURATION_KEY_PREFIX + channel.name());
+		final String messageTypePropertyValue = getProfiledOrDefaultProperty(channel.name());
 		return !Utilities.isNullOrEmptyString(messageTypePropertyValue);
 	}
 
@@ -39,7 +56,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public int generatedRequestIdLength() {
-		return parseIntOrZero(properties.getProperty(GENERATE_REQUEST_ID));
+		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_REQUEST_ID));
 	}
 
 	@Override
@@ -49,7 +66,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public int generatedSessionIdLength() {
-		return parseIntOrZero(properties.getProperty(GENERATE_SESSION_ID));
+		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_SESSION_ID));
 	}
 
 	@Override

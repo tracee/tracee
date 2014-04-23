@@ -1,10 +1,8 @@
 package de.holisticon.util.tracee.springmvc;
 
 import com.google.gson.Gson;
-import de.holisticon.util.tracee.NoopTraceeLoggerFactory;
-import de.holisticon.util.tracee.PermitAllTraceeFilterConfiguration;
-import de.holisticon.util.tracee.TraceeBackend;
-import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.*;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,8 +38,9 @@ public class TraceeInterceptorTest {
 
 	@Before
 	public void beforeTest() {
-		mockedBackend = mockedBackend();
+		mockedBackend = mockedBackend(new PermitAllTraceeFilterConfiguration());
 		unit = new TraceeInterceptor(mockedBackend);
+		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(EmptyEnumeration.emptyEnumeration());
 	}
 
 	@Test
@@ -60,6 +59,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldNotOverrideExistingRequestId() throws Exception {
+
 		when(mockedBackend.containsKey(eq(TraceeConstants.REQUEST_ID_KEY))).thenReturn(true);
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
@@ -73,15 +73,18 @@ public class TraceeInterceptorTest {
 	}
 
 	@Test
-	public void shouldNotRenderContextInResponseIfNotConigured() throws Exception {
+	public void shouldNotRenderContextInResponseIfConfigurationDeniesIt() throws Exception {
+		final TraceeFilterConfiguration customFilterConfiguration = mock(TraceeFilterConfiguration.class);
+		when(customFilterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.OutgoingResponse)).thenReturn(false);
+		final TraceeBackend customBackend = mockedBackend(customFilterConfiguration);
+		final TraceeInterceptor customUnit = new TraceeInterceptor(customBackend);
 		mockedBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
-		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
+		customUnit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
 		verify(httpServletResponse, never()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME), anyString());
 	}
 
 	@Test
 	public void shouldRenderContextInResponseIfConfigured() throws Exception {
-		unit.setRespondWithContext(true);
 		mockedBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
 		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME), anyString());
@@ -89,7 +92,6 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldUseCustomHeaderInResponse() throws Exception {
-		unit.setRespondWithContext(true);
 		final String testHeader = "testHeader";
 		unit.setOutgoingHeaderName(testHeader);
 		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
@@ -97,8 +99,14 @@ public class TraceeInterceptorTest {
 	}
 
 	@Test
+	public void shouldUseConfiguredProfile() throws Exception {
+		unit.setProfileName("FOO");
+		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
+		verify(mockedBackend).getConfiguration("FOO");
+	}
+
+	@Test
 	public void shouldMergeIncomingContextIfConfigured() throws Exception {
-		unit.setAcceptIncomingContext(true);
 		final Map<String, String> expected = new HashMap<String, String>();
 		expected.put("testkey", "testValue123");
 		final Vector<String> headers = new Vector<String>();
@@ -110,7 +118,6 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldMergeIncomingContextFromCustomHeader() throws Exception {
-		unit.setAcceptIncomingContext(true);
 		final String incomingHeader = "myHeader";
 		unit.setIncomingHeaderName(incomingHeader);
 
@@ -129,12 +136,12 @@ public class TraceeInterceptorTest {
 		verify(mockedBackend).clear();
 	}
 
-	private TraceeBackend mockedBackend() {
+	private TraceeBackend mockedBackend(TraceeFilterConfiguration filterConfiguration) {
 		final TraceeBackend backend = mock(TraceeBackend.class);
 		final NoopTraceeLoggerFactory noopTraceeLoggerFactory = new NoopTraceeLoggerFactory();
-		final PermitAllTraceeFilterConfiguration permitAllTraceeFilterConfiguration = new PermitAllTraceeFilterConfiguration();
 		when(backend.getLoggerFactory()).thenReturn(noopTraceeLoggerFactory);
-		when(backend.getConfiguration()).thenReturn(permitAllTraceeFilterConfiguration);
+		when(backend.getConfiguration()).thenReturn(filterConfiguration);
+		when(backend.getConfiguration(anyString())).thenReturn(filterConfiguration);
 		return backend;
 	}
 }
