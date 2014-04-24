@@ -22,14 +22,14 @@ Just create a file with the name `META-INF/tracee.properties` in your applicatio
 ## Configurable Values
 
 | Configuration key          | Description |
-|---------------------------:|:-----------:|
+|:---------------------------|:------------|
 | .IncomingRequest           | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be parsed from incoming requests to the context. |
 | .OutgoingResponse          | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be written back from the context to the outgoing response. |
 | .OutgoingRequests          | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be written from the current context to each outgoing request. |
 | .OutgoingResponse          | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be parsed from each incoming response to the current context. |
 | .AsyncDispatch             | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be passed along with asynchronous dispatched messages. |
 | .AsyncProcess              | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be taken up while processing asynchronous messages. |
-| .requestIdLength           | The length of the generated request ids. To disable id generation, set this value to `0`. |
+| .requestIdLength           | The length of the generated request ids. To disable id request generation, set this value to `0`. |
 | .sessionIdLength           | The length of the generated session ids. To disable id generation, set this value to `0`. |
 
 
