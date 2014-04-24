@@ -8,23 +8,24 @@ MAINTAINER Daniel Wegener "daniel.wegener@holisticon.de"
 ENV DEBIAN_FRONTEND noninteractive
 
 # Download & install Tomcat 7
-RUN cd / && wget -q http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz \
-&& tar -xf apache-tomcat-7.0.52.tar.gz && rm apache-tomcat-7.0.52.tar.gz \
-&& ln -s apache-tomcat-7.0.52 apache-tomcat \
-&& rm -rf /apache-tomcat/webapps/examples
+RUN cd / && wget -q http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.tar.gz \
+ && tar -xf apache-tomcat-7.0.52.tar.gz && rm apache-tomcat-7.0.52.tar.gz \
+ && ln -s apache-tomcat-7.0.52 apache-tomcat \
+ && rm -rf /apache-tomcat/webapps/examples
 
 # Enable Tomcat remote debugging
 ENV JPDA_ADDRESS 8000
 ENV JPDA_TRANSPORT dt_socket
-ENV CATALINA_HOME /apache-tomcat
+ENV CATALINA_HOME /apache-tomcat-7.0.52
 
 # Adding additional logging support
-ADD http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli.jar $CATALINA_HOME/bin/
-ADD http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli-adapters.jar $CATALINA_HOME/lib/
+# disabled ADDS due to docker 0.10 bug #5370
 
+ADD http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli.jar $CATALINA_HOME/bin/
+ADD http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.52/bin/extras/tomcat-juli-adapters.jar $CATALINA_HOME/lib/
 
 # Download slf4j and logback
-ADD http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.6.6/slf4j-api-1.6.6.jar $CATALINA_HOME/lib/
+ADD http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.6.6/slf4j-api-1.6.6.jar $CATALINA_HOME/lib/slf4j-api-1.6.6.jar
 ADD http://repo1.maven.org/maven2/org/slf4j/jul-to-slf4j/1.6.6/jul-to-slf4j-1.6.6.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/org/slf4j/log4j-over-slf4j/1.6.6/log4j-over-slf4j-1.6.6.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.6.6/jcl-over-slf4j-1.6.6.jar $CATALINA_HOME/lib/

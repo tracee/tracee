@@ -25,4 +25,3 @@ ENTRYPOINT export HOST_ADDR=`hostname --ip-address` \
   && sed -i "s/ELASTICSEARCH_PORT/$ELASTICSEARCH_PORT_9300_TCP_PORT/g" "/etc/graylog2.conf" \
   && env && ifconfig && cd /graylog2-server/ \
   && java -jar graylog2-server.jar --debug
-  #//&& /bin/bash

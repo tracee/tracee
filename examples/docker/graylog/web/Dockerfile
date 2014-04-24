@@ -8,11 +8,12 @@ MAINTAINER Daniel Wegener "daniel.wegener@holisticon.de"
 ENV DEBIAN_FRONTEND noninteractive
 
 # Download and install Greylog
-RUN cd / && wget -q https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.1/graylog2-web-interface-0.20.1.tgz
-RUN cd / && tar xvfz graylog2-web-interface-0.20.1.tgz && rm graylog2-web-interface-0.20.1.tgz
-RUN cd / && ln -s graylog2-web-interface-0.20.1 graylog2-web-interface
+RUN cd / && wget -q https://github.com/Graylog2/graylog2-web-interface/releases/download/0.20.1/graylog2-web-interface-0.20.1.tgz \
+ && tar xvfz graylog2-web-interface-0.20.1.tgz && rm graylog2-web-interface-0.20.1.tgz \
+ && ln -s graylog2-web-interface-0.20.1 graylog2-web-interface
 
-ADD graylog2-web-interface.conf /graylog2-web-interface/conf/
+ENV GRAYLOG2_WEB_HOME /graylog2-web-interface-0.20.1
+ADD graylog2-web-interface.conf $GRAYLOG2_WEB_HOME/conf/
 
 EXPOSE 9000
 
