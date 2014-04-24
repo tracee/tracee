@@ -1,5 +1,6 @@
 package de.holisticon.util.tracee;
 
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -24,12 +25,7 @@ public class MDCLikeTraceeBackendTest {
 	@SuppressWarnings("unchecked")
 	private final Set<String> traceeKeysSet = (Set<String>) Mockito.mock(Set.class);
 
-	private final MDCLikeTraceeBackend unit = new MDCLikeTraceeBackend(mdcLikeMock, traceeKeysMock) {
-		@Override
-		public TraceeLoggerFactory getLoggerFactory() {
-			return null;
-		}
-	};
+	private final MDCLikeTraceeBackend unit = new MDCLikeTraceeBackend(mdcLikeMock, traceeKeysMock, null);
 
 	@Before
 	public void setUpMocks() {
@@ -97,6 +93,16 @@ public class MDCLikeTraceeBackendTest {
 		when(traceeKeysSet.contains("A")).thenReturn(false);
 		when(mdcLikeMock.get("A")).thenReturn("hurray");
 		assertThat(unit.get("A"), nullValue());
+	}
+
+	@Test
+	public void testLoadOverwrittenConfigurationValues() {
+		assertThat(unit.getConfiguration().generatedRequestIdLength(), equalTo(42));
+	}
+
+	@Test
+	public void testLoadUserDefinedProfileFromProperties() {
+		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
 	}
 
 }

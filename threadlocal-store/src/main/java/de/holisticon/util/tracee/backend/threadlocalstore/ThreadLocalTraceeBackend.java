@@ -7,22 +7,13 @@ import de.holisticon.util.tracee.*;
  */
 class ThreadLocalTraceeBackend extends MDCLikeTraceeBackend {
 
-
     public ThreadLocalTraceeBackend(final MDCLike mdcLike, ThreadLocalHashSet<String> traceeKeys) {
-        super(mdcLike, traceeKeys);
-    }
-
-
-    @Override
-    public final TraceeLoggerFactory getLoggerFactory() {
-		return new TraceeLoggerFactory() {
+        super(mdcLike, traceeKeys, new TraceeLoggerFactory() {
 			@Override
 			public TraceeLogger getLogger(Class<?> clazz) {
 				return new ThreadLocalTraceeLogger(clazz);
 			}
-		};
+		});
     }
-
-
 
 }

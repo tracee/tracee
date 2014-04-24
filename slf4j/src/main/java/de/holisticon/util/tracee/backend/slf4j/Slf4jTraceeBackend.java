@@ -13,17 +13,12 @@ import java.util.Set;
 class Slf4jTraceeBackend extends MDCLikeTraceeBackend {
 
     Slf4jTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
-        super(mdcAdapter, traceeKeys);
-    }
-
-    @Override
-    public final TraceeLoggerFactory getLoggerFactory() {
-		return new TraceeLoggerFactory() {
+        super(mdcAdapter, traceeKeys, new TraceeLoggerFactory() {
 			@Override
 			public TraceeLogger getLogger(Class<?> clazz) {
 				return new Slf4jTraceeLogger(clazz);
 			}
-		};
+		});
     }
 
 }

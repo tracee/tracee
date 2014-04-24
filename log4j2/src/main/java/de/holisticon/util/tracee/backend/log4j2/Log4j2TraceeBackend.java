@@ -15,17 +15,12 @@ import java.util.Set;
 final class Log4j2TraceeBackend extends MDCLikeTraceeBackend {
 
 	Log4j2TraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
-		super(mdcAdapter, traceeKeys);
-	}
-
-	@Override
-	public TraceeLoggerFactory getLoggerFactory() {
-		return new TraceeLoggerFactory() {
+		super(mdcAdapter, traceeKeys, new TraceeLoggerFactory() {
 			@Override
 			public TraceeLogger getLogger(Class<?> clazz) {
 				return new Log4J2TraceeLogger(LogManager.getLogger(clazz));
 			}
-		};
+		});
 	}
 
 }

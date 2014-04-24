@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public abstract class MDCLikeTraceeBackend implements TraceeBackend {
+public class MDCLikeTraceeBackend implements TraceeBackend {
 
 
 	public static final String TRACEE_PROPERTIES_FILE = "META-INF/tracee.properties";
@@ -50,10 +50,14 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
 	}
 
-	protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys) {
+	protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {
         this.mdcAdapter = mdcAdapter;
         this.traceeKeys = traceeKeys;
+		this.loggerFactory = loggerFactory;
     }
+
+	private final TraceeLoggerFactory loggerFactory;
+
     private final MDCLike mdcAdapter;
 
     private final ThreadLocal<Set<String>> traceeKeys;
@@ -159,11 +163,15 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
             entries.add(new Entry(traceeKey));
         }
         return Collections.unmodifiableSet(entries);
-    } 
+    }
+
+	@Override
+	public final TraceeLoggerFactory getLoggerFactory() {
+		return loggerFactory;
+	}
 
 
-
-    private final class Entry implements Map.Entry<String, String> {
+	private final class Entry implements Map.Entry<String, String> {
 
         public final String key;
 
