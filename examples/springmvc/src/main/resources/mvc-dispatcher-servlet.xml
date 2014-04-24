@@ -38,8 +38,7 @@
 
 	<mvc:interceptors>
 		<bean class="de.holisticon.util.tracee.springmvc.TraceeInterceptor">
-			<property name="acceptIncomingContext" value="true" />
-			<property name="respondWithContext" value="true" />
+			<property name="profileName" value="default" />
 		</bean>
 	</mvc:interceptors>
 
