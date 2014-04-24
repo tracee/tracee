@@ -2,7 +2,6 @@ package de.holisticon.util.tracee.contextlogger.connector;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeLogger;
-import de.holisticon.util.tracee.TraceeLoggerFactory;
 import de.holisticon.util.tracee.contextlogger.Connector;
 
 import java.util.Map;
@@ -30,7 +29,7 @@ public class LogConnector implements Connector {
     }
 
     @Override
-    public void sendErrorReport(String json) {
+    public final void sendErrorReport(String json) {
         logger.error(json);
     }
 }

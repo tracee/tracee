@@ -32,7 +32,7 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
 	}
 
     @Override
-    public void filter(ClientRequestContext requestContext) throws IOException {
+    public final void filter(ClientRequestContext requestContext) throws IOException {
 
         // generate request id if it doesn't exist
         if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().shouldGenerateRequestId()) {

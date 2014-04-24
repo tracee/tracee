@@ -17,7 +17,7 @@ public final class Slf4jTraceeLogger implements TraceeLogger {
     public Slf4jTraceeLogger(final Class<?> clazz) {
         this(LoggerFactory.getLogger(clazz));
     }
-	
+
 	Slf4jTraceeLogger(final Logger logger) {
 		this.logger = logger;
 	}

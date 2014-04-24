@@ -8,7 +8,7 @@ import org.aspectj.lang.reflect.MethodSignature;
  * Utility class for watchdog aspect
  * Created by Tobias Gindler, holisticon AG on 03.04.14.
  */
-public class WatchdogUtils {
+public final class WatchdogUtils {
 
     private WatchdogUtils() {
 
@@ -101,14 +101,14 @@ public class WatchdogUtils {
      * @param watchdogAnnotation the watchdog annotation to check.
      * @return true, if passed watchdogAnnotation is not null and not disabled vie system properties, otherwise false.
      */
-    public static boolean checkProcessWatchdog (final Watchdog watchdogAnnotation, final ProceedingJoinPoint proceedingJoinPoint, final Throwable throwable) {
+    public static boolean checkProcessWatchdog(final Watchdog watchdogAnnotation, final ProceedingJoinPoint proceedingJoinPoint, final Throwable throwable) {
         // check if watchdog aspect processing is deactivated by annotation
         if (watchdogAnnotation != null && watchdogAnnotation.isActive()) {
 
             // checks if throws annotations must be suppressed
             boolean throwableIsPartOfThrowsDeclaration = WatchdogUtils.checkIfMethodThrowsContainsPassedException(proceedingJoinPoint, throwable);
 
-            if (!watchdogAnnotation.suppressThrowsExceptions() || ( watchdogAnnotation.suppressThrowsExceptions() && !throwableIsPartOfThrowsDeclaration)) {
+            if (!watchdogAnnotation.suppressThrowsExceptions() || (watchdogAnnotation.suppressThrowsExceptions() && !throwableIsPartOfThrowsDeclaration)) {
 
                 return true;
 

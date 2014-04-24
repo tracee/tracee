@@ -13,43 +13,41 @@ import de.holisticon.util.tracee.contextlogger.profile.ProfileSettings;
 public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 
 
-    /**
-     * Never use this directly
-     */
-    private Gson gson = null;
+	private Gson gson = null;
 
-    /**
-     * Gets or creates the gson instance generation of output.
-     */
-    private Gson getOrCreateGson() {
+	/**
+	 * Gets or creates the gson instance generation of output.
+	 */
+	private Gson getOrCreateGson() {
 
-        if (gson == null) {
+		if (gson == null) {
 
-            final GsonBuilder gsonBuilder = new GsonBuilder();
+			final GsonBuilder gsonBuilder = new GsonBuilder();
 
-            final TraceeGenericGsonSerializer gsonSerializer = new TraceeGenericGsonSerializer(new ProfileSettings(this.getProfile(),this.getManualContextOverrides()));
+			final TraceeGenericGsonSerializer gsonSerializer = new TraceeGenericGsonSerializer(new ProfileSettings(this.getProfile(),
+					this.getManualContextOverrides()));
 
-            for (Class clazz : this.getWrapperClasses()) {
-                gsonBuilder.registerTypeAdapter(clazz, gsonSerializer);
-            }
+			for (Class clazz : this.getWrapperClasses()) {
+				gsonBuilder.registerTypeAdapter(clazz, gsonSerializer);
+			}
 
-            gson = gsonBuilder.create();
-        }
+			gson = gsonBuilder.create();
+		}
 
-        return gson;
+		return gson;
 
-    }
+	}
 
 
-    @Override
-    public String log(Object... instancesToLog) {
-        return getOrCreateGson().toJson(instancesToLog);
-    }
+	@Override
+	public final String log(Object... instancesToLog) {
+		return getOrCreateGson().toJson(instancesToLog);
+	}
 
-    @Override
-    public String logPassedContext(PassedDataContextProvider passedContextData) {
-        return getOrCreateGson().toJson(passedContextData);
-    }
+	@Override
+	public final String logPassedContext(PassedDataContextProvider passedContextData) {
+		return getOrCreateGson().toJson(passedContextData);
+	}
 
 
 }

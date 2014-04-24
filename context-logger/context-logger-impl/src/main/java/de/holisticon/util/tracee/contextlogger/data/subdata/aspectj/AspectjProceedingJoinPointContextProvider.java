@@ -30,11 +30,11 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
         this.proceedingJoinPoint = proceedingJoinPoint;
     }
 
-    public void setContextData(Object instance) throws ClassCastException {
+    public final void setContextData(Object instance) throws ClassCastException {
         this.proceedingJoinPoint = (ProceedingJoinPoint) instance;
     }
 
-    public Class<ProceedingJoinPoint> getWrappedType() {
+    public final Class<ProceedingJoinPoint> getWrappedType() {
         return ProceedingJoinPoint.class;
     }
 
@@ -47,7 +47,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
             displayName = "class",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_CLASS,
             order = 20)
-    public String getClazz() {
+    public final String getClazz() {
         if (proceedingJoinPoint != null && proceedingJoinPoint.getSignature() != null) {
             return proceedingJoinPoint.getSignature().getDeclaringTypeName();
         }
@@ -59,7 +59,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
             displayName = "method",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_METHOD,
             order = 30)
-    public String getMethod() {
+    public final String getMethod() {
         if (proceedingJoinPoint != null && proceedingJoinPoint.getSignature() != null) {
             return proceedingJoinPoint.getSignature().getName();
         }
@@ -71,7 +71,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
             displayName = "parameters",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_PARAMETERS,
             order = 40)
-    public List<String> getParameters() {
+    public final List<String> getParameters() {
 
         if (proceedingJoinPoint != null && proceedingJoinPoint.getArgs() != null) {
             // output parameters
@@ -95,7 +95,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
             displayName = "deserialized-instance",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_DESERIALIZED_INSTANCE,
             order = 50)
-    public String getDeserializedInstance() {
+    public final String getDeserializedInstance() {
         if (proceedingJoinPoint != null) {
             // output invoked instance
             String deSerializedInstance;

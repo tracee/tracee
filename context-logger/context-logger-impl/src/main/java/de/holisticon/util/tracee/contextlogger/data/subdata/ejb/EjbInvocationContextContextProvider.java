@@ -30,21 +30,21 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
         this.invocationContext = invocationContext;
     }
 
-    public void setContextData(Object instance) throws ClassCastException {
+    public final void setContextData(Object instance) throws ClassCastException {
         this.invocationContext = (InvocationContext) instance;
     }
 
-    public Class<InvocationContext> getWrappedType() {
+    public final Class<InvocationContext> getWrappedType() {
         return InvocationContext.class;
     }
 
     @TraceeContextLogProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
-    public String getMethodName() {
+    public final String getMethodName() {
         return this.invocationContext != null && this.invocationContext.getMethod() != null ? this.invocationContext.getMethod().getName() : null;
     }
 
     @TraceeContextLogProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_PARAMETERS, order = 20)
-    public List<String> getParameters() {
+    public final List<String> getParameters() {
 
         List<String> result = new ArrayList<String>();
 
@@ -59,8 +59,9 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
         return result.size() > 0 ? result : null;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE, order = 30)
-    public String getTargetInstance() {
+    @TraceeContextLogProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE,
+			order = 30)
+    public final String getTargetInstance() {
         String result = null;
         if (this.invocationContext != null) {
             Object targetInstance = this.invocationContext.getTarget();
@@ -75,7 +76,7 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
     }
 
     @TraceeContextLogProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_DATA, order = 40)
-    public List<NameStringValuePair> getContextData() {
+    public final List<NameStringValuePair> getContextData() {
 
         List<NameStringValuePair> result = new ArrayList<NameStringValuePair>();
 

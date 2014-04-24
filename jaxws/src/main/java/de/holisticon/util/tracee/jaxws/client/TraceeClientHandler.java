@@ -4,18 +4,14 @@ import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.jaxws.AbstractTraceeHandler;
-import de.holisticon.util.tracee.jaxws.TraceeWsHandlerConstants;
 import de.holisticon.util.tracee.jaxws.protocol.SoapHeaderTransport;
 
-import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;

@@ -6,14 +6,15 @@ import java.util.Comparator;
  * Comparator to sort {@link de.holisticon.util.tracee.contextlogger.builder.gson.MethodAnnotationPair} instances.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
-public class MethodAnnotationPairComparator implements Comparator<MethodAnnotationPair> {
-    @Override
+public final class MethodAnnotationPairComparator implements Comparator<MethodAnnotationPair> {
+
+	@Override
     public int compare(MethodAnnotationPair instance1, MethodAnnotationPair instance2) {
 
         // primary sort criteria is the order value of the annotation
         if (instance1 == null && instance2 == null) {
             return 0;
-        } else if (instance1 != null && instance2 == null){
+        } else if (instance1 != null && instance2 == null) {
             return 1;
         } else if (instance1 == null) {
             return -1;

@@ -12,7 +12,7 @@ import java.util.*;
 class BackendProviderResolver {
 
 	// We should use weak references for our cache. otherwise we block class unloading.
-	private volatile static Map<ClassLoader, Set<TraceeBackendProvider>> PROVIDERS_PER_CLASSLOADER =
+	private static volatile Map<ClassLoader, Set<TraceeBackendProvider>> providersPerClassloader =
 			new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
 
 	/**
@@ -23,10 +23,11 @@ class BackendProviderResolver {
 	 */
 	public Set<TraceeBackendProvider> getBackendProviders() {
 		// Create a working copy of Cache. Reference is updated upon cache update.
-		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy = PROVIDERS_PER_CLASSLOADER;
+		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy = providersPerClassloader;
 
 		// Try to determine TraceeBackendProvider by context classloader. Fallback: use classloader of class.
-		Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy, GetClassLoader.fromContext());
+		Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy,
+				GetClassLoader.fromContext());
 		if (!providerFromContextClassLoader.isEmpty()) {
 			return providerFromContextClassLoader;
 		} else {
@@ -35,15 +36,17 @@ class BackendProviderResolver {
 	}
 
 	/**
-	 * Search for TraceeBackendProvider in the given classloader. The result is stored in a cache with the classloader 
+	 * Search for TraceeBackendProvider in the given classloader. The result is stored in a cache with the classloader
 	 * as (weak) key. If no backendProvider could be found a special type of collection is stored in cache and is returned.
-	 * 
-	 * @param cacheCopy Working copy of the current cache (copy-on-write-cache)
+	 *
+	 * @param cacheCopy   Working copy of the current cache (copy-on-write-cache)
 	 * @param classLoader the classloader we've to search for TraceeBackendProvider
 	 * @return A BackendProviderSet if we found at least one provider. Otherwise we return an EmptyBackendProviderSet.
 	 */
-	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
-																		final ClassLoader classLoader) {
+	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(
+			final Map<ClassLoader,
+			Set<TraceeBackendProvider>> cacheCopy,
+			final ClassLoader classLoader) {
 		// use cache to get TraceeBackendProvider or empty results from old lookups
 		Set<TraceeBackendProvider> classLoaderProviders = cacheCopy.get(classLoader);
 		if (isLookupNeeded(classLoaderProviders)) {
@@ -55,7 +58,7 @@ class BackendProviderResolver {
 	}
 
 	/*
-	 * Helper method for #getTraceeProviderFromClassloader 
+	 * Helper method for #getTraceeProviderFromClassloader
 	 * We do a lookup / return true if result is null and when the result is not an instance of EmptyBackendProviderSet and empty.
 	 * In the last case the garbage collector kicked out our resolvers and we've to recreate them
 	 */
@@ -68,13 +71,13 @@ class BackendProviderResolver {
 	 */
 	private void updatedCache(final ClassLoader classLoader, final Set<TraceeBackendProvider> provider) {
 		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap =
-				new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(PROVIDERS_PER_CLASSLOADER);
+				new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(providersPerClassloader);
 		if (!provider.isEmpty()) {
 			copyOnWriteMap.put(classLoader, new BackendProviderSet(provider));
 		} else {
 			copyOnWriteMap.put(classLoader, new EmptyBackendProviderSet());
 		}
-		PROVIDERS_PER_CLASSLOADER = copyOnWriteMap;
+		providersPerClassloader = copyOnWriteMap;
 	}
 
 	/**
@@ -143,7 +146,7 @@ class BackendProviderResolver {
 			}
 		}
 	}
-	
+
 	static final class EmptyBackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 
 		@Override

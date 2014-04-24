@@ -25,7 +25,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 
 	private Set<SoftReference<TraceeBackendProvider>> values;
 
-	// Never ever set this boolean to true if it was false! 
+	// Never ever set this boolean to true if it was false!
 	private boolean valid = true;
 
 	BackendProviderSet(Set<TraceeBackendProvider> elements) {
@@ -59,21 +59,21 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 		return 0;
 	}
 
-	private void determineValidity(final Collection<TraceeBackendProvider> values) {
+	private void determineValidity(final Collection<TraceeBackendProvider> providers) {
 		if (!valid) {
 			return;
 		}
-		for (TraceeBackendProvider value : values) {
+		for (TraceeBackendProvider provider : providers) {
 			// Missed value detected. This Set is not valid!
-			if (value == null)
+			if (provider == null)
 				valid = false;
 		}
 	}
 
-	private Collection<TraceeBackendProvider> createStrongView(Collection<SoftReference<TraceeBackendProvider>> values) {
-		List<TraceeBackendProvider> strongRefs = new ArrayList<TraceeBackendProvider>(values.size());
-		for (SoftReference<TraceeBackendProvider> value : values) {
-			strongRefs.add(value.get());
+	private Collection<TraceeBackendProvider> createStrongView(Collection<SoftReference<TraceeBackendProvider>> providerReferences) {
+		List<TraceeBackendProvider> strongRefs = new ArrayList<TraceeBackendProvider>(providerReferences.size());
+		for (SoftReference<TraceeBackendProvider> providerSoftReference : providerReferences) {
+			strongRefs.add(providerSoftReference.get());
 		}
 		return strongRefs;
 	}

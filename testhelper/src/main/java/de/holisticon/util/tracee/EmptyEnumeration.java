@@ -5,7 +5,7 @@ import java.util.Enumeration;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class EmptyEnumeration<T> implements Enumeration<T> {
+public final class EmptyEnumeration<T> implements Enumeration<T> {
 
 	public static <T> EmptyEnumeration<T> emptyEnumeration() {
 		return new EmptyEnumeration<T>();

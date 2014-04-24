@@ -21,7 +21,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @TraceeContextLogProvider(displayName = "tracee", order = Order.TRACEE)
-public class TraceeContextProvider implements ImplicitContextData {
+public final class TraceeContextProvider implements ImplicitContextData {
 
     private final TraceeBackend traceeBackend;
 

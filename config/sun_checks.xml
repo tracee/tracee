@@ -106,7 +106,7 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
-            <property name="max" value="140"/>
+            <property name="max" value="160"/>
         </module>
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
@@ -159,12 +159,17 @@
         <module name="HiddenField">
             <!-- It is completely okay to name constructor parameters like the fields they will be assigned to  -->
             <property name="ignoreConstructorParameter" value="true"/>
+			<!-- It is completely okay to name setter parameter like the fields they will be assigned to  -->
+			<property name="ignoreSetter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
-        <module name="RedundantThrows"/>
+        <module name="RedundantThrows">
+			<!-- It is a good practice to explicitly name possible unchecked exceptions and document their cause in javadoc comments -->
+			<property name="allowUnchecked" value="true"/>
+		</module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 

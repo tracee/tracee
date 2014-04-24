@@ -18,13 +18,13 @@ final class JbossLoggingMdcLikeAdapter implements MDCLike {
 
     @Override
     public void put(String key, String value) {
-        MDC.put(key,value);
+        MDC.put(key, value);
     }
 
     @Override
     public String get(String key) {
 
-        return (String)MDC.get(key);
+        return (String) MDC.get(key);
     }
 
     @Override

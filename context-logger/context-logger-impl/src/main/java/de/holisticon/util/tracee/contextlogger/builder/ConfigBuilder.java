@@ -31,7 +31,7 @@ public interface ConfigBuilder {
     ConfigBuilder disable(String... contexts);
 
     /**
-     * Closes configuration
+     * Closes configuration.
      * @return This instance cast as a ContextLoggerBuilder.
      */
     ContextLoggerBuilder apply();

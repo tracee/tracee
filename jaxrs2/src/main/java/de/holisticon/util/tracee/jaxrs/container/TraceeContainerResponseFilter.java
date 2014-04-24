@@ -36,7 +36,7 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 
 
 	@Override
-	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+	public final void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);

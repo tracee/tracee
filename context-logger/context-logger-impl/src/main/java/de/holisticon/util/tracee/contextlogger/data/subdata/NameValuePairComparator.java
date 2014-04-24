@@ -6,8 +6,9 @@ import java.util.Comparator;
  * Comparator for {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameValuePair}.
  * Created by Tobias Gindler, holisticon AG on 16.03.14.
  */
-public class NameValuePairComparator implements Comparator<NameValuePair> {
-    @Override
+public final class NameValuePairComparator implements Comparator<NameValuePair> {
+
+	@Override
     public int compare(NameValuePair instance1, NameValuePair instance2) {
 
         // primary sort criteria is the order value of the annotation
@@ -15,7 +16,7 @@ public class NameValuePairComparator implements Comparator<NameValuePair> {
             return 0;
         } else if (instance1 != null && instance2 == null) {
             return -1;
-        } else if (instance1 == null && instance2 != null) {
+        } else if (instance1 == null) {
             return 1;
         } else {
 
@@ -26,7 +27,7 @@ public class NameValuePairComparator implements Comparator<NameValuePair> {
                 return 0;
             } else if (name1 != null && name2 == null) {
                 return -1;
-            } else if (name1 == null && name2 != null) {
+            } else if (name1 == null) {
                 return 1;
             } else {
                 return name1.compareTo(name2);

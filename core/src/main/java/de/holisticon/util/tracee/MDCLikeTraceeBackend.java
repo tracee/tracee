@@ -32,7 +32,7 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
 	}
 
 	@Override
-	public TraceeFilterConfiguration getConfiguration(String profileName) {
+	public final TraceeFilterConfiguration getConfiguration(String profileName) {
 		if (lazyPropertyChain == null) {
 			lazyPropertyChain = loadPropertyChain();
 		}

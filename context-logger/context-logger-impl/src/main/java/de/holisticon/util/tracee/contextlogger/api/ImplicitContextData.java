@@ -9,9 +9,7 @@ import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 public interface ImplicitContextData {
 
     /**
-     * Gets the implict context type
-     *
-     * @return
+     * Gets the implict context type.
      */
     ImplicitContext getImplicitContext();
 

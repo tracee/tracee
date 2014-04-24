@@ -7,7 +7,7 @@ package de.holisticon.util.tracee.contextlogger.builder;
 public interface ContextLoggerBuilder {
 
     /**
-     * Switches fluent api to configuration mode
+     * Switches fluent api to configuration mode.
      * @return This instance cast as a ConfigBuilder
      */
     ConfigBuilder config();

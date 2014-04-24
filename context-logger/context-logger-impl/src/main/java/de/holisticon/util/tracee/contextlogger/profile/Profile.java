@@ -26,7 +26,7 @@ public enum Profile {
         return resourceFileName;
     }
 
-    public Properties getProperties () throws IOException{
+    public Properties getProperties() throws IOException {
         return openProperties(this.getResourceFileName());
     }
 
@@ -40,7 +40,7 @@ public enum Profile {
      *
      * @return
      */
-    public static Profile getCurrentProfile () {
+    public static Profile getCurrentProfile() {
 
         // First get profile from system properties
         Profile profile = getProfileFromSystemProperties();
@@ -67,7 +67,7 @@ public enum Profile {
     }
 
     /**
-     * Gets the profile defined via the system properties
+     * Gets the profile defined via the system properties.
      * @return returns the profile defined via the system properties. Returns null if property is not set or set to an invalid value
      */
     static Profile getProfileFromSystemProperties() {
@@ -84,7 +84,9 @@ public enum Profile {
             try {
                 result = Profile.valueOf(systemPropertyProfileName);
             } catch (IllegalArgumentException e) {
-                Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee ContextLoggerBuilder profile property ('" + ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '" +systemPropertyProfileName + "' ==> Use default profile");
+                Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee ContextLoggerBuilder profile property ('"
+						+ ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '"
+						+ systemPropertyProfileName + "' ==> Use default profile");
             }
         }
 
@@ -92,8 +94,8 @@ public enum Profile {
     }
 
     /**
-     * Gets the profile defined via the system properties
-     * @return returns the profile defined via the system properties. Returns null if property is not set or set to an invalid value
+     * Gets the profile defined via the system properties.
+     * @return returns the profile defined via the system properties or {@code null} if property is not set or set to an invalid value.
      */
     static Profile getProfileFromFileInClasspath(final String filename) {
 
@@ -108,7 +110,12 @@ public enum Profile {
                     try {
                         result = Profile.valueOf(profileFromProperties);
                     } catch (IllegalArgumentException e) {
-                        Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee custom ContextLoggerBuilder profile property ('" + ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY + "') is set to the invalid value '" + profileFromProperties + "' and will be ignored");
+                        Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn(
+								"Tracee custom ContextLoggerBuilder profile property ('"
+								+ ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY
+								+ "') is set to the invalid value '"
+								+ profileFromProperties + "' and will be ignored"
+						);
                     }
                 }
             }
@@ -120,10 +127,10 @@ public enum Profile {
     }
 
     /**
-     * Checks if custom profiles can be loaded
+     * Checks if custom profiles can be loaded.
      * @return true, if custom property file can be opened, otherwise false
      */
-    static boolean checkProfilePropertyFileExists (final Profile profile) {
+    static boolean checkProfilePropertyFileExists(final Profile profile) {
 
         boolean result = false;
 
@@ -142,12 +149,12 @@ public enum Profile {
     }
 
     /**
-     * Loads properties from resources
+     * Loads properties from resources.
      * @param propertyFileName the property file name to load
      * @return the properties, or null if the properties can't be found
      * @throws IOException if property file can't be opened
      */
-    static Properties openProperties (final String propertyFileName) throws IOException{
+    static Properties openProperties(final String propertyFileName) throws IOException {
 
         if (propertyFileName == null) {
             return null;

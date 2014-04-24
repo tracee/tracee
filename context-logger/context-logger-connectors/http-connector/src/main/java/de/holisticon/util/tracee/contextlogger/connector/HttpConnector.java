@@ -23,17 +23,17 @@ import de.holisticon.util.tracee.contextlogger.Connector;
  */
 public class HttpConnector implements Connector {
 
-    public static final String PROPERTY_URL = "url";
-    public static final String PROPERTY_BASIC_AUTH_USER = "basicAuth.user";
-    public static final String PROPERTY_BASIC_AUTH_PASSWORD = "basicAuth.password";
-    public static final String PROPERTY_PROXY_HOST = "proxy.host";
-    public static final String PROPERTY_PROXY_PORT = "proxy.port";
-    public static final String PROPERTY_PROXY_USER = "proxy.user";
-    public static final String PROPERTY_PROXY_PASSWORD = "proxy.password";
-    public static final String PROPERTY_REQUEST_TIMEOUT = "request.timoutInMs";
+	public static final String PROPERTY_URL = "url";
+	public static final String PROPERTY_BASIC_AUTH_USER = "basicAuth.user";
+	public static final String PROPERTY_BASIC_AUTH_PASSWORD = "basicAuth.password";
+	public static final String PROPERTY_PROXY_HOST = "proxy.host";
+	public static final String PROPERTY_PROXY_PORT = "proxy.port";
+	public static final String PROPERTY_PROXY_USER = "proxy.user";
+	public static final String PROPERTY_PROXY_PASSWORD = "proxy.password";
+	public static final String PROPERTY_REQUEST_TIMEOUT = "request.timoutInMs";
 
-    public static final int DEFAULT_REQUEST_TIMEOUT = 10000;
-    public static final int DEFAULT_REQUEST_IDLE_TIMEOUT = 500;
+	public static final int DEFAULT_REQUEST_TIMEOUT = 10000;
+	public static final int DEFAULT_REQUEST_IDLE_TIMEOUT = 500;
 
 	private final TraceeLogger logger;
 	private final AsyncHttpClientProvider asyncHttpClientProvider;
@@ -47,89 +47,87 @@ public class HttpConnector implements Connector {
 		logger = loggerFactory.getLogger(HttpConnector.class);
 	}
 
-    private String url;
+	private String url;
 
-    private Builder builder;
+	private Builder builder;
 
-    @Override
-    public void init(final Map<String, String> properties) {
-        // map properties
-        url = properties.get(PROPERTY_URL);
-        final String basicAuthUser = properties.get(PROPERTY_BASIC_AUTH_USER);
-        final String basicAuthPassword = properties.get(PROPERTY_BASIC_AUTH_PASSWORD);
-        final String proxyHost = properties.get(PROPERTY_PROXY_HOST);
-        final String proxyUser = properties.get(PROPERTY_PROXY_USER);
-        final String proxyPassword = properties.get(PROPERTY_PROXY_PASSWORD);
+	@Override
+	public final void init(final Map<String, String> properties) {
+		// map properties
+		url = properties.get(PROPERTY_URL);
+		final String basicAuthUser = properties.get(PROPERTY_BASIC_AUTH_USER);
+		final String basicAuthPassword = properties.get(PROPERTY_BASIC_AUTH_PASSWORD);
+		final String proxyHost = properties.get(PROPERTY_PROXY_HOST);
+		final String proxyUser = properties.get(PROPERTY_PROXY_USER);
+		final String proxyPassword = properties.get(PROPERTY_PROXY_PASSWORD);
 
-        final Integer proxyPort = convertStringToInt(properties.get(PROPERTY_PROXY_PORT), null);
+		final Integer proxyPort = convertStringToInt(properties.get(PROPERTY_PROXY_PORT), null);
 
-        final Integer requestTimeoutInMs = convertStringToInt(properties.get(PROPERTY_REQUEST_TIMEOUT), DEFAULT_REQUEST_TIMEOUT);
+		final Integer requestTimeoutInMs = convertStringToInt(properties.get(PROPERTY_REQUEST_TIMEOUT), DEFAULT_REQUEST_TIMEOUT);
 
-        builder = new AsyncHttpClientConfig.Builder();
+		builder = new AsyncHttpClientConfig.Builder();
 
-        if (basicAuthUser != null && basicAuthPassword != null) {
-            final Realm realm = new Realm.RealmBuilder().setPrincipal(basicAuthUser).setPassword(basicAuthPassword).setUsePreemptiveAuth(true)
-                    .setScheme(AuthScheme.BASIC).build();
+		if (basicAuthUser != null && basicAuthPassword != null) {
+			final Realm realm = new Realm.RealmBuilder().setPrincipal(basicAuthUser).setPassword(basicAuthPassword).setUsePreemptiveAuth(true)
+					.setScheme(AuthScheme.BASIC).build();
 
-            builder.setRealm(realm);
-        }
+			builder.setRealm(realm);
+		}
 
-        // Add Proxy Support - use authentication if user and password properties are set
-        if (proxyHost != null && proxyPort != null) {
-            final ProxyServer proxy;
-            if (proxyUser != null && proxyPassword != null) {
-                proxy = new ProxyServer(proxyHost, proxyPort, proxyUser, proxyPassword);
-            } else {
-                proxy = new ProxyServer(proxyHost, proxyPort);
-            }
+		// Add Proxy Support - use authentication if user and password properties are set
+		if (proxyHost != null && proxyPort != null) {
+			final ProxyServer proxy;
+			if (proxyUser != null && proxyPassword != null) {
+				proxy = new ProxyServer(proxyHost, proxyPort, proxyUser, proxyPassword);
+			} else {
+				proxy = new ProxyServer(proxyHost, proxyPort);
+			}
 
-            builder.setProxyServer(proxy);
-        }
+			builder.setProxyServer(proxy);
+		}
 
-        builder.setRequestTimeoutInMs(requestTimeoutInMs);
-        builder.setIdleConnectionTimeoutInMs(DEFAULT_REQUEST_IDLE_TIMEOUT);
+		builder.setRequestTimeoutInMs(requestTimeoutInMs);
+		builder.setIdleConnectionTimeoutInMs(DEFAULT_REQUEST_IDLE_TIMEOUT);
 
-    }
+	}
 
-    @Override
-    public void sendErrorReport(final String json) {
+	@Override
+	public final void sendErrorReport(final String json) {
 
-        final String targetUrl = this.url;
+		final String targetUrl = this.url;
 
-        try {
-            @SuppressWarnings("resource")
-            final AsyncHttpClient asyncHttpClient = asyncHttpClientProvider.provideHttpClient(builder.build());
-            asyncHttpClient.preparePost(targetUrl).setBody(json).setHeader("Content-type", "text/json;charset=utf-8").setBodyEncoding("UTF-8")
-                    .execute(new AsyncCompletionHandler<Response>() {
+		try {
+			@SuppressWarnings("resource")
+			final AsyncHttpClient asyncHttpClient = asyncHttpClientProvider.provideHttpClient(builder.build());
+			asyncHttpClient.preparePost(targetUrl).setBody(json).setHeader("Content-type", "text/json;charset=utf-8").setBodyEncoding("UTF-8")
+					.execute(new AsyncCompletionHandler<Response>() {
 
-                        @Override
-                        public Response onCompleted(final Response response) throws Exception {
-                            logger.info("Error report send via HTTP to '" + targetUrl + "'");
-                            return response;
-                        }
+						@Override
+						public Response onCompleted(final Response response) throws Exception {
+							logger.info("Error report send via HTTP to '" + targetUrl + "'");
+							return response;
+						}
 
-                        @Override
-                        public void onThrowable(final Throwable t) {
-                            // Something wrong happened.
-                            logger.error("An error occurred while sending the error report via HTTP to '" + targetUrl + "'", t);
-                        }
-                    });
+						@Override
+						public void onThrowable(final Throwable t) {
+							// Something wrong happened.
+							logger.error("An error occurred while sending the error report via HTTP to '" + targetUrl + "'", t);
+						}
+					});
+		} catch (final IOException e) {
+			logger.error("An error occurred while sending the error report via HTTP to '" + this.url + "'", e);
+		}
 
-        }
-        catch (final IOException e) {
-            logger.error("An error occurred while sending the error report via HTTP to '" + this.url + "'", e);
-        }
+	}
 
-    }
-
-    Integer convertStringToInt(final String value, final Integer defaultValue) {
-        try {
-            if (value != null) {
-                return Integer.valueOf(value);
-            }
-        } catch (final NumberFormatException e) {
-            // ignore
-        }
-        return defaultValue;
-    }
+	final Integer convertStringToInt(final String value, final Integer defaultValue) {
+		try {
+			if (value != null) {
+				return Integer.valueOf(value);
+			}
+		} catch (final NumberFormatException e) {
+			// ignore
+		}
+		return defaultValue;
+	}
 }

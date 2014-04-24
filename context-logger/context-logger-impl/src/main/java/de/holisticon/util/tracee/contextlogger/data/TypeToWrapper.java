@@ -1,12 +1,10 @@
 package de.holisticon.util.tracee.contextlogger.data;
 
-import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -15,13 +13,12 @@ import java.util.*;
  */
 public final class TypeToWrapper {
 
-    /** never use this directly */
     private static List<TypeToWrapper> typeToWrapperList;
 
     private final Class wrappedInstanceType;
     private final Class wrapperType;
 
-    public TypeToWrapper (final Class wrappedInstanceType, final Class wrapperType) {
+    public TypeToWrapper(final Class wrappedInstanceType, final Class wrapperType) {
         this.wrappedInstanceType = wrappedInstanceType;
         this.wrapperType = wrapperType;
     }
@@ -37,7 +34,7 @@ public final class TypeToWrapper {
 
 
 
-    public static Set<Class> getAllWrappedClasses () {
+    public static Set<Class> getAllWrappedClasses() {
 
         final List<TypeToWrapper> localTypeToWrapperList = getTypeToWrapper();
 
@@ -53,7 +50,7 @@ public final class TypeToWrapper {
 
     }
 
-    public static List<TypeToWrapper> getTypeToWrapper () {
+    public static List<TypeToWrapper> getTypeToWrapper() {
         if (typeToWrapperList == null) {
             typeToWrapperList = getAvailableWrappers();
         }
@@ -134,13 +131,12 @@ public final class TypeToWrapper {
     }
 
     /**
-     * Class to get all available wrappers
+     * Class to get all available wrappers.
      * @return all wrapping between wrapper classes and their wrapped types.
      */
-    static List<TypeToWrapper> getAvailableWrappers () {
+    static List<TypeToWrapper> getAvailableWrappers() {
 
         List<TypeToWrapper> result = new ArrayList<TypeToWrapper>();
-
 
         BufferedReader bufferedReader = null;
         try {
@@ -165,7 +161,7 @@ public final class TypeToWrapper {
 
                         Class wrappedType = instance.getWrappedType();
 
-                        result.add(new TypeToWrapper(wrappedType,clazz));
+                        result.add(new TypeToWrapper(wrappedType, clazz));
                     }
 
                 } catch (Exception e) {

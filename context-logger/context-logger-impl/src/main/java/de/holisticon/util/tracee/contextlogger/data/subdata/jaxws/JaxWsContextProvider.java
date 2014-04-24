@@ -7,11 +7,9 @@ import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.data.wrapper.JaxWsWrapper;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
 
-import javax.servlet.http.Cookie;
-
 /**
- * JaxWsContextProvider context provider
- * Created by Tobias Gindler, holisticon AG on 28.03.14.
+ * JaxWsContextProvider context provider.
+ * @author Tobias Gindler, holisticon AG on 28.03.14.
  */
 @TraceeContextLogProvider(displayName = "jaxWs", order = Order.JAXWS)
 public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
@@ -20,12 +18,12 @@ public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
 
 
     @Override
-    public void setContextData(Object instance) throws ClassCastException {
-        this.jaxWsWrapper = (JaxWsWrapper)instance;
+    public final void setContextData(Object instance) throws ClassCastException {
+        this.jaxWsWrapper = (JaxWsWrapper) instance;
     }
 
     @Override
-    public Class<JaxWsWrapper> getWrappedType() {
+    public final Class<JaxWsWrapper> getWrappedType() {
         return JaxWsWrapper.class;
     }
 
@@ -35,7 +33,7 @@ public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
             displayName = "soapRequest",
             propertyName = ProfilePropertyNames.JAXWS_SOAP_REQUEST,
             order = 40)
-    public String getSoapRequest() {
+    public final String getSoapRequest() {
         if (jaxWsWrapper != null) {
             return jaxWsWrapper.getSoapRequest();
         }
@@ -47,7 +45,7 @@ public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
             displayName = "soapResponse",
             propertyName = ProfilePropertyNames.JAXWS_SOAP_RESPONSE,
             order = 50)
-    public String getSoapResponse() {
+    public final String getSoapResponse() {
         if (jaxWsWrapper != null) {
             return jaxWsWrapper.getSoapResponse();
         }

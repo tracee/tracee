@@ -6,7 +6,7 @@ package de.holisticon.util.tracee.contextlogger.data;
  */
 public final class Order {
     @SuppressWarnings("unused")
-    private Order () {
+    private Order() {
         // hide constructor
     }
     public static final int COMMON = 0;

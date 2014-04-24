@@ -8,7 +8,7 @@ import com.ning.http.client.AsyncHttpClientConfig;
  */
 public class SimpleAsyncHttpProvider implements AsyncHttpClientProvider {
 	@Override
-	public AsyncHttpClient provideHttpClient(AsyncHttpClientConfig config) {
+	public final AsyncHttpClient provideHttpClient(AsyncHttpClientConfig config) {
 		return new AsyncHttpClient(config);
 	}
 }

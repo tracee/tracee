@@ -8,8 +8,9 @@ import java.util.Map;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class Slf4jMdcAdapter implements MDCLike {
-    @Override
+public final class Slf4jMdcAdapter implements MDCLike {
+
+	@Override
     public boolean containsKey(String key) {
         return MDC.get(key) != null;
     }

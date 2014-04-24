@@ -33,7 +33,7 @@ public final class Tracee {
     public static TraceeBackend getBackend() {
 		return getBackend(new BackendProviderResolver());
     }
-	
+
 	protected static TraceeBackend getBackend(final BackendProviderResolver resolver) {
 		final Set<TraceeBackendProvider> backendProviders;
 		try {

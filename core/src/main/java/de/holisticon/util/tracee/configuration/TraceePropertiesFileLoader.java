@@ -29,7 +29,7 @@ public final class TraceePropertiesFileLoader {
 				try {
 					if (stream != null)
 						stream.close();
-				} catch (IOException ignored) {}
+				} catch (IOException ignored) { }
 			}
 		}
 

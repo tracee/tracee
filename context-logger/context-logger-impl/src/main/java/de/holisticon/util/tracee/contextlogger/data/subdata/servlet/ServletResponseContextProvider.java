@@ -17,9 +17,9 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextLogProvider(displayName = "servletResponse", order = Order.SERVLET)
-public class ServletResponseContextProvider implements WrappedContextData<HttpServletResponse> {
+public final class ServletResponseContextProvider implements WrappedContextData<HttpServletResponse> {
 
-    HttpServletResponse response;
+    private HttpServletResponse response;
 
     public ServletResponseContextProvider() {
     }

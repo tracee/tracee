@@ -17,9 +17,9 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
 @TraceeContextLogProvider(displayName = "servletSession", order = Order.SERVLET)
-public class ServletSessionContextProvider implements WrappedContextData<HttpSession> {
+public final class ServletSessionContextProvider implements WrappedContextData<HttpSession> {
 
-    HttpSession session;
+    private HttpSession session;
 
     public ServletSessionContextProvider() {
     }

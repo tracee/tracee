@@ -7,8 +7,6 @@ import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import de.holisticon.util.tracee.contextlogger.utility.PassedContextDataElementWrapper;
 import de.holisticon.util.tracee.contextlogger.utility.PassedContextDataElementWrapperComparator;
-import de.holisticon.util.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +18,7 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "contexts")
-public class PassedDataContextProvider implements WrappedContextData<Object[]>{
+public class PassedDataContextProvider implements WrappedContextData<Object[]> {
 
     private Object[] instances;
 
@@ -34,12 +32,12 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]>{
 
 
     @Override
-    public void setContextData(Object instance) throws ClassCastException {
+    public final void setContextData(Object instance) throws ClassCastException {
         this.instances = (Object[]) instance;
     }
 
     @Override
-    public Class<Object[]> getWrappedType() {
+    public final Class<Object[]> getWrappedType() {
         return Object[].class;
     }
 
@@ -60,7 +58,7 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]>{
             }
 
         }
-        Collections.sort(toSortList,new PassedContextDataElementWrapperComparator());
+        Collections.sort(toSortList, new PassedContextDataElementWrapperComparator());
 
         // Now create the List of NameObjectPairs
         List<NameObjectValuePair> nameObjectValuePairs = new ArrayList<NameObjectValuePair>();

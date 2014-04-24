@@ -14,7 +14,7 @@ import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
  */
 @SuppressWarnings("unused")
 @TraceeContextLogProvider(displayName = "watchdog", order = Order.WATCHDOG)
-public final class WatchdogContextProvider implements WrappedContextData<WatchdogDataWrapper>{
+public final class WatchdogContextProvider implements WrappedContextData<WatchdogDataWrapper> {
 
     private WatchdogDataWrapper watchdogDataWrapper;
 

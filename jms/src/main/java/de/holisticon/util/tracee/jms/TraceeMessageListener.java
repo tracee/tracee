@@ -18,7 +18,7 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
  *
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TraceeMessageListener {
+public final class TraceeMessageListener {
 
 	private final TraceeBackend backend;
 

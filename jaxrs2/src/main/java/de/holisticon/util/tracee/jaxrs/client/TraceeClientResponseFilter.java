@@ -35,7 +35,7 @@ public class TraceeClientResponseFilter implements ClientResponseFilter {
 	}
 
 	@Override
-    public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
+    public final void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         final String serializedContext = responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME);
         if (serializedContext != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 			final Map<String, String> parsed = transportSerialization.parse(serializedContext);

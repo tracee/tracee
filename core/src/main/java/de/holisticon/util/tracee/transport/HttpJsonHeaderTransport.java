@@ -22,10 +22,9 @@ public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 	}
 
 	@Override
-	public Map<String, String> parse(String serialized) {
+	public final Map<String, String> parse(String serialized) {
 		try {
-			return gson.fromJson(serialized, new TypeToken<Map<String, String>>() {
-			}.getType());
+			return gson.fromJson(serialized, new TypeToken<Map<String, String>>() { } .getType());
 		} catch (JsonParseException e) {
 			logger.debug("Failed to parse header. Ignoring: \"" + serialized + "\"");
 			return Collections.emptyMap();
@@ -33,7 +32,7 @@ public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 	}
 
 	@Override
-	public String render(Map<String, String> backend) {
+	public final String render(Map<String, String> backend) {
 		if (backend.isEmpty())
 			return null;
 

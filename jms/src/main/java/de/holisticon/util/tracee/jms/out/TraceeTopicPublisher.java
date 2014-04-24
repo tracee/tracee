@@ -5,7 +5,7 @@ import javax.jms.*;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TraceeTopicPublisher implements TopicPublisher {
+public final class TraceeTopicPublisher implements TopicPublisher {
 
 
     private final TraceeMessageProducer messageProducer;

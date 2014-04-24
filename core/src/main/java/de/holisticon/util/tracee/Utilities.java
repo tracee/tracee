@@ -6,9 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-/**
- * Created by Tobias Gindler, holisticon AG
- */
+
 public final class Utilities {
 
 	private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
@@ -34,7 +32,7 @@ public final class Utilities {
 	}
 
 	/**
-	 * Creates a alphanumeric projection with a given length of the given object using its {@link Object#hashCode()}
+	 * Creates a alphanumeric projection with a given length of the given object using its {@link Object#hashCode()}.
 	 */
 	public static String createAlphanumericHash(String str, int length) {
 		try {

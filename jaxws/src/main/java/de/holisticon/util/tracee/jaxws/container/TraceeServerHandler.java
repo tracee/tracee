@@ -42,8 +42,8 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			}
 
             // generate request id if it doesn't exist
-            if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null &&
-					getTraceeBackend().getConfiguration().shouldGenerateRequestId()) {
+            if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null
+					&& getTraceeBackend().getConfiguration().shouldGenerateRequestId()) {
                 getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY,
 						Utilities.createRandomAlphanumeric(getTraceeBackend().getConfiguration().generatedRequestIdLength()));
             }
@@ -91,7 +91,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 	}
 
     @Override
-    public final boolean handleFault(SOAPMessageContext context) {
+    public boolean handleFault(SOAPMessageContext context) {
         this.handleOutgoing(context);
         return true;
     }

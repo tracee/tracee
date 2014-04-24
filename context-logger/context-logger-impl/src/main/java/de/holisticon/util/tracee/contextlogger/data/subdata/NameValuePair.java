@@ -2,7 +2,6 @@ package de.holisticon.util.tracee.contextlogger.data.subdata;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMethod;
-import de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
 
 /**
  * Main Interface for name value pairs.
@@ -11,12 +10,12 @@ import de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotatio
 @TraceeContextLogProvider(displayName = "name-value-pair")
 public abstract class NameValuePair<T> {
 
-    protected final static String DEFAULT_NAME = "<null>";
+    protected static final String DEFAULT_NAME = "<null>";
 
     private final String name;
     private final T value;
 
-    public NameValuePair (final String name, final T value) {
+    public NameValuePair(final String name, final T value) {
         this.name = name != null ? name : DEFAULT_NAME;
         this.value = value;
     }
@@ -26,8 +25,8 @@ public abstract class NameValuePair<T> {
      *
      * @return the name for the value
      */
-    @TraceeContextLogProviderMethod(displayName = "name", propertyName = "", order=1)
-    public String getName() {
+    @TraceeContextLogProviderMethod(displayName = "name", propertyName = "", order = 1)
+    public final String getName() {
         return this.name;
     }
 
@@ -36,8 +35,8 @@ public abstract class NameValuePair<T> {
      *
      * @return the value
      */
-    @TraceeContextLogProviderMethod(displayName = "value", propertyName = "", order=2)
-    public T getValue() {
+    @TraceeContextLogProviderMethod(displayName = "value", propertyName = "", order = 2)
+    public final T getValue() {
         return this.value;
     }
 

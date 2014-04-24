@@ -19,7 +19,7 @@ import java.util.Date;
 public class CommonDataContextProvider implements ImplicitContextData {
 
     @Override
-    public ImplicitContext getImplicitContext() {
+    public final ImplicitContext getImplicitContext() {
         return ImplicitContext.COMMON;
     }
 
@@ -29,7 +29,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
             propertyName = ProfilePropertyNames.COMMON_TIMESTAMP,
             order = 10)
 
-    public Date getTimestamp() {
+    public final Date getTimestamp() {
         return Calendar.getInstance().getTime();
     }
 
@@ -39,7 +39,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
             propertyName = ProfilePropertyNames.COMMON_STAGE,
             order = 20)
 
-    public String getStage() {
+    public final String getStage() {
         return getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE);
     }
 
@@ -49,7 +49,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
             propertyName = ProfilePropertyNames.COMMON_SYSTEM_NAME,
             order = 30)
 
-    public String getSystemName() {
+    public final String getSystemName() {
         return getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM);
     }
 
@@ -59,7 +59,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
             propertyName = ProfilePropertyNames.COMMON_THREAD_NAME,
             order = 40)
 
-    public String getThreadName() {
+    public final String getThreadName() {
         return Thread.currentThread().getName();
     }
 
@@ -69,7 +69,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
             propertyName = ProfilePropertyNames.COMMON_THREAD_ID,
             order = 50)
 
-    public Long getThreadId() {
+    public final Long getThreadId() {
         return Thread.currentThread().getId();
     }
 

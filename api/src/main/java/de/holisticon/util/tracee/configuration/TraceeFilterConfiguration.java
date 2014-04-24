@@ -18,7 +18,7 @@ public interface TraceeFilterConfiguration {
 
 
 	String DEFAULT_PROFILE = "default";
-	
+
 	/**
 	 * Returns true if a given TracEE context parameter should be parsed or sent on a given channel.
 	 */

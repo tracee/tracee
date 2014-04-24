@@ -18,10 +18,10 @@ import java.util.Map;
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 
 /**
- * Manages the TracEE lifecycle
+ * Manages the TracEE lifecycle.
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TraceeServletRequestListener implements ServletRequestListener {
+public final class TraceeServletRequestListener implements ServletRequestListener {
 
 	private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
 
@@ -55,7 +55,7 @@ public class TraceeServletRequestListener implements ServletRequestListener {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
-			mergeIncomingContextToBackend(request, backend);
+			mergeIncomingContextToBackend(request);
 		}
 
 		if (configuration.shouldGenerateRequestId() && !backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
@@ -75,14 +75,14 @@ public class TraceeServletRequestListener implements ServletRequestListener {
 		return Utilities.createAlphanumericHash(sessionKey, length);
 	}
 
-	private void mergeIncomingContextToBackend(HttpServletRequest request, TraceeBackend backend) {
+	private void mergeIncomingContextToBackend(HttpServletRequest request) {
 		final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
 		if (headers == null) {
 			throw new IllegalStateException("Could not read headers with name '"
 					+ HTTP_HEADER_NAME + "'. The access seem to be forbidden by the container.");
 		}
 
-		final Map<String,String> parsed = new HashMap<String, String>();
+		final Map<String, String> parsed = new HashMap<String, String>();
 		while (headers.hasMoreElements()) {
 			parsed.putAll(transportSerialization.parse((String) headers.nextElement()));
 		}

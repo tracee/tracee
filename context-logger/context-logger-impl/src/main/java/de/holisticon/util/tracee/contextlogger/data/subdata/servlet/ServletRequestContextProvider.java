@@ -20,10 +20,10 @@ import java.util.List;
  */
 
 @TraceeContextLogProvider(displayName = "servletRequest", order = Order.SERVLET)
-public class ServletRequestContextProvider implements WrappedContextData<HttpServletRequest> {
+public final class ServletRequestContextProvider implements WrappedContextData<HttpServletRequest> {
 
 
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     public ServletRequestContextProvider() {
 

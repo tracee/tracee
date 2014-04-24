@@ -8,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 
-/**
- * Created by Tobias Gindler, holisticon AG on 16.01.14.
- */
 @Stateless
 public class TestEjbImpl implements TestEjb {
 
@@ -18,26 +15,26 @@ public class TestEjbImpl implements TestEjb {
 
 
     @Override
-    public final int multiply(final int mul1, final int mul2) {
+    public int multiply(final int mul1, final int mul2) {
         LOGGER.info("multiply {} with {}", mul1, mul2);
         return mul1 * mul2;
     }
 
     @Override
-    public final int sum(final int add1, final int add2) {
+    public int sum(final int add1, final int add2) {
         LOGGER.info("summarize {} with {}", add1, add2);
         return add1 + add2;
     }
 
     @Override
-    @Interceptors({TraceeEjbErrorContextLoggingInterceptor.class})
-    public final int error(final int a, final int b) {
+    @Interceptors({ TraceeEjbErrorContextLoggingInterceptor.class })
+    public int error(final int a, final int b) {
         LOGGER.info("trigger NullPointerException with parameters {} and {}", a, b);
         return watchdogError(a, b);
     }
 
     @Watchdog
-    private final int watchdogError(final int a, final int b) {
+    private int watchdogError(final int a, final int b) {
         throw new NullPointerException("Tracee local Remote EJB example: Triggered exception with passed parameters '" + a + "' and '" + b + "'");
     }
 

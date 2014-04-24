@@ -48,7 +48,7 @@ public class TraceeFilter implements Filter {
         }
     }
 
-    void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    final void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 

@@ -5,9 +5,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Collection;
 
-/**
- * Created by Tobias Gindler, holisticon ag on 20.02.14.
- */
 public class RecursiveReflectionToStringStyle extends ToStringStyle {
 
     private static final int MAX_DEPTH = 8;
@@ -28,7 +25,7 @@ public class RecursiveReflectionToStringStyle extends ToStringStyle {
     }
 
     @Override
-    protected void appendDetail(StringBuffer buffer, String fieldName, Object value) {
+    protected final void appendDetail(StringBuffer buffer, String fieldName, Object value) {
         if (value.getClass().getName().startsWith("java.lang.")
                 || (depth >= maxDepth)) {
             buffer.append(value);
@@ -39,9 +36,8 @@ public class RecursiveReflectionToStringStyle extends ToStringStyle {
         }
     }
 
-    // another helpful method
     @Override
-    protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
+    protected final void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
         depth++;
         buffer.append(ReflectionToStringBuilder.toString(coll.toArray(), this, true, true));
         depth--;

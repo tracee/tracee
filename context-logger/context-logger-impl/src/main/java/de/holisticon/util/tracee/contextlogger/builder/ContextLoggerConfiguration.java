@@ -2,7 +2,6 @@ package de.holisticon.util.tracee.contextlogger.builder;
 
 import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.api.ImplicitContextData;
-import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
 import de.holisticon.util.tracee.contextlogger.profile.Profile;
 
@@ -58,8 +57,7 @@ public class ContextLoggerConfiguration {
     }
 
 
-    public static ContextLoggerConfiguration getOrCreateContextLoggerConfiguration () {
-
+    public static ContextLoggerConfiguration getOrCreateContextLoggerConfiguration() {
         ContextLoggerConfiguration localContextLoggerConfiguration = contextLoggerConfiguration;
         if (localContextLoggerConfiguration == null) {
 
@@ -75,7 +73,7 @@ public class ContextLoggerConfiguration {
      * Gets an input class to context provider class map.
      * @return An input class to context provider class map.
      */
-    public Map<Class, Class> getClassToWrapperMap() {
+    public final Map<Class, Class> getClassToWrapperMap() {
         return classToWrapperMap;
     }
 
@@ -83,11 +81,11 @@ public class ContextLoggerConfiguration {
      * Gets all implicit context provider classes.
      * @return All implicit context provider classes.
      */
-    public Map<ImplicitContext, Class> getImplicitContextClassMap() {
+    public final Map<ImplicitContext, Class> getImplicitContextClassMap() {
         return implicitContextClassMap;
     }
 
-    public List<TypeToWrapper> getWrapperList() {
+    public final List<TypeToWrapper> getWrapperList() {
         return wrapperList;
     }
 
@@ -95,7 +93,7 @@ public class ContextLoggerConfiguration {
      * Gets a set that contains all context provider classes.
      * @return A set that contains all available context provider classes
      */
-    public Set<Class> getWrapperClasses() {
+    public final Set<Class> getWrapperClasses() {
         return wrapperClasses;
     }
 
@@ -103,7 +101,7 @@ public class ContextLoggerConfiguration {
      * Gets the default profile.
      * @return The default profile.
      */
-    public Profile getProfile() {
+    public final Profile getProfile() {
         return profile;
     }
 

@@ -1,7 +1,6 @@
 package de.holisticon.util.tracee.backend.log4j2;
 
 import de.holisticon.util.tracee.TraceeLogger;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 

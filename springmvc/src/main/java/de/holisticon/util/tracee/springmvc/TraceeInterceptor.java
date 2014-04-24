@@ -22,7 +22,7 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
 /**
  * @author Sven Bunge, Holisticon AG
  */
-public class TraceeInterceptor implements HandlerInterceptor {
+public final class TraceeInterceptor implements HandlerInterceptor {
 
 	private final TraceeBackend backend;
 	private final TransportSerialization<String> httpJsonHeaderSerialization;
@@ -33,7 +33,7 @@ public class TraceeInterceptor implements HandlerInterceptor {
 	public TraceeInterceptor() {
 		this(Tracee.getBackend());
 	}
-	
+
 	protected TraceeInterceptor(TraceeBackend backend) {
 		this.backend = backend;
 		httpJsonHeaderSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
@@ -46,17 +46,18 @@ public class TraceeInterceptor implements HandlerInterceptor {
 
 		if (configuration.shouldProcessContext(IncomingRequest))
 			mergeIncomingContextToBackend(request, configuration);
-		
+
 		// create random RequestId if not already set
 		if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && configuration.shouldGenerateRequestId()) {
 			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
 		}
 
-		// create another random id to identify the http session 
+		// create another random id to identify the http session
 		if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY) && configuration.shouldGenerateSessionId()) {
 			final HttpSession session = request.getSession(false);
 			if (session != null) {
-				backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(session.getId(), configuration.generatedSessionIdLength()));
+				backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(session.getId(),
+						configuration.generatedSessionIdLength()));
 			}
 		}
 

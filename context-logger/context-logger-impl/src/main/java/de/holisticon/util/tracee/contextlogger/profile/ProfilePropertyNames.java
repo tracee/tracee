@@ -15,7 +15,7 @@ public final class ProfilePropertyNames {
     // To select property
     public static final Profile DEFAULT_PROFILE = Profile.BASIC;
     public static final String PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES = "de.holisticon.util.tracee.contextlogger.profile";
-    /** file must contain property */
+    /* file must contain property */
     public static final String PROFILE_SET_BY_FILE_IN_CLASSPATH_FILENAME = "/ProfileSelector.properties";
     public static final String PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY = PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES;
 

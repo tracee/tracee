@@ -15,7 +15,7 @@ public final class TraceeContextLoggerConstants {
         // hide constructor
     }
 
-    public final static Set<Class> IGNORED_AT_DESERIALIZATION;
+    public static final Set<Class> IGNORED_AT_DESERIALIZATION;
 
     static {
 
@@ -32,7 +32,7 @@ public final class TraceeContextLoggerConstants {
         IGNORED_AT_DESERIALIZATION = Collections.unmodifiableSet(tmpIgnoredAtDeserialization);
     }
 
-    public static final String WRAPPER_CLASS_RESOURCE_URL ="/de.holisticon.util.tracee.contextlogger.wrapperclasses";
+    public static final String WRAPPER_CLASS_RESOURCE_URL = "/de.holisticon.util.tracee.contextlogger.wrapperclasses";
 
     public static final String SYSTEM_PROPERTY_PREFIX = "de.holisticon.util.tracee.contextlogger.";
     public static final String SYSTEM_PROPERTY_CONNECTOR_PREFIX = SYSTEM_PROPERTY_PREFIX + "connector.";
@@ -44,7 +44,8 @@ public final class TraceeContextLoggerConstants {
     public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_PRESET_CLASS = SYSTEM_PROPERTY_PREFIX + "preset.class";
 
     public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE = "class";
-    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN = "de\\.holisticon\\.util\\.tracee\\.contextlogger\\.connector\\.(\\w*?)\\."+ SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
+    public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN = "de\\.holisticon\\.util\\.tracee\\.contextlogger\\.connector\\.(\\w*?)\\."
+			+ SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
 
 
 }

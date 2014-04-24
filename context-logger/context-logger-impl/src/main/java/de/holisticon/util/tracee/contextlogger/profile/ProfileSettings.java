@@ -27,7 +27,7 @@ public class ProfileSettings {
         this.manualContextOverrides = manualContextOverrides;
     }
 
-    public boolean getPropertyValue (final String propertyKey) {
+    public final boolean getPropertyValue(final String propertyKey) {
 
         if (propertyKey == null) {
             return false;
@@ -43,7 +43,7 @@ public class ProfileSettings {
 
         // check profile properties
         if (profileProperties != null) {
-            String value = this.profileProperties.getProperty(propertyKey,"false");
+            String value = this.profileProperties.getProperty(propertyKey, "false");
             return Boolean.valueOf(value);
         }
 

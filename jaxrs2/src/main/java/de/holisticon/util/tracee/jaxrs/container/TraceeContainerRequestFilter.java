@@ -34,7 +34,7 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 
 
 	@Override
-	public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+	public final void filter(ContainerRequestContext containerRequestContext) throws IOException {
 		// generate request id if it doesn't exist
 		if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().shouldGenerateRequestId()) {
 			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));

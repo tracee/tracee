@@ -2,18 +2,17 @@ package de.holisticon.util.tracee.contextlogger.utility;
 
 import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProvider;
 import de.holisticon.util.tracee.contextlogger.data.subdata.NameObjectValuePair;
-import de.holisticon.util.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
 
 /**
  * Wrapper class used to sort passed instances.
  * Created by Tobias Gindler, holisticon AG on 22.03.14.
  */
-public class PassedContextDataElementWrapper {
+public final class PassedContextDataElementWrapper {
 
     private final Integer order;
     private final NameObjectValuePair nameObjectValuePair;
 
-    public PassedContextDataElementWrapper (NameObjectValuePair nameObjectValuePair) {
+    public PassedContextDataElementWrapper(NameObjectValuePair nameObjectValuePair) {
         this.nameObjectValuePair = nameObjectValuePair;
 
         TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(nameObjectValuePair.getValue());
@@ -30,7 +29,7 @@ public class PassedContextDataElementWrapper {
         return nameObjectValuePair;
     }
 
-    public Integer getOrder () {
+    public Integer getOrder() {
         return order;
     }
 

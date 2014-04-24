@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
+	public static final int ARBITRARY_NUMBER = 32;
 
 	@Override
 	public final boolean shouldProcessParam(String paramName, Channel channel) {
@@ -32,7 +33,7 @@ public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfigura
 
 	@Override
 	public final int generatedRequestIdLength() {
-		return 32;
+		return ARBITRARY_NUMBER;
 	}
 
 	@Override
@@ -42,6 +43,6 @@ public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfigura
 
 	@Override
 	public final int generatedSessionIdLength() {
-		return 32;
+		return ARBITRARY_NUMBER;
 	}
 }

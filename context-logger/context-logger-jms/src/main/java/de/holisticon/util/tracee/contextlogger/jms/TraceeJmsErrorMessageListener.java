@@ -39,7 +39,8 @@ public class TraceeJmsErrorMessageListener {
 
                 Message message = extractMessageParameter(ctx.getParameters());
 
-                TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE JMS ERROR CONTEXT LOGGING LISTENER  : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
+                TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE JMS ERROR CONTEXT LOGGING LISTENER  : ",
+						ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
 
             }
 
@@ -47,11 +48,11 @@ public class TraceeJmsErrorMessageListener {
         }
     }
 
-    Message extractMessageParameter(Object[] parameters) {
+    final Message extractMessageParameter(Object[] parameters) {
         return (Message) parameters[0];
     }
 
-    boolean isMessageListenerOnMessageMethod(Method method) {
+    final boolean isMessageListenerOnMessageMethod(Method method) {
         return "onMessage".equals(method.getName())
                 && method.getParameterTypes().length == 1
                 && method.getParameterTypes()[0] == Message.class;

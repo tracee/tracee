@@ -18,22 +18,20 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Generic serializer for context logging output.
  * Handles field order and applies Profiles (suppresses output)
  * Created by Tobias Gindler on 14.03.14.
  */
-public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
+public final class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
 
-    private final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(TraceeGenericGsonSerializer.class);
+    private final TraceeLogger logger = Tracee.getBackend().getLoggerFactory().getLogger(TraceeGenericGsonSerializer.class);
 
     private final ProfileSettings profileSettings;
 
-    public TraceeGenericGsonSerializer (final ProfileSettings profileSettings) {
+    public TraceeGenericGsonSerializer(final ProfileSettings profileSettings) {
         this.profileSettings = profileSettings;
     }
 
@@ -46,7 +44,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
         if (annotation == null) {
 
             // to be ignored
-            LOGGER.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Got non annotated class");
+			logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Got non annotated class");
             result = new JsonObject();
 
         } else {
@@ -87,7 +85,8 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
                         final Object value = getValueOfNameObjectValuePair(nameObjectValuePair);
                         result.add(nameObjectValuePair.getName(), jsonSerializationContext.serialize(value));
 
-                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod()) && ListUtilities.isListOfType(returnValue, NameStringValuePair.class)) {
+                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
+							&& ListUtilities.isListOfType(returnValue, NameStringValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
                         final List<NameStringValuePair> list = (List<NameStringValuePair>) returnValue;
@@ -96,7 +95,8 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
                             result.add(nameStringValuePair.getName(), jsonSerializationContext.serialize(nameStringValuePair.getValue()));
                         }
 
-                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod()) && ListUtilities.isListOfType(returnValue, NameObjectValuePair.class)) {
+                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
+							&& ListUtilities.isListOfType(returnValue, NameObjectValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
                         List<NameObjectValuePair> list = (List<NameObjectValuePair>) returnValue;
@@ -117,7 +117,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
                 } catch (Exception e) {
 
                     // to be ignored
-                    LOGGER.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Exception during serialization.", e);
+					logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Exception during serialization.", e);
 
                 }
 
@@ -152,7 +152,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
     }
 
     /**
-     * Checks if the passed instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}
+     * Checks if the passed instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}.
      *
      * @param instance the instance to check
      * @return returns true if the instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}, otherwise false
@@ -164,7 +164,7 @@ public class TraceeGenericGsonSerializer implements JsonSerializer<Object> {
     }
 
     /**
-     * Checks if the passed instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}
+     * Checks if the passed instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}.
      *
      * @param instance the instance to check
      * @return returns true if the instance is of type {@link de.holisticon.util.tracee.contextlogger.data.subdata.NameStringValuePair}, otherwise false

@@ -5,7 +5,6 @@ import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogProviderMetho
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.data.Order;
 import de.holisticon.util.tracee.contextlogger.profile.ProfilePropertyNames;
-import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,7 +34,7 @@ public final class JavaThrowableContextProvider implements WrappedContextData<Th
         this.throwable = (Throwable) instance;
     }
 
-    public Class<Throwable> getWrappedType () {
+    public Class<Throwable> getWrappedType() {
         return Throwable.class;
     }
 

@@ -71,7 +71,7 @@ public class WatchdogAspect {
                     Watchdog watchdog = WatchdogUtils.getWatchdogAnnotation(proceedingJoinPoint);
 
                     // check if watchdog aspect processing is deactivated by annotation
-                    if (WatchdogUtils.checkProcessWatchdog(watchdog,proceedingJoinPoint,e)) {
+                    if (WatchdogUtils.checkProcessWatchdog(watchdog, proceedingJoinPoint, e)) {
 
                             String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
                             sendErrorReportToConnectors(traceeBackend, proceedingJoinPoint, annotatedId, e);
@@ -97,7 +97,7 @@ public class WatchdogAspect {
      * @param proceedingJoinPoint the aspectj calling context
      * @param annotatedId         the id defined in the watchdog annotation
      */
-    void writeMethodCallToMdc(final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId) {
+    void writeMethodCallToMdc(TraceeBackend traceeBackend, ProceedingJoinPoint proceedingJoinPoint, String annotatedId) {
 
         String json = TraceeContextLogger.createDefault().createJson(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
         String existingContent = traceeBackend.get(Constants.TRACEE_ATTRIBUTE_NAME);
@@ -112,8 +112,9 @@ public class WatchdogAspect {
      * @param proceedingJoinPoint the aspectj calling context
      * @param annotatedId         the id defined in the watchdog annotation
      */
-    void sendErrorReportToConnectors(final TraceeBackend traceeBackend, final ProceedingJoinPoint proceedingJoinPoint, final String annotatedId, final Throwable e) {
-        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :", ImplicitContext.COMMON, ImplicitContext.TRACEE, WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
+    void sendErrorReportToConnectors(TraceeBackend traceeBackend, ProceedingJoinPoint proceedingJoinPoint, String annotatedId, Throwable e) {
+        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :",
+				ImplicitContext.COMMON, ImplicitContext.TRACEE, WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
     }
 
 

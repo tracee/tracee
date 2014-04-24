@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.TYPE})
+@Target(value = { ElementType.TYPE })
 public @interface TraceeContextLogProvider {
 
     String displayName();

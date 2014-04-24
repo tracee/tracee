@@ -15,9 +15,7 @@ public class NameObjectValuePair extends NameValuePair<Object> {
     }
 
     /**
-     * Constructor which sets the name implicit depending on the passd value type
-     *
-     * @param value
+     * Constructor which sets the name implicit depending on the passd value type.
      */
     public NameObjectValuePair(Object value) {
         super(getNameFromValueInstance(value), value);
@@ -25,8 +23,6 @@ public class NameObjectValuePair extends NameValuePair<Object> {
 
     /**
      * Gets the name depending on instance type.
-     * @param instance
-     * @return
      */
     protected static String getNameFromValueInstance(final Object instance) {
         if (instance == null) {
@@ -39,7 +35,5 @@ public class NameObjectValuePair extends NameValuePair<Object> {
         } else {
             return instance.getClass().getName();
         }
-
     }
-
 }

@@ -6,7 +6,7 @@ import javax.jms.*;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TraceeQueueSender implements QueueSender {
+public final class TraceeQueueSender implements QueueSender {
 
 
     private final TraceeMessageProducer messageProducer;

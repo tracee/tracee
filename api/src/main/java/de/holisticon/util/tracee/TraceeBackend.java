@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author Daniel Wegener (Holisticon AG)
  */
-public interface TraceeBackend extends Map<String,String> {
+public interface TraceeBackend extends Map<String, String> {
 
 
 	/**

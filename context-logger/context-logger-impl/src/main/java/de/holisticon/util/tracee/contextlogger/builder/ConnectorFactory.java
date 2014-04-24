@@ -3,15 +3,11 @@ package de.holisticon.util.tracee.contextlogger.builder;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeLogger;
 import de.holisticon.util.tracee.contextlogger.Connector;
-import de.holisticon.util.tracee.contextlogger.ImplicitContext;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.WellKnownConnectorClassNames;
-import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.connector.LogConnector;
-import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +19,8 @@ public class ConnectorFactory {
 
     // Connector settings
     private static final Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
-    private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN = TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
+    private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN =
+			TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
     private static final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(TraceeContextLogger.class);
     private static final Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
 
@@ -74,7 +71,7 @@ public class ConnectorFactory {
      * @param prefix the prefix to prepend only via the log connector output
      * @param json   the context data to output
      */
-    public void sendErrorReportToConnectors(String prefix, String json) {
+    public final void sendErrorReportToConnectors(String prefix, String json) {
 
         for (Connector connector : this.connectorMap.values()) {
 
@@ -92,7 +89,7 @@ public class ConnectorFactory {
      *
      * @return a Set containing all connector configuration names
      */
-    Set<String> getConnectorConfigurationNames() {
+    final Set<String> getConnectorConfigurationNames() {
 
         Set<String> connectorNames = new HashSet<String>();
 
@@ -120,7 +117,7 @@ public class ConnectorFactory {
      * @param connectorName the name of the connector configuration
      * @return a Map containing all properties for a connector configuration name
      */
-    Map<String, String> getPropertiesForConnectorConfigurationName(final String connectorName) {
+    final Map<String, String> getPropertiesForConnectorConfigurationName(final String connectorName) {
 
         final Map<String, String> propertyMap = new HashMap<String, String>();
 
@@ -156,7 +153,7 @@ public class ConnectorFactory {
      * @param connectorConfigurationName the name of the connector configuration
      * @return the connector if it could be created and initialized without error, otherwise null
      */
-    Connector createConnector(final String connectorConfigurationName) {
+    final Connector createConnector(final String connectorConfigurationName) {
 
         Map<String, String> propertyMap = this.getPropertiesForConnectorConfigurationName(connectorConfigurationName);
         String type = propertyMap.get(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE);
