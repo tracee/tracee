@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-context-logger-connector-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
 
     <name>tracee-context-logger-http-connector</name>
@@ -56,13 +56,13 @@
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-api</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-context-logger-api</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
 
 		<dependency>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -93,7 +93,7 @@
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
+			<version>0.2.0</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>

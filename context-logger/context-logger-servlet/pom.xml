@@ -8,7 +8,7 @@
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-context-logger-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
 
     <name>tracee-context-logger-servlet</name>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>de.holisticon.util.tracee</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
 			<groupId>javax.servlet</groupId>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
+			<version>0.2.0</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>
