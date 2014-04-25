@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <name>tracee-jms</name>
@@ -17,7 +17,7 @@
         <dependency>
             <artifactId>tracee-api</artifactId>
             <groupId>de.holisticon.util.tracee</groupId>
-            <version>0.2.0</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>javax.ejb</groupId>
@@ -36,13 +36,13 @@
         <dependency>
             <groupId>de.holisticon.util.tracee.backend</groupId>
             <artifactId>tracee-threadlocal-store</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 		<dependency>
 			<groupId>de.holisticon.util.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.2.0</version>
+			<version>0.3.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>

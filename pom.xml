@@ -3,7 +3,7 @@
 
 	<groupId>de.holisticon.util.tracee</groupId>
 	<artifactId>tracee-parent</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
