@@ -47,9 +47,9 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-servlet](servlet)        		| Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
 | [tracee-springmvc](springmvc)         | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | __backends__                          |
-| [tracee-slf4j](slf4j)                 | Backend implementation for containers using slf4j. You may use this on top of a java util logging containers like tomcat6 together with slf4j-jcl.
+| [tracee-slf4j](slf4j)                 | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
 | [tracee-log4j](log4j)                 | Backend implementation for containers using log4j for logging.
-| [tracee-log4j2](log4j2)               | Backend implementation for containers using log4js for logging.
+| [tracee-log4j2](log4j2)               | Backend implementation for containers using log4j2 for logging.
 | [tracee-jboss-logging](jboss-logging) | Backend implementation for containers using jboss-logging like JBoss EAP5/AS6.
 | [threadlocal-store](threadlocal-store)| Backend implementation for containers that use no common logging framework. Use it in scenarios where you just want to propagate the context information.
 
