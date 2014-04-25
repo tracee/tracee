@@ -29,6 +29,31 @@ This project is sill in early experimental alpha stage and the whole api may cha
 The steps to get TracEE up and running pretty much depends on your application scenario. The most common use case would be to
 propagate context information from a servlet container based frontend to an ejb based backend.
 
+### Modules
+
+TracEE is built highly modular. The modules you need depends on your application and the underlying frameworks and containers.
+The following table describes all available TracEE-modules and their usage scenarios.
+
+| Module                                | Usage |
+|--------------------------------------:|:-----:|
+| __core modules__                      |       |
+| [tracee-api](api/)                    | Contains Objects to interact with the TracEE context. Use it to write contextual information from your application into the TracEE context.
+| [tracee-core](core/)                  | Common utility classes, configuration system and serialization helpers. You will not need to use this module directly.
+| __connector modules__                 |
+| [tracee-httpclient](httpclient/)      | Adapter for `org.apache.httpcomponents:httpclient`-library. Use it to traceefy your JAX-RS or raw http clients.
+| [tracee-jaxrs2](jaxrs2)               | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
+| [tracee-jaxws](jaxws)                 | HandlerChains for JAX-WS endpoints and clients.
+| [tracee-jms](jms)                     | EJB-Interceptors and MessageProducers that allow you to pass around your TracEE context with JMS.
+| [tracee-servlet](servlet)        		| Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
+| [tracee-springmvc](springmvc)         | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
+| __backends__                          |
+| [tracee-slf4j](slf4j)                 | Backend implementation for containers using slf4j. You may use this on top of a java util logging containers like tomcat6 together with slf4j-jcl.
+| [tracee-log4j](log4j)                 | Backend implementation for containers using log4j for logging.
+| [tracee-log4j2](log4j2)               | Backend implementation for containers using log4js for logging.
+| [tracee-jboss-logging](jboss-logging) | Backend implementation for containers using jboss-logging like JBoss EAP5/AS6.
+| [threadlocal-store](threadlocal-store)| Backend implementation for containers that use no common logging framework. Use it in scenarios where you just want to propagate the context information.
+
+
 ### Maven artifacts
 
 Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
@@ -100,7 +125,7 @@ TracEE creates the following context identfiers on the fly if not configured oth
 ## Performance considerations
 
 TracEE is designed with performance in mind. It does not introduce global synchronization and cleans up the MDC after
-an invocation context lifecycle. A real benchmark is pending...
+each invocation lifecycle. A real benchmark is pending...
 
 These automatically generated context ids (like request- and session-identifiers) are configurable in length and allow you
 to choose a tradeoff between the chance of _uniqueness_ in time and data overhead depending on your load scenario.
