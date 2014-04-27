@@ -29,6 +29,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>tracee-examples-ear</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>

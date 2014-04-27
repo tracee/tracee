@@ -15,6 +15,7 @@
 
 
     <build>
+		<finalName>tracee-springmvc-example</finalName>
         <plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>

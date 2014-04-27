@@ -14,7 +14,7 @@
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <build>
-        <finalName>traceeJaxwsTestService</finalName>
+        <finalName>tracee-examples-jaxws-service</finalName>
         <plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
