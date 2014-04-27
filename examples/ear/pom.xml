@@ -26,6 +26,12 @@
 			<version>0.3.0-SNAPSHOT</version>
 			<type>ejb</type>
 		</dependency>
+		<dependency>
+			<groupId>de.holisticon.util.tracee.examples</groupId>
+			<artifactId>tracee-examples-jms-impl</artifactId>
+			<version>0.3.0-SNAPSHOT</version>
+			<type>ejb</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -44,6 +50,10 @@
 						<ejbModule>
 							<groupId>de.holisticon.util.tracee.examples</groupId>
 							<artifactId>tracee-examples-ejb-impl</artifactId>
+						</ejbModule>
+						<ejbModule>
+							<groupId>de.holisticon.util.tracee.examples</groupId>
+							<artifactId>tracee-examples-jms-impl</artifactId>
 						</ejbModule>
 					</modules>
 				</configuration>

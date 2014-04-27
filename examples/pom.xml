@@ -8,9 +8,11 @@
 	<modules>
 		<module>jaxws</module>
 		<module>webapp</module>
+		<module>jaxrs2</module>
 		<module>ejb</module>
-		<module>ear</module>
+		<module>jms</module>
 		<module>springmvc</module>
+		<module>ear</module>
 	</modules>
 
 	<parent>
