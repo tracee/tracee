@@ -30,7 +30,7 @@
 	<bean id="accountWebService" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS"/>
 		<property name="wsdlDocumentUrl" value="classpath:/META-INF/wsdl/serviceHandler.wsdl"/>
-		<property name="endpointAddress" value="http://${JBOSSAS7_PORT_8080_TCP_ADDR}:${JBOSSAS7_PORT_8080_TCP_PORT}/tracee-examples-jaxws-service-0.2.0-SNAPSHOT/TraceeJaxWsTestService/TraceeJaxWsTestService" />
+		<property name="endpointAddress" value="http://${JBOSSAS7_PORT_8080_TCP_ADDR}:${JBOSSAS7_PORT_8080_TCP_PORT}/tracee-examples-jaxws-service/TraceeJaxWsTestService/TraceeJaxWsTestService" />
 		<property name="serviceName" value="TraceeJaxWsTestService" />
 		<!-- add the TraceeClientHandlerResolver -->
 		<property name="handlerResolver" ref="traceeClientHandlerResolver" />
