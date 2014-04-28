@@ -1,4 +1,4 @@
-# TracEE 0.1.0
+# TracEE 0.2.0
 
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
 [![Coverage Status](https://coveralls.io/repos/holisticon/tracee/badge.png)](https://coveralls.io/r/holisticon/tracee)
@@ -62,7 +62,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
     <dependency>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-servlet</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 ```
@@ -81,7 +81,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
     <dependency>
         <groupId>de.holisticon.util.tracee</groupId>
         <artifactId>tracee-servlet</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
