@@ -35,7 +35,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>tracee-examples-ear</finalName>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
@@ -46,14 +46,17 @@
 						<ejbModule>
 							<groupId>de.holisticon.util.tracee.examples</groupId>
 							<artifactId>tracee-examples-jaxws-service</artifactId>
+							<bundleFileName>tracee-examples-jaxws-service.jar</bundleFileName>
 						</ejbModule>
 						<ejbModule>
 							<groupId>de.holisticon.util.tracee.examples</groupId>
 							<artifactId>tracee-examples-ejb-impl</artifactId>
+							<bundleFileName>tracee-examples-ejb-impl.jar</bundleFileName>
 						</ejbModule>
 						<ejbModule>
 							<groupId>de.holisticon.util.tracee.examples</groupId>
 							<artifactId>tracee-examples-jms-impl</artifactId>
+							<bundleFileName>tracee-examples-jms-impl.jar</bundleFileName>
 						</ejbModule>
 					</modules>
 				</configuration>

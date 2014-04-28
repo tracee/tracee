@@ -16,7 +16,7 @@
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <build>
-        <finalName>traceeTestEJB</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
