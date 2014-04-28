@@ -5,7 +5,7 @@
 
 TL;DR, watch our [5 minutes slide deck](http://holisticon.github.io/tracee/docs/slides/)
 
-> __TracEE makes it easy to track the invocation context throughout your distributed JavaEE-Application. It does not force
+> __TracEE makes it easy to track the invocation context throughout your distributed JavaEE-Application logs. It does not force
 > you to pass around collaboration-ids but instead uses side-channels on the underlying protocols. It encapsulates the aspect
 > of invocation context propagation and makes it visible in your log files.__
 
