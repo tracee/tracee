@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.outbound.httpclient;
+package de.holisticon.util.tracee.outbound.httpcomponents;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.holisticon.util.tracee.outbound</groupId>
-    <artifactId>tracee-httpclient</artifactId>
+    <artifactId>tracee-httpcomponents</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
@@ -11,7 +11,7 @@
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-httpclient</name>
+    <name>tracee-httpcomponents</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <dependencies>

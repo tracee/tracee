@@ -1,4 +1,4 @@
-package de.holisticon.util.tracee.outbound.httpclient;
+package de.holisticon.util.tracee.outbound.httpcomponents;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
@@ -16,8 +16,6 @@ import java.util.Map;
 import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
 /**
- * TO DO: how to use it.
- *
  * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {

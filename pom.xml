@@ -25,7 +25,7 @@
 		<module>servlet</module>
 
 		<!-- outgoing filters -->
-		<module>httpclient</module>
+		<module>httpcomponents</module>
 
 		<!-- bidi filters -->
 		<module>jaxrs2</module>
