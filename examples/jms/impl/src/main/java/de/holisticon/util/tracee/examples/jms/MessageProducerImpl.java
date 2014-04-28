@@ -16,11 +16,11 @@ public class MessageProducerImpl implements MessageProducer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageProducerImpl.class);
 
-	@Resource(mappedName = "java/ConnectionFactory")
+	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
 
-	@Resource(mappedName = "java/exampleQueue")private Queue exampleQueue;
-	@Resource(mappedName = "java/exampleTopic")private Topic exampleTopic;
+	@Resource(mappedName = "java:/exampleQueue")private Queue exampleQueue;
+	@Resource(mappedName = "java:/exampleTopic")private Topic exampleTopic;
 
 	@Override
 	public void sendToQueue(String message) {
