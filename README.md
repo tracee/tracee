@@ -62,7 +62,7 @@ around as parameter of every of your business interfaces (EBJ, SOAP, REST, whats
 log statement. It should also be obvious that this is a dumb idea because it pollutes all of our business interfaces with
 unnecessary dependencies. We can do better.
 
-## The logging MDC
+## The propagated Mapped Diagnosis Context
 
 The [Mapped Diagnostic Context (MDC)](http://logback.qos.ch/manual/mdc.html) is a logging concept that allows printing of contextual information in log messages
 without explicitly passing them them to each log statement. A MDC is bound to its executing thread (in fact they are backed by thread locals).
@@ -81,16 +81,30 @@ We call these context boundaries MDC gaps. There are different kinds of those ga
     * Async EJB calls
     * JMS messaging
 
-TracEE makes it easy to pass an invocation context throughout your distributed JavaEE-Application. It does not force
-you to pass around collaboration Ids but instead uses side-channels on the underlying protocols and encapsulates the aspect
-of invocation context propagation.
-
-TracEE acts as a gap closer for different types of MDC gaps and allows you to carry your contextual information through
+TracEE acts as a gap closer for different types of MDC gaps and enables you to carry your contextual information through
 your whole application and beyond. You can even configure TracEE to map third-party correlation and transaction ids to
 your logging context without polluting your business logic.
 
 
-### Modules
+# Integrating TracEE into your application
+
+The steps to get TracEE up and running pretty much depends on your application scenario. The most common use case would be to
+propagate context information from a servlet container based frontend to an ejb based backend.
+
+## Integration scenarios
+
+| Framework  | Client | Container |
+| ----------:|:------:|:---------:|
+| Servlet    | - | Use [tracee-servlet](servlet) as a servlet filter. |
+| Spring MVC | - | Use [tracee-springmvc](springmvc)'s `TraceeInterceptor`. |
+| JAX-RS     | Configure [tracee-httpclient](httpclient) as Executor | Use [tracee-servlet](servlet) as a servlet filter. |
+| JAX-RS2    | Configure [tracee-jaxrs2](jaxrs2)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
+| JAX-WS     | Use [tracee-jaxws](jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
+| JMS        | Producer: Use [tracee-jms](jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms)'s `TraceeMessageListener` as EJB interceptor. |
+| ApacheHttpClient | Use [tracee-httpclient](httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| EJB3 remote  | - | - |
+
+## Modules
 
 TracEE is built highly modular. The modules you need depends on your application and the underlying frameworks and containers.
 The following table describes all available TracEE-modules and their usage scenarios.
@@ -116,7 +130,7 @@ The following table describes all available TracEE-modules and their usage scena
 
 All TracEE modules are (hopefully) OSGI compliant.
 
-### Maven artifacts
+## Maven artifacts
 
 Tracee is released to maven central via Sonatype OSS Repository Hosting.
 
@@ -131,7 +145,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 </dependencies>
 ```
 
-... or use the latest SNAPSHOT
+... or use the very latest SNAPSHOT
 
 ```xml
 <repositories>
@@ -151,11 +165,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 ```
 
 
-## Integrating TracEE into your application
-
-
-The steps to get TracEE up and running pretty much depends on your application scenario. The most common use case would be to
-propagate context information from a servlet container based frontend to an ejb based backend.
+# More
 
 ## Shipped context information
 TracEE creates the following context identfiers on the fly if not configured otherwise:
@@ -178,35 +188,22 @@ Since you may pass sensitive user information within your TracEE-Context, it is 
 trust boundaries (like HTTP-Responses to users or third-party Web-Services). TracEE offers filter configuration mechanisms
 that allow you to selectively decide at which point in your application you want to pass around what contextual information.
 
-## Integration scenarios
-
-| Framework  | Client | Container |
-| ----------:|:------:|:---------:|
-| Servlet    | - | Use [tracee-servlet](servlet) as a servlet filter. |
-| Spring MVC | - | Use [tracee-springmvc](springmvc)'s `TraceeInterceptor`. |
-| JAX-RS     | Configure [tracee-httpclient](httpclient) as Executor | Use [tracee-servlet](servlet) as a servlet filter. |
-| JAX-RS2    | Configure [tracee-jaxrs2](jaxrs2)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
-| JAX-WS     | Use [tracee-jaxws](jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
-| JMS        | Producer: Use [tracee-jms](jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms)'s `TraceeMessageListener` as EJB interceptor. |
-| ApacheHttpClient | Use [tracee-httpclient](httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
-| EJB3 remote  | - | - |
-
-### Classloader considerations
+## Classloader considerations
 
 You can bundle TracEE with your application or install it as global library to your container.
 
 
-# Contributing
+# Contributing to TracEE
 
 We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
 application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
 
-## Building TracEE
+## Building and developing TracEE
 
 TracEE is built using Maven (at least version 3.0.4).
 A simple import of the pom in your IDE should get you up and running. To build TracEE on the commandline, just run `mvn clean install`
 
-### Requirements
+## Requirements
 
 The likelihood of a pull request being used rises with the following properties:
 
