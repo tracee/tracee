@@ -14,7 +14,7 @@ import javax.jms.MessageListener;
 		@ActivationConfigProperty(
 				propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
 		@ActivationConfigProperty(
-				propertyName = "destination", propertyValue = "jms/exampleTopic") })
+				propertyName = "destination", propertyValue = "exampleTopic") })
 @Interceptors(TraceeMessageListener.class)
 public class MessageTopicListener implements MessageListener {
 

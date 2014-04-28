@@ -14,7 +14,7 @@ import javax.jms.MessageListener;
 		@ActivationConfigProperty(
 				propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(
-				propertyName = "destination", propertyValue = "jms/exampleQueue") })
+				propertyName = "destination", propertyValue = "exampleQueue") })
 @Interceptors(TraceeMessageListener.class)
 public class MessageQueueListener implements MessageListener {
 
