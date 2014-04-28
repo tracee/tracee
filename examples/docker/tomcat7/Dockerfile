@@ -36,6 +36,9 @@ ADD http://repo1.maven.org/maven2/ch/qos/logback/logback-core/0.9.30/logback-cor
 ADD http://repo1.maven.org/maven2/biz/paluch/logging/logstash-gelf/1.3.2/logstash-gelf-1.3.2.jar $CATALINA_HOME/lib/
 ADD http://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar $CATALINA_HOME/lib/
 
+# Add jax-rs 2 api
+ADD http://repo1.maven.org/maven2/javax/ws/rs/javax.ws.rs-api/2.0/javax.ws.rs-api-2.0.jar $CATALINA_HOME/lib/
+
 # Disable jcl
 RUN rm /apache-tomcat/conf/logging.properties
 # Add logback configuration
@@ -56,3 +59,4 @@ ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_UDP_ADDR=$GRAYLOG_PORT
 
 # Download and install latest tracee snapshot artifacts
 ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-springmvc&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-springmvc.war
+ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-jaxrs2&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-jaxrs2.war

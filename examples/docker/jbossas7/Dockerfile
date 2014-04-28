@@ -21,7 +21,7 @@ RUN unzip /logstash-gelf-1.3.2-logging-module.zip -d / \
   && rm -rf /logstash-gelf-1.3.2*
 
 
-ADD standalone.xml $JBOSS_HOME/standalone/configuration/
+ADD standalone-full.xml $JBOSS_HOME/standalone/configuration/
 
 # Add management user to jboss7
 RUN $JBOSS_HOME/bin/add-user.sh admin yummie --silent=true
@@ -29,9 +29,9 @@ RUN $JBOSS_HOME/bin/add-user.sh admin yummie --silent=true
 EXPOSE 8080 9990 9999
 
 ENTRYPOINT env \
-  && sed -i "s/GRAYLOG_PORT_12201_UDP_PORT/$GRAYLOG_PORT_12201_UDP_PORT/g" "/jboss-as/standalone/configuration/standalone.xml" \
-  && sed -i "s/GRAYLOG_PORT_12201_UDP_ADDR/$GRAYLOG_PORT_12201_UDP_ADDR/g" "/jboss-as/standalone/configuration/standalone.xml" \
-  && $JBOSS_HOME/bin/standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0
+  && sed -i "s/GRAYLOG_PORT_12201_UDP_PORT/$GRAYLOG_PORT_12201_UDP_PORT/g" "/jboss-as/standalone/configuration/standalone-full.xml" \
+  && sed -i "s/GRAYLOG_PORT_12201_UDP_ADDR/$GRAYLOG_PORT_12201_UDP_ADDR/g" "/jboss-as/standalone/configuration/standalone-full.xml" \
+  && $JBOSS_HOME/bin/standalone.sh --server-config=standalone-full.xml -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0
 
 # Download and install latest tracee snapshot artifacts
 ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-ear&e=ear&v=LATEST $JBOSS_HOME/standalone/deployments/tracee-examples.ear
