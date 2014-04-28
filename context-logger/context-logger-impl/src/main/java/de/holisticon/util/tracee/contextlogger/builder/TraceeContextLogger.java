@@ -5,9 +5,6 @@ import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
 import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
 import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
-import de.holisticon.util.tracee.contextlogger.profile.Profile;
-
-import java.util.*;
 
 /**
  * The main context logger class.
@@ -16,27 +13,20 @@ import java.util.*;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 
-public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBuilder, ContextLogger {
+public final class TraceeContextLogger implements ContextLogger {
 
 	private static TraceeContextLogger instance;
 
 	private ConnectorFactory connectorsWrapper;
 
-	// Context log builder
-	private TraceeGsonContextLogBuilder traceeGsonContextLogBuilder;
-
 	private final ContextLoggerConfiguration contextLoggerConfiguration;
+	private final TraceeGsonContextLogBuilder traceeGsonContextLogBuilder;
 
-	// manual configuaration
-	private Profile profile;
-	private Map<String, Boolean> manualContextOverrides = new HashMap<String, Boolean>();
 
-	TraceeContextLogger() {
-
-		// get the log configuration
-		this.contextLoggerConfiguration = ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration();
+	TraceeContextLogger(TraceeGsonContextLogBuilder traceeGsonContextLogBuilder, ContextLoggerConfiguration contextLoggerConfiguration) {
+		this.contextLoggerConfiguration = contextLoggerConfiguration;
+		this.traceeGsonContextLogBuilder = traceeGsonContextLogBuilder;
 		initConnectors();
-
 	}
 
 	/**
@@ -46,48 +36,16 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
 		connectorsWrapper = new ConnectorFactory();
 	}
 
+
+
 	public static ContextLoggerBuilder create() {
-		return new TraceeContextLogger();
+		return new ContextLoggerBuilderImpl(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
 	}
 
 	public static ContextLogger createDefault() {
 		return create().build();
 	}
 
-	@Override
-	public ContextLogger build() {
-		traceeGsonContextLogBuilder = createGsonLogBuilder();
-		return this;
-	}
-
-
-	@Override
-	public ConfigBuilder enforceProfile(Profile enforcedProfile) {
-		this.profile = enforcedProfile;
-		return this;
-	}
-
-	@Override
-	public ConfigBuilder enable(String... contexts) {
-		fillManualContextOverrideMap(contexts, true);
-		return this;
-	}
-
-	@Override
-	public ConfigBuilder disable(String... contexts) {
-		fillManualContextOverrideMap(contexts, false);
-		return this;
-	}
-
-	@Override
-	public ContextLoggerBuilder apply() {
-		return (ContextLoggerBuilder) this;
-	}
-
-	@Override
-	public ConfigBuilder config() {
-		return (ConfigBuilder) this;
-	}
 
 	@Override
 	public String createJson(Object... instancesToLog) {
@@ -181,20 +139,7 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
 		return instance;
 	}
 
-	/**
-	 * Creates a TraceeGsonContextLogBuilder instance which can be used for creating the log message.
-	 *
-	 * @return An instance of TraceeGsonContextLogBuilder
-	 */
-	private TraceeGsonContextLogBuilder createGsonLogBuilder() {
 
-		TraceeGsonContextLogBuilder tmpTraceeGsonContextLogBuilder = new TraceeGsonContextLogBuilder();
-		tmpTraceeGsonContextLogBuilder.setWrapperClasses(contextLoggerConfiguration.getWrapperClasses());
-		tmpTraceeGsonContextLogBuilder.setManualContextOverrides(manualContextOverrides);
-		tmpTraceeGsonContextLogBuilder.setProfile(this.profile != null ? profile : this.contextLoggerConfiguration.getProfile());
-
-		return tmpTraceeGsonContextLogBuilder;
-	}
 
 	/**
 	 * Creates a new instance of the passed type via reflection.
@@ -213,24 +158,6 @@ public final class TraceeContextLogger implements ConfigBuilder, ContextLoggerBu
 		return null;
 	}
 
-	/**
-	 * Adds passed contexts value pairs to manualContextOverrides.
-	 *
-	 * @param contexts The property name of the context data.
-	 * @param value    the value which should be set.
-	 */
-	private void fillManualContextOverrideMap(final String[] contexts, final boolean value) {
-		if (contexts != null) {
 
-			for (String context : contexts) {
-
-				if (!context.isEmpty()) {
-					this.manualContextOverrides.put(context, value);
-				}
-
-			}
-
-		}
-	}
 
 }

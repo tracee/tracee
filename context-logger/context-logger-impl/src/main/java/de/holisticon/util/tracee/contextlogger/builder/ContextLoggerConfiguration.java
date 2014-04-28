@@ -58,15 +58,10 @@ public class ContextLoggerConfiguration {
 
 
     public static ContextLoggerConfiguration getOrCreateContextLoggerConfiguration() {
-        ContextLoggerConfiguration localContextLoggerConfiguration = contextLoggerConfiguration;
-        if (localContextLoggerConfiguration == null) {
-
-            localContextLoggerConfiguration = new ContextLoggerConfiguration();
-            contextLoggerConfiguration = localContextLoggerConfiguration;
-
+        if (contextLoggerConfiguration == null) {
+			contextLoggerConfiguration = new ContextLoggerConfiguration();
         }
-
-        return localContextLoggerConfiguration;
+        return contextLoggerConfiguration;
     }
 
     /**
