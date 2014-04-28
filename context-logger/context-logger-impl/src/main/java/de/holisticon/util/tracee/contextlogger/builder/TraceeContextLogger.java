@@ -1,8 +1,8 @@
 package de.holisticon.util.tracee.contextlogger.builder;
 
 import de.holisticon.util.tracee.contextlogger.*;
+import de.holisticon.util.tracee.contextlogger.api.TraceeContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.api.WrappedContextData;
-import de.holisticon.util.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 import de.holisticon.util.tracee.contextlogger.data.TypeToWrapper;
 import de.holisticon.util.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 
@@ -20,10 +20,10 @@ public final class TraceeContextLogger implements ContextLogger {
 	private ConnectorFactory connectorsWrapper;
 
 	private final ContextLoggerConfiguration contextLoggerConfiguration;
-	private final TraceeGsonContextLogBuilder traceeGsonContextLogBuilder;
+	private final TraceeContextLogBuilder traceeGsonContextLogBuilder;
 
 
-	TraceeContextLogger(TraceeGsonContextLogBuilder traceeGsonContextLogBuilder, ContextLoggerConfiguration contextLoggerConfiguration) {
+	TraceeContextLogger(TraceeContextLogBuilder traceeGsonContextLogBuilder, ContextLoggerConfiguration contextLoggerConfiguration) {
 		this.contextLoggerConfiguration = contextLoggerConfiguration;
 		this.traceeGsonContextLogBuilder = traceeGsonContextLogBuilder;
 		initConnectors();
@@ -49,7 +49,7 @@ public final class TraceeContextLogger implements ContextLogger {
 
 	@Override
 	public String createJson(Object... instancesToLog) {
-		return this.propagateToContextLogBuilder(instancesToLog);
+		return propagateToContextLogBuilder(instancesToLog);
 	}
 
 	@Override
@@ -76,11 +76,8 @@ public final class TraceeContextLogger implements ContextLogger {
 			propagateArray = new Object[instancesToLog.length];
 
 			for (int i = 0; i < instancesToLog.length; i++) {
-
 				propagateArray[i] = wrapInstance(instancesToLog[i]);
-
 			}
-
 		}
 
 		return traceeGsonContextLogBuilder.logPassedContext(new PassedDataContextProvider(propagateArray));

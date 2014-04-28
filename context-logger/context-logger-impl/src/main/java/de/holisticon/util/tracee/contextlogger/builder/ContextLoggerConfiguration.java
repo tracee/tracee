@@ -68,7 +68,7 @@ public class ContextLoggerConfiguration {
      * Gets an input class to context provider class map.
      * @return An input class to context provider class map.
      */
-    public final Map<Class, Class> getClassToWrapperMap() {
+    public Map<Class, Class> getClassToWrapperMap() {
         return classToWrapperMap;
     }
 
@@ -76,11 +76,11 @@ public class ContextLoggerConfiguration {
      * Gets all implicit context provider classes.
      * @return All implicit context provider classes.
      */
-    public final Map<ImplicitContext, Class> getImplicitContextClassMap() {
+    public Map<ImplicitContext, Class> getImplicitContextClassMap() {
         return implicitContextClassMap;
     }
 
-    public final List<TypeToWrapper> getWrapperList() {
+    public List<TypeToWrapper> getWrapperList() {
         return wrapperList;
     }
 
@@ -88,7 +88,7 @@ public class ContextLoggerConfiguration {
      * Gets a set that contains all context provider classes.
      * @return A set that contains all available context provider classes
      */
-    public final Set<Class> getWrapperClasses() {
+    public Set<Class> getWrapperClasses() {
         return wrapperClasses;
     }
 
@@ -96,7 +96,7 @@ public class ContextLoggerConfiguration {
      * Gets the default profile.
      * @return The default profile.
      */
-    public final Profile getProfile() {
+    public Profile getProfile() {
         return profile;
     }
 
