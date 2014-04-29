@@ -22,17 +22,18 @@ import static org.mockito.Mockito.when;
 
 public class TraceeHttpClientDecoratorTest {
 
+	private static final String USED_PROFILE = "A_PROFILE";
 	private final HttpClient delegateMock = mock(HttpClient.class);
 	private final TraceeBackend backendMock = mock(TraceeBackend.class);
 	private final TraceeFilterConfiguration configMock = mock(TraceeFilterConfiguration.class);
 	private final HttpMethod httpMethodMock = mock(HttpMethod.class);
 	@SuppressWarnings("unchecked")
 	private final TransportSerialization<String> transportSerializationMock = mock(TransportSerialization.class);
-	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(delegateMock, backendMock, transportSerializationMock);
+	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(delegateMock, backendMock, transportSerializationMock, USED_PROFILE);
 
 	@Before
 	public void setupMocks() {
-		when(backendMock.getConfiguration()).thenReturn(configMock);
+		when(backendMock.getConfiguration(eq(USED_PROFILE))).thenReturn(configMock);
 		when(configMock.shouldProcessContext(any(TraceeFilterConfiguration.Channel.class))).thenReturn(true);
 	}
 

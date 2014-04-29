@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.outbound.httpcomponents;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.apache.http.HttpException;
@@ -21,21 +22,27 @@ import static de.holisticon.util.tracee.configuration.TraceeFilterConfiguration.
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
 	public TraceeHttpRequestInterceptor() {
-		this(Tracee.getBackend());
+		this(null);
+	}
+	public TraceeHttpRequestInterceptor(String profile) {
+		this(Tracee.getBackend(), profile);
 	}
 
-	TraceeHttpRequestInterceptor(TraceeBackend backend) {
+	TraceeHttpRequestInterceptor(TraceeBackend backend, String profile) {
 		this.backend = backend;
 		this.transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.profile = profile;
 	}
 
 	private final TraceeBackend backend;
 	private final TransportSerialization<String> transportSerialization;
+	private final String profile;
 
 	@Override
 	public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
-		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filteredParams = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
+		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
+			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, OutgoingRequest);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
 			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}

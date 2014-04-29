@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.outbound.httpcomponents;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.apache.http.Header;
@@ -24,22 +25,28 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
     private final TraceeBackend backend;
     private final TransportSerialization<String> transportSerialization;
+	private final String profile;
 
-	TraceeHttpResponseInterceptor(TraceeBackend backend) {
+	TraceeHttpResponseInterceptor(TraceeBackend backend, String profile) {
 		this.backend = backend;
+		this.profile = profile;
 		transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
 
 	public TraceeHttpResponseInterceptor() {
-		this(Tracee.getBackend());
+		this(null);
+	}
+	public TraceeHttpResponseInterceptor(String profile) {
+		this(Tracee.getBackend(), profile);
 	}
 
 	@Override
     public final void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
-        final Header traceeHeader = response.getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
-        if (traceeHeader != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
+        final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		final Header traceeHeader = response.getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+        if (traceeHeader != null && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final Map<String, String> parsedContext = transportSerialization.parse(traceeHeader.getValue());
-			backend.putAll(backend.getConfiguration().filterDeniedParams(parsedContext, IncomingResponse));
+			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 		}
     }
 }

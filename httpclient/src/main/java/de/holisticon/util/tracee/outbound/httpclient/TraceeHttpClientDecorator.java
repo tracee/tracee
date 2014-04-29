@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.outbound.httpclient;
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeBackend;
 import de.holisticon.util.tracee.TraceeConstants;
+import de.holisticon.util.tracee.configuration.TraceeFilterConfiguration;
 import de.holisticon.util.tracee.transport.HttpJsonHeaderTransport;
 import de.holisticon.util.tracee.transport.TransportSerialization;
 import org.apache.commons.httpclient.*;
@@ -23,28 +24,33 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	private final HttpClient delegate;
 	private final TraceeBackend backend;
 	private final TransportSerialization<String> transportSerialization;
-
+	private final String profile;
 
 	public static HttpClient wrap(HttpClient httpClient) {
+		return TraceeHttpClientDecorator.wrap(httpClient, null);
+	}
+
+	public static HttpClient wrap(HttpClient httpClient, String profile) {
 		if (httpClient instanceof TraceeHttpClientDecorator) {
 			return httpClient;
 		} else {
-			return new TraceeHttpClientDecorator(httpClient);
+			return new TraceeHttpClientDecorator(httpClient, profile);
 		}
 	}
 
-	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, TransportSerialization<String> transportSerialization) {
+	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, TransportSerialization<String> transportSerialization, String profile) {
 		this.delegate = delegate;
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
+		this.profile = profile;
 	}
 
-	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend) {
-		this(delegate, backend, new HttpJsonHeaderTransport(backend.getLoggerFactory()));
+	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, String profile) {
+		this(delegate, backend, new HttpJsonHeaderTransport(backend.getLoggerFactory()), profile);
 	}
 
-	public TraceeHttpClientDecorator(HttpClient delegate) {
-		this(delegate, Tracee.getBackend());
+	public TraceeHttpClientDecorator(HttpClient delegate, String profile) {
+		this(delegate, Tracee.getBackend(), profile);
 	}
 
 
@@ -75,8 +81,9 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	}
 
 	private void preRequest(HttpMethod httpMethod) {
-		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filteredParams = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
+		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
+			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, OutgoingRequest);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
 			httpMethod.setRequestHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}
@@ -86,12 +93,12 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	private void postResponse(HttpMethod httpMethod) {
 		if (!httpMethod.isRequestSent()) return;
 		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.HTTP_HEADER_NAME);
-
-		if (responseHeaders.length > 0 && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
+		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		if (responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final String serializedContext = responseHeaders[0].getValue();
 
 			final Map<String, String> parsedContext = transportSerialization.parse(serializedContext);
-			backend.putAll(backend.getConfiguration().filterDeniedParams(parsedContext, IncomingResponse));
+			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 		}
 	}
 

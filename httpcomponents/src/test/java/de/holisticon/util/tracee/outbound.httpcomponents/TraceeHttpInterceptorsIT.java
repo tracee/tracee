@@ -1,10 +1,11 @@
-package de.holisticon.util.tracee.outbound.httpclient;
+package de.holisticon.util.tracee.outbound.httpcomponents;
 
 import de.holisticon.util.tracee.Tracee;
 import de.holisticon.util.tracee.TraceeConstants;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -25,9 +26,7 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * @author Daniel Wegener (Holisticon AG)
  */
-public class TraceeHttpClientIT {
-
-
+public class TraceeHttpInterceptorsIT {
 
 	private Server server;
 	private String serverEndpoint = "http://localhost:4204/";
@@ -35,13 +34,16 @@ public class TraceeHttpClientIT {
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient(), null);
 
-		GetMethod getMethod = new GetMethod(serverEndpoint);
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		httpClient.addRequestInterceptor(new TraceeHttpRequestInterceptor());
+		httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
+
+		HttpGet getMethod = new HttpGet(serverEndpoint);
 		Tracee.getBackend().put("beforeRequest", "yip");
-		unit.executeMethod(getMethod);
+		final HttpResponse response = httpClient.execute(getMethod);
 
-		assertThat(getMethod.getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
+		assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
 		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yesSir"));
 	}
 
@@ -73,6 +75,5 @@ public class TraceeHttpClientIT {
 			server.join();
 		}
 	}
-
 
 }

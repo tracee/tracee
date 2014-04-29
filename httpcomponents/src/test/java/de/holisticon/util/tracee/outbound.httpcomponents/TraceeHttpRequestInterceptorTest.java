@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 public class TraceeHttpRequestInterceptorTest {
 
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor(backend);
+	private final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor(backend, null);
 
     @Test
     public void testRequestInterceptorWritesTraceeContextToRequestHeader() throws Exception {

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.EnumSet;
 
 import static org.hamcrest.Matchers.containsString;
@@ -33,14 +34,13 @@ import static org.junit.Assert.assertThat;
  */
 public class TraceeFilterIT {
 
-	private static final int JETTY_PORT = 4204;
 
 	private Server server;
-	private static final String ENDPOINT_URL = "http://localhost:4204/";
+	private String serverUrl;
 
 	@Before
 	public void startJetty() throws Exception {
-		server = new Server(JETTY_PORT);
+		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.NO_SECURITY);
 		contextHandler.setContextPath("/");
 		contextHandler.addServlet(SillyServlet.class, "/sillyServlet");
@@ -51,13 +51,15 @@ public class TraceeFilterIT {
 
 		server.setHandler(contextHandler);
 		server.start();
-
+		serverUrl = "http://"+server.getConnectors()[0].getName()+"/";
 	}
 
 	@After
 	public void stopJetty() throws Exception {
-		if (server != null)
+		if (server != null) {
 			server.stop();
+			server.join();
+		}
 	}
 
 	@Test
@@ -99,7 +101,7 @@ public class TraceeFilterIT {
 
 	private HttpResponse get(String servlet, String traceeHeader) throws IOException {
 		final HttpClient client = new DefaultHttpClient();
-		final HttpGet httpGet = new HttpGet(ENDPOINT_URL+servlet);
+		final HttpGet httpGet = new HttpGet(serverUrl+servlet);
 		if (traceeHeader != null) {
 			httpGet.setHeader(TraceeConstants.HTTP_HEADER_NAME, traceeHeader);
 		}
