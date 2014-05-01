@@ -88,7 +88,7 @@
 	<inceptionYear>2013</inceptionYear>
 
 	<prerequisites>
-		<maven>3.0.4</maven>
+		<maven>3.1.0</maven>
 	</prerequisites>
 
 	<issueManagement>
@@ -173,7 +173,7 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>3.0.4</version>
+									<version>3.1.0</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>1.6</version>
