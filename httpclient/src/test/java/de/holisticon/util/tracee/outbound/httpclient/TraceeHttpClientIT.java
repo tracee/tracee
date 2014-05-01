@@ -30,7 +30,7 @@ public class TraceeHttpClientIT {
 
 
 	private Server server;
-	private String serverEndpoint = "http://localhost:4204/";
+	private String serverEndpoint;
 
 
 	@Test

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
@@ -31,22 +32,22 @@ import static org.junit.Assert.assertThat;
  */
 public class TraceeInterceptorIT {
 
-	private static final int JETTY_PORT = 4205;
 
 	private Server server;
-	private static final String ENDPOINT_URL = "http://localhost:4205/testGet";
+	private String ENDPOINT_URL;
 
 	@Before
 	public void startJetty() throws Exception {
 		Tracee.getBackend().clear();
 		
-		server = new Server(JETTY_PORT);
+		server = new Server(new InetSocketAddress("127.0.0.1",0));
 		ServletContextHandler context = new ServletContextHandler(null, "/", ServletContextHandler.NO_SECURITY);
 		final DispatcherServlet dispatcherServlet = new DispatcherServlet();
 		dispatcherServlet.setContextConfigLocation("classpath:/spring-itest-configuration.xml");
 		context.addServlet(new ServletHolder(dispatcherServlet), "/");
 		server.setHandler(context);
 		server.start();
+		ENDPOINT_URL = "http://"+server.getConnectors()[0].getName()+"/";
 	}
 
 	@After

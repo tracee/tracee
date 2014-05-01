@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class TraceeHttpInterceptorsIT {
 
 	private Server server;
-	private String serverEndpoint = "http://localhost:4204/";
+	private String serverEndpoint;
 
 
 	@Test
