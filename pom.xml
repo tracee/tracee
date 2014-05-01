@@ -123,6 +123,7 @@
 	</properties>
 
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
