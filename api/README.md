@@ -60,8 +60,8 @@ backend that supports propagation of parameters (but leaves out the logging part
 
 ### Implementing custom backends
 
-You can implement your own backend by implementing the `de.holisticon.util.tracee.spi.TraceeBackendProvider` interface
-and create a _provider-configuration file_ `classpath:/META-INF/services/de.holisticon.util.tracee.spi.TraceeContextProvider`
+You can implement your own backend by implementing the `io.tracee.spi.TraceeBackendProvider` interface
+and create a _provider-configuration file_ `classpath:/META-INF/services/io.tracee.spi.TraceeContextProvider`
 (see JDKs [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)).
 
 The module [tracee-core](../core) contains abstractions over MDC-like logging backends that may help you with your integration.
