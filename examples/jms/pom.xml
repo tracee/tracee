@@ -10,7 +10,7 @@
 	</modules>
 
 	<parent>
-		<groupId>de.holisticon.util.tracee.examples</groupId>
+		<groupId>io.tracee.examples</groupId>
 		<artifactId>tracee-examples</artifactId>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>

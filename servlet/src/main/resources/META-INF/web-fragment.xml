@@ -9,7 +9,7 @@ http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
 
 	<filter>
 		<filter-name>traceeFilter</filter-name>
-		<filter-class>de.holisticon.util.tracee.servlet.TraceeFilter</filter-class>
+		<filter-class>io.tracee.servlet.TraceeFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -18,10 +18,10 @@ http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
 	</filter-mapping>
 
 	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeServletRequestListener</listener-class>
+		<listener-class>io.tracee.servlet.TraceeServletRequestListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeSessionListener</listener-class>
+		<listener-class>io.tracee.servlet.TraceeSessionListener</listener-class>
 	</listener>
 
 

@@ -34,4 +34,4 @@ ENTRYPOINT env \
   && $JBOSS_HOME/bin/standalone.sh --server-config=standalone-full.xml -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0
 
 # Download and install latest tracee snapshot artifacts
-ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-ear&e=ear&v=LATEST $JBOSS_HOME/standalone/deployments/tracee-examples.ear
+ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.tracee.examples&a=tracee-examples-ear&e=ear&v=LATEST $JBOSS_HOME/standalone/deployments/tracee-examples.ear

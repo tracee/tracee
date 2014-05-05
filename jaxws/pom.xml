@@ -5,7 +5,7 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>io.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
@@ -16,12 +16,12 @@
     <dependencies>
         <dependency>
             <artifactId>tracee-api</artifactId>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>tracee-core</artifactId>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -29,7 +29,7 @@
             <artifactId>jaxws-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.holisticon.util.tracee.backend</groupId>
+            <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-log4j</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
@@ -46,7 +46,7 @@
             <scope>test</scope>
         </dependency>
 		<dependency>
-			<groupId>de.holisticon.util.tracee</groupId>
+			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
 			<version>0.3.0-SNAPSHOT</version>
 			<scope>test</scope>

@@ -5,7 +5,7 @@
     <packaging>ear</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee.examples</groupId>
+        <groupId>io.tracee.examples</groupId>
         <artifactId>tracee-examples</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
@@ -15,19 +15,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>de.holisticon.util.tracee.examples</groupId>
+			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-ejb-impl</artifactId>
 			<version>0.3.0-SNAPSHOT</version>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
-			<groupId>de.holisticon.util.tracee.examples</groupId>
+			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-jaxws-service</artifactId>
 			<version>0.3.0-SNAPSHOT</version>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
-			<groupId>de.holisticon.util.tracee.examples</groupId>
+			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-jms-impl</artifactId>
 			<version>0.3.0-SNAPSHOT</version>
 			<type>ejb</type>
@@ -44,17 +44,17 @@
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<modules>
 						<ejbModule>
-							<groupId>de.holisticon.util.tracee.examples</groupId>
+							<groupId>io.tracee.examples</groupId>
 							<artifactId>tracee-examples-jaxws-service</artifactId>
 							<bundleFileName>tracee-examples-jaxws-service.jar</bundleFileName>
 						</ejbModule>
 						<ejbModule>
-							<groupId>de.holisticon.util.tracee.examples</groupId>
+							<groupId>io.tracee.examples</groupId>
 							<artifactId>tracee-examples-ejb-impl</artifactId>
 							<bundleFileName>tracee-examples-ejb-impl.jar</bundleFileName>
 						</ejbModule>
 						<ejbModule>
-							<groupId>de.holisticon.util.tracee.examples</groupId>
+							<groupId>io.tracee.examples</groupId>
 							<artifactId>tracee-examples-jms-impl</artifactId>
 							<bundleFileName>tracee-examples-jms-impl.jar</bundleFileName>
 						</ejbModule>

@@ -5,7 +5,7 @@
     <packaging>bundle</packaging>
 
     <parent>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>io.tracee</groupId>
         <artifactId>tracee-context-logger-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
@@ -31,7 +31,7 @@
                                     <includes>
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
-                                        <include>de.holisticon.util.tracee:*</include>
+                                        <include>io.tracee:*</include>
 										<include>com.google.code.gson:gson:jar</include>
                                         <include>org.apache.commons:commons-lang3</include>
                                     </includes>
@@ -48,13 +48,13 @@
     <dependencies>
 
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <artifactId>tracee-context-logger-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <artifactId>tracee-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
@@ -93,7 +93,7 @@
 
         <!-- dependecies for unittests -->
         <dependency>
-            <groupId>de.holisticon.util.tracee.backend</groupId>
+            <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
