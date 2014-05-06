@@ -17,9 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeServerHandlerTest {
 
 	private final TraceeBackend backend = mock(TraceeBackend.class);

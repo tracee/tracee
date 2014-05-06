@@ -9,7 +9,6 @@ import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 /**
  * JaxWsContextProvider context provider.
- * @author Tobias Gindler, holisticon AG on 28.03.14.
  */
 @TraceeContextLogProvider(displayName = "jaxWs", order = Order.JAXWS)
 public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {

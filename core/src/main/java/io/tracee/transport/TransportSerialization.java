@@ -3,9 +3,6 @@ package io.tracee.transport;
 
 import java.util.Map;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public interface TransportSerialization<T> {
 
 	/**

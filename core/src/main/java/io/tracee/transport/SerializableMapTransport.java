@@ -7,7 +7,6 @@ import java.util.Map;
 /**
  * Marshalling for TraceeBackend to a serializable Map.
  *
- * @author Daniel Wegener (Holisticon AG)
  */
 public final class SerializableMapTransport implements TransportSerialization<Map<String, String>> {
 

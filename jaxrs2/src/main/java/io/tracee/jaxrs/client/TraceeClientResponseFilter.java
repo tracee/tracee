@@ -15,9 +15,6 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 @Provider
 public class TraceeClientResponseFilter implements ClientResponseFilter {
 

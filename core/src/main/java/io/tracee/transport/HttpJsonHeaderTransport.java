@@ -9,9 +9,6 @@ import io.tracee.TraceeLoggerFactory;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class HttpJsonHeaderTransport implements TransportSerialization<String> {
 
 	private final Gson gson = new Gson();

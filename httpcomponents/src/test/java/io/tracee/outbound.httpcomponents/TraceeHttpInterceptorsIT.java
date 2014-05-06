@@ -22,9 +22,6 @@ import java.net.InetSocketAddress;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeHttpInterceptorsIT {
 
 	private Server server;

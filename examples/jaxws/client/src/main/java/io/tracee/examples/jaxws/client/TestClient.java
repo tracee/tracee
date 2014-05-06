@@ -13,9 +13,6 @@ import org.slf4j.MDC;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * @author Tobias Gindler (Holisticon AG)
- */
 public final class TestClient {
 
     private TestClient() {

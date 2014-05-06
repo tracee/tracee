@@ -5,9 +5,7 @@ import io.tracee.contextlogger.profile.Profile;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
+
 public class ConfigBuilderImpl implements ConfigBuilder {
 
 	private ContextLoggerBuilderImpl owningBuilder;

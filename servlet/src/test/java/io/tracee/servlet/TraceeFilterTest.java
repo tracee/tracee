@@ -21,10 +21,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
-
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeFilterTest {
 
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();

@@ -13,9 +13,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeHttpResponseInterceptorTest {
 
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();

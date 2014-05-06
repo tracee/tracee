@@ -23,9 +23,6 @@ import java.util.concurrent.ExecutionException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class AllFilterIT {
 
     private static final String ENDPOINT_URL = "http://127.0.0.1:4204/jaxrs2/";

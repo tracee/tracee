@@ -3,9 +3,6 @@ package io.tracee.contextlogger.builder;
 
 import io.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 class ContextLoggerBuilderImpl implements ContextLoggerBuilder {
 
 

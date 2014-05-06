@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSessionListener;
  * <li>Tomcat</li>
  * </ul>
  *
- * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeSessionListener implements HttpSessionListener {
 

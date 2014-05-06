@@ -12,9 +12,6 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class TraceeMessageProducer implements MessageProducer {
 
 

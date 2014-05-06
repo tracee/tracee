@@ -2,9 +2,6 @@ package io.tracee.examples.jms;
 
 import javax.ejb.Local;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 @Local
 public interface MessageProducer {
 

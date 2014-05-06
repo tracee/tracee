@@ -12,9 +12,6 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 @Provider
 public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 

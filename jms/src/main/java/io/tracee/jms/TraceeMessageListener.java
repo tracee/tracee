@@ -16,7 +16,6 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncPro
 /**
  * EJB interceptor that parses a TracEE context from message properties and cleans it after message processing.
  *
- * @author Daniel Wegener (Holisticon AG)
  */
 public final class TraceeMessageListener {
 

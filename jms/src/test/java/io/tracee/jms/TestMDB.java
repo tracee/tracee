@@ -6,9 +6,6 @@ import javax.interceptor.Interceptors;
 import java.lang.IllegalStateException;
 import javax.jms.*;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 @MessageDriven
 @Interceptors(TraceeMessageListener.class)
 public class TestMDB implements MessageListener {

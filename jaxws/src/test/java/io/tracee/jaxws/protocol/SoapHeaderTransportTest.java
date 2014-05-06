@@ -24,9 +24,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class SoapHeaderTransportTest {
 
 	private final SoapHeaderTransport unit = new SoapHeaderTransport();

@@ -18,10 +18,6 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeClientRequestFilterTest {
 
     private final TraceeBackend traceeBackend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();

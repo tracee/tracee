@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class SimpleNodeList implements NodeList, Iterable<Node> {
 
 	private final List<Node> backedList = new ArrayList<Node>();

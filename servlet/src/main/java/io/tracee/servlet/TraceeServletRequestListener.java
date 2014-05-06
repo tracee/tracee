@@ -19,7 +19,6 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Incoming
 
 /**
  * Manages the TracEE lifecycle.
- * @author Daniel Wegener (Holisticon AG)
  */
 public final class TraceeServletRequestListener implements ServletRequestListener {
 

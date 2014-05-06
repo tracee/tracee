@@ -2,9 +2,6 @@ package io.tracee.jaxws;
 
 import javax.xml.namespace.QName;
 
-/**
- * @author Tobias Gindler (Holisticon AG)
- */
 public final class TraceeWsHandlerConstants {
 
     private TraceeWsHandlerConstants() {

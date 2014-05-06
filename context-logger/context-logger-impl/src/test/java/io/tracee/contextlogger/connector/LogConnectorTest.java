@@ -7,9 +7,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class LogConnectorTest {
 
 	private final TraceeLogger logger = mock(TraceeLogger.class);

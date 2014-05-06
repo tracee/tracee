@@ -4,9 +4,6 @@ import io.tracee.Utilities;
 
 import java.util.*;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
 	public static final String TRACEE_CONFIG_PREFIX = "tracee.";

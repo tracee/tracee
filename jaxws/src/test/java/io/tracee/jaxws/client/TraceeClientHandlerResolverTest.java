@@ -10,9 +10,6 @@ import javax.xml.ws.handler.PortInfo;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasItem;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeClientHandlerResolverTest {
 
 	private final PortInfo portInfo = Mockito.mock(PortInfo.class);

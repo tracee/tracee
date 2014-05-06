@@ -8,9 +8,6 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.jms.*;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 @Stateless
 public class MessageProducerImpl implements MessageProducer {
 

@@ -10,11 +10,7 @@ import org.slf4j.MDC;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * @author Daniel
- */
 public class Slf4jTraceeContextProviderIT {
-
 
     private static final Logger LOG = LoggerFactory.getLogger(Slf4jTraceeContextProviderIT.class);
 

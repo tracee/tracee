@@ -20,9 +20,6 @@ import java.util.Properties;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeJaxWsTestServiceIT {
 
 	private static URL ENDPOINT_URL;

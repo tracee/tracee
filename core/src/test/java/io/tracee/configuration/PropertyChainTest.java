@@ -14,9 +14,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class PropertyChainTest {
 
 	private final Properties p1 = Mockito.mock(Properties.class);

@@ -28,12 +28,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeFilterIT {
-
 
 	private Server server;
 	private String serverUrl;

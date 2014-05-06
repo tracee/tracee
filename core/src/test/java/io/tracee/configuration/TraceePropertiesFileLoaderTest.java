@@ -10,9 +10,6 @@ import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceePropertiesFileLoaderTest {
 
 	private final TraceePropertiesFileLoader unit = new TraceePropertiesFileLoader();

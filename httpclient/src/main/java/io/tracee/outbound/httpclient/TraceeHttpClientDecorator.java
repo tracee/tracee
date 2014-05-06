@@ -17,7 +17,6 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 /**
  * Wraps an HttpClient and performs TraceEE context propagation on execute methods.
- * @author Daniel Wegener (Holisticon AG)
  */
 public class TraceeHttpClientDecorator extends HttpClient {
 

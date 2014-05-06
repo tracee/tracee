@@ -1,8 +1,5 @@
 package io.tracee.contextlogger.jaxws.container;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class TraceeContextLoggerJaxwsConstants {
 
 	private TraceeContextLoggerJaxwsConstants() { }

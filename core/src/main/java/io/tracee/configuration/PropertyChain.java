@@ -3,9 +3,6 @@ package io.tracee.configuration;
 import java.util.Arrays;
 import java.util.Properties;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class PropertyChain {
 
 	private final Iterable<Properties> propertiesChain;

@@ -16,9 +16,6 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
 	public TraceeHttpRequestInterceptor() {

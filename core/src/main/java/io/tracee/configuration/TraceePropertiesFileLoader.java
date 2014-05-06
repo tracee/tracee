@@ -6,9 +6,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class TraceePropertiesFileLoader {
 
 

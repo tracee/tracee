@@ -13,9 +13,6 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeFilter implements Filter {
 
 	public static final String PROFILE_INIT_PARAM = "profile";

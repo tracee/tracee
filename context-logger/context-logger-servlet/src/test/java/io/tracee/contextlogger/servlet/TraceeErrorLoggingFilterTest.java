@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeErrorLoggingFilterTest {
 
 	private final TraceeErrorLoggingFilter unit = new TraceeErrorLoggingFilter();

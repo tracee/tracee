@@ -11,9 +11,6 @@ import javax.xml.soap.SOAPHeaderElement;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class SoapHeaderTransport {
 
 	/**

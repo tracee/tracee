@@ -2,9 +2,6 @@ package io.tracee.jms.out;
 
 import javax.jms.*;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class TraceeTopicPublisher implements TopicPublisher {
 
 

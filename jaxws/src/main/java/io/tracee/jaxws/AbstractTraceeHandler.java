@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author Tobias Gindler (Holisticon AG)
- */
 public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
 	public AbstractTraceeHandler(TraceeBackend traceeBackend) {

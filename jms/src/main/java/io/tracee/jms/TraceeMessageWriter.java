@@ -8,9 +8,6 @@ import javax.jms.MessageProducer;
 import javax.jms.QueueSender;
 import javax.jms.TopicPublisher;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public final class TraceeMessageWriter {
 
     private TraceeMessageWriter() {

@@ -17,9 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeMessageListenerAndProducerIT {
 
     @Resource

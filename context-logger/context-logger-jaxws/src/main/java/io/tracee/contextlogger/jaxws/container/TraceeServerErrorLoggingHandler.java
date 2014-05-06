@@ -18,7 +18,6 @@ import java.util.Set;
 /**
  * JaxWs container side handler that detects uncaught exceptions and outputs contextual informations.
  *
- * @author Tobias Gindler (Holisticon AG)
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 

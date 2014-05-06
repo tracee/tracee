@@ -2,9 +2,6 @@ package io.tracee.configuration;
 
 import java.util.Map;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public interface TraceeFilterConfiguration {
 
 	enum Channel {

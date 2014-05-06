@@ -14,9 +14,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeSessionListenerTest {
 
 	private final TraceeBackend backend = mock(TraceeBackend.class);

@@ -10,9 +10,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class SimpleAsyncHttpProviderTest {
 
 	private final SimpleAsyncHttpProvider unit = new SimpleAsyncHttpProvider();

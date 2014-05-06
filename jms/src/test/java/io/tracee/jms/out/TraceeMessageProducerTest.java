@@ -15,9 +15,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * @author Daniel Wegener (Holisticon AG)
- */
 public class TraceeMessageProducerTest {
 
 	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();

@@ -4,7 +4,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * Wrapper class for ProceedingJointPoint. Decouples TraceeContextLoggerJsonBuilder class from AspectJ dependencies.
- * @author Tobias Gindler, holisticon AG
  */
 public final class WatchdogDataWrapper {
 

@@ -3,7 +3,6 @@ package io.tracee.contextlogger.data.wrapper;
 
 /**
  * Wrapper class for JaxWs soap request and response.
- * @author Tobias Gindler, holisticon AG
  */
 public final class JaxWsWrapper {
 
