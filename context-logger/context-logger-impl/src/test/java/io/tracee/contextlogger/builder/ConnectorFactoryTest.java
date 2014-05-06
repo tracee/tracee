@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.builder;
 
-import de.holisticon.util.tracee.contextlogger.Connector;
-import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
-import de.holisticon.util.tracee.contextlogger.connector.LogConnector;
+import io.tracee.contextlogger.Connector;
+import io.tracee.contextlogger.TraceeContextLoggerConstants;
+import io.tracee.contextlogger.connector.LogConnector;
 import org.junit.Ignore;
 import org.junit.Test;
 
