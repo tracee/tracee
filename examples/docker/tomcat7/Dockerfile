@@ -58,5 +58,5 @@ ENTRYPOINT export CATALINA_OPTS="$CATALINA_OPTS -DGRAYLOG_UDP_ADDR=$GRAYLOG_PORT
  && /apache-tomcat/bin/catalina.sh run
 
 # Download and install latest tracee snapshot artifacts
-ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-springmvc&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-springmvc.war
-ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=de.holisticon.util.tracee.examples&a=tracee-examples-jaxrs2&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-jaxrs2.war
+ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.tracee.examples&a=tracee-examples-springmvc&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-springmvc.war
+ADD https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.tracee.examples&a=tracee-examples-jaxrs2&e=war&v=LATEST $CATALINA_HOME/webapps/tracee-examples-jaxrs2.war

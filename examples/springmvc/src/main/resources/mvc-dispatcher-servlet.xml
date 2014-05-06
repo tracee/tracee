@@ -9,7 +9,7 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<context:component-scan base-package="de.holisticon.util.tracee.examples.springmvc" />
+	<context:component-scan base-package="io.tracee.examples.springmvc" />
 
 	<bean id="propertyConfigurer"
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -26,9 +26,9 @@
 	</bean>
 
 	<!-- JAX-WS client configuration -->
-	<bean id="traceeClientHandlerResolver" class="de.holisticon.util.tracee.jaxws.client.TraceeClientHandlerResolver" />
+	<bean id="traceeClientHandlerResolver" class="io.tracee.jaxws.client.TraceeClientHandlerResolver" />
 	<bean id="accountWebService" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
-		<property name="serviceInterface" value="de.holisticon.util.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS"/>
+		<property name="serviceInterface" value="io.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS"/>
 		<property name="wsdlDocumentUrl" value="classpath:/META-INF/wsdl/serviceHandler.wsdl"/>
 		<property name="endpointAddress" value="http://${JBOSSAS7_PORT_8080_TCP_ADDR}:${JBOSSAS7_PORT_8080_TCP_PORT}/tracee-examples-jaxws-service/TraceeJaxWsTestService/TraceeJaxWsTestService" />
 		<property name="serviceName" value="TraceeJaxWsTestService" />
@@ -37,7 +37,7 @@
 	</bean>
 
 	<mvc:interceptors>
-		<bean class="de.holisticon.util.tracee.springmvc.TraceeInterceptor">
+		<bean class="io.tracee.springmvc.TraceeInterceptor">
 			<property name="profileName" value="default" />
 		</bean>
 	</mvc:interceptors>
