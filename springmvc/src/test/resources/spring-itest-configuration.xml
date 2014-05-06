@@ -5,10 +5,10 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<context:annotation-config/>
-	<context:component-scan base-package="de.holisticon.util.tracee.springmvc"/>
+	<context:component-scan base-package="io.tracee.springmvc"/>
 
 	<mvc:interceptors>
-		<bean id="traceeInterceptor" class="de.holisticon.util.tracee.springmvc.TraceeInterceptor">
+		<bean id="traceeInterceptor" class="io.tracee.springmvc.TraceeInterceptor">
 			<!-- Default profile allows propagation on all channels and all directions. It does not have to be configured
 			 explicitly. The property is accessed just to ensure the field did not got removed accidently. -->
 			<property name="profileName" value="default"/>

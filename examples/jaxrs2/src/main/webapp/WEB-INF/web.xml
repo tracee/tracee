@@ -8,7 +8,7 @@
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>de.holisticon.util.tracee.examples.jaxrs2;de.holisticon.util.tracee.jaxrs</param-value>
+			<param-value>io.tracee.examples.jaxrs2;io.tracee.jaxrs</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

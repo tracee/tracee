@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-        <groupId>de.holisticon.util.tracee.examples</groupId>
+        <groupId>io.tracee.examples</groupId>
         <artifactId>tracee-examples-jaxws</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
@@ -32,7 +32,7 @@
                                     <wsdl>src/main/resources/META-INF/wsdl/serviceHandler.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>de.holisticon.util.tracee.examples.jaxws.client.testclient</extraarg>
+                                        <extraarg>io.tracee.examples.jaxws.client.testclient</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                             </wsdlOptions>
@@ -49,19 +49,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <artifactId>tracee-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>de.holisticon.util.tracee.backend</groupId>
+            <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>de.holisticon.util.tracee</groupId>
+            <groupId>io.tracee</groupId>
             <artifactId>tracee-jaxws</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>

@@ -138,7 +138,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>io.tracee</groupId>
         <artifactId>tracee-servlet</artifactId>
         <version>0.2.0</version>
     </dependency>
@@ -157,7 +157,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>de.holisticon.util.tracee</groupId>
+        <groupId>io.tracee</groupId>
         <artifactId>tracee-servlet</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </dependency>

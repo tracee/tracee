@@ -17,17 +17,17 @@ If you are on a servlet Servlet<3-Container, you need to register the following 
 ```
     <filter>
         <filter-name>traceeFilter</filter-name>
-        <filter-class>de.holisticon.util.tracee.servlet.TraceeFilter</filter-class>
+        <filter-class>io.tracee.servlet.TraceeFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>traceeFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeServletRequestListener</listener-class>
+		<listener-class>io.tracee.servlet.TraceeServletRequestListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>de.holisticon.util.tracee.servlet.TraceeSessionListener</listener-class>
+		<listener-class>io.tracee.servlet.TraceeSessionListener</listener-class>
 	</listener>
 ```
 You may change the filter-mapping:url-pattern according to your needs.
