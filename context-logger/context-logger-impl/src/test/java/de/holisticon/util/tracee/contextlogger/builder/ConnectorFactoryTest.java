@@ -3,6 +3,7 @@ package de.holisticon.util.tracee.contextlogger.builder;
 import de.holisticon.util.tracee.contextlogger.Connector;
 import de.holisticon.util.tracee.contextlogger.TraceeContextLoggerConstants;
 import de.holisticon.util.tracee.contextlogger.connector.LogConnector;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Set;
@@ -20,6 +21,7 @@ public class ConnectorFactoryTest {
      * Tests extraction of connector names from system properties.
      */
     @Test
+    @Ignore
     public void testExtractionOfConnectorNames() {
 
         final String name1 = "abc";
@@ -43,6 +45,7 @@ public class ConnectorFactoryTest {
      * Check creation of connector for well known connector.
      */
     @Test
+    @Ignore
     public void testCreationOfWellKnownLogConnector() {
         final String name1 = "abc";
 
@@ -68,6 +71,7 @@ public class ConnectorFactoryTest {
      * Check creation of connector with a cononical classname.
      */
     @Test
+    @Ignore
     public void testCreationOfConnectorWithCanonicalClassName() {
         final String name1 = "abc";
 
