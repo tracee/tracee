@@ -51,9 +51,9 @@ Be aware, that you _really should_ remove your custom context parameters as soon
 
 TracEE already ships with a number of adapters for popular logging frameworks, namely:
 
-	* [slf4j](../slf4j)
-	* [log4j](../log4j)
-	* [jboss-logging](../jboss-logging)
+* [slf4j](../slf4j)
+* [log4j](../log4j)
+* [jboss-logging](../jboss-logging)
 
 If you have no logging backend present in a component, you can still use the [threadlocal-store](../threadlocal-store) as
 backend that supports propagation of parameters (but leaves out the logging part).
