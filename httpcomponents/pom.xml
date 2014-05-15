@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0-SNAPSHOT</version>
     </parent>
 
     <name>tracee-httpcomponents</name>
@@ -18,7 +18,7 @@
         <dependency>
             <artifactId>tracee-core</artifactId>
             <groupId>io.tracee</groupId>
-            <version>0.3.0</version>
+            <version>0.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.3.0</version>
+			<version>0.4.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>io.tracee.backend</groupId>
 			<artifactId>tracee-threadlocal-store</artifactId>
-			<version>0.3.0</version>
+			<version>0.4.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>
