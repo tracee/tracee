@@ -13,14 +13,14 @@ You may already aggregate all your application logs at a single place (using gra
 complicated to gather relevant log entries that belong to a certain interaction with your system.
 
 *TracEE* is an integration framework that eases this kind of interaction monitoring of JavaEE applications by passing contextual information
-through your whole system and makes them visible in your logs. Therefore if contains adapters or interceptors for the most popular JavaEE technologies:
+through your whole system and makes them visible in your logs. Therefore it contains adapters or interceptors for the most popular JavaEE technologies:
 
 * servlet 2.5+
 * jax-ws
 * jax-rs2
 * jms
 
-This project is still in experimental stage and the api may change during further development.
+This project is still in an experimental stage and the api may change during further development.
 
 # Getting started
 
@@ -30,15 +30,15 @@ So what is this all about?
 
 An example:
 
-- A user opens your JavaEE enterprisy hotel booking page in a browser
+- A user opens your JavaEE enterprisey hotel booking page in a browser
 - Your servlet container renders a calendar and room selection
-- The users selects a date and a tasty breakfast and clicks on _book_
+- The user selects a date and a tasty breakfast and clicks on _book_
 - Your servlet starts to chat with your full-blown EE-Server
-- _Awesome stuff happens_, EJBs, SOAP- and REST-Services are called, Databases are read and written
+- _Awesome stuff happens_, EJBs, SOAP- and REST-Services are called, databases are read and written
 - Finally the user sees a confirmation page and receives a booking confirmation via email
 
-This is the happy path. But what if something goes wrong? Lets name it: Exception Stack-Trace in the log files.
-The stack-trace often shows a very narrow scope of what went wrong, namely the current thread.
+This is the happy path. But what if something goes wrong? Lets name it: Exception stack trace in the log files.
+The stack trace often shows a very narrow scope of what went wrong, namely the current thread.
 
 An __invocation context__ is a temporal or logical boundary in which a system invocation happens.
 Since each system invocation may cause further system interactions, every subsequent system invocation belongs to the
@@ -47,27 +47,27 @@ same context as the invoking interaction.
 An example for an invocation context in a servlet based application would be a HTTP-Request. Every system interaction
 that is directly or indirectly caused by a browser asking a servlet-container lies within the context of its HTTP-Request.
 
-Another example would be the invocation context of a servlet session in which every request within this session belongs
+Another example would be the invocation context of a servlet session in which every request within this session belongs to
 the session invocation context.
 
 It can be a great benefit to make those invocation contexts visible in the log files. So if a failure happens, you could
 lookup the invocation context in which it occurred and see pretty clearly what happened _in this context_ before the
 server gave up with an error. And it does not end here.
 
-Even without errors, the invocation context information empower you to measure the reaction time
+Even without errors, the invocation context information empowers you to measure the reaction time
 of your application at the level of every single service.
 
 So how do you implement this in an JavaEE-Application? An obvious way would be to pass an invocation context identifier
-around as parameter of every of your business interfaces (EBJ, SOAP, REST, whatsoever) and write it explicitly into each
+around as a parameter of every of your business interfaces (EBJ, SOAP, REST, whatsoever) and write it explicitly into each
 log statement. It should also be obvious that this is a dumb idea because it pollutes all of our business interfaces with
 unnecessary dependencies. We can do better.
 
-## The propagated Mapped Diagnosis Context
+## The propagated Mapped Diagnostic Context
 
 The [Mapped Diagnostic Context (MDC)](http://logback.qos.ch/manual/mdc.html) is a logging concept that allows printing of contextual information in log messages
 without explicitly passing them them to each log statement. A MDC is bound to its executing thread (in fact they are backed by thread locals).
 
-Invocations of JavaEE components are seldom fully processed within a single thread - they might even not be fully processed
+Invocations of JavaEE components are seldom fully processed within a single thread - they might not even be fully processed
 on the same JVM. So each time an invocation escapes its original executing thread, the MDC is lost in the nested processing.
 We call these context boundaries MDC gaps. There are different kinds of those gaps:
 
@@ -88,7 +88,7 @@ your logging context without polluting your business logic.
 
 # Integrating TracEE into your application
 
-The steps to get TracEE up and running pretty much depends on your application scenario. The most common use case would be to
+The steps to get TracEE up and running pretty much depend on your application scenario. The most common use case would be to
 propagate context information from a servlet container based frontend to an ejb based backend.
 
 ## Integration scenarios
@@ -106,7 +106,7 @@ propagate context information from a servlet container based frontend to an ejb 
 
 ## Modules
 
-TracEE is built highly modular. The modules you need depends on your application and the underlying frameworks and containers.
+TracEE is built highly modular. The modules you need depend on your application and the underlying frameworks and containers.
 The following table describes all available TracEE-modules and their usage scenarios.
 
 | Module                                | Usage |
@@ -171,7 +171,8 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 TracEE creates the following context identfiers on the fly if not configured otherwise:
 
     * it generates a pseudo-unique request id (configurable length)
-    * it generates a session id base on the servlet session id. Since the servlet session id is a secure
+    * it generates a session id based on the servlet session id. Since the servlet session id is a secure item that should not 
+    be passed around unnecessarily, we use a hash of it.
 
 
 ## Performance considerations
@@ -179,7 +180,7 @@ TracEE creates the following context identfiers on the fly if not configured oth
 TracEE is designed with performance in mind. It does not introduce global synchronization and cleans up the MDC after
 each invocation lifecycle. A real benchmark is pending...
 
-These automatically generated context ids (like request- and session-identifiers) are configurable in length and allow you
+The automatically generated context ids (like request- and session-identifiers) are configurable in length and allow you
 to choose a tradeoff between the chance of _uniqueness_ in time and data overhead depending on your load scenario.
 
 ## Security considerations
