@@ -200,7 +200,7 @@ application specific features. We will rather try to enhance our api and empower
 
 ## Building and developing TracEE
 
-TracEE is built using Maven (at least version 3.0.4).
+TracEE is built using Maven (at least version 3.1.0).
 A simple import of the pom in your IDE should get you up and running. To build TracEE on the commandline, just run `mvn clean install`
 
 ## Requirements
