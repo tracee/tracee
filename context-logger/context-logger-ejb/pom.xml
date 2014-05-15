@@ -8,7 +8,7 @@
     <parent>
         <groupId>io.tracee</groupId>
         <artifactId>tracee-context-logger-parent</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.3.0</version>
     </parent>
 
     <name>tracee-context-logger-ejb</name>
@@ -18,13 +18,13 @@
         <dependency>
             <groupId>io.tracee</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
             <artifactId>tracee-api</artifactId>
             <groupId>io.tracee</groupId>
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
-			<version>0.3.0-SNAPSHOT</version>
+			<version>0.3.0</version>
 			<scope>test</scope>
 		</dependency>
     </dependencies>
