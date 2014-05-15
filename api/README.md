@@ -44,7 +44,7 @@ public class MyBusinessService {
 ```
 Be aware, that you _really should_ remove your custom context parameters as soon as the become invalid.
 
-> Please keep in mind that parameters in the TracEE-Context are ment for logging. Do not use it as a _hack_ to pass
+> Please keep in mind that parameters in the TracEE-Context are meant for logging. Do not use it as a _hack_ to pass
 > business parameters alongside your business method signatures.
 
 ## TracEE backends

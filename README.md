@@ -3,7 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
 [![Coverage Status](https://coveralls.io/repos/holisticon/tracee/badge.png)](https://coveralls.io/r/holisticon/tracee)
 
-TL;DR, watch our [5 minutes slide deck](http://holisticon.github.io/tracee/docs/slides/)
+TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
 
 > __TracEE makes it easy to track the invocation context throughout your distributed JavaEE-Application logs. It does not force
 > you to manually pass around collaboration-ids but instead uses side-channels on the underlying protocols and therefore
