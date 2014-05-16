@@ -1,1 +1,3 @@
 io.tracee.contextlogger.integrationtest.TestImplicitContextDataProvider
+io.tracee.contextlogger.integrationtest.TestBrokenImplicitContextDataProvider
+io.tracee.contextlogger.integrationtest.TestBrokenImplicitContentDataProviderWithoutDefaultConstructor

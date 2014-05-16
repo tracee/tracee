@@ -108,6 +108,15 @@ public final class TraceeContextLogger implements ContextLogger {
             return instance;
         }
 
+        // check for external implicit context provider type
+        if (instance instanceof Class && CustomImplicitContextData.class.isAssignableFrom((Class)instance)) {
+            try {
+                return ((Class)instance).newInstance();
+            } catch (Exception e) {
+                // ignore exception
+            }
+        }
+
 
 		// now try to find instance type in known wrapper types map
 		Class knownWrapperType = contextLoggerConfiguration.getClassToWrapperMap().get(instance.getClass());
