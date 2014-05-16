@@ -73,7 +73,8 @@ public class CommonDataContextProvider implements ImplicitContextData {
         return Thread.currentThread().getId();
     }
 
-    private static String getSystemProperty(final String attributeName) {
+
+    public String getSystemProperty(final String attributeName) {
         return System.getProperty(attributeName);
     }
 }

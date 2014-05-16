@@ -3,9 +3,13 @@ package io.tracee.contextlogger.builder;
 import io.tracee.contextlogger.Connector;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.connector.LogConnector;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,21 +25,28 @@ public class ConnectorFactoryTest {
      * Tests extraction of connector names from system properties.
      */
     @Test
-    @Ignore
     public void testExtractionOfConnectorNames() {
 
         final String name1 = "abc";
         final String name2 = "def";
         final String name3 = "ghi";
 
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
+        final Properties properties = new Properties();
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, "class1");
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "."
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "."
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, "class2");
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name3 + "."
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name3 + "."
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, "class3");
 
-        final Set<String> names = new ConnectorFactory().getConnectorConfigurationNames();
+
+
+        final Set<String> names = new ConnectorFactory(){
+            @Override
+            protected Properties getSystemProperties() {
+                return properties;
+            }
+        }.getConnectorConfigurationNames();
 
         assertThat(names, containsInAnyOrder(name1, name2, name3));
 
@@ -45,7 +56,6 @@ public class ConnectorFactoryTest {
      * Check creation of connector for well known connector.
      */
     @Test
-    @Ignore
     public void testCreationOfWellKnownLogConnector() {
         final String name1 = "abc";
 
@@ -55,12 +65,18 @@ public class ConnectorFactoryTest {
         final String prop1Value1 = "p1Val1";
         final String prop1Value2 = "p1Val2";
 
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
+        final Properties properties = new Properties();
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, LogConnector.class.getName());
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
 
-        final Connector connector = new ConnectorFactory().createConnector(name1);
+        final Connector connector = new ConnectorFactory(){
+            @Override
+            protected Properties getSystemProperties() {
+                return properties;
+            }
+        }.createConnector(name1);
 
         assertThat(connector, notNullValue());
         assertThat(connector, instanceOf(LogConnector.class));
@@ -71,7 +87,6 @@ public class ConnectorFactoryTest {
      * Check creation of connector with a cononical classname.
      */
     @Test
-    @Ignore
     public void testCreationOfConnectorWithCanonicalClassName() {
         final String name1 = "abc";
 
@@ -81,17 +96,61 @@ public class ConnectorFactoryTest {
         final String prop1Value1 = "p1Val1";
         final String prop1Value2 = "p1Val2";
 
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
+        final Properties properties = new Properties();
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "."
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, LogConnector.class.getCanonicalName());
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
 
-        final Connector connector = new ConnectorFactory().createConnector(name1);
+        final Connector connector = new ConnectorFactory(){
+            @Override
+            protected Properties getSystemProperties() {
+                return properties;
+            }
+        }.createConnector(name1);
 
         assertThat(connector, notNullValue());
         assertThat(connector, instanceOf(LogConnector.class));
 
     }
 
+
+    /**
+     * Check extraction of properties for named connectors.
+     */
+    @Test
+    public void testExtractionOfConnectorProperties() {
+        final String name1 = "abc";
+        final String name2 = "def";
+
+        final String prop1Key1 = "p1key1";
+        final String prop1Key2 = "p1key2";
+        final String prop2Key1 = "p2key1";
+        final String prop2Key2 = "p2key2";
+
+        final String prop1Value1 = "p1Val1";
+        final String prop1Value2 = "p1Val2";
+        final String prop2Value1 = "p2Va1";
+        final String prop2Value2 = "p2Val2";
+
+        final Properties properties = new Properties();
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "." + prop2Key1, prop2Value1);
+        properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "." + prop2Key2, prop2Value2);
+
+        final Map<String, String> properties1 = new ConnectorFactory(){
+            @Override
+            protected Properties getSystemProperties() {
+                return properties;
+            }
+        }.getPropertiesForConnectorConfigurationName(name1);
+
+        MatcherAssert.assertThat(properties1.keySet(), Matchers.containsInAnyOrder(prop1Key1, prop1Key2));
+        MatcherAssert.assertThat(properties1.keySet(), Matchers.not(Matchers.containsInAnyOrder(prop2Key1, prop2Key2)));
+        MatcherAssert.assertThat(properties1.get(prop1Key1), Matchers.equalTo(prop1Value1));
+        MatcherAssert.assertThat(properties1.get(prop1Key2), Matchers.equalTo(prop1Value2));
+
+    }
 
 }

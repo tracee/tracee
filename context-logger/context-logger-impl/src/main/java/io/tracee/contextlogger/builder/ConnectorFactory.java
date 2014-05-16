@@ -93,7 +93,7 @@ public class ConnectorFactory {
 
         Set<String> connectorNames = new HashSet<String>();
 
-        Enumeration<Object> keyEnumeration = System.getProperties().keys();
+        Enumeration<Object> keyEnumeration = getSystemProperties().keys();
         while (keyEnumeration.hasMoreElements()) {
             String key = keyEnumeration.nextElement().toString();
 
@@ -124,7 +124,7 @@ public class ConnectorFactory {
         final String patternString = String.format(CONNECTOR_PROPERTY_GRABBER_PATTERN, connectorName);
         final Pattern propertyGrabPattern = Pattern.compile(patternString);
 
-        final Set<Map.Entry<Object, Object>> entries = System.getProperties().entrySet();
+        final Set<Map.Entry<Object, Object>> entries = getSystemProperties().entrySet();
 
         for (Map.Entry<Object, Object> entry : entries) {
             final String key = entry.getKey().toString();
@@ -196,6 +196,10 @@ public class ConnectorFactory {
         }
 
         return false;
+    }
+
+    protected Properties getSystemProperties() {
+        return System.getProperties();
     }
 
 }

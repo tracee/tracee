@@ -6,6 +6,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Date;
 
@@ -18,15 +19,21 @@ public class CommonDataProviderTest {
     public static final String STAGE = "STAGE";
     public static final String SYSTEM = "SYSTEM";
 
+    CommonDataContextProvider commonDataContextProvider;
+
     @Before
     public void init() {
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE, STAGE);
-        System.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM, SYSTEM);
+
+        commonDataContextProvider = Mockito.spy(new CommonDataContextProvider());
+
     }
 
     @Test
     public void should_return_implicit_context() {
-        ImplicitContext implicitContext = new CommonDataContextProvider().getImplicitContext();
+
+        setSystemProperties(true, true);
+
+        ImplicitContext implicitContext = commonDataContextProvider.getImplicitContext();
 
         MatcherAssert.assertThat(implicitContext, Matchers.notNullValue());
         MatcherAssert.assertThat(implicitContext, Matchers.equalTo(ImplicitContext.COMMON));
@@ -35,53 +42,70 @@ public class CommonDataProviderTest {
 
     @Test
     public void should_get_time() {
-        Date result = new CommonDataContextProvider().getTimestamp();
+
+        setSystemProperties(true, true);
+        Date result = commonDataContextProvider.getTimestamp();
         MatcherAssert.assertThat(result, Matchers.notNullValue());
     }
 
     @Test
     public void should_get_stage() {
-        String result = new CommonDataContextProvider().getStage();
+
+        setSystemProperties(true, true);
+
+        String result = commonDataContextProvider.getStage();
         MatcherAssert.assertThat(result, Matchers.notNullValue());
         MatcherAssert.assertThat(result, Matchers.equalTo(STAGE));
     }
 
     @Test
     public void should_get_null_for_not_set_stage() {
-        System.getProperties().remove(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE);
-        String result = new CommonDataContextProvider().getStage();
+
+        setSystemProperties(false, true);
+
+        String result = commonDataContextProvider.getStage();
         MatcherAssert.assertThat(result, Matchers.nullValue());
     }
 
     @Test
     public void should_get_system() {
-        String result = new CommonDataContextProvider().getSystemName();
+
+        setSystemProperties(true, true);
+
+        String result = commonDataContextProvider.getSystemName();
         MatcherAssert.assertThat(result, Matchers.notNullValue());
         MatcherAssert.assertThat(result, Matchers.equalTo(SYSTEM));
     }
 
     @Test
     public void should_get_null_for_not_set_system() {
-        System.getProperties().remove(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM);
-        String result = new CommonDataContextProvider().getSystemName();
+        setSystemProperties(true,false);
+
+        String result = commonDataContextProvider.getSystemName();
         MatcherAssert.assertThat(result, Matchers.nullValue());
     }
 
     @Test
     public void should_get_thread_name() {
+        setSystemProperties(true,true);
         String expected = Thread.currentThread().getName();
-        String result = new CommonDataContextProvider().getThreadName();
+        String result = commonDataContextProvider.getThreadName();
         MatcherAssert.assertThat(result, Matchers.notNullValue());
         MatcherAssert.assertThat(result, Matchers.equalTo(expected));
     }
 
     @Test
     public void should_get_thread_id() {
+        setSystemProperties(true,true);
         Long expected = Thread.currentThread().getId();
-        Long result = new CommonDataContextProvider().getThreadId();
+        Long result = commonDataContextProvider.getThreadId();
         MatcherAssert.assertThat(result, Matchers.notNullValue());
         MatcherAssert.assertThat(result, Matchers.equalTo(expected));
     }
 
+    private void setSystemProperties (boolean stage, boolean system) {
+        Mockito.doReturn(stage ? STAGE : null).when(commonDataContextProvider).getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE);
+        Mockito.doReturn(system ? SYSTEM : null).when(commonDataContextProvider).getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM);
+    }
 
 }
