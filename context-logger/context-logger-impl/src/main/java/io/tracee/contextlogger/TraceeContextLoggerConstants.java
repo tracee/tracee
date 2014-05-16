@@ -32,8 +32,11 @@ public final class TraceeContextLoggerConstants {
         IGNORED_AT_DESERIALIZATION = Collections.unmodifiableSet(tmpIgnoredAtDeserialization);
     }
 
-    public static final String WRAPPER_CLASS_INTERNAL_RESOURCE_URL = "/io.tracee.contextlogger.internal.wrapperclasses";
-    public static final String WRAPPER_CLASS_EXTERNAL_RESOURCE_URL = "/io.tracee.contextlogger.external.wrapperclasses";
+    public static final String WRAPPER_CONTEXT_PROVIDER_INTERNAL_RESOURCE_URL = "/io.tracee.contextlogger.internal.wrappercontextproviders";
+    public static final String WRAPPER_CONTEXT_PROVIDER_CUSTOM_RESOURCE_URL = "/io.tracee.contextlogger.custom.wrappercontextproviders";
+
+    public static final String IMPLICIT_CONTEXT_PROVIDER_CLASS_INTERNAL_RESOURCE_URL = "/io.tracee.contextlogger.internal.implicitcontextproviders";
+    public static final String IMPLICIT_CONTEXT_PROVIDER_CLASS_CUSTOM_RESOURCE_URL = "/io.tracee.contextlogger.custom.implicitcontextproviders";
 
     public static final String SYSTEM_PROPERTY_PREFIX = "io.tracee.contextlogger.";
     public static final String SYSTEM_PROPERTY_CONNECTOR_PREFIX = SYSTEM_PROPERTY_PREFIX + "connector.";

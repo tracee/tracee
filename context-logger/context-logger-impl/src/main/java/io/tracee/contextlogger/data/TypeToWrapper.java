@@ -2,6 +2,7 @@ package io.tracee.contextlogger.data;
 
 import io.tracee.Tracee;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
+import io.tracee.contextlogger.api.CustomImplicitContextData;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.WrappedContextData;
 
@@ -14,8 +15,8 @@ import java.util.*;
 public final class TypeToWrapper {
 
     private final static String[] RESOURCE_URLS = {
-            TraceeContextLoggerConstants.WRAPPER_CLASS_INTERNAL_RESOURCE_URL,
-            TraceeContextLoggerConstants.WRAPPER_CLASS_EXTERNAL_RESOURCE_URL
+            TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_INTERNAL_RESOURCE_URL,
+            TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_CUSTOM_RESOURCE_URL
     };
 
 
@@ -82,26 +83,30 @@ public final class TypeToWrapper {
     }
 
     /**
-     * Gets all internal and external implicit wrappers.
+     * Gets all internal implicit data providers.
      * @return a set containing all available implicit wrappers
      */
-    public static Set<ImplicitContextData> getImplicitWrappers() {
-
-
-
-        Set<ImplicitContextData> implicitWrappers = new HashSet<ImplicitContextData>();
-
-        for (final String resourceUrl : RESOURCE_URLS) {
-
-            implicitWrappers.addAll(getImplicitWrappers(resourceUrl));
-
-        }
-
-        return implicitWrappers;
+    public static Set<ImplicitContextData> getImplicitContextDataProviders() {
+        return getImplicitWrappers(ImplicitContextData.class, TraceeContextLoggerConstants.IMPLICIT_CONTEXT_PROVIDER_CLASS_INTERNAL_RESOURCE_URL);
     }
 
-    static Set<ImplicitContextData> getImplicitWrappers(final String resourceUrl) {
-        Set<ImplicitContextData> result = new HashSet<ImplicitContextData>();
+    /**
+     * Gets all custom implicit wrappers.
+     * @return a set containing all available implicit wrappers
+     */
+    public static Set<CustomImplicitContextData> getCustomImplicitDataProviders() {
+        return getImplicitWrappers(CustomImplicitContextData.class, TraceeContextLoggerConstants.IMPLICIT_CONTEXT_PROVIDER_CLASS_CUSTOM_RESOURCE_URL);
+    }
+
+    /**
+     * Generic function to get a implicit data provider classes from resource files.
+     * @param type the type of implicit context data provider to look for
+     * @param resourceUrl the resource file url process
+     * @param <T> The generic type of implicit data provider either {@link io.tracee.contextlogger.api.CustomImplicitContextData} or {@link io.tracee.contextlogger.api.ImplicitContextData}
+     * @return a set that contains all context provider type the were found
+     */
+    static <T> Set<T> getImplicitWrappers(final Class<T> type, final String resourceUrl) {
+        Set<T> result = new HashSet<T>();
 
 
         BufferedReader bufferedReader = null;
@@ -120,8 +125,8 @@ public final class TypeToWrapper {
                 try {
 
                     Class clazz = Class.forName(line);
-                    if (ImplicitContextData.class.isAssignableFrom(clazz)) {
-                        ImplicitContextData instance = (ImplicitContextData) clazz.newInstance();
+                    if (type.isAssignableFrom(clazz)) {
+                        T instance = (T) clazz.newInstance();
 
                         result.add(instance);
                     }

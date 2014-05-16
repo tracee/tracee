@@ -1,6 +1,7 @@
 package io.tracee.contextlogger.builder;
 
 import io.tracee.contextlogger.ImplicitContext;
+import io.tracee.contextlogger.api.CustomImplicitContextData;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.data.TypeToWrapper;
 import io.tracee.contextlogger.profile.Profile;
@@ -41,9 +42,15 @@ public class ContextLoggerConfiguration {
         }
 
         Set<Class> tmpWrapperClasses = TypeToWrapper.findWrapperClasses();
-        Set<ImplicitContextData> implicitContextWrapperClasses = TypeToWrapper.getImplicitWrappers();
+        Set<ImplicitContextData> implicitContextWrapperClasses = TypeToWrapper.getImplicitContextDataProviders();
         for (ImplicitContextData instance : implicitContextWrapperClasses) {
             tmpImplicitContextClassMap.put(instance.getImplicitContext(), instance.getClass());
+            tmpWrapperClasses.add(instance.getClass());
+        }
+
+        // must register custom data provider classes
+        Set<CustomImplicitContextData> customImplicitContextDataProviderClasses = TypeToWrapper.getCustomImplicitDataProviders();
+        for (CustomImplicitContextData instance : customImplicitContextDataProviderClasses) {
             tmpWrapperClasses.add(instance.getClass());
         }
 

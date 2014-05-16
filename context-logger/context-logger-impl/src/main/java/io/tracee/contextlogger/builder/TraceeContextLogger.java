@@ -1,6 +1,8 @@
 package io.tracee.contextlogger.builder;
 
 import io.tracee.contextlogger.*;
+import io.tracee.contextlogger.api.CustomImplicitContextData;
+import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.TraceeContextLogBuilder;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.TypeToWrapper;
@@ -96,10 +98,16 @@ public final class TraceeContextLogger implements ContextLogger {
 			return null;
 		}
 
-		// check for implicit instances
+		// check for known implicit instances
 		if (instance instanceof ImplicitContext) {
 			return createInstance(contextLoggerConfiguration.getImplicitContextClassMap().get(instance));
 		}
+
+        // check for external implicit context provider
+        if (instance instanceof CustomImplicitContextData) {
+            return instance;
+        }
+
 
 		// now try to find instance type in known wrapper types map
 		Class knownWrapperType = contextLoggerConfiguration.getClassToWrapperMap().get(instance.getClass());
