@@ -22,6 +22,7 @@
 		<module>context-logger-jms</module>
 		<module>context-logger-ejb</module>
 		<module>context-logger-watchdog</module>		
+		<module>context-logger-integration-test</module>
 	</modules>	
 
 

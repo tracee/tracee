@@ -1,6 +1,7 @@
 package io.tracee.contextlogger.profile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -10,7 +11,7 @@ import java.util.Properties;
  */
 public class ProfileSettings {
 
-    private Properties profileProperties = null;
+    private List<Properties> profileProperties = null;
     private Map<String, Boolean> manualContextOverrides = null;
 
     public ProfileSettings(Profile profile, Map<String, Boolean> manualContextOverrides) {
@@ -43,8 +44,10 @@ public class ProfileSettings {
 
         // check profile properties
         if (profileProperties != null) {
-            String value = this.profileProperties.getProperty(propertyKey, "false");
-            return Boolean.valueOf(value);
+            for (final Properties properties : profileProperties) {
+                String value = properties.getProperty(propertyKey, "false");
+                return Boolean.valueOf(value);
+            }
         }
 
         return false;

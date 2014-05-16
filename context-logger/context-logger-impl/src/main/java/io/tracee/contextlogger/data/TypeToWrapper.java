@@ -1,5 +1,6 @@
 package io.tracee.contextlogger.data;
 
+import io.tracee.Tracee;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.WrappedContextData;
@@ -9,9 +10,14 @@ import java.util.*;
 
 /**
  * Class to store class to wrapper mapppings.
- * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 public final class TypeToWrapper {
+
+    private final static String[] RESOURCE_URLS = {
+            TraceeContextLoggerConstants.WRAPPER_CLASS_INTERNAL_RESOURCE_URL,
+            TraceeContextLoggerConstants.WRAPPER_CLASS_EXTERNAL_RESOURCE_URL
+    };
+
 
     private static List<TypeToWrapper> typeToWrapperList;
 
@@ -30,8 +36,6 @@ public final class TypeToWrapper {
     public Class getWrapperType() {
         return wrapperType;
     }
-
-
 
 
     public static Set<Class> getAllWrappedClasses() {
@@ -77,7 +81,26 @@ public final class TypeToWrapper {
 
     }
 
+    /**
+     * Gets all internal and external implicit wrappers.
+     * @return a set containing all available implicit wrappers
+     */
     public static Set<ImplicitContextData> getImplicitWrappers() {
+
+
+
+        Set<ImplicitContextData> implicitWrappers = new HashSet<ImplicitContextData>();
+
+        for (final String resourceUrl : RESOURCE_URLS) {
+
+            implicitWrappers.addAll(getImplicitWrappers(resourceUrl));
+
+        }
+
+        return implicitWrappers;
+    }
+
+    static Set<ImplicitContextData> getImplicitWrappers(final String resourceUrl) {
         Set<ImplicitContextData> result = new HashSet<ImplicitContextData>();
 
 
@@ -87,7 +110,7 @@ public final class TypeToWrapper {
             bufferedReader = new BufferedReader(
                     new InputStreamReader(
                             TypeToWrapper.class.getResourceAsStream(
-                                    TraceeContextLoggerConstants.WRAPPER_CLASS_RESOURCE_URL)
+                                    resourceUrl)
                     )
             );
 
@@ -115,26 +138,39 @@ public final class TypeToWrapper {
 
 
         } catch (Exception e) {
-
+            logError("Context logger - An error occurred while loading implicit type wrappers.", e);
+        } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    // ignore
                 }
             }
-
         }
-
 
         return result;
     }
 
+
+    public static List<TypeToWrapper> getAvailableWrappers() {
+
+        List<TypeToWrapper> wrappers = new ArrayList<TypeToWrapper>();
+
+        for (final String resourceUrl : RESOURCE_URLS) {
+
+            wrappers.addAll(getAvailableWrappers(resourceUrl));
+
+        }
+
+        return wrappers;
+    }
+
     /**
-     * Class to get all available wrappers.
+     * Method to get all available wrappers.
      * @return all wrapping between wrapper classes and their wrapped types.
      */
-    static List<TypeToWrapper> getAvailableWrappers() {
+    static List<TypeToWrapper> getAvailableWrappers(final String resourceUrl) {
 
         List<TypeToWrapper> result = new ArrayList<TypeToWrapper>();
 
@@ -143,8 +179,7 @@ public final class TypeToWrapper {
 
             bufferedReader = new BufferedReader(
                     new InputStreamReader(
-                            TypeToWrapper.class.getResourceAsStream(
-                                    TraceeContextLoggerConstants.WRAPPER_CLASS_RESOURCE_URL)
+                            TypeToWrapper.class.getResourceAsStream(resourceUrl)
                     )
             );
 
@@ -176,15 +211,16 @@ public final class TypeToWrapper {
 
 
         } catch (Exception e) {
+            logError("Context logger - An error occurred while loading explicit type wrappers.", e);
 
+        } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    // ignore
                 }
             }
-
         }
 
 
@@ -192,6 +228,8 @@ public final class TypeToWrapper {
 
     }
 
-
+    private static void logError (final String message, final Throwable e) {
+        Tracee.getBackend().getLoggerFactory().getLogger(TypeToWrapper.class).error(message, e);
+    }
 
 }

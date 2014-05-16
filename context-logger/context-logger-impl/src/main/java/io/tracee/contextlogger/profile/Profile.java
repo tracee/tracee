@@ -4,30 +4,55 @@ import io.tracee.Tracee;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public enum Profile {
-    NONE(null),
-    BASIC ("/TraceeContextLoggerBasicProfile.properties"),
-    ENHANCED("/TraceeContextLoggerEnhancedProfile.properties"),
-    FULL("/TraceeContextLoggerFullProfile.properties"),
-    CUSTOM("/TraceeContextLoggerCustomProfile.properties");
+    NONE(null, null),
+    BASIC ("/TraceeContextLoggerBasicProfile.properties","/TraceeContextLoggerExternalBasicProfile.properties"),
+    ENHANCED("/TraceeContextLoggerEnhancedProfile.properties","/TraceeContextLoggerExternalEnhancedProfile.properties"),
+    FULL("/TraceeContextLoggerFullProfile.properties", "/TraceeContextLoggerFullProfile.properties"),
+    CUSTOM("/TraceeContextLoggerCustomProfile.properties", null);
 
     private final String resourceFileName;
+    private final String externalResourceFileName;
 
-    private Profile(final String resourceFileName) {
+    private Profile(final String resourceFileName, final String externalResourceFileName) {
         this.resourceFileName = resourceFileName;
+        this.externalResourceFileName = externalResourceFileName;
     }
 
     public String getResourceFileName() {
         return resourceFileName;
     }
 
-    public Properties getProperties() throws IOException {
-        return openProperties(this.getResourceFileName());
+    public String getExternalResourceFileName() {
+        return externalResourceFileName;
+    }
+
+    public List<Properties> getProperties() throws IOException {
+
+        List<Properties> properties = new ArrayList<Properties>();
+
+        try {
+            Properties externalProperties = openProperties(this.getExternalResourceFileName());
+            if (externalProperties != null) {
+                properties.add(externalProperties);
+            }
+        } catch (IOException e) {
+            // ignore
+        }
+
+        Properties internalProperties = openProperties(this.getResourceFileName());
+        if (internalProperties != null) {
+            properties.add(internalProperties);
+        }
+
+        return properties ;
     }
 
 
@@ -136,8 +161,8 @@ public enum Profile {
 
         // try to load properties
         try {
-            Properties property = profile.getProperties();
-            if (property != null) {
+            List<Properties> properties = profile.getProperties();
+            if (properties != null && properties.size() > 0) {
                 result = true;
             }
         } catch (IOException e) {
