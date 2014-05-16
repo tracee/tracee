@@ -26,7 +26,7 @@ public class MissingConstructorIntegrationTest {
 
         // should not default deserialization mechanism, because context data provider wrapper can't be created.
         String result = TraceeContextLogger.create().config().enforceProfile(Profile.ENHANCED).apply().build().createJson(new BrokenCustomContextDataWrapperWithMissingNoargsConstructor());
-        MatcherAssert.assertThat(result, Matchers.startsWith("\"{\"io.tracee.contextlogger.integrationtest.BrokenCustomContextDataWrapperWithMissingNoargsConstructor\""));
+        MatcherAssert.assertThat(result, Matchers.startsWith("{\"io.tracee.contextlogger.integrationtest.BrokenCustomContextDataWrapperWithMissingNoargsConstructor\""));
 
     }
 
