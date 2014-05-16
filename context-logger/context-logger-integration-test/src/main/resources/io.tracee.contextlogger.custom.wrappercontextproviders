@@ -1,1 +1,2 @@
 io.tracee.contextlogger.integrationtest.TestContextDataWrapper
+io.tracee.contextlogger.integrationtest.BrokenCustomContextDataWrapper
