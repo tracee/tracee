@@ -8,9 +8,7 @@ import io.tracee.transport.HttpJsonHeaderTransport;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,7 +48,7 @@ public class TraceeFilterTest {
 		doThrow(new RuntimeException("Bad is bad")).when(filterChain).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		try {
-			unit.doFilterHttp(httpServletRequest, httpServletResponse, filterChain);
+			unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 			fail("Expected RuntimeException");
 		} catch (RuntimeException e) { /*ignore*/ }
 
@@ -64,11 +62,25 @@ public class TraceeFilterTest {
 		doThrow(new RuntimeException("Bad is bad")).when(filterChain).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		try {
-			unit.doFilterHttp(httpServletRequest, httpServletResponse, filterChain);
+			unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 			fail("Expected RuntimeException");
 		} catch (RuntimeException e) { /*ignore*/ }
 
 		verify(httpServletResponse, never()).setHeader(anyString(), anyString());
+	}
+
+	@Test
+	public void shouldDelegateToNextInFilterChainForNonHttpRequests() throws Exception {
+		ServletRequest servletRequest = mock(ServletRequest.class);
+		ServletResponse servletResponse = mock(ServletResponse.class);
+		unit.doFilter(servletRequest, servletResponse, filterChain);
+		verify(filterChain).doFilter(servletRequest, servletResponse);
+	}
+
+	@Test
+	public void shouldDelegateToNextInFilterChainForHttpRequests() throws Exception {
+		unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
+		verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
 	}
 
 }

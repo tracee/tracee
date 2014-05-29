@@ -42,4 +42,10 @@ public class TraceeSessionListenerTest {
 		verify(backend, never()).put(eq(SESSION_ID_KEY), anyString());
 	}
 
+	@Test
+	public void cleanupSessionOnDestroy() {
+		unit.sessionDestroyed(mock(HttpSessionEvent.class));
+		verify(backend).remove(SESSION_ID_KEY);
+	}
+
 }

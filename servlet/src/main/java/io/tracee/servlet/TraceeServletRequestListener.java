@@ -50,7 +50,7 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		}
 	}
 
-	void httpRequestInitialized(HttpServletRequest request) {
+	private void httpRequestInitialized(HttpServletRequest request) {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {

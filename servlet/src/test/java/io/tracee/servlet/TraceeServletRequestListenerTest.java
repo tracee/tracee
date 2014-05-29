@@ -13,6 +13,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +47,7 @@ public class TraceeServletRequestListenerTest {
 		when(configuration.shouldGenerateRequestId()).thenReturn(true);
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
 
-		unit.httpRequestInitialized(httpServletRequest);
+		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, atLeastOnce()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
 	}
 
@@ -55,7 +56,7 @@ public class TraceeServletRequestListenerTest {
 		when(configuration.shouldGenerateRequestId()).thenReturn(false);
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
 
-		unit.httpRequestInitialized(httpServletRequest);
+		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
 	}
 
@@ -73,7 +74,7 @@ public class TraceeServletRequestListenerTest {
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(
 				Arrays.asList("{ \"" + REQUEST_ID_KEY + "\":\"123\"}")));
 
-		unit.httpRequestInitialized(httpServletRequest);
+		unit.requestInitialized(wrapToEvent(httpServletRequest));
 
 		verify(backend, atLeastOnce()).putAll(Mockito.eq(new HashMap<String, String>() {{ put(REQUEST_ID_KEY,"123"); }} ));
 	}
@@ -85,7 +86,7 @@ public class TraceeServletRequestListenerTest {
 		when(httpServletRequest.getSession(any(Boolean.class))).thenReturn(session);
 		when(session.getId()).thenReturn("A_RANDOM_SESSION_ID");
 
-		unit.httpRequestInitialized(httpServletRequest);
+		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, atLeastOnce()).put(eq(SESSION_ID_KEY), anyString());
 	}
 
@@ -95,4 +96,7 @@ public class TraceeServletRequestListenerTest {
 		verify(backend, atLeastOnce()).clear();
 	}
 
+	private ServletRequestEvent wrapToEvent(ServletRequest req) {
+		return new ServletRequestEvent(mock(ServletContext.class), req);
+	}
 }
