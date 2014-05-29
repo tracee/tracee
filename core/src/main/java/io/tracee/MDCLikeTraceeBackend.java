@@ -100,7 +100,7 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
 
     @Override
     public final Collection<String> values() {
-        final Collection<String> values = new ArrayList<String>(traceeKeys.get());
+        final Collection<String> values = new ArrayList<String>(traceeKeys.get().size());
         for (String traceeKey : traceeKeys.get()) {
             values.add(mdcAdapter.get(traceeKey));
         }
