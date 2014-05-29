@@ -19,7 +19,7 @@ public class MdcLikeThreadLocalMapAdapterTest {
 	}
 
 	@Test
-	public void shouldReturnTrueIfValueIsInMDC() {
+	public void shouldReturnTrueIfKeyIsInMDC() {
 		map.get().put("A", "vA");
 		assertThat(unit.containsKey("A"), is(true));
 	}

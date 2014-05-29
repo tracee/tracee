@@ -32,7 +32,7 @@ public class Slf4jMdcAdapterTest {
 	}
 
 	@Test
-	public void shouldReturnTrueIfValueIsInMDC() {
+	public void shouldReturnTrueIfKeyIsInMDC() {
 		when(MDC.get("BB")).thenReturn("vBB");
 		assertThat(unit.containsKey("BB"), is(true));
 	}

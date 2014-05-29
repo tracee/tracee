@@ -35,7 +35,7 @@ public class Log4j2MdcLikeAdapterTest {
 	}
 
 	@Test
-	public void shouldReturnTrueIfValueIsInMDC() {
+	public void shouldReturnTrueIfKeyIsInMDC() {
 		when(ThreadContext.get("BB")).thenReturn("vBB");
 		assertThat(unit.containsKey("BB"), is(true));
 	}

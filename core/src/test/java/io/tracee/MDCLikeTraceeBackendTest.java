@@ -159,7 +159,7 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
-	public void shouldReturnTrueIfValueIsInMDC() {
+	public void shouldReturnTrueIfKeyIsInMDC() {
 		traceeKeysSet.addAll(Arrays.asList("A"));
 		when(mdcLikeMock.get("A")).thenReturn("vA");
 		assertThat(unit.containsValue("vA"), is(true));

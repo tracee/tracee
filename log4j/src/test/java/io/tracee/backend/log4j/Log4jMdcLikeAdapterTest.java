@@ -34,7 +34,7 @@ public class Log4jMdcLikeAdapterTest {
 	}
 
 	@Test
-	public void shouldReturnTrueIfValueIsInMDC() {
+	public void shouldReturnTrueIfKeyIsInMDC() {
 		when(MDC.get("BB")).thenReturn("vBB");
 		assertThat(unit.containsKey("BB"), is(true));
 	}
