@@ -1,6 +1,6 @@
-package io.tracee.backend.log4j;
+package io.tracee.backend.jbosslogging;
 
-import org.apache.log4j.MDC;
+import org.jboss.logging.MDC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,18 +8,19 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MDC.class)
-public class Log4jMdcLikeAdapterTest {
+public class JbossLoggingMdcLikeAdapterTest {
 
-	private final Log4jMdcLikeAdapter unit = new Log4jMdcLikeAdapter();
+	private final JbossLoggingMdcLikeAdapter unit = new JbossLoggingMdcLikeAdapter();
 
 	@Before
 	public void setupMocks() {
@@ -54,13 +55,14 @@ public class Log4jMdcLikeAdapterTest {
 
 	@Test
 	public void shouldGetCopyOfMdc() {
-		final Hashtable<String, String> contextMap = new Hashtable<String, String>();
+		final Map<String, Object> contextMap = new HashMap<String, Object>();
 		contextMap.put("A", "vA");
 		contextMap.put("B", "vB");
-		when(MDC.getContext()).thenReturn(contextMap);
+		when(MDC.getMap()).thenReturn(contextMap);
 
 		final Map<String, String> copyOfContext = unit.getCopyOfContext();
-		assertThat(contextMap, equalTo(copyOfContext));
-		assertThat(contextMap, is(not(sameInstance(copyOfContext))));
+		assertThat(copyOfContext.size(), is(2));
+		assertThat(copyOfContext.keySet(), containsInAnyOrder("A", "B"));
+		assertThat(copyOfContext.values(), containsInAnyOrder((Object) "vA", "vB"));
 	}
 }
