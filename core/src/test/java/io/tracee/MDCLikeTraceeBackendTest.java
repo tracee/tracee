@@ -5,12 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -20,7 +17,7 @@ public class MDCLikeTraceeBackendTest {
 	@SuppressWarnings("unchecked")
 	private final ThreadLocal<Set<String>> traceeKeysMock = (ThreadLocal<Set<String>>) Mockito.mock(ThreadLocal.class);
 	@SuppressWarnings("unchecked")
-	private final Set<String> traceeKeysSet = (Set<String>) Mockito.mock(Set.class);
+	private final HashSet<String> traceeKeysSet = (HashSet<String>) Mockito.spy(new HashSet());
 
 	private final MDCLikeTraceeBackend unit = new MDCLikeTraceeBackend(mdcLikeMock, traceeKeysMock, null);
 
@@ -39,6 +36,26 @@ public class MDCLikeTraceeBackendTest {
 	public void putWritesEntryToMdcLike() {
 		unit.put("Foo", "bar");
 		verify(mdcLikeMock).put("Foo", "bar");
+	}
+
+	@Test
+	public void putAllWritesEntriesToKeysSet() {
+		final Map<String, String> putMap = new HashMap<String, String>();
+		putMap.put("Foo", "bar");
+		putMap.put("Ping", "Pong");
+		unit.putAll(putMap);
+		verify(traceeKeysSet).add("Foo");
+		verify(traceeKeysSet).add("Ping");
+	}
+
+	@Test
+	public void putAllWritesEntriesToMdcLike() {
+		final Map<String, String> putMap = new HashMap<String, String>();
+		putMap.put("Foo", "bar");
+		putMap.put("Ping", "Pong");
+		unit.putAll(putMap);
+		verify(mdcLikeMock).put("Foo", "bar");
+		verify(mdcLikeMock).put("Ping", "Pong");
 	}
 
 	@Test
@@ -93,6 +110,36 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
+	public void containsShouldReturnTrueIfInMDC() {
+		when(traceeKeysSet.contains("A")).thenReturn(true);
+		when(mdcLikeMock.containsKey("A")).thenReturn(true);
+		assertThat(unit.containsKey("A"), is(true));
+	}
+
+	@Test
+	public void containsShouldreturnFalseIfNotInMDC() {
+		assertThat(unit.containsKey("A"), is(false));
+	}
+
+	@Test
+	public void keysetShouldReturnCopyOfSet() {
+		traceeKeysSet.addAll(Arrays.asList("A", "B", "C"));
+
+		assertThat(unit.keySet(), containsInAnyOrder("A", "B", "C"));
+		assertThat(unit.keySet(), hasSize(3));
+	}
+
+	@Test
+	public void valuesShouldReturnOnlyTheValues() {
+		traceeKeysSet.addAll(Arrays.asList("A", "B", "C"));
+		when(mdcLikeMock.get("A")).thenReturn("vA");
+		when(mdcLikeMock.get("B")).thenReturn("vB");
+		when(mdcLikeMock.get("C")).thenReturn("vC");
+		assertThat(unit.values(), containsInAnyOrder("vA", "vB" ,"vC"));
+		assertThat(unit.values(), hasSize(3));
+	}
+
+	@Test
 	public void testLoadOverwrittenConfigurationValues() {
 		assertThat(unit.getConfiguration().generatedRequestIdLength(), equalTo(42));
 	}
@@ -102,4 +149,9 @@ public class MDCLikeTraceeBackendTest {
 		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
 	}
 
+	private ThreadLocal<Set<String>> wrapSetInThreadLocal(Set<String> traceeKeys) {
+		ThreadLocal<Set<String>> threadLocalSet = new ThreadLocal<Set<String>>();
+		threadLocalSet.set(traceeKeys);
+		return threadLocalSet;
+	}
 }
