@@ -140,6 +140,32 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
+	public void entrySetShouldContainAllKeysAndValues() {
+		traceeKeysSet.addAll(Arrays.asList("A", "B"));
+		when(mdcLikeMock.get("A")).thenReturn("vA");
+		when(mdcLikeMock.get("B")).thenReturn("vB");
+		Set<Map.Entry<String, String>> entries = unit.entrySet();
+		assertThat(entries, hasSize(2));
+		for (Map.Entry<String, String> entry : entries) {
+			assertThat(entry.getValue(), equalTo("v" + entry.getKey()));
+		}
+	}
+
+	@Test
+	public void shouldReturnFalseIfValueIsNotInMDC() {
+		traceeKeysSet.addAll(Arrays.asList("A"));
+		when(mdcLikeMock.get("A")).thenReturn("vA");
+		assertThat(unit.containsValue("vB"), is(false));
+	}
+
+	@Test
+	public void shouldReturnTrueIfValueIsInMDC() {
+		traceeKeysSet.addAll(Arrays.asList("A"));
+		when(mdcLikeMock.get("A")).thenReturn("vA");
+		assertThat(unit.containsValue("vA"), is(true));
+	}
+
+	@Test
 	public void testLoadOverwrittenConfigurationValues() {
 		assertThat(unit.getConfiguration().generatedRequestIdLength(), equalTo(42));
 	}
@@ -147,11 +173,5 @@ public class MDCLikeTraceeBackendTest {
 	@Test
 	public void testLoadUserDefinedProfileFromProperties() {
 		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
-	}
-
-	private ThreadLocal<Set<String>> wrapSetInThreadLocal(Set<String> traceeKeys) {
-		ThreadLocal<Set<String>> threadLocalSet = new ThreadLocal<Set<String>>();
-		threadLocalSet.set(traceeKeys);
-		return threadLocalSet;
 	}
 }
