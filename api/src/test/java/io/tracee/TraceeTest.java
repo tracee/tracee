@@ -4,21 +4,46 @@ import io.tracee.spi.TraceeBackendProvider;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 public class TraceeTest {
+
+	@Test
+	public void constructorOfTraceeShouldBePrivate() throws Exception {
+		Constructor<Tracee> constructor = Tracee.class.getDeclaredConstructor();
+		assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
 
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowTraceeExceptionWithDefaultResolver() {
 		try {
 			Tracee.getBackend();
+			fail();
 		} catch (TraceeException e) {
 			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
+			throw e;
+		}
+	}
+
+	@Test(expected = TraceeException.class)
+	public void backendRetrievalShouldWrapRuntimeExceptionIfItOccurs() {
+		try {
+			final BackendProviderResolver testBackendProvider = Mockito.mock(BackendProviderResolver.class);
+			when(testBackendProvider.getBackendProviders()).thenThrow(RuntimeException.class);
+			Tracee.getBackend(testBackendProvider);
+			fail();
+		} catch (RuntimeException e) {
+			assertThat(e.getMessage(), equalTo("Unable to load available backend providers"));
 			throw e;
 		}
 	}
@@ -28,6 +53,7 @@ public class TraceeTest {
 		final BackendProviderResolver resolver = createTestBackendResolverWith(new HashSet<TraceeBackendProvider>());
 		try {
 			Tracee.getBackend(resolver);
+			fail();
 		} catch (TraceeException e) {
 			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
 			throw e;

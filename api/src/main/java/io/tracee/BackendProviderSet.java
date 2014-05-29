@@ -41,7 +41,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 
 	@Override
 	public Iterator<TraceeBackendProvider> iterator() {
-		Collection<TraceeBackendProvider> strongRefList = createStrongView(values);
+		final Collection<TraceeBackendProvider> strongRefList = createStrongView(values);
 		determineValidity(strongRefList);
 		if (valid) {
 			return strongRefList.iterator();
@@ -51,7 +51,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 
 	@Override
 	public int size() {
-		Collection<TraceeBackendProvider> strongRefList = createStrongView(values);
+		final Collection<TraceeBackendProvider> strongRefList = createStrongView(values);
 		determineValidity(strongRefList);
 		if (valid) {
 			return strongRefList.size();
@@ -71,7 +71,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 	}
 
 	private Collection<TraceeBackendProvider> createStrongView(Collection<SoftReference<TraceeBackendProvider>> providerReferences) {
-		List<TraceeBackendProvider> strongRefs = new ArrayList<TraceeBackendProvider>(providerReferences.size());
+		final List<TraceeBackendProvider> strongRefs = new ArrayList<TraceeBackendProvider>(providerReferences.size());
 		for (SoftReference<TraceeBackendProvider> providerSoftReference : providerReferences) {
 			strongRefs.add(providerSoftReference.get());
 		}
