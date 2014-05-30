@@ -80,13 +80,17 @@ public class ThreadLocalTraceeLoggerTest {
 
 	@Test
 	public void warnWithStacktraceShouldBeDogged() throws Exception {
-		unit.warn("WarnString", new Error());
-		verify(System.err, times(2)).println(anyString());
+		final Error t = mock(Error.class);
+		unit.warn("WarnString", t);
+		verify(System.err, atLeastOnce()).println(anyString());
+		verify(t).printStackTrace(System.err);
 	}
 
 	@Test
 	public void errorWithStacktraceShouldBeDogged() throws Exception {
-		unit.error("ErrorString", new Error());
-		verify(System.err, times(2)).println(anyString());
+		final Error t = mock(Error.class);
+		unit.warn("ErrorString", t);
+		verify(System.err, atLeastOnce()).println(anyString());
+		verify(t).printStackTrace(System.err);
 	}
 }
