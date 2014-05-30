@@ -55,31 +55,35 @@ public class ThreadLocalTraceeLoggerTest {
 	}
 
 	@Test
-	public void warnWithoutStacktraceShouldBeDogged() throws Exception {
+	public void warnWithoutStacktraceShouldBeLogged() throws Exception {
 		unit.warn("WarnString");
 		verify(System.err).println(anyString());
 	}
 
 	@Test
-	public void errorWithoutStacktraceShouldBeDogged() throws Exception {
+	public void errorWithoutStacktraceShouldBeLogged() throws Exception {
 		unit.error("ErrorString");
 		verify(System.err).println(anyString());
 	}
 
 	@Test
 	public void debugWithStacktraceShouldBeDiscarded() throws Exception {
-		unit.debug("DebugString", new Error());
+		final Error t = mock(Error.class);
+		unit.debug("DebugString", t);
 		verify(System.err, never()).println(anyString());
+		verify(t, never()).printStackTrace(System.err);
 	}
 
 	@Test
 	public void infoWithStacktraceShouldBeDiscarded() throws Exception {
-		unit.info("InfoString", new Error());
+		final Error t = mock(Error.class);
+		unit.info("InfoString", t);
 		verify(System.err, never()).println(anyString());
+		verify(t, never()).printStackTrace(System.err);
 	}
 
 	@Test
-	public void warnWithStacktraceShouldBeDogged() throws Exception {
+	public void warnWithStacktraceShouldBeLogged() throws Exception {
 		final Error t = mock(Error.class);
 		unit.warn("WarnString", t);
 		verify(System.err, atLeastOnce()).println(anyString());
@@ -87,7 +91,7 @@ public class ThreadLocalTraceeLoggerTest {
 	}
 
 	@Test
-	public void errorWithStacktraceShouldBeDogged() throws Exception {
+	public void errorWithStacktraceShouldBeLogged() throws Exception {
 		final Error t = mock(Error.class);
 		unit.warn("ErrorString", t);
 		verify(System.err, atLeastOnce()).println(anyString());
