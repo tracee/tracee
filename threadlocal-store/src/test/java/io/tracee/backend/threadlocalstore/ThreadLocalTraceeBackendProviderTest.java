@@ -11,7 +11,7 @@ public class ThreadLocalTraceeBackendProviderTest {
 
 	@Test
 	public void testProvideBackend() {
-		assertThat(unit, notNullValue());
+		assertThat(unit.provideBackend(), notNullValue());
 	}
 
 }

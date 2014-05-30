@@ -1,12 +1,15 @@
 package io.tracee.backend.threadlocalstore;
 
 import io.tracee.ThreadLocalHashSet;
+import io.tracee.TraceeLogger;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.is;
 
 public class ThreadLocalTraceeBackendTest {
 
@@ -29,5 +32,11 @@ public class ThreadLocalTraceeBackendTest {
         assertThat(unit.keySet(), contains("FUBI"));
         assertThat(unit, hasEntry("FUBI", "BARBI"));
     }
+
+	@Test
+	public void shouldReturnTraceeBackendWithThreadLocalLogger() {
+		TraceeLogger traceeLogger = unit.getLoggerFactory().getLogger(this.getClass());
+		assertThat(traceeLogger, is(instanceOf(ThreadLocalTraceeLogger.class)));
+	}
 
 }

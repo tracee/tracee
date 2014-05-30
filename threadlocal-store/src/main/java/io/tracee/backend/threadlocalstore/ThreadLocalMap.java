@@ -18,5 +18,4 @@ class ThreadLocalMap<K, V> extends InheritableThreadLocal<Map<K, V>> {
             return new HashMap<K, V>(parentValue);
         }
     }
-
 }

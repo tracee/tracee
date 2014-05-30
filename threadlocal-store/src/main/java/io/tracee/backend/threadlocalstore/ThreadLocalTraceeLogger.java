@@ -7,7 +7,7 @@ import io.tracee.TraceeLogger;
  */
 final class ThreadLocalTraceeLogger implements TraceeLogger {
 
-    private enum LEVEL {
+    enum LEVEL {
         ERROR, WARN
     }
 
@@ -23,19 +23,19 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
     }
 
     private void createLogEntry(final LEVEL level, final Object message, final Throwable t) {
-
-        final String tmpMessage = level.name()
-                + " - (" + this.clazz.getCanonicalName() + ") :"
-                + (message != null ? message.toString() : "");
-
-        System.err.println(tmpMessage);
+		System.err.println(buildLogString(level, message));
         if (t != null) {
             t.printStackTrace(System.err);
             System.err.println("");
         }
     }
 
-    public void debug(final Object message) {
+	String buildLogString(LEVEL level, Object message) {
+		return level.name()	+ " - (" + this.clazz.getCanonicalName() + ") :"
+					+ (message != null ? message.toString() : "");
+	}
+
+	public void debug(final Object message) {
         // drop debug message
     }
 
