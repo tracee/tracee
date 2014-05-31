@@ -166,6 +166,13 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
+	public void containsValueShouldHandleNullValuesInMDCMap() {
+		traceeKeysSet.addAll(Arrays.asList("A"));
+		when(mdcLikeMock.get("A")).thenReturn(null);
+		assertThat(unit.containsValue("vA"), is(false));
+	}
+
+	@Test
 	public void testLoadOverwrittenConfigurationValues() {
 		assertThat(unit.getConfiguration().generatedRequestIdLength(), equalTo(42));
 	}

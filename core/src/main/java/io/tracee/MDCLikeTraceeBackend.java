@@ -69,7 +69,7 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
     public final boolean containsValue(Object value) {
         if (value == null) throw new NullPointerException("null values are not allowed.");
         for (String key : traceeKeys.get()) {
-            if (mdcAdapter.get(key).equals(value))
+            if (value.equals(mdcAdapter.get(key)))
                 return true;
         }
         return false;
