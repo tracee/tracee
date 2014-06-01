@@ -11,7 +11,7 @@
         <version>0.4.0-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-context-logger-jms</name>
+    <name>tracee-context-logger-jaxws</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <dependencies>
