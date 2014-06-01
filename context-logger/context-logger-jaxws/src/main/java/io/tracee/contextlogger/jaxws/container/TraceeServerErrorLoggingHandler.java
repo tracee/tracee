@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
-    private final TraceeLogger traceeLogger = this.getTraceeBackend().getLoggerFactory().getLogger(
+    private final TraceeLogger logger = this.getTraceeBackend().getLoggerFactory().getLogger(
 			TraceeServerHandler.class);
 
     private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
@@ -54,13 +54,16 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     /**
      * Converts a SOAPMessage instance to string representation.
      */
-    private String getSoapMessageAsString(SOAPMessage soapMessage) {
-
-        try {
+    String getSoapMessageAsString(SOAPMessage soapMessage) {
+		if (soapMessage == null) {
+			return "null";
+		}
+		try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             soapMessage.writeTo(os);
             return new String(os.toByteArray(), "UTF-8");
         } catch (Exception e) {
+			logger.error("Couldn't create string representation of soapMessage: " + soapMessage.toString());
             return "ERROR";
         }
     }
@@ -93,5 +96,4 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     public final Set<QName> getHeaders() {
         return null;
     }
-
 }
