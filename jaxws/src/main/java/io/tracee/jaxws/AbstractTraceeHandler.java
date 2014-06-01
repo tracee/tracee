@@ -35,7 +35,7 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
     }
 
     @Override
-    public final void close(MessageContext context) {
+    public void close(MessageContext context) {
 
     }
 
