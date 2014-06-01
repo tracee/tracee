@@ -11,12 +11,13 @@ import io.tracee.jaxws.container.TraceeServerHandler;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
 /**
- * JaxWs container side handler that detects uncaught exceptions and outputs contextual informations.
+ * JaxWs container side handler that detects uncaught exceptions and outputs contextual information.
  *
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
@@ -47,11 +48,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
                 JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
                         getSoapMessageAsString(soapMessage)));
 
-        // cleanup thread local request soap message
-        THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
-
         return true;
-
     }
 
     /**
@@ -77,10 +74,16 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
             String soapMessageAsString = getSoapMessageAsString(soapMessage);
             THREAD_LOCAL_SOAP_MESSAGE_STR.set(soapMessageAsString);
         }
-
     }
 
-    @Override
+	@Override
+	public void close(MessageContext context) {
+		super.close(context);
+		// cleanup thread local request soap message
+		THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
+	}
+
+	@Override
     protected final void handleOutgoing(SOAPMessageContext context) {
         // Do nothing
     }
