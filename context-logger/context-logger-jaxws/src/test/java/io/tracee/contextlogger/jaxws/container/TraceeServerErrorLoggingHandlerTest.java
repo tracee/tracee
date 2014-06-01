@@ -1,6 +1,5 @@
 package io.tracee.contextlogger.jaxws.container;
 
-import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl;
 import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
@@ -16,6 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -167,7 +167,7 @@ public class TraceeServerErrorLoggingHandlerTest {
 	}
 
 	private SOAPMessage buildSpiedTestMessage(String value) throws SOAPException {
-		final SOAPMessage message = new Message1_1Impl();
+		final SOAPMessage message = MessageFactory.newInstance().createMessage();
 		message.getSOAPBody().addAttribute(new QName("A"), value);
 		return spy(message);
 	}
