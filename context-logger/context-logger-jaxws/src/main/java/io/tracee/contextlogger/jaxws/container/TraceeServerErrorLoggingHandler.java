@@ -14,18 +14,19 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.Set;
 
 /**
  * JaxWs container side handler that detects uncaught exceptions and outputs contextual information.
  *
  */
-public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
+public final class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
 
     private final TraceeLogger logger = this.getTraceeBackend().getLoggerFactory().getLogger(
 			TraceeServerHandler.class);
 
-    private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
+    static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
 
 	TraceeServerErrorLoggingHandler(TraceeBackend traceeBackend) {
 		super(traceeBackend);
@@ -46,7 +47,7 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
                 ImplicitContext.COMMON,
                 ImplicitContext.TRACEE,
                 JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
-                        getSoapMessageAsString(soapMessage)));
+                        convertSoapMessageAsString(soapMessage)));
 
         return true;
     }
@@ -54,27 +55,38 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     /**
      * Converts a SOAPMessage instance to string representation.
      */
-    String getSoapMessageAsString(SOAPMessage soapMessage) {
+    String convertSoapMessageAsString(SOAPMessage soapMessage) {
 		if (soapMessage == null) {
 			return "null";
 		}
 		try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             soapMessage.writeTo(os);
-            return new String(os.toByteArray(), "UTF-8");
+			return new String(os.toByteArray(), determineMessageEncoding(soapMessage));
         } catch (Exception e) {
 			logger.error("Couldn't create string representation of soapMessage: " + soapMessage.toString());
             return "ERROR";
         }
     }
 
+	Charset determineMessageEncoding(SOAPMessage soapMessage) {
+		try {
+			final Object encProp = soapMessage.getProperty(SOAPMessage.CHARACTER_SET_ENCODING);
+			if (encProp != null) {
+				return Charset.forName(String.valueOf(encProp));
+			}
+			return Charset.forName("UTF-8");
+		} catch (Exception e) {
+			return Charset.forName("UTF-8");
+		}
+	}
 
-    @Override
+	@Override
     protected final void handleIncoming(SOAPMessageContext context) {
         // Save soap request message in thread local storage for error logging
         SOAPMessage soapMessage = context.getMessage();
         if (soapMessage != null) {
-            String soapMessageAsString = getSoapMessageAsString(soapMessage);
+            String soapMessageAsString = convertSoapMessageAsString(soapMessage);
             THREAD_LOCAL_SOAP_MESSAGE_STR.set(soapMessageAsString);
         }
     }
@@ -90,7 +102,6 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeHandler {
     protected final void handleOutgoing(SOAPMessageContext context) {
         // Do nothing
     }
-
 
     @Override
     public final Set<QName> getHeaders() {
