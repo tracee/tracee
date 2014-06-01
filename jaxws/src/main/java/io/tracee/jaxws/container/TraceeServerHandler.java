@@ -73,8 +73,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			}
 
         } catch (final SOAPException e) {
-			traceeLogger.error("TraceeServerHandler : Exception "
-					+ "occurred during processing of outbound message.", e);
+			traceeLogger.error("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
 		} finally {
             // must reset tracee context
             backend.clear();
