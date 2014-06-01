@@ -12,7 +12,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.hamcrest.Matchers;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,9 +23,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.EnumSet;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
 public class TraceeFilterIT {
 
@@ -79,7 +78,7 @@ public class TraceeFilterIT {
 	public static final class SillyServlet extends HttpServlet {
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			Assert.assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
+			assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
 			Tracee.getBackend().put("inServlet", "yes");
 		}
 	}
@@ -87,7 +86,7 @@ public class TraceeFilterIT {
 	public static final class SillyFlushingServlet extends HttpServlet {
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			Assert.assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
+			assertThat(req.getHeader(TraceeConstants.HTTP_HEADER_NAME), Matchers.containsString("\"inClient\":\"yes\""));
 			Tracee.getBackend().put("inServlet", "yes");
 			resp.getWriter().append("Hello World");
 			resp.flushBuffer();
