@@ -12,13 +12,14 @@ import java.util.Set;
 
 public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
+	private final TraceeBackend traceeBackend;
+
+	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
+			new HashSet<QName>(Collections.singleton(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME)));
+
 	public AbstractTraceeHandler(TraceeBackend traceeBackend) {
 		this.traceeBackend = traceeBackend;
 	}
-
-    private final TraceeBackend traceeBackend;
-	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
-			new HashSet<QName>(Collections.singleton(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME)));
 
     @Override
     public final boolean handleMessage(final SOAPMessageContext context) {
@@ -31,7 +32,8 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
     }
 
     private boolean isOutgoing(MessageContext messageContext) {
-        return (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+		Object outboundBoolean = messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+		return outboundBoolean != null && (Boolean) outboundBoolean;
     }
 
     @Override
