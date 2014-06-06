@@ -143,7 +143,7 @@ public class TraceeServerErrorLoggingHandlerTest {
         final SOAPMessageContext messageContext = mock(SOAPMessageContext.class);
         when(messageContext.getMessage()).thenReturn(buildSpiedTestMessage("vA"));
         unit.handleFault(messageContext);
-        verify(contextLogger).logJsonWithPrefixedMessage(eq("TRACEE JMS ERROR CONTEXT LISTENER"),
+        verify(contextLogger).logJsonWithPrefixedMessage(eq("TRACEE JAXWS ERROR CONTEXT LISTENER"),
                 eq(ImplicitContext.COMMON), eq(ImplicitContext.TRACEE),
                 Mockito.any(JaxWsWrapper.class));
     }

@@ -11,8 +11,10 @@ import io.tracee.jaxws.container.TraceeServerHandler;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.Set;
 
 /**
@@ -20,10 +22,10 @@ import java.util.Set;
  */
 public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHandler {
 
-    private final TraceeLogger traceeLogger = this.getTraceeBackend().getLoggerFactory().getLogger(
+    private final TraceeLogger logger = this.getTraceeBackend().getLoggerFactory().getLogger(
             TraceeServerHandler.class);
 
-    private static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
+    protected static final ThreadLocal<String> THREAD_LOCAL_SOAP_MESSAGE_STR = new ThreadLocal<String>();
 
     AbstractTraceeErrorLoggingHandler(TraceeBackend traceeBackend) {
         super(traceeBackend);
@@ -40,42 +42,66 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
         SOAPMessage soapMessage = context.getMessage();
 
         TraceeContextLogger.createDefault().logJsonWithPrefixedMessage(
-                "TRACEE JMS ERROR CONTEXT LISTENER",
+                "TRACEE JAXWS ERROR CONTEXT LISTENER",
                 ImplicitContext.COMMON,
                 ImplicitContext.TRACEE,
                 JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
-                        getSoapMessageAsString(soapMessage)));
-
-        // cleanup thread local request soap message
-        THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
+                        convertSoapMessageAsString(soapMessage)));
 
         return true;
 
     }
 
+
+
     /**
      * Converts a SOAPMessage instance to string representation.
      */
-    private String getSoapMessageAsString(SOAPMessage soapMessage) {
-
+    String convertSoapMessageAsString(SOAPMessage soapMessage) {
+        if (soapMessage == null) {
+            return "null";
+        }
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             soapMessage.writeTo(os);
-            return new String(os.toByteArray(), "UTF-8");
+            return new String(os.toByteArray(), determineMessageEncoding(soapMessage));
         } catch (Exception e) {
+            logger.error("Couldn't create string representation of soapMessage: " + soapMessage.toString());
             return "ERROR";
         }
     }
 
+    Charset determineMessageEncoding(SOAPMessage soapMessage) {
+        try {
+            final Object encProp = soapMessage.getProperty(SOAPMessage.CHARACTER_SET_ENCODING);
+            if (encProp != null) {
+                return Charset.forName(String.valueOf(encProp));
+            }
+            return Charset.forName("UTF-8");
+        } catch (Exception e) {
+            return Charset.forName("UTF-8");
+        }
+    }
 
-    protected final void storeMessageInThreadLocal(SOAPMessageContext context) {
+
+
+
+    protected void storeMessageInThreadLocal(SOAPMessageContext context) {
+
         // Save soap request message in thread local storage for error logging
         SOAPMessage soapMessage = context.getMessage();
         if (soapMessage != null) {
-            String soapMessageAsString = getSoapMessageAsString(soapMessage);
+            String soapMessageAsString = convertSoapMessageAsString(soapMessage);
             THREAD_LOCAL_SOAP_MESSAGE_STR.set(soapMessageAsString);
         }
 
+    }
+
+    @Override
+    public void close(MessageContext context) {
+        super.close(context);
+        // cleanup thread local request soap message
+        THREAD_LOCAL_SOAP_MESSAGE_STR.remove();
     }
 
     @Override
