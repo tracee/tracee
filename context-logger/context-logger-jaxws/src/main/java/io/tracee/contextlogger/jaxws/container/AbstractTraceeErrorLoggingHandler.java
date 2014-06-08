@@ -49,10 +49,7 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
                         convertSoapMessageAsString(soapMessage)));
 
         return true;
-
     }
-
-
 
     /**
      * Converts a SOAPMessage instance to string representation.
@@ -83,9 +80,6 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
         }
     }
 
-
-
-
     protected void storeMessageInThreadLocal(SOAPMessageContext context) {
 
         // Save soap request message in thread local storage for error logging
@@ -94,7 +88,6 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
             String soapMessageAsString = convertSoapMessageAsString(soapMessage);
             THREAD_LOCAL_SOAP_MESSAGE_STR.set(soapMessageAsString);
         }
-
     }
 
     @Override

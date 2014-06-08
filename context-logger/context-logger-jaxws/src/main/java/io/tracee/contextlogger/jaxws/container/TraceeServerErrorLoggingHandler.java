@@ -30,5 +30,4 @@ public class TraceeServerErrorLoggingHandler extends AbstractTraceeErrorLoggingH
     protected final void handleOutgoing(SOAPMessageContext context) {
         // Do nothing
     }
-
 }

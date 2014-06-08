@@ -29,5 +29,4 @@ public interface TraceeClientHandlerResolverBuilder {
      */
     TraceeClientHandlerResolverBuilder add(final Class<? extends SOAPHandler<SOAPMessageContext>> handlerType);
 
-
 }
