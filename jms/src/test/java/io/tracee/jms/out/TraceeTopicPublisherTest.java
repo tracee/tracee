@@ -3,48 +3,67 @@ package io.tracee.jms.out;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
-import java.util.Collections;
+import javax.jms.Topic;
+import javax.jms.TopicPublisher;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class TraceeMessageProducerTest {
+public class TraceeTopicPublisherTest {
 
-	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
 	private final MessageProducer messageProducer = mock(MessageProducer.class);
-	private final TraceeMessageProducer unit = new TraceeMessageProducer(messageProducer, backend);
+	private final TopicPublisher topicPublisher = mock(TopicPublisher.class);
+	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeTopicPublisher unit = new TraceeTopicPublisher(new TraceeMessageProducer(messageProducer, backend), topicPublisher);
 	private final Message message = mock(Message.class);
 
-
-	@Test
-	public void testWriteTraceeContextToMessage() throws Exception {
+	@Before
+	public void setup() {
 		backend.put("random", "entry");
-		unit.writeTraceeContextToMessage(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), eq(Collections.singletonMap("random", "entry")));
 	}
 
 	@Test
-	public void testDontWriteEmptyTraceeContextToMessage() throws Exception {
-		backend.clear();
-		unit.writeTraceeContextToMessage(message);
-		verifyNoMoreInteractions(message);
+	public void publishMessageShouldAddContextAndDelegate() throws Exception {
+		unit.publish(message);
+		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(topicPublisher).publish(message);
+	}
+
+	@Test
+	public void publishMessageWithTopicShouldAddContextAndDelegate() throws Exception {
+		final Topic topic = mock(Topic.class);
+		unit.publish(topic, message);
+		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(topicPublisher).publish(topic, message);
+	}
+
+	@Test
+	public void publishMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
+		unit.publish(message, DeliveryMode.PERSISTENT, 5, 100);
+		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(topicPublisher).publish(message, DeliveryMode.PERSISTENT, 5, 100);
+	}
+
+	@Test
+	public void publishMessageWithTopicAndDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
+		final Topic topic = mock(Topic.class);
+		unit.publish(topic, message, DeliveryMode.PERSISTENT, 5, 100);
+		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(topicPublisher).publish(topic, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
 	@Test
 	public void sendMessageShouldAddContextAndDelegate() throws Exception {
-		backend.put("random", "entry");
 		unit.send(message);
 		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
 		verify(messageProducer).send(message);
@@ -52,7 +71,6 @@ public class TraceeMessageProducerTest {
 
 	@Test
 	public void sendMessageWithDestinationShouldAddContextAndDelegate() throws Exception {
-		backend.put("random", "entry");
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message);
 		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
@@ -61,7 +79,6 @@ public class TraceeMessageProducerTest {
 
 	@Test
 	public void sendMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
-		backend.put("random", "entry");
 		unit.send(message, DeliveryMode.PERSISTENT, 5, 100);
 		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
 		verify(messageProducer).send(message, DeliveryMode.PERSISTENT, 5, 100);
@@ -69,7 +86,6 @@ public class TraceeMessageProducerTest {
 
 	@Test
 	public void sendMessageWithDestinationAndDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
-		backend.put("random", "entry");
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
 		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
@@ -100,6 +116,8 @@ public class TraceeMessageProducerTest {
 		verify(messageProducer).getTimeToLive();
 		unit.getDestination();
 		verify(messageProducer).getDestination();
+		unit.getTopic();
+		verify(topicPublisher).getTopic();
 		unit.close();
 		verify(messageProducer).close();
 	}
