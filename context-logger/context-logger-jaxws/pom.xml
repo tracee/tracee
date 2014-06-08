@@ -18,13 +18,13 @@
         <dependency>
             <artifactId>tracee-api</artifactId>
             <groupId>io.tracee</groupId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-jaxws</artifactId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
         <dependency>
@@ -35,19 +35,19 @@
 		<dependency>
 			<artifactId>tracee-context-logger-impl</artifactId>
 			<groupId>io.tracee</groupId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<artifactId>tracee-context-logger-api</artifactId>
 			<groupId>io.tracee</groupId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 
         <dependency>
             <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 

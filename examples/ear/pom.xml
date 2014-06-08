@@ -17,19 +17,19 @@
 		<dependency>
 			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-ejb-impl</artifactId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
 			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-jaxws-service</artifactId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
 			<groupId>io.tracee.examples</groupId>
 			<artifactId>tracee-examples-jms-impl</artifactId>
-			<version>0.4.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>
 	</dependencies>

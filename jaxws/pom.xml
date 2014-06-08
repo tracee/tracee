@@ -17,12 +17,12 @@
         <dependency>
             <artifactId>tracee-api</artifactId>
             <groupId>io.tracee</groupId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <artifactId>tracee-core</artifactId>
             <groupId>io.tracee</groupId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.xml.ws</groupId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-log4j</artifactId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -49,7 +49,7 @@
         <dependency>
             <groupId>io.tracee</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
 
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>
-            <version>0.4.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
