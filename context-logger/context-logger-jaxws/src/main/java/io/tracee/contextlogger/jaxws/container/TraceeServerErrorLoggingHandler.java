@@ -8,7 +8,7 @@ import io.tracee.jaxws.container.TraceeServerHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 /**
- * JaxWs container side handler that detects uncaught exceptions and outputs contextual informations.
+ * JaxWs container side handler that detects uncaught exceptions and outputs contextual information.
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeErrorLoggingHandler {
 
