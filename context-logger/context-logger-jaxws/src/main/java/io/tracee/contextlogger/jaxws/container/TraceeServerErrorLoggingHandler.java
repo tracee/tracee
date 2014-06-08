@@ -12,9 +12,6 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
  */
 public class TraceeServerErrorLoggingHandler extends AbstractTraceeErrorLoggingHandler {
 
-    private final TraceeLogger traceeLogger = this.getTraceeBackend().getLoggerFactory().getLogger(
-            TraceeServerHandler.class);
-
     TraceeServerErrorLoggingHandler(TraceeBackend traceeBackend) {
         super(traceeBackend);
     }

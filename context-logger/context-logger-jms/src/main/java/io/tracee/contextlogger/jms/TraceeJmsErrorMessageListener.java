@@ -1,7 +1,5 @@
 package io.tracee.contextlogger.jms;
 
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.builder.TraceeContextLogger;
 
@@ -17,15 +15,9 @@ import java.lang.reflect.Method;
  */
 public class TraceeJmsErrorMessageListener {
 
-    private final TraceeBackend backend;
-
-    TraceeJmsErrorMessageListener(TraceeBackend backend) {
-        this.backend = backend;
-    }
-
     @SuppressWarnings("unused")
     public TraceeJmsErrorMessageListener() {
-        this(Tracee.getBackend());
+
     }
 
     @AroundInvoke
@@ -36,20 +28,12 @@ public class TraceeJmsErrorMessageListener {
         } catch (Exception e) {
 
             if (isMdbInvocation) {
-
-                Message message = extractMessageParameter(ctx.getParameters());
-
                 TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE JMS ERROR CONTEXT LOGGING LISTENER  : ",
 						ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
-
             }
 
             throw e;
         }
-    }
-
-    final Message extractMessageParameter(Object[] parameters) {
-        return (Message) parameters[0];
     }
 
     final boolean isMessageListenerOnMessageMethod(Method method) {
