@@ -12,7 +12,6 @@ import io.tracee.contextlogger.profile.ProfileSettings;
  */
 public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 
-
 	private Gson gson = null;
 
 	/**
@@ -21,7 +20,6 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 	private Gson getOrCreateGson() {
 
 		if (gson == null) {
-
 			final GsonBuilder gsonBuilder = new GsonBuilder();
 
 			final TraceeGenericGsonSerializer gsonSerializer = new TraceeGenericGsonSerializer(new ProfileSettings(this.getProfile(),
@@ -35,7 +33,6 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 		}
 
 		return gson;
-
 	}
 
 
@@ -48,6 +45,4 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 	public final String logPassedContext(PassedDataContextProvider passedContextData) {
 		return getOrCreateGson().toJson(passedContextData);
 	}
-
-
 }

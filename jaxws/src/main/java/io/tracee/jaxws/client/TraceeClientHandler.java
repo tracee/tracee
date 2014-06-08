@@ -53,8 +53,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
             } catch (final SOAPException e) {
                 e.printStackTrace();
-                traceeLogger.error(
-                        "TraceeClientHandler : Exception occurred during processing of inbound message.", e);
+                traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
             }
 
         }
@@ -87,15 +86,10 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 				msg.saveChanges();
 
             } catch (final SOAPException e) {
-                traceeLogger.error("TraceeClientHandler : Exception "
-                        + "occurred during processing of outbound message.", e);
+                traceeLogger.error("TraceeClientHandler : Exception occurred during processing of outbound message.", e);
             }
 
             context.setMessage(msg);
-
         }
     }
-
-
-
 }

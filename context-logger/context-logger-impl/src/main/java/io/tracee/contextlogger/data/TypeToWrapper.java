@@ -14,11 +14,9 @@ import java.util.*;
  */
 public final class TypeToWrapper {
 
-    private final static String[] RESOURCE_URLS = {
-            TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_INTERNAL_RESOURCE_URL,
-            TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_CUSTOM_RESOURCE_URL
-    };
-
+    private final static List<String> RESOURCE_URLS = Collections.unmodifiableList(Arrays.asList(
+			TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_INTERNAL_RESOURCE_URL,
+            TraceeContextLoggerConstants.WRAPPER_CONTEXT_PROVIDER_CUSTOM_RESOURCE_URL));
 
     private static List<TypeToWrapper> typeToWrapperList;
 
@@ -106,49 +104,36 @@ public final class TypeToWrapper {
      * @return a set that contains all context provider type the were found
      */
     static <T> Set<T> getImplicitWrappers(final Class<T> type, final String resourceUrl) {
-        Set<T> result = new HashSet<T>();
-
+        final Set<T> result = new HashSet<T>();
 
         BufferedReader bufferedReader = null;
         try {
-
             bufferedReader = new BufferedReader(
-                    new InputStreamReader(
-                            TypeToWrapper.class.getResourceAsStream(
-                                    resourceUrl)
-                    )
+                    new InputStreamReader(TypeToWrapper.class.getResourceAsStream(resourceUrl))
             );
 
-            String line = bufferedReader.readLine();
-            while (line != null) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
 
                 try {
-
-                    Class clazz = Class.forName(line);
+                    final Class<?> clazz = Class.forName(line);
                     if (type.isAssignableFrom(clazz)) {
-                        T instance = (T) clazz.newInstance();
-
+                        T instance = type.cast(clazz.newInstance());
                         result.add(instance);
                     }
-
                 } catch (Exception e) {
                     // to be ignored
                 } catch (NoClassDefFoundError error) {
                     // to be ignored
                 }
-
-                line = bufferedReader.readLine();
             }
-
-
-
         } catch (Exception e) {
             logError("Context logger - An error occurred while loading implicit type wrappers.", e);
         } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
-                } catch (IOException e1) {
+                } catch (IOException ignored) {
                     // ignore
                 }
             }
@@ -160,12 +145,10 @@ public final class TypeToWrapper {
 
     public static List<TypeToWrapper> getAvailableWrappers() {
 
-        List<TypeToWrapper> wrappers = new ArrayList<TypeToWrapper>();
+        final List<TypeToWrapper> wrappers = new ArrayList<TypeToWrapper>();
 
         for (final String resourceUrl : RESOURCE_URLS) {
-
             wrappers.addAll(getAvailableWrappers(resourceUrl));
-
         }
 
         return wrappers;
@@ -177,7 +160,7 @@ public final class TypeToWrapper {
      */
     static List<TypeToWrapper> getAvailableWrappers(final String resourceUrl) {
 
-        List<TypeToWrapper> result = new ArrayList<TypeToWrapper>();
+        final List<TypeToWrapper> result = new ArrayList<TypeToWrapper>();
 
         BufferedReader bufferedReader = null;
         try {
@@ -192,16 +175,12 @@ public final class TypeToWrapper {
             while (line != null) {
 
                 try {
-
-                    Class clazz = Class.forName(line);
+                    Class<?> clazz = Class.forName(line);
 
                     if (WrappedContextData.class.isAssignableFrom(clazz)) {
                         // try to create instance to get the wrapped type
-                        WrappedContextData instance = (WrappedContextData) clazz.newInstance();
-
-                        Class wrappedType = instance.getWrappedType();
-
-                        result.add(new TypeToWrapper(wrappedType, clazz));
+                        final WrappedContextData instance = (WrappedContextData) clazz.newInstance();
+						result.add(new TypeToWrapper(instance.getWrappedType(), clazz));
                     }
 
                 } catch (Exception e) {
@@ -212,9 +191,6 @@ public final class TypeToWrapper {
 
                 line = bufferedReader.readLine();
             }
-
-
-
         } catch (Exception e) {
             logError("Context logger - An error occurred while loading explicit type wrappers.", e);
 
@@ -228,13 +204,10 @@ public final class TypeToWrapper {
             }
         }
 
-
         return result;
-
     }
 
     private static void logError (final String message, final Throwable e) {
         Tracee.getBackend().getLoggerFactory().getLogger(TypeToWrapper.class).error(message, e);
     }
-
 }
