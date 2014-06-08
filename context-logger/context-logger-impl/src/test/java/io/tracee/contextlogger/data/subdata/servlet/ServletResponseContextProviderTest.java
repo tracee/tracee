@@ -1,14 +1,18 @@
 package io.tracee.contextlogger.data.subdata.servlet;
 
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link io.tracee.contextlogger.data.subdata.servlet.ServletResponseContextProvider}.
@@ -16,77 +20,50 @@ import java.util.List;
  */
 public class ServletResponseContextProviderTest {
 
+	private final ServletResponseContextProvider unit = new ServletResponseContextProvider();
 
-    @Test
-    public void should_return_wrapped_type() {
+	@Test
+	public void should_return_wrapped_type() {
+		assertThat(unit.getWrappedType(), equalTo(HttpServletResponse.class));
+	}
 
-        ServletResponseContextProvider givenServletResponseContextProvider = new ServletResponseContextProvider();
+	@Test
+	public void should_return_null_for_status_code() {
+		assertThat(unit.getHttpStatusCode(), Matchers.nullValue());
+	}
 
-        Class result = givenServletResponseContextProvider.getWrappedType();
-
-        MatcherAssert.assertThat(result.equals(HttpServletResponse.class), Matchers.equalTo(true));
-
-    }
-
-    @Test
-    public void should_return_null_for_status_code () {
-
-        ServletResponseContextProvider givenServletResponseContextProvider = new ServletResponseContextProvider();
-
-        Integer result = givenServletResponseContextProvider.getHttpStatusCode();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
-    }
-
-    @Test
-    public void should_return_null_for_response_headers () {
-
-        ServletResponseContextProvider givenServletResponseContextProvider = new ServletResponseContextProvider();
-
-        List<NameStringValuePair> result = givenServletResponseContextProvider.getHttpResponseHeaders();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
-    }
+	@Test
+	public void should_return_null_for_response_headers() {
+		assertThat(unit.getHttpResponseHeaders(), Matchers.nullValue());
+	}
 
 
-    @Test
-    public void should_return_status_code () {
+	@Test
+	public void should_return_status_code() {
+		final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+		when(response.getStatus()).thenReturn(200);
 
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(response.getStatus()).thenReturn(200);
+		unit.setContextData(response);
 
-        ServletResponseContextProvider givenServletResponseContextProvider = new ServletResponseContextProvider();
-        givenServletResponseContextProvider.setContextData(response);
+		assertThat(unit.getHttpStatusCode(), equalTo(200));
+	}
 
-        Integer result = givenServletResponseContextProvider.getHttpStatusCode();
+	@Test
+	public void should_return_response_headers() {
 
-        MatcherAssert.assertThat(result, Matchers.equalTo(200));
+		final List<String> list = Arrays.asList("key");
 
-    }
+		final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+		when(response.getHeaderNames()).thenReturn(list);
+		when(response.getHeader("key")).thenReturn("value");
 
-    @Test
-    public void should_return_response_headers () {
+		unit.setContextData(response);
 
-        List<String> list = new ArrayList<String>();
-        list.add("key");
+		final List<NameStringValuePair> result = unit.getHttpResponseHeaders();
 
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(response.getHeaderNames()).thenReturn(list);
-        Mockito.when(response.getHeader("key")).thenReturn("value");
-
-        ServletResponseContextProvider givenServletResponseContextProvider = new ServletResponseContextProvider();
-        givenServletResponseContextProvider.setContextData(response);
-
-        List<NameStringValuePair> result = givenServletResponseContextProvider.getHttpResponseHeaders();
-
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo("key"));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo("value"));
-
-
-    }
-
+		assertThat(result, notNullValue());
+		assertThat(result.size(), equalTo(1));
+		assertThat(result.get(0).getName(), equalTo("key"));
+		assertThat(result.get(0).getValue(), equalTo("value"));
+	}
 }

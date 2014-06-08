@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+
 /**
  * Test class for {@link PassedDataContextProvider}.
  * Created by Tobias Gindler, holisticon AG on 31.03.14.
@@ -15,51 +19,40 @@ public class PassedContextDataProviderTest {
 
     @Test
     public void should_return_wrapped_type() {
+        final PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(null);
 
-        PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(null);
-
-        Class result = passedContextProvider.getWrappedType();
-
-        MatcherAssert.assertThat(result.equals(Object[].class), Matchers.equalTo(true));
-
+		assertThat(passedContextProvider.getWrappedType(), equalTo(Object[].class));
     }
 
 
     @Test
     public void should_return_null_for_null_valued_wrapped_object_array() {
 
-        PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(null);
+        final PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(null);
 
-        List<NameObjectValuePair> result = passedContextProvider.getContextData();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(passedContextProvider.getContextData(), nullValue());
     }
 
     @Test
     public void should_return_null_for_zero_length_wrapped_object_array() {
 
-        PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(new Object[0]);
+        final PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(new Object[0]);
 
-        List<NameObjectValuePair> result = passedContextProvider.getContextData();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(passedContextProvider.getContextData(), nullValue());
     }
 
     @Test
     public void should_return_list_of_name_object_value_pairs() {
 
-        Object[] OBJECTS = {"ABC"};
+        final Object[] OBJECTS = {"ABC"};
 
-        PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(OBJECTS);
+        final PassedDataContextProvider passedContextProvider = new PassedDataContextProvider(OBJECTS);
 
-        List<NameObjectValuePair> result = passedContextProvider.getContextData();
+        final List<NameObjectValuePair> result = passedContextProvider.getContextData();
 
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo(String.class.getCanonicalName()));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo(OBJECTS[0]));
+        assertThat(result, Matchers.notNullValue());
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getName(), equalTo(String.class.getCanonicalName()));
+        assertThat(result.get(0).getValue(), equalTo(OBJECTS[0]));
     }
-
 }

@@ -10,6 +10,11 @@ import org.mockito.Mockito;
 
 import java.util.Date;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
 /**
  * Test class for {@link CommonDataContextProvider}.
  * Created by Tobias Gindler, holisticon AG on 31.03.14.
@@ -23,9 +28,7 @@ public class CommonDataProviderTest {
 
     @Before
     public void init() {
-
         commonDataContextProvider = Mockito.spy(new CommonDataContextProvider());
-
     }
 
     @Test
@@ -35,8 +38,8 @@ public class CommonDataProviderTest {
 
         ImplicitContext implicitContext = commonDataContextProvider.getImplicitContext();
 
-        MatcherAssert.assertThat(implicitContext, Matchers.notNullValue());
-        MatcherAssert.assertThat(implicitContext, Matchers.equalTo(ImplicitContext.COMMON));
+        assertThat(implicitContext, notNullValue());
+        assertThat(implicitContext, equalTo(ImplicitContext.COMMON));
     }
 
 
@@ -45,7 +48,7 @@ public class CommonDataProviderTest {
 
         setSystemProperties(true, true);
         Date result = commonDataContextProvider.getTimestamp();
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
+        assertThat(result, notNullValue());
     }
 
     @Test
@@ -54,8 +57,8 @@ public class CommonDataProviderTest {
         setSystemProperties(true, true);
 
         String result = commonDataContextProvider.getStage();
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result, Matchers.equalTo(STAGE));
+        assertThat(result, notNullValue());
+        assertThat(result, equalTo(STAGE));
     }
 
     @Test
@@ -64,7 +67,7 @@ public class CommonDataProviderTest {
         setSystemProperties(false, true);
 
         String result = commonDataContextProvider.getStage();
-        MatcherAssert.assertThat(result, Matchers.nullValue());
+        assertThat(result, nullValue());
     }
 
     @Test
@@ -73,8 +76,8 @@ public class CommonDataProviderTest {
         setSystemProperties(true, true);
 
         String result = commonDataContextProvider.getSystemName();
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result, Matchers.equalTo(SYSTEM));
+        assertThat(result, notNullValue());
+        assertThat(result, equalTo(SYSTEM));
     }
 
     @Test
@@ -82,7 +85,7 @@ public class CommonDataProviderTest {
         setSystemProperties(true,false);
 
         String result = commonDataContextProvider.getSystemName();
-        MatcherAssert.assertThat(result, Matchers.nullValue());
+        assertThat(result, nullValue());
     }
 
     @Test
@@ -90,8 +93,8 @@ public class CommonDataProviderTest {
         setSystemProperties(true,true);
         String expected = Thread.currentThread().getName();
         String result = commonDataContextProvider.getThreadName();
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result, Matchers.equalTo(expected));
+        assertThat(result, notNullValue());
+        assertThat(result, equalTo(expected));
     }
 
     @Test
@@ -99,8 +102,8 @@ public class CommonDataProviderTest {
         setSystemProperties(true,true);
         Long expected = Thread.currentThread().getId();
         Long result = commonDataContextProvider.getThreadId();
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result, Matchers.equalTo(expected));
+        assertThat(result, notNullValue());
+        assertThat(result, equalTo(expected));
     }
 
     private void setSystemProperties (boolean stage, boolean system) {

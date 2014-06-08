@@ -10,38 +10,34 @@ import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 /**
  * Test class for {@link io.tracee.contextlogger.data.subdata.servlet.ServletSessionContextProvider}.
  * Created by Tobias Gindler, holisticon AG on 01.04.14.
  */
 public class ServletSessionContextProviderTest {
 
+	private final ServletSessionContextProvider unit = new ServletSessionContextProvider();
+
     @Test
     public void should_return_wrapped_type() {
-
-        ServletSessionContextProvider givenServletSessionContextProvider = new ServletSessionContextProvider();
-
-        Class result = givenServletSessionContextProvider.getWrappedType();
-
-        MatcherAssert.assertThat(result.equals(HttpSession.class), Matchers.equalTo(true));
-
+		assertThat(unit.getWrappedType(), equalTo(HttpSession.class));
     }
-
 
     @Test
     public void should_return_null_if_wrapped_session_is_null() {
-
-        ServletSessionContextProvider servletSessionContextProvider = new ServletSessionContextProvider();
-
-        List<NameStringValuePair> result = servletSessionContextProvider.getSessionAttributes();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
+		assertThat(unit.getSessionAttributes(), nullValue());
     }
 
     @Test
     public void should_return_session_attributes() {
 
-        Enumeration<String> names = new Enumeration<String>() {
+        final Enumeration<String> names = new Enumeration<String>() {
             boolean first = true;
 
             @Override
@@ -60,21 +56,17 @@ public class ServletSessionContextProviderTest {
             }
         };
 
-        HttpSession session = Mockito.mock(HttpSession.class);
-        Mockito.when(session.getAttributeNames()).thenReturn(names);
-        Mockito.when(session.getAttribute("key")).thenReturn("value");
+        HttpSession session = mock(HttpSession.class);
+        when(session.getAttributeNames()).thenReturn(names);
+        when(session.getAttribute("key")).thenReturn("value");
 
-        ServletSessionContextProvider servletSessionContextProvider = new ServletSessionContextProvider();
-        servletSessionContextProvider.setContextData(session);
+        unit.setContextData(session);
 
-        List<NameStringValuePair> result = servletSessionContextProvider.getSessionAttributes();
+        final List<NameStringValuePair> result = unit.getSessionAttributes();
 
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo("key"));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo("value"));
-
+        assertThat(result, Matchers.notNullValue());
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getName(), equalTo("key"));
+        assertThat(result.get(0).getValue(), equalTo("value"));
     }
-
-
 }

@@ -7,11 +7,17 @@ import org.junit.Test;
 
 import javax.servlet.http.Cookie;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+
 /**
  * Test class for {@link io.tracee.contextlogger.data.subdata.servlet.ServletCookieContextProvider}.
  * Created by Tobias Gindler, holisticon ag on 01.04.14.
  */
 public class ServletCookieContextProviderTest {
+
+	private final ServletCookieContextProvider unit = new ServletCookieContextProvider();
 
     private Cookie cookie;
 
@@ -26,151 +32,73 @@ public class ServletCookieContextProviderTest {
 
     @Test
     public void should_return_wrapped_type() {
-
-        ServletCookieContextProvider givenServletCookieContextProvider = new ServletCookieContextProvider();
-
-        Class result = givenServletCookieContextProvider.getWrappedType();
-
-        MatcherAssert.assertThat(result.equals(Cookie.class), Matchers.equalTo(true));
-
+		assertThat(unit.getWrappedType(), equalTo(Cookie.class));
     }
 
 
     @Test
     public void should_return_null_for_name_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        String result = givenJaxWsContextProvider.getName();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getName(), nullValue());
     }
 
     @Test
     public void should_return_null_for_value_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        String result = givenJaxWsContextProvider.getValue();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getValue(), nullValue());
     }
 
     @Test
     public void should_return_null_for_domain_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        String result = givenJaxWsContextProvider.getDomain();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getDomain(), nullValue());
     }
 
     @Test
     public void should_return_null_for_path_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        String result = givenJaxWsContextProvider.getPath();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getPath(), nullValue());
     }
 
     @Test
     public void should_return_null_for_secure_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        Boolean result = givenJaxWsContextProvider.getSecure();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getSecure(), nullValue());
     }
 
     @Test
     public void should_return_null_for_maxage_if_wrapped_cookie_is_null() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-
-        Integer result = givenJaxWsContextProvider.getMaxAge();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(unit.getMaxAge(), nullValue());
     }
 
     @Test
     public void should_return_name() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        String result = givenJaxWsContextProvider.getName();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getName()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getName(), equalTo(cookie.getName()));
     }
 
     @Test
     public void should_return_value() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        String result = givenJaxWsContextProvider.getValue();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getValue()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getValue(), equalTo(cookie.getValue()));
     }
 
     @Test
     public void should_return_domain() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        String result = givenJaxWsContextProvider.getDomain();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getDomain()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getDomain(), equalTo(cookie.getDomain()));
     }
 
     @Test
     public void should_return_path() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        String result = givenJaxWsContextProvider.getPath();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getPath()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getPath(), equalTo(cookie.getPath()));
     }
 
     @Test
     public void should_return_secure() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        Boolean result = givenJaxWsContextProvider.getSecure();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getSecure()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getSecure(), equalTo(cookie.getSecure()));
     }
 
     @Test
     public void should_return_maxage() {
-
-        ServletCookieContextProvider givenJaxWsContextProvider = new ServletCookieContextProvider();
-        givenJaxWsContextProvider.setContextData(cookie);
-
-        Integer result = givenJaxWsContextProvider.getMaxAge();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(cookie.getMaxAge()));
-
+		unit.setContextData(cookie);
+		assertThat(unit.getMaxAge(), equalTo(cookie.getMaxAge()));
     }
 }

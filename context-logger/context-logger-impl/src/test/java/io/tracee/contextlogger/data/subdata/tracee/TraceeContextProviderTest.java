@@ -9,6 +9,11 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
 /**
  * Test class for  {@link io.tracee.contextlogger.data.subdata.tracee.TraceeContextProvider}.
  * Created by Tobias Gindler, holisticon AG on 31.03.14.
@@ -17,21 +22,18 @@ public class TraceeContextProviderTest {
 
     @Test
     public void should_return_implicit_context() {
-        ImplicitContext implicitContext = new TraceeContextProvider().getImplicitContext();
+        final ImplicitContext implicitContext = new TraceeContextProvider().getImplicitContext();
 
-        MatcherAssert.assertThat(implicitContext, Matchers.notNullValue());
-        MatcherAssert.assertThat(implicitContext, Matchers.equalTo(ImplicitContext.TRACEE));
+        assertThat(implicitContext, notNullValue());
+        assertThat(implicitContext, equalTo(ImplicitContext.TRACEE));
     }
 
     @Test
     public void should_return_null_for_empty_mdc() {
 
-        TraceeContextProvider traceeContextProvider = new TraceeContextProvider();
+        final TraceeContextProvider traceeContextProvider = new TraceeContextProvider();
 
-        List<NameStringValuePair> result = traceeContextProvider.getNameValuePairs();
-
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-
+		assertThat(traceeContextProvider.getNameValuePairs(), nullValue());
     }
 
     @Test
@@ -39,14 +41,13 @@ public class TraceeContextProviderTest {
 
         Tracee.getBackend().put("ID", "ID_value");
 
-        TraceeContextProvider traceeContextProvider = new TraceeContextProvider();
+        final TraceeContextProvider traceeContextProvider = new TraceeContextProvider();
 
-        List<NameStringValuePair> result = traceeContextProvider.getNameValuePairs();
+        final List<NameStringValuePair> result = traceeContextProvider.getNameValuePairs();
 
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo("ID"));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo("ID_value"));
+        assertThat(result, notNullValue());
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getName(), equalTo("ID"));
+        assertThat(result.get(0).getValue(), equalTo("ID_value"));
     }
-
 }

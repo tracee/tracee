@@ -2,7 +2,6 @@ package io.tracee.contextlogger.data.subdata.servlet;
 
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,394 +13,292 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.Mockito.when;
+
 /**
  * Test class for {@link io.tracee.contextlogger.data.subdata.servlet.ServletRequestContextProvider}
  * Created by Tobias Gindler, holisticon AG on 01.04.14.
  */
 public class ServletRequestContextProviderTest {
 
-    private final static String KEY = "key";
-    private final static String VALUE = "value";
+	private final ServletRequestContextProvider unit = new ServletRequestContextProvider();
+
+	private final static String KEY = "key";
+	private final static String VALUE = "value";
+
+	private Enumeration<String> NAMES;
+
+	@Before
+	public void init() {
+		NAMES = new Enumeration<String>() {
+			boolean first = true;
+
+			@Override
+			public boolean hasMoreElements() {
+				if (first) {
+					first = false;
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			@Override
+			public String nextElement() {
+				return KEY;
+			}
+		};
+	}
+
+
+	@Test
+	public void should_return_wrapped_type() {
+		assertThat(unit.getWrappedType(), equalTo(HttpServletRequest.class));
+	}
+
+	@Test
+	public void should_return_null_for_url() {
+		assertThat(unit.getUrl(), nullValue());
+	}
 
-    private Enumeration<String> NAMES;
+	@Test
+	public void should_return_null_for_http_method() {
+		assertThat(unit.getHttpMethod(), nullValue());
+	}
 
-    @Before
-    public void init() {
-        NAMES = new Enumeration<String>() {
-            boolean first = true;
+	@Test
+	public void should_return_null_for_request_parameters() {
+		assertThat(unit.getHttpParameters(), nullValue());
+	}
+
+	@Test
+	public void should_return_null_for_http_headers() {
+		assertThat(unit.getHttpRequestHeaders(), nullValue());
+	}
 
-            @Override
-            public boolean hasMoreElements() {
-                if (first) {
-                    first = false;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+	@Test
+	public void should_return_null_for_request_attributes() {
+		assertThat(unit.getHttpRequestAttributes(), nullValue());
+	}
 
-            @Override
-            public String nextElement() {
-                return KEY;
-            }
-        };
-    }
+	@Test
+	public void should_return_null_for_cookies() {
+		assertThat(unit.getCookies(), nullValue());
+	}
 
 
-    @Test
-    public void should_return_wrapped_type() {
+	@Test
+	public void should_return_null_for_remote_address() {
+		assertThat(unit.getHttpRemoteAddress(), nullValue());
+	}
 
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+	@Test
+	public void should_return_null_for_remote_host() {
+		assertThat(unit.getHttpRemoteHost(), nullValue());
+	}
 
-        Class result = givenServletRequestContextProvider.getWrappedType();
+	@Test
+	public void should_return_null_for_remote_port() {
+		assertThat(unit.getHttpRemotePort(), nullValue());
+	}
 
-        MatcherAssert.assertThat(result.equals(HttpServletRequest.class), Matchers.equalTo(true));
+	@Test
+	public void should_return_null_for_scheme() {
+		assertThat(unit.getScheme(), nullValue());
+	}
 
-    }
+	@Test
+	public void should_return_null_for_is_secure() {
+		assertThat(unit.getSecure(), nullValue());
+	}
 
-    @Test
-    public void should_return_null_for_url() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+	@Test
+	public void should_return_null_for_content_type() {
+		assertThat(unit.getContentType(), nullValue());
+	}
 
-        String result = givenServletRequestContextProvider.getUrl();
+	@Test
+	public void should_return_null_for_content_length() {
+		assertThat(unit.getContentLength(), nullValue());
+	}
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+	@Test
+	public void should_return_null_for_locale() {
+		assertThat(unit.getLocale(), nullValue());
+	}
 
-    @Test
-    public void should_return_null_for_http_method() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
 
-        String result = givenServletRequestContextProvider.getHttpMethod();
+	@Test
+	public void should_return_url() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getRequestURL()).thenReturn(new StringBuffer("url"));
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_null_for_request_parameters() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(unit.getUrl(), equalTo("url"));
+	}
 
-        List<NameStringValuePair> result = givenServletRequestContextProvider.getHttpParameters();
+	@Test
+	public void should_return_http_method() {
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getMethod()).thenReturn("POST");
 
-    @Test
-    public void should_return_null_for_http_headers() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		unit.setContextData(request);
 
-        List<NameStringValuePair> result = givenServletRequestContextProvider.getHttpRequestHeaders();
+		assertThat(unit.getHttpMethod(), equalTo("POST"));
+	}
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+	@Test
+	public void should_return_request_parameters() {
 
-    @Test
-    public void should_return_null_for_request_attributes() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		final String[] values = {VALUE};
 
-        List<NameObjectValuePair> result = givenServletRequestContextProvider.getHttpRequestAttributes();
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getParameterNames()).thenReturn(NAMES);
+		when(request.getParameterValues(KEY)).thenReturn(values);
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_null_for_cookies() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		final List<NameStringValuePair> result = unit.getHttpParameters();
 
-        List<ServletCookieContextProvider> result = givenServletRequestContextProvider.getCookies();
+		assertThat(result, Matchers.notNullValue());
+		assertThat(result.size(), equalTo(1));
+		assertThat(result.get(0).getName(), equalTo(KEY));
+		assertThat(result.get(0).getValue(), equalTo(VALUE));
+	}
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+	@Test
+	public void should_return_http_headers() {
 
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getHeaderNames()).thenReturn(NAMES);
+		when(request.getHeader(KEY)).thenReturn(VALUE);
 
-    @Test
-    public void should_return_null_for_remote_address() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		unit.setContextData(request);
 
-        String result = givenServletRequestContextProvider.getHttpRemoteAddress();
+		final List<NameStringValuePair> result = unit.getHttpRequestHeaders();
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		assertThat(result, Matchers.notNullValue());
+		assertThat(result.size(), equalTo(1));
+		assertThat(result.get(0).getName(), equalTo(KEY));
+		assertThat(result.get(0).getValue(), equalTo(VALUE));
+	}
 
-    @Test
-    public void should_return_null_for_remote_host() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+	@Test
+	public void should_return_request_attributes() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getAttributeNames()).thenReturn(NAMES);
+		when(request.getAttribute(KEY)).thenReturn(VALUE);
 
-        String result = givenServletRequestContextProvider.getHttpRemoteHost();
+		unit.setContextData(request);
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		final List<NameObjectValuePair> result = unit.getHttpRequestAttributes();
 
-    @Test
-    public void should_return_null_for_remote_port() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(result, Matchers.notNullValue());
+		assertThat(result.size(), equalTo(1));
+		assertThat(result.get(0).getName(), equalTo(KEY));
+		assertThat(result.get(0).getValue(), equalTo((Object) VALUE));
+	}
 
-        Integer result = givenServletRequestContextProvider.getHttpRemotePort();
+	@Test
+	public void should_return_cookies() {
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		final Cookie[] cookies = {new Cookie("name", "value")};
 
-    @Test
-    public void should_return_null_for_scheme() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getCookies()).thenReturn(cookies);
 
-        String result = givenServletRequestContextProvider.getScheme();
+		unit.setContextData(request);
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		final List<ServletCookieContextProvider> result = unit.getCookies();
 
-    @Test
-    public void should_return_null_for_is_secure() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(result, Matchers.notNullValue());
+		assertThat(result.size(), equalTo(1));
+		assertThat(result.get(0).getName(), equalTo("name"));
+		assertThat(result.get(0).getValue(), equalTo("value"));
+	}
 
-        Boolean result = givenServletRequestContextProvider.getSecure();
+	@Test
+	public void should_return_remote_address() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getRemoteAddr()).thenReturn("123.123.123.123");
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_null_for_content_type() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(unit.getHttpRemoteAddress(), equalTo("123.123.123.123"));
+	}
 
-        String result = givenServletRequestContextProvider.getContentType();
+	@Test
+	public void should_return_remote_host() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getRemoteHost()).thenReturn("HOST");
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_null_for_content_length() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(unit.getHttpRemoteHost(), equalTo("HOST"));
+	}
 
-        Integer result = givenServletRequestContextProvider.getContentLength();
+	@Test
+	public void should_return_remote_port() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getRemotePort()).thenReturn(8080);
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_null_for_locale() {
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
+		assertThat(unit.getHttpRemotePort(), equalTo(8080));
+	}
 
-        String result = givenServletRequestContextProvider.getLocale();
+	@Test
+	public void should_return_scheme() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getScheme()).thenReturn("HTTPS");
 
-        MatcherAssert.assertThat(result, Matchers.nullValue());
-    }
+		unit.setContextData(request);
 
+		assertThat(unit.getScheme(), equalTo("HTTPS"));
+	}
 
-    @Test
-    public void should_return_url() {
+	@Test
+	public void should_return_is_secure() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.isSecure()).thenReturn(true);
 
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getRequestURL()).thenReturn(new StringBuffer("url"));
+		unit.setContextData(request);
 
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
+		assertThat(unit.getSecure(), equalTo(true));
+	}
 
-        String result = givenServletRequestContextProvider.getUrl();
+	@Test
+	public void should_return_content_type() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getContentType()).thenReturn("txt");
 
-        MatcherAssert.assertThat(result, Matchers.equalTo("url"));
-    }
+		unit.setContextData(request);
 
-    @Test
-    public void should_return_http_method() {
+		assertThat(unit.getContentType(), equalTo("txt"));
+	}
 
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getMethod()).thenReturn("POST");
+	@Test
+	public void should_return_content_length() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getContentLength()).thenReturn(10);
 
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
+		unit.setContextData(request);
 
-        String result = givenServletRequestContextProvider.getHttpMethod();
+		assertThat(unit.getContentLength(), equalTo(10));
+	}
 
-        MatcherAssert.assertThat(result, Matchers.equalTo("POST"));
-    }
+	@Test
+	public void should_return_locale() {
+		final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		when(request.getLocale()).thenReturn(Locale.GERMANY);
 
-    @Test
-    public void should_return_request_parameters() {
+		unit.setContextData(request);
 
-        String[] values = {VALUE};
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getParameterNames()).thenReturn(NAMES);
-        Mockito.when(request.getParameterValues(KEY)).thenReturn(values);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        List<NameStringValuePair> result = givenServletRequestContextProvider.getHttpParameters();
-
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo(KEY));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo(VALUE));
-    }
-
-    @Test
-    public void should_return_http_headers() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getHeaderNames()).thenReturn(NAMES);
-        Mockito.when(request.getHeader(KEY)).thenReturn(VALUE);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        List<NameStringValuePair> result = givenServletRequestContextProvider.getHttpRequestHeaders();
-
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo(KEY));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo(VALUE));
-    }
-
-    @Test
-    public void should_return_request_attributes() {
-
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getAttributeNames()).thenReturn(NAMES);
-        Mockito.when(request.getAttribute(KEY)).thenReturn(VALUE);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        List<NameObjectValuePair> result = givenServletRequestContextProvider.getHttpRequestAttributes();
-
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo(KEY));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo((Object) VALUE));
-    }
-
-    @Test
-    public void should_return_cookies() {
-
-        Cookie[] cookies = {new Cookie("name", "value")};
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getCookies()).thenReturn(cookies);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        List<ServletCookieContextProvider> result = givenServletRequestContextProvider.getCookies();
-
-        MatcherAssert.assertThat(result, Matchers.notNullValue());
-        MatcherAssert.assertThat(result.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(result.get(0).getName(), Matchers.equalTo("name"));
-        MatcherAssert.assertThat(result.get(0).getValue(), Matchers.equalTo("value"));
-    }
-
-
-    @Test
-    public void should_return_remote_address() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getRemoteAddr()).thenReturn("123.123.123.123");
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        String result = givenServletRequestContextProvider.getHttpRemoteAddress();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo("123.123.123.123"));
-    }
-
-    @Test
-    public void should_return_remote_host() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getRemoteHost()).thenReturn("HOST");
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        String result = givenServletRequestContextProvider.getHttpRemoteHost();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo("HOST"));
-    }
-
-    @Test
-    public void should_return_remote_port() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getRemotePort()).thenReturn(8080);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        Integer result = givenServletRequestContextProvider.getHttpRemotePort();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(8080));
-    }
-
-    @Test
-    public void should_return_scheme() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getScheme()).thenReturn("HTTPS");
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        String result = givenServletRequestContextProvider.getScheme();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo("HTTPS"));
-    }
-
-    @Test
-    public void should_return_is_secure() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.isSecure()).thenReturn(true);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        Boolean result = givenServletRequestContextProvider.getSecure();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(true));
-    }
-
-    @Test
-    public void should_return_content_type() {
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getContentType()).thenReturn("txt");
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        String result = givenServletRequestContextProvider.getContentType();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo("txt"));
-    }
-
-    @Test
-    public void should_return_content_length() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getContentLength()).thenReturn(10);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        Integer result = givenServletRequestContextProvider.getContentLength();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo(10));
-    }
-
-    @Test
-    public void should_return_locale() {
-
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getLocale()).thenReturn(Locale.GERMANY);
-
-        ServletRequestContextProvider givenServletRequestContextProvider = new ServletRequestContextProvider();
-        givenServletRequestContextProvider.setContextData(request);
-
-        String result = givenServletRequestContextProvider.getLocale();
-
-        MatcherAssert.assertThat(result, Matchers.equalTo("de_DE"));
-    }
-
-
+		assertThat(unit.getLocale(), equalTo("de_DE"));
+	}
 }
