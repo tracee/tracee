@@ -1,7 +1,5 @@
 package io.tracee.contextlogger.servlet;
 
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.builder.TraceeContextLogger;
 
@@ -16,12 +14,11 @@ import java.io.IOException;
  */
 public class TraceeErrorLoggingFilter implements Filter {
 
+	static final String LOGGING_PREFIX_MESSAGE = "TRACEE SERVLET ERROR CONTEXT LOGGING LISTENER  : ";
 
-    private TraceeBackend traceeBackend = null;
-
-    @Override
+	@Override
     public final void init(FilterConfig filterConfig) throws ServletException {
-        traceeBackend = Tracee.getBackend();
+
     }
 
     @Override
@@ -49,11 +46,10 @@ public class TraceeErrorLoggingFilter implements Filter {
             HttpServletResponse servletResponse,
             Exception e) {
 
-        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE SERVLET ERROR CONTEXT LOGGING LISTENER  : ",
+        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage(LOGGING_PREFIX_MESSAGE,
 				ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, e);
 
     }
-
 
     @Override
     public final void destroy() {
