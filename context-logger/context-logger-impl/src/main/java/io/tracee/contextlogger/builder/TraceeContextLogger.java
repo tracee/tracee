@@ -17,8 +17,6 @@ import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 
 public final class TraceeContextLogger implements ContextLogger {
 
-	private static TraceeContextLogger instance;
-
 	private ConnectorFactory connectorsWrapper;
 
 	private final ContextLoggerConfiguration contextLoggerConfiguration;
@@ -38,8 +36,6 @@ public final class TraceeContextLogger implements ContextLogger {
 		connectorsWrapper = new ConnectorFactory();
 	}
 
-
-
 	public static ContextLoggerBuilder create() {
 		return new ContextLoggerBuilderImpl(ContextLoggerConfiguration.getOrCreateContextLoggerConfiguration());
 	}
@@ -47,7 +43,6 @@ public final class TraceeContextLogger implements ContextLogger {
 	public static ContextLogger createDefault() {
 		return create().build();
 	}
-
 
 	@Override
 	public String createJson(Object... instancesToLog) {
@@ -171,7 +166,4 @@ public final class TraceeContextLogger implements ContextLogger {
 		}
 		return null;
 	}
-
-
-
 }
