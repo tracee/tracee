@@ -16,14 +16,13 @@ import javax.jms.TopicPublisher;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class TraceeTopicPublisherTest {
 
 	private final MessageProducer messageProducer = mock(MessageProducer.class);
 	private final TopicPublisher topicPublisher = mock(TopicPublisher.class);
-	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final TraceeTopicPublisher unit = new TraceeTopicPublisher(new TraceeMessageProducer(messageProducer, backend), topicPublisher);
 	private final Message message = mock(Message.class);
 
