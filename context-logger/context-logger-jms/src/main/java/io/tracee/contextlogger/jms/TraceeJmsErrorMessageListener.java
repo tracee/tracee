@@ -15,20 +15,22 @@ import java.lang.reflect.Method;
  */
 public class TraceeJmsErrorMessageListener {
 
-    @SuppressWarnings("unused")
+	static final String JSON_PREFIXED_MESSAGE = "TRACEE JMS ERROR CONTEXT LOGGING LISTENER  : ";
+
+	@SuppressWarnings("unused")
     public TraceeJmsErrorMessageListener() {
 
     }
 
     @AroundInvoke
     public Object intercept(InvocationContext ctx) throws Exception {
-        final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
         try {
             return ctx.proceed();
         } catch (Exception e) {
+        	final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
 
             if (isMdbInvocation) {
-                TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE JMS ERROR CONTEXT LOGGING LISTENER  : ",
+                TraceeContextLogger.createDefault().logJsonWithPrefixedMessage(JSON_PREFIXED_MESSAGE,
 						ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
             }
 
@@ -36,7 +38,7 @@ public class TraceeJmsErrorMessageListener {
         }
     }
 
-    final boolean isMessageListenerOnMessageMethod(Method method) {
+    boolean isMessageListenerOnMessageMethod(Method method) {
         return "onMessage".equals(method.getName())
                 && method.getParameterTypes().length == 1
                 && method.getParameterTypes()[0] == Message.class;
