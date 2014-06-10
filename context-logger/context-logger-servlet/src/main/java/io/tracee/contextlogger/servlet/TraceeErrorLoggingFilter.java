@@ -47,7 +47,7 @@ public class TraceeErrorLoggingFilter implements Filter {
             Exception e) {
 
         TraceeContextLogger.createDefault().logJsonWithPrefixedMessage(LOGGING_PREFIX_MESSAGE,
-				ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, e);
+				ImplicitContext.COMMON, ImplicitContext.TRACEE, servletRequest, servletResponse, servletRequest.getSession(false), e);
 
     }
 

@@ -2,7 +2,10 @@
 <javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
 	<javaee:handler-chain>
 		<javaee:handler>
-			<javaee:handler-class>io.tracee.jaxws.container.TraceeServerHandler</javaee:handler-class>
+			<javaee:handler-class>io.tracee.contextlogger.jaxws.container.TraceeServerErrorLoggingHandler</javaee:handler-class>
 		</javaee:handler>
+        <javaee:handler>
+            <javaee:handler-class>io.tracee.jaxws.container.TraceeServerHandler</javaee:handler-class>
+        </javaee:handler>
 	</javaee:handler-chain>
 </javaee:handler-chains>

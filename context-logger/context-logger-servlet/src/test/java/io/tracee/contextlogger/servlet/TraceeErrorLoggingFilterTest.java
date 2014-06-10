@@ -16,6 +16,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -36,6 +37,7 @@ public class TraceeErrorLoggingFilterTest {
 	private final TraceeErrorLoggingFilter unit = new TraceeErrorLoggingFilter();
 	private final HttpServletRequest request = mock(HttpServletRequest.class);
 	private final HttpServletResponse response = mock(HttpServletResponse.class);
+    private final HttpSession session = mock(HttpSession.class);
 	private final FilterChain filterChain = mock(FilterChain.class);
 	private TraceeContextLogger traceeContextLogger = mock(TraceeContextLogger.class);
 
@@ -43,6 +45,7 @@ public class TraceeErrorLoggingFilterTest {
 	public void setUpMocks() {
 		mockStatic(TraceeContextLogger.class);
 		when(TraceeContextLogger.createDefault()).thenReturn(traceeContextLogger);
+        when(request.getSession(false)).thenReturn(session);
 	}
 
 	@Test
@@ -59,7 +62,7 @@ public class TraceeErrorLoggingFilterTest {
 			unit.doFilter(request, response, filterChain);
 		} catch (Exception e) {
 			verify(traceeContextLogger).logJsonWithPrefixedMessage(TraceeErrorLoggingFilter.LOGGING_PREFIX_MESSAGE,
-					ImplicitContext.COMMON, ImplicitContext.TRACEE, request, response, expectedException);
+					ImplicitContext.COMMON, ImplicitContext.TRACEE, request, response, session, expectedException);
 			throw e;
 		}
 	}

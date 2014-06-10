@@ -7,8 +7,10 @@ import io.tracee.TraceeConstants;
 import io.tracee.TraceeLogger;
 import io.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestService;
 import io.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS;
-import io.tracee.jaxws.client.TraceeClientHandlerResolver;
+import io.tracee.jaxws.client.TraceeClientHandler;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import io.tracee.contextlogger.jaxws.container.TraceeClientHandlerResolver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,9 +27,8 @@ public final class TestClient {
         final TraceeLogger traceeLogger = traceeBackend.getLoggerFactory().getLogger(TestClient.class);
 
         final TraceeJaxWsTestService testWebservice = new TraceeJaxWsTestService(
-                new URL("http://localhost:8081/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl"));
-        testWebservice.setHandlerResolver(new TraceeClientHandlerResolver());
-
+                new URL("http://localhost:8080/traceeJaxwsTestService/webservices/TraceeJaxWsTestService?wsdl"));
+        testWebservice.setHandlerResolver(TraceeClientHandlerResolver.buildHandlerResolver().add(TraceeClientHandler.class).build());
 
         final TraceeJaxWsTestWS ws = testWebservice.getPort(TraceeJaxWsTestWS.class);
 

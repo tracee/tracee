@@ -124,19 +124,19 @@
         </dependency>
 
         <dependency>
-            <groupId>io.tracee</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-http-connector</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.tracee</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.tracee.inbound</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-servlet</artifactId>
             <version>${project.version}</version>
         </dependency>

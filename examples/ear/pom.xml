@@ -32,6 +32,11 @@
 			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>
+        <dependency>
+            <groupId>io.tracee.examples</groupId>
+            <artifactId>tracee-examples-webapp</artifactId>
+            <version>0.4.0-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -58,6 +63,11 @@
 							<artifactId>tracee-examples-jms-impl</artifactId>
 							<bundleFileName>tracee-examples-jms-impl.jar</bundleFileName>
 						</ejbModule>
+                        <webModule>
+                            <groupId>io.tracee.examples</groupId>
+                            <artifactId>tracee-examples-webapp</artifactId>
+                            <bundleFileName>traceeTestWebapp.war</bundleFileName>
+                        </webModule>
 					</modules>
 				</configuration>
 			</plugin>
