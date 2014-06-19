@@ -81,10 +81,10 @@ public final class ProfilePropertyNames {
     public static final String ASPECTJ_PROCEEDING_JOIN_POINT_DESERIALIZED_INSTANCE = "aspectj.proceedingJoinPoint.deserialized-instance";
 
     // javaee
-    public static final String EJB_INVOCATION_CONTEXT_PARAMETERS = "ejb.invocationContext.parameters";
-    public static final String EJB_INVOCATION_CONTEXT_METHOD_NAME = "ejb.invocationContext.methodName";
-    public static final String EJB_INVOCATION_CONTEXT_TARGET_INSTANCE = "javaee.invocationContext.targetInstance";
-    public static final String EJB_INVOCATION_CONTEXT_DATA = "ejb.invocationContext.contextData";
+    public static final String JAVAEE_INVOCATION_CONTEXT_PARAMETERS = "javaee.invocationContext.parameters";
+    public static final String JAVAEE_INVOCATION_CONTEXT_METHOD_NAME = "javaee.invocationContext.methodName";
+    public static final String JAVAEE_INVOCATION_CONTEXT_TARGET_INSTANCE = "javaee.invocationContext.targetInstance";
+    public static final String JAVAEE_INVOCATION_CONTEXT_DATA = "javaee.invocationContext.contextData";
 
     // jaxws
     public static final String JAXWS_SOAP_REQUEST = "jaxws.soapRequest";

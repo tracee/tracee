@@ -38,12 +38,12 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return InvocationContext.class;
     }
 
-    @TraceeContextProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
+    @TraceeContextProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
     public final String getMethodName() {
         return this.invocationContext != null && this.invocationContext.getMethod() != null ? this.invocationContext.getMethod().getName() : null;
     }
 
-    @TraceeContextProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_PARAMETERS, order = 20)
+    @TraceeContextProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_PARAMETERS, order = 20)
     public final List<String> getParameters() {
 
         List<String> result = new ArrayList<String>();
@@ -59,7 +59,7 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return result.size() > 0 ? result : null;
     }
 
-    @TraceeContextProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE,
+    @TraceeContextProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_TARGET_INSTANCE,
             order = 30)
     public final String getTargetInstance() {
         String result = null;
@@ -75,7 +75,7 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return result;
     }
 
-    @TraceeContextProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_DATA, order = 40)
+    @TraceeContextProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_DATA, order = 40)
     public final List<NameStringValuePair> getContextData() {
 
         List<NameStringValuePair> result = new ArrayList<NameStringValuePair>();
