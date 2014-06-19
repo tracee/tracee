@@ -37,12 +37,6 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
-			<artifactId>tracee-context-logger-api</artifactId>
-			<groupId>io.tracee</groupId>
-			<version>${project.version}</version>
-		</dependency>
-
         <dependency>
             <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-slf4j</artifactId>

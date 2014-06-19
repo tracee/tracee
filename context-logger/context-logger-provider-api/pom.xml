@@ -10,7 +10,7 @@
         <version>0.4.0-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-context-logger-api</name>
+    <name>tracee-context-logger-provider-api</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
 </project>
