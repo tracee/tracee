@@ -12,7 +12,7 @@ import javax.jms.MessageListener;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(
-				propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+				propertyName = "destinationType", propertyValue = "javax.javaee.Queue"),
 		@ActivationConfigProperty(
 				propertyName = "destination", propertyValue = "exampleQueue") })
 @Interceptors(TraceeMessageListener.class)
@@ -22,7 +22,7 @@ public class MessageQueueListener implements MessageListener {
 
 	@Override
 	public void onMessage(Message message) {
-		LOG.info("I just received the message \"{}\" on jms/exampleQueue", message);
+		LOG.info("I just received the message \"{}\" on javaee/exampleQueue", message);
 	}
 
 }

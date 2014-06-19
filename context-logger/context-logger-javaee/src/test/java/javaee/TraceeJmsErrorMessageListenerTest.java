@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.jms;
+package io.tracee.contextlogger.javaee;
 
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.builder.ContextLogger;

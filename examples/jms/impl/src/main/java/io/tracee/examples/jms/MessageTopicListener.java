@@ -12,7 +12,7 @@ import javax.jms.MessageListener;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(
-				propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
+				propertyName = "destinationType", propertyValue = "javax.javaee.Topic"),
 		@ActivationConfigProperty(
 				propertyName = "destination", propertyValue = "exampleTopic") })
 @Interceptors(TraceeMessageListener.class)
@@ -22,7 +22,7 @@ public class MessageTopicListener implements MessageListener {
 
 	@Override
 	public void onMessage(Message message) {
-		LOG.info("I just received the message \"{}\" on jms/exampleTopic", message);
+		LOG.info("I just received the message \"{}\" on javaee/exampleTopic", message);
 	}
 
 }

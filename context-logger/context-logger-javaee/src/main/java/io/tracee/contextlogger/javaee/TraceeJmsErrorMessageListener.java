@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.jms;
+package io.tracee.contextlogger.javaee;
 
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.builder.TraceeContextLogger;
@@ -9,7 +9,7 @@ import javax.jms.Message;
 import java.lang.reflect.Method;
 
 /**
- * Message listener to detect exceptions that happened during jms message processing.
+ * Message listener to detect exceptions that happened during javaee message processing.
  * In case of an exception contextual information will be written to the log.
  * Created by Tobias Gindler, holisticon AG on 13.03.14.
  */

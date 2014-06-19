@@ -1,7 +1,7 @@
 package io.tracee.examples.ejb;
 
 import io.tracee.contextlogger.watchdog.Watchdog;
-import io.tracee.contextlogger.jms.TraceeEjbErrorContextLoggingInterceptor;
+import io.tracee.contextlogger.javaee.TraceeEjbErrorContextLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

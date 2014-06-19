@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tracee-context-logger-jms</artifactId>
+    <artifactId>tracee-context-logger-javaee</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
@@ -10,7 +10,7 @@
         <version>0.4.0-SNAPSHOT</version>
     </parent>
 
-    <name>tracee-context-logger-jms</name>
+    <name>tracee-context-logger-javaee</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
     <dependencies>
@@ -40,13 +40,14 @@
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-		</dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+        </dependency>
     </dependencies>
 </project>

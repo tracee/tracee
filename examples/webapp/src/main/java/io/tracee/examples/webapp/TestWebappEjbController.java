@@ -30,7 +30,7 @@ public class TestWebappEjbController {
     }
 
     public String multiplyEjbRemotely() {
-        LOGGER.info("call multiply on remote ejb method");
+        LOGGER.info("call multiply on remote javaee method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
             payload.setResult(testEjb.multiply(payload.getFirstArgument(), payload.getSecondArgument()));
         }
@@ -38,7 +38,7 @@ public class TestWebappEjbController {
     }
 
     public String sumEjbRemotely() {
-        LOGGER.info("call sum on remote ejb method");
+        LOGGER.info("call sum on remote javaee method");
         if (payload.getFirstArgument() != null && payload.getSecondArgument() != null) {
             payload.setResult(testEjb.sum(payload.getFirstArgument(), payload.getSecondArgument()));
         }
@@ -46,7 +46,7 @@ public class TestWebappEjbController {
     }
 
     public String triggerEjbRemoteError() {
-        LOGGER.info("Trigger remote ejb error");
+        LOGGER.info("Trigger remote javaee error");
         testEjb.error(payload.getFirstArgument(), payload.getSecondArgument());
         return null;
     }

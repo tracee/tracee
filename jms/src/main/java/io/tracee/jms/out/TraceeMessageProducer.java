@@ -29,7 +29,7 @@ public final class TraceeMessageProducer implements MessageProducer {
 	}
 
     /**
-     * Writes the current TraceeContext to the given jms message.
+     * Writes the current TraceeContext to the given javaee message.
      * This method is idempotent.
      */
     protected void writeTraceeContextToMessage(Message message) throws JMSException {

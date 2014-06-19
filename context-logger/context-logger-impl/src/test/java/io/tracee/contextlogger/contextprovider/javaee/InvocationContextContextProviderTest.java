@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.contextprovider.ejb;
+package io.tracee.contextlogger.contextprovider.javaee;
 
 import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
 import org.hamcrest.MatcherAssert;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Test class for {@link EjbInvocationContextContextProvider}.
+ * Test class for {@link InvocationContextContextProvider}.
  * Created by Tobias Gindler, holiticon AG on 31.03.14.
  */
-public class EjbInvocationContextContextProviderTest {
+public class InvocationContextContextProviderTest {
 
 
     private static Method METHOD;
@@ -27,7 +27,7 @@ public class EjbInvocationContextContextProviderTest {
 
     {
         try {
-            METHOD = EjbInvocationContextContextProviderTest.class.getMethod("test", new Class[0]);
+            METHOD = InvocationContextContextProviderTest.class.getMethod("test", new Class[0]);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -38,9 +38,9 @@ public class EjbInvocationContextContextProviderTest {
     @Test
     public void should_return_wrapped_type() {
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
 
-        Class result = givenEjbInvocationContextContextProvider.getWrappedType();
+        Class result = givenInvocationContextContextProvider.getWrappedType();
 
         MatcherAssert.assertThat(result.equals(InvocationContext.class), Matchers.equalTo(true));
 
@@ -50,10 +50,10 @@ public class EjbInvocationContextContextProviderTest {
     @Test
     public void should_return_null_value_for_methodname_for_null_valued_invocation_context() {
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(null);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(null);
 
-        String methodName = givenEjbInvocationContextContextProvider.getMethodName();
+        String methodName = givenInvocationContextContextProvider.getMethodName();
 
         MatcherAssert.assertThat(methodName, Matchers.nullValue());
 
@@ -63,10 +63,10 @@ public class EjbInvocationContextContextProviderTest {
     @Test
     public void should_return_null_value_for_parameters_for_null_valued_invocation_context() {
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(null);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(null);
 
-        List<String> parameters = givenEjbInvocationContextContextProvider.getParameters();
+        List<String> parameters = givenInvocationContextContextProvider.getParameters();
 
         MatcherAssert.assertThat(parameters, Matchers.nullValue());
 
@@ -75,10 +75,10 @@ public class EjbInvocationContextContextProviderTest {
     @Test
     public void should_return_null_value_for_target_instance_for_null_valued_invocation_context() {
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(null);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(null);
 
-        String targetInstance = givenEjbInvocationContextContextProvider.getTargetInstance();
+        String targetInstance = givenInvocationContextContextProvider.getTargetInstance();
 
         MatcherAssert.assertThat(targetInstance, Matchers.nullValue());
 
@@ -87,10 +87,10 @@ public class EjbInvocationContextContextProviderTest {
     @Test
     public void should_return_null_value_for_contextdata_for_null_valued_invocation_context() {
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(null);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(null);
 
-        List<NameStringValuePair> contextData = givenEjbInvocationContextContextProvider.getContextData();
+        List<NameStringValuePair> contextData = givenInvocationContextContextProvider.getContextData();
 
         MatcherAssert.assertThat(contextData, Matchers.nullValue());
 
@@ -103,10 +103,10 @@ public class EjbInvocationContextContextProviderTest {
         InvocationContext invocationContext = Mockito.mock(InvocationContext.class);
         Mockito.when(invocationContext.getMethod()).thenReturn(METHOD);
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(invocationContext);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(invocationContext);
 
-        String methodName = givenEjbInvocationContextContextProvider.getMethodName();
+        String methodName = givenInvocationContextContextProvider.getMethodName();
 
         MatcherAssert.assertThat(methodName, Matchers.equalTo("test"));
 
@@ -121,10 +121,10 @@ public class EjbInvocationContextContextProviderTest {
         InvocationContext invocationContext = Mockito.mock(InvocationContext.class);
         Mockito.when(invocationContext.getParameters()).thenReturn(PARAMETERS);
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(invocationContext);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(invocationContext);
 
-        List<String> parameters = givenEjbInvocationContextContextProvider.getParameters();
+        List<String> parameters = givenInvocationContextContextProvider.getParameters();
 
         MatcherAssert.assertThat(parameters, Matchers.contains("a", "2"));
 
@@ -136,13 +136,13 @@ public class EjbInvocationContextContextProviderTest {
         InvocationContext invocationContext = Mockito.mock(InvocationContext.class);
         Mockito.when(invocationContext.getTarget()).thenReturn(this);
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(invocationContext);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(invocationContext);
 
-        String targetInstance = givenEjbInvocationContextContextProvider.getTargetInstance();
+        String targetInstance = givenInvocationContextContextProvider.getTargetInstance();
 
         MatcherAssert.assertThat(targetInstance, Matchers.notNullValue());
-        MatcherAssert.assertThat(targetInstance, Matchers.startsWith("EjbInvocationContextContextProviderTest@"));
+        MatcherAssert.assertThat(targetInstance, Matchers.startsWith("InvocationContextContextProviderTest@"));
 
     }
 
@@ -155,10 +155,10 @@ public class EjbInvocationContextContextProviderTest {
         InvocationContext invocationContext = Mockito.mock(InvocationContext.class);
         Mockito.when(invocationContext.getContextData()).thenReturn(map);
 
-        EjbInvocationContextContextProvider givenEjbInvocationContextContextProvider = new EjbInvocationContextContextProvider();
-        givenEjbInvocationContextContextProvider.setContextData(invocationContext);
+        InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
+        givenInvocationContextContextProvider.setContextData(invocationContext);
 
-        List<NameStringValuePair> contextData = givenEjbInvocationContextContextProvider.getContextData();
+        List<NameStringValuePair> contextData = givenInvocationContextContextProvider.getContextData();
 
         MatcherAssert.assertThat(contextData, Matchers.notNullValue());
         MatcherAssert.assertThat(contextData.size(), Matchers.equalTo(1));

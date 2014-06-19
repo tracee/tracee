@@ -80,10 +80,10 @@ public final class ProfilePropertyNames {
     public static final String ASPECTJ_PROCEEDING_JOIN_POINT_PARAMETERS = "aspectj.proceedingJoinPoint.parameters";
     public static final String ASPECTJ_PROCEEDING_JOIN_POINT_DESERIALIZED_INSTANCE = "aspectj.proceedingJoinPoint.deserialized-instance";
 
-    // ejb
+    // javaee
     public static final String EJB_INVOCATION_CONTEXT_PARAMETERS = "ejb.invocationContext.parameters";
     public static final String EJB_INVOCATION_CONTEXT_METHOD_NAME = "ejb.invocationContext.methodName";
-    public static final String EJB_INVOCATION_CONTEXT_TARGET_INSTANCE = "ejb.invocationContext.targetInstance";
+    public static final String EJB_INVOCATION_CONTEXT_TARGET_INSTANCE = "javaee.invocationContext.targetInstance";
     public static final String EJB_INVOCATION_CONTEXT_DATA = "ejb.invocationContext.contextData";
 
     // jaxws

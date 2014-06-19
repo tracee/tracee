@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.contextprovider.ejb;
+package io.tracee.contextlogger.contextprovider.javaee;
 
 import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
@@ -19,14 +19,14 @@ import java.util.Map;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 @TraceeContextProvider(displayName = "invocationContext", order = Order.EJB)
-public class EjbInvocationContextContextProvider implements WrappedContextData<InvocationContext> {
+public class InvocationContextContextProvider implements WrappedContextData<InvocationContext> {
 
     private InvocationContext invocationContext;
 
-    public EjbInvocationContextContextProvider() {
+    public InvocationContextContextProvider() {
     }
 
-    public EjbInvocationContextContextProvider(final InvocationContext invocationContext) {
+    public InvocationContextContextProvider(final InvocationContext invocationContext) {
         this.invocationContext = invocationContext;
     }
 
