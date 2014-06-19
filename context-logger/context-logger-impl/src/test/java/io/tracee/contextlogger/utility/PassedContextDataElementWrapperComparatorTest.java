@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.utility;
 
-import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
+import io.tracee.contextlogger.contextprovider.utility.NameObjectValuePair;
 import org.junit.Test;
 import org.mockito.Mock;
 

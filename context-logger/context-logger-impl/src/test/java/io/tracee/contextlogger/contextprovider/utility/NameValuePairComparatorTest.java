@@ -1,7 +1,5 @@
-package io.tracee.contextlogger.contextprovider.subdata;
+package io.tracee.contextlogger.contextprovider.utility;
 
-import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
-import io.tracee.contextlogger.contextprovider.utility.NameValuePairComparator;
 import org.junit.Test;
 
 import java.util.ArrayList;
