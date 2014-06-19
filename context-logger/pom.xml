@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>context-logger-api</module>
+		<module>context-logger-provider-api</module>
 		<module>context-logger-connectors</module>
 		<module>context-logger-impl</module>
 		<module>context-logger-servlet</module>

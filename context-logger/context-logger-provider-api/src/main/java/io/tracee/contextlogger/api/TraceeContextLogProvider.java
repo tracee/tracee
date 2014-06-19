@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to mark classes that can be processed by a context toJson provider implementation
- * ( for example the {@link io.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer} ).
+ * ( for example the TraceeGenericGsonSerializer).
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @Retention(RetentionPolicy.RUNTIME)

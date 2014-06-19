@@ -55,6 +55,12 @@
 
         <dependency>
             <groupId>io.tracee</groupId>
+            <artifactId>tracee-context-logger-provider-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee</groupId>
             <artifactId>tracee-api</artifactId>
             <version>${project.version}</version>
         </dependency>
