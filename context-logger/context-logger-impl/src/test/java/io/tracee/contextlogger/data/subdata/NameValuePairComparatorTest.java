@@ -27,6 +27,14 @@ public class NameValuePairComparatorTest {
     public static final NameStringValuePair ANOTHER_BROKEN_NAME_VALUE_PAIR = new NameStringValuePair(null, "C");
 
     @Test
+    public void should_compare_null_valued_with_null_valued_instance_correctly() {
+
+        int result = new NameValuePairComparator().compare(null, null);
+        assertThat(result, equalTo(0));
+
+    }
+
+    @Test
     public void should_compare_not_null_valued_with_null_valued_instance_correctly() {
 
         int result = new NameValuePairComparator().compare(NAME_VALUE_PAIR_1, null);

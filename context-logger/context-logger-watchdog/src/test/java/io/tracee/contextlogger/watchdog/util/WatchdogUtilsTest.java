@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(WatchdogUtils.class)
+@Watchdog(id = "class")
 public class WatchdogUtilsTest {
 
     private final static Class[] CLASSES = {NullPointerException.class, IllegalArgumentException.class, IllegalStateException.class};
@@ -97,7 +98,7 @@ public class WatchdogUtilsTest {
 
 
         Class[] classes = WatchdogUtils.getDefinedThrowsFromMethodSignature(proceedingJoinPoint);
-        
+
         MatcherAssert.assertThat(classes, Matchers.notNullValue());
         MatcherAssert.assertThat(classes.length, Matchers.equalTo(0));
 
@@ -123,6 +124,14 @@ public class WatchdogUtilsTest {
 
         MatcherAssert.assertThat(classes, Matchers.notNullValue());
         MatcherAssert.assertThat(classes.length, Matchers.equalTo(2));
+    }
+
+    @Test
+    public void getDefinedThrowsFromMethodSignature_should_return_empty_array_if_passed_proceedingjoinpoint_is_null() {
+        Class[] classes = WatchdogUtils.getDefinedThrowsFromMethodSignature(null);
+
+        MatcherAssert.assertThat(classes, Matchers.notNullValue());
+        MatcherAssert.assertThat(classes.length, Matchers.equalTo(0));
     }
 
 
@@ -270,5 +279,55 @@ public class WatchdogUtilsTest {
         MatcherAssert.assertThat(result, Matchers.equalTo(false));
 
     }
+
+    @Test
+    @Watchdog(id = "method")
+    public void getWatchdogAnnotation_should_return_watchdog_if_method_has_watchdog_annotation (){
+        Method method = null;
+        try {
+            method = WatchdogUtilsTest.class.getMethod("getWatchdogAnnotation_should_return_watchdog_if_method_has_watchdog_annotation",null);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException();
+        }
+
+        ProceedingJoinPoint proceedingJoinPoint = Mockito.mock(ProceedingJoinPoint.class);
+        MethodSignature signature = Mockito.mock(MethodSignature.class);
+        Mockito.when(proceedingJoinPoint.getSignature()).thenReturn(signature);
+        Mockito.when(signature.getMethod()).thenReturn(method);
+
+
+        Watchdog watchdog = WatchdogUtils.getWatchdogAnnotation(proceedingJoinPoint);
+
+        MatcherAssert.assertThat(watchdog, Matchers.notNullValue());
+        MatcherAssert.assertThat(watchdog.id(), Matchers.equalTo("method"));
+
+
+    }
+
+    @Test
+    public void getWatchdogAnnotation_should_return_watchdog_if_class_has_watchdog_annotation (){
+        Method method = null;
+        try {
+            method = WatchdogUtilsTest.class.getMethod("getWatchdogAnnotation_should_return_watchdog_if_class_has_watchdog_annotation",null);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException();
+        }
+
+        ProceedingJoinPoint proceedingJoinPoint = Mockito.mock(ProceedingJoinPoint.class);
+        MethodSignature signature = Mockito.mock(MethodSignature.class);
+        Mockito.when(proceedingJoinPoint.getSignature()).thenReturn(signature);
+        Mockito.when(signature.getMethod()).thenReturn(method);
+        Mockito.when(signature.getDeclaringType()).thenReturn(WatchdogUtilsTest.class);
+
+
+        Watchdog watchdog = WatchdogUtils.getWatchdogAnnotation(proceedingJoinPoint);
+
+        MatcherAssert.assertThat(watchdog, Matchers.notNullValue());
+        MatcherAssert.assertThat(watchdog.id(), Matchers.equalTo("class"));
+
+
+    }
+
+
 
 }

@@ -14,7 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 /**
  * Watchdog Assert class.
- * This aspects logs method calls of Watchdog annotated classes and methods in case of an exception is thrown during the execution of the method.
+ * This aspect logs method calls of Watchdog annotated classes and methods in case of an exception is thrown during the execution of the method.
  * <p/>
  * Created by Tobias Gindler, holisticon AG on 16.02.14.
  */
