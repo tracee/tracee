@@ -15,15 +15,10 @@ import javax.interceptor.InvocationContext;
  */
 public class TraceeEjbErrorContextLoggingInterceptor {
 
-    private final TraceeBackend backend;
-
-    TraceeEjbErrorContextLoggingInterceptor(TraceeBackend backend) {
-        this.backend = backend;
-    }
+    static final String JSON_PREFIXED_MESSAGE = "TRACEE EJB INTERCEPTOR CONTEXT LOGGING LISTENER : ";
 
     @SuppressWarnings("unused")
     public TraceeEjbErrorContextLoggingInterceptor() {
-        this(Tracee.getBackend());
     }
 
     @AroundInvoke
@@ -33,7 +28,7 @@ public class TraceeEjbErrorContextLoggingInterceptor {
         } catch (Exception e) {
 
             // now log context informations
-            TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE EJB INTERCEPTOR CONTEXT LOGGING LISTENER : ", ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
+            TraceeContextLogger.createDefault().logJsonWithPrefixedMessage(JSON_PREFIXED_MESSAGE, ImplicitContext.COMMON, ImplicitContext.TRACEE, ctx, e);
 
             throw e;
         }
