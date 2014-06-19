@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder.gson;
+package io.tracee.contextlogger.impl.gson;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -44,7 +44,7 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
         if (annotation == null) {
 
             // to be ignored
-			logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Got non annotated class");
+            logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Got non annotated class");
             result = new JsonObject();
 
         } else {
@@ -86,7 +86,7 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
                         result.add(nameObjectValuePair.getName(), jsonSerializationContext.serialize(value));
 
                     } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
-							&& ListUtilities.isListOfType(returnValue, NameStringValuePair.class)) {
+                            && ListUtilities.isListOfType(returnValue, NameStringValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
                         final List<NameStringValuePair> list = (List<NameStringValuePair>) returnValue;
@@ -96,7 +96,7 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
                         }
 
                     } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
-							&& ListUtilities.isListOfType(returnValue, NameObjectValuePair.class)) {
+                            && ListUtilities.isListOfType(returnValue, NameObjectValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
                         List<NameObjectValuePair> list = (List<NameObjectValuePair>) returnValue;
@@ -117,7 +117,7 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
                 } catch (Exception e) {
 
                     // to be ignored
-					logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Exception during serialization.", e);
+                    logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Exception during serialization.", e);
 
                 }
 

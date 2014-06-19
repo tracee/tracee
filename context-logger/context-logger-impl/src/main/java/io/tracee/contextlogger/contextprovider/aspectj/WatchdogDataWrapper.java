@@ -8,7 +8,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 public final class WatchdogDataWrapper {
 
     private final String annotatedId;
-	private final ProceedingJoinPoint proceedingJoinPoint;
+    private final ProceedingJoinPoint proceedingJoinPoint;
 
     private WatchdogDataWrapper(final String annotatedId, final ProceedingJoinPoint proceedingJoinPoint) {
         this.annotatedId = annotatedId;
@@ -17,7 +17,8 @@ public final class WatchdogDataWrapper {
 
     /**
      * Static method to create a WatchdogDataWrapper instance that wraps a ProceedingJoinPoint instance.
-     * @param annotatedId the annotated id or null
+     *
+     * @param annotatedId         the annotated id or null
      * @param proceedingJoinPoint the instance to wrap
      * @return the wrapper instance
      */
@@ -27,6 +28,7 @@ public final class WatchdogDataWrapper {
 
     /**
      * Getter for wrapped instance.
+     *
      * @return the wrapped instance
      */
     public ProceedingJoinPoint getProceedingJoinPoint() {
@@ -35,6 +37,7 @@ public final class WatchdogDataWrapper {
 
     /**
      * Getter for the annotated id.
+     *
      * @return the annotated id
      */
     public String getAnnotatedId() {

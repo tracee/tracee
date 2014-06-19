@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger.impl;
 
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider;
@@ -14,14 +14,14 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.ContextLoggerConfiguration}.
+ * Test class for {@link ContextLoggerConfiguration}.
  * Created by Tobias Gindler, holisticon AG on 01.04.14.
  */
 public class ContextLoggerConfigurationTest {
 
     @Before
     public void init() {
-        System.setProperty(ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES,Profile.BASIC.name());
+        System.setProperty(ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES, Profile.BASIC.name());
     }
 
 

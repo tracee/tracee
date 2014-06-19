@@ -49,7 +49,7 @@ public final class TraceeContextLoggerConstants {
 
     public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE = "class";
     public static final String SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN = "io\\.tracee\\.contextlogger\\.connector\\.(\\w*?)\\."
-			+ SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
+            + SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE;
 
 
 }

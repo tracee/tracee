@@ -8,11 +8,13 @@ import java.util.List;
  */
 public final class ListUtilities {
 
-	private ListUtilities() { }
+    private ListUtilities() {
+    }
 
     /**
      * Checks if passed instance is of type {@link java.util.List} and contains elements of the passed type.
      * Warning: Only the first element of the list will be checked
+     *
      * @param instance
      * @param type
      * @return
@@ -43,13 +45,13 @@ public final class ListUtilities {
     }
 
 
-
     /**
      * Check if the passed instance is a {@link java.util.List} and contains only elements of the passed element types.
      * In that case it casts the passed instance to a List of the passed element type.
+     *
      * @param instance
      * @return The instance cast to a List of the passed element type if the passed instance is a list and only contains
-	 * element of the passed element type, otherwise it return null.
+     * element of the passed element type, otherwise it return null.
      */
     public static <T> List<T> getListOfType(Object instance, Class<T> elementType) {
 

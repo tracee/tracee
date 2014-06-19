@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.contextprovider.tracee;
 
 import io.tracee.contextlogger.RegexMatcher;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.contextprovider.aspectj.WatchdogDataWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;

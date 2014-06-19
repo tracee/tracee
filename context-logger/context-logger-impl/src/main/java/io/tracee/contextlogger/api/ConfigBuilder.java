@@ -11,6 +11,7 @@ public interface ConfigBuilder {
 
     /**
      * Enforces profile for a single createStringRepresentation statement.
+     *
      * @param profile the profile to use
      * @return this instance
      */
@@ -18,6 +19,7 @@ public interface ConfigBuilder {
 
     /**
      * Manually enables context data output for a single createStringRepresentation statement.
+     *
      * @param contexts The context data to be enabled.
      * @return This instance
      */
@@ -25,6 +27,7 @@ public interface ConfigBuilder {
 
     /**
      * Manually disables context data output for a single createStringRepresentation statement.
+     *
      * @param contexts The context data to be disabled.
      * @return This instance
      */
@@ -32,12 +35,14 @@ public interface ConfigBuilder {
 
     /**
      * Disable sorting of passed context instances.
+     *
      * @return This instance
      */
     ConfigBuilder keepOrder();
 
     /**
      * Closes configuration.
+     *
      * @return This instance cast as a ContextLoggerBuilder.
      */
     ContextLoggerBuilder apply();

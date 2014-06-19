@@ -1,6 +1,7 @@
 package io.tracee.contextlogger.contextprovider.tracee;
 
-import io.tracee.contextlogger.api.*;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
+import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.contextprovider.aspectj.AspectjProceedingJoinPointContextProvider;
 import io.tracee.contextlogger.contextprovider.aspectj.WatchdogDataWrapper;

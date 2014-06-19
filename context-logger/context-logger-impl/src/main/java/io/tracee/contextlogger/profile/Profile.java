@@ -13,8 +13,8 @@ import java.util.Properties;
  */
 public enum Profile {
     NONE(null, null),
-    BASIC ("/TraceeContextLoggerBasicProfile.properties","/TraceeContextLoggerExternalBasicProfile.properties"),
-    ENHANCED("/TraceeContextLoggerEnhancedProfile.properties","/TraceeContextLoggerExternalEnhancedProfile.properties"),
+    BASIC("/TraceeContextLoggerBasicProfile.properties", "/TraceeContextLoggerExternalBasicProfile.properties"),
+    ENHANCED("/TraceeContextLoggerEnhancedProfile.properties", "/TraceeContextLoggerExternalEnhancedProfile.properties"),
     FULL("/TraceeContextLoggerFullProfile.properties", "/TraceeContextLoggerFullProfile.properties"),
     CUSTOM("/TraceeContextLoggerCustomProfile.properties", null);
 
@@ -52,7 +52,7 @@ public enum Profile {
             properties.add(internalProperties);
         }
 
-        return properties ;
+        return properties;
     }
 
 
@@ -93,6 +93,7 @@ public enum Profile {
 
     /**
      * Gets the profile defined via the system properties.
+     *
      * @return returns the profile defined via the system properties. Returns null if property is not set or set to an invalid value
      */
     static Profile getProfileFromSystemProperties() {
@@ -110,8 +111,8 @@ public enum Profile {
                 result = Profile.valueOf(systemPropertyProfileName);
             } catch (IllegalArgumentException e) {
                 Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn("Tracee ContextLoggerBuilder profile property ('"
-						+ ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '"
-						+ systemPropertyProfileName + "' ==> Use default profile");
+                        + ProfilePropertyNames.PROFILE_SET_GLOBALLY_VIA_SYSTEM_PROPERTIES + "') is set to the invalid value '"
+                        + systemPropertyProfileName + "' ==> Use default profile");
             }
         }
 
@@ -120,6 +121,7 @@ public enum Profile {
 
     /**
      * Gets the profile defined via the system properties.
+     *
      * @return returns the profile defined via the system properties or {@code null} if property is not set or set to an invalid value.
      */
     static Profile getProfileFromFileInClasspath(final String filename) {
@@ -136,11 +138,11 @@ public enum Profile {
                         result = Profile.valueOf(profileFromProperties);
                     } catch (IllegalArgumentException e) {
                         Tracee.getBackend().getLoggerFactory().getLogger(Profile.class).warn(
-								"Tracee custom ContextLoggerBuilder profile property ('"
-								+ ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY
-								+ "') is set to the invalid value '"
-								+ profileFromProperties + "' and will be ignored"
-						);
+                                "Tracee custom ContextLoggerBuilder profile property ('"
+                                        + ProfilePropertyNames.PROFILE_SET_BY_FILE_IN_CLASSPATH_PROPERTY
+                                        + "') is set to the invalid value '"
+                                        + profileFromProperties + "' and will be ignored"
+                        );
                     }
                 }
             }
@@ -153,6 +155,7 @@ public enum Profile {
 
     /**
      * Checks if custom profiles can be loaded.
+     *
      * @return true, if custom property file can be opened, otherwise false
      */
     static boolean checkProfilePropertyFileExists(final Profile profile) {
@@ -175,6 +178,7 @@ public enum Profile {
 
     /**
      * Loads properties from resources.
+     *
      * @param propertyFileName the property file name to load
      * @return the properties, or null if the properties can't be found
      * @throws IOException if property file can't be opened
@@ -203,7 +207,6 @@ public enum Profile {
             }
         }
     }
-
 
 
 }

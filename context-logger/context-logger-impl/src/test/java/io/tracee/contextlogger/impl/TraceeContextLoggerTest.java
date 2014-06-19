@@ -1,10 +1,11 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger.impl;
 
-import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.RegexMatcher;
-import io.tracee.contextlogger.builder.gson.TraceeGsonContextStringRepresentationBuilder;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider;
 import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
+import io.tracee.contextlogger.impl.gson.TraceeGsonContextStringRepresentationBuilder;
 import io.tracee.contextlogger.profile.Profile;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
 import org.hamcrest.MatcherAssert;
@@ -14,15 +15,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.TraceeContextLogger}.
+ * Test class for {@link io.tracee.contextlogger.TraceeContextLogger}.
  * Created by Tobias Gindler, holisticon AG on 21.03.14.
  */
 public class TraceeContextLoggerTest {
 
 
-
     @Test
-    public void should_create_context_log () {
+    public void should_create_context_log() {
         try {
             throw new NullPointerException("acd");
         } catch (NullPointerException e) {
@@ -36,7 +36,7 @@ public class TraceeContextLoggerTest {
     }
 
     @Test
-    public void should_create_mixed_context_log () {
+    public void should_create_mixed_context_log() {
         try {
             throw new NullPointerException();
         } catch (NullPointerException e) {
@@ -60,7 +60,7 @@ public class TraceeContextLoggerTest {
     }
 
     @Test
-    public void should_create_context_log_with_implicit_logs () {
+    public void should_create_context_log_with_implicit_logs() {
         try {
             throw new NullPointerException("test");
         } catch (NullPointerException e) {

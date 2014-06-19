@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder.config;
+package io.tracee.contextlogger.impl;
 
 import io.tracee.contextlogger.api.ConfigBuilder;
 import io.tracee.contextlogger.api.ContextLogger;
@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.config.ConfigBuilderImpl}.
+ * Test class for {@link ConfigBuilderImpl}.
  * Created by Tobias Gindler on 19.06.14.
  */
 public class ConfigBuilderImplTest {
@@ -40,7 +40,7 @@ public class ConfigBuilderImplTest {
                     }
                 }
         ;
-        configBuilder =  contextLoggerBuilder.config();
+        configBuilder = contextLoggerBuilder.config();
     }
 
     @Test
@@ -89,7 +89,6 @@ public class ConfigBuilderImplTest {
     }
 
 
-
     @Test
     public void should_return_config_logger_builder_on_apply() {
 
@@ -99,7 +98,7 @@ public class ConfigBuilderImplTest {
     }
 
     @Test
-    public void should_return_null_valued_default_profile () {
+    public void should_return_null_valued_default_profile() {
 
         Configuration configuration = (Configuration) contextLoggerBuilder.config();
         assertThat(configuration, Matchers.notNullValue());
@@ -108,7 +107,7 @@ public class ConfigBuilderImplTest {
     }
 
     @Test
-    public void should_set_profile_correctly () {
+    public void should_set_profile_correctly() {
 
         Configuration configuration = (Configuration) contextLoggerBuilder.config().enforceProfile(Profile.FULL);
         assertThat(configuration, Matchers.notNullValue());

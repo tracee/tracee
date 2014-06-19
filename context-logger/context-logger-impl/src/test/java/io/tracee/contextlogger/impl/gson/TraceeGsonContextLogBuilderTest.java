@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder.gson;
+package io.tracee.contextlogger.impl.gson;
 
 import io.tracee.contextlogger.RegexMatcher;
 import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider;

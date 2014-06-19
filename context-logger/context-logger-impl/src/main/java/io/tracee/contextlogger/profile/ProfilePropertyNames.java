@@ -2,7 +2,7 @@ package io.tracee.contextlogger.profile;
 
 /**
  * This is a class that holds all property names handled used by profiles.
- *
+ * <p/>
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public final class ProfilePropertyNames {
@@ -29,7 +29,6 @@ public final class ProfilePropertyNames {
     public static final String COMMON_SYSTEM_NAME = "common.systemName";
     public static final String COMMON_THREAD_NAME = "common.threadName";
     public static final String COMMON_THREAD_ID = "common.threadId";
-
 
 
     // Explicit:

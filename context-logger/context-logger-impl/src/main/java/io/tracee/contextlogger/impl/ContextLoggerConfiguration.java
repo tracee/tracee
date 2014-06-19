@@ -1,7 +1,7 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger.impl;
 
-import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.CustomImplicitContextData;
+import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.contextprovider.TypeToWrapper;
 import io.tracee.contextlogger.profile.Profile;
@@ -55,7 +55,7 @@ public class ContextLoggerConfiguration {
         }
 
         // Make collections immutable
-        wrapperList =  Collections.unmodifiableList(tmpWrapperList);
+        wrapperList = Collections.unmodifiableList(tmpWrapperList);
         implicitContextClassMap = Collections.unmodifiableMap(tmpImplicitContextClassMap);
         classToWrapperMap = Collections.unmodifiableMap(tmpClassToWrapperMap);
         wrapperClasses = Collections.unmodifiableSet(tmpWrapperClasses);
@@ -66,13 +66,14 @@ public class ContextLoggerConfiguration {
 
     public static ContextLoggerConfiguration getOrCreateContextLoggerConfiguration() {
         if (contextLoggerConfiguration == null) {
-			contextLoggerConfiguration = new ContextLoggerConfiguration();
+            contextLoggerConfiguration = new ContextLoggerConfiguration();
         }
         return contextLoggerConfiguration;
     }
 
     /**
      * Gets an input class to context provider class map.
+     *
      * @return An input class to context provider class map.
      */
     public Map<Class, Class> getClassToWrapperMap() {
@@ -81,6 +82,7 @@ public class ContextLoggerConfiguration {
 
     /**
      * Gets all implicit context provider classes.
+     *
      * @return All implicit context provider classes.
      */
     public Map<ImplicitContext, Class> getImplicitContextClassMap() {
@@ -93,6 +95,7 @@ public class ContextLoggerConfiguration {
 
     /**
      * Gets a set that contains all context provider classes.
+     *
      * @return A set that contains all available context provider classes
      */
     public Set<Class> getWrapperClasses() {
@@ -101,12 +104,12 @@ public class ContextLoggerConfiguration {
 
     /**
      * Gets the default profile.
+     *
      * @return The default profile.
      */
     public Profile getProfile() {
         return profile;
     }
-
 
 
 }

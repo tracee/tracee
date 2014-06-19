@@ -1,8 +1,9 @@
 package io.tracee.contextlogger.contextprovider.tracee;
 
-import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.api.*;
+import io.tracee.contextlogger.api.ImplicitContext;
+import io.tracee.contextlogger.api.ImplicitContextData;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
 

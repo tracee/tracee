@@ -7,7 +7,7 @@ package io.tracee.contextlogger.contextprovider.utility;
 public class NameStringValuePair extends NameValuePair<String> {
 
     public NameStringValuePair(String name, String value) {
-        super(name , value);
+        super(name, value);
     }
 
 }

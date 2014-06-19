@@ -2,8 +2,8 @@ package io.tracee.contextlogger.contextprovider.tracee;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.Flatten;
+import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.contextprovider.Order;

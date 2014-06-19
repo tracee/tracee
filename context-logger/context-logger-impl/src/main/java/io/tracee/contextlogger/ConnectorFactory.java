@@ -1,10 +1,7 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeLogger;
-import io.tracee.contextlogger.Connector;
-import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.WellKnownConnectorClassNames;
 import io.tracee.contextlogger.connector.LogConnector;
 
 import java.util.*;
@@ -15,12 +12,12 @@ import java.util.regex.Pattern;
  * Class to pipe messages to all configured connectors.
  * Created by Tobias Gindler, holisticon AG on 26.03.14.
  */
-public class ConnectorFactory {
+class ConnectorFactory {
 
     // Connector settings
     private static final Pattern KEY_MATCHER_PATTERN = Pattern.compile(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_KEY_PATTERN);
     private static final String CONNECTOR_PROPERTY_GRABBER_PATTERN =
-			TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
+            TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX.replaceAll("\\.", "\\.") + "%s\\.(.*)";
     private static final TraceeLogger LOGGER = Tracee.getBackend().getLoggerFactory().getLogger(TraceeContextLogger.class);
     private static final Map<String, String> WELL_KNOW_CONNECTOR_MAPPINGS = new HashMap<String, String>();
 
@@ -29,7 +26,7 @@ public class ConnectorFactory {
         WELL_KNOW_CONNECTOR_MAPPINGS.put(LogConnector.class.getName(), LogConnector.class.getCanonicalName());
     }
 
-   //Connector
+    //Connector
     private final Map<String, Connector> connectorMap = new HashMap<String, Connector>();
 
     ConnectorFactory() {
@@ -71,7 +68,7 @@ public class ConnectorFactory {
      * @param prefix the prefix to prepend only via the createStringRepresentation connector output
      * @param json   the context data to output
      */
-    public final void sendErrorReportToConnectors(String prefix, String json) {
+    final void sendErrorReportToConnectors(String prefix, String json) {
 
         for (Connector connector : this.connectorMap.values()) {
 

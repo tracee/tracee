@@ -71,7 +71,7 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]> {
         // Now create the List of NameObjectPairs
         List<NameObjectValuePair> nameObjectValuePairs = new ArrayList<NameObjectValuePair>();
 
-        for (PassedContextDataElementWrapper entry :  toSortList) {
+        for (PassedContextDataElementWrapper entry : toSortList) {
             if (entry != null) {
                 nameObjectValuePairs.add(entry.getNameObjectValuePair());
             }

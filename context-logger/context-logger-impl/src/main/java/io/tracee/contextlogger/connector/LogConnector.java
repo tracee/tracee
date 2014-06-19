@@ -13,13 +13,13 @@ import java.util.Map;
 public class LogConnector implements Connector {
 
 
-	public LogConnector() {
-		this(Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class));
-	}
+    public LogConnector() {
+        this(Tracee.getBackend().getLoggerFactory().getLogger(LogConnector.class));
+    }
 
-	LogConnector(TraceeLogger logger) {
-		this.logger = logger;
-	}
+    LogConnector(TraceeLogger logger) {
+        this.logger = logger;
+    }
 
     private final TraceeLogger logger;
 

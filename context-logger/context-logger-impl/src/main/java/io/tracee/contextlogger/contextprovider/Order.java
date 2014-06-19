@@ -9,6 +9,7 @@ public final class Order {
     private Order() {
         // hide constructor
     }
+
     public static final int COMMON = 0;
     public static final int TRACEE = 10;
     public static final int WATCHDOG = 15;

@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.utility;
 
 import io.tracee.contextlogger.api.TraceeContextProvider;
-import io.tracee.contextlogger.builder.gson.MethodAnnotationPair;
+import io.tracee.contextlogger.impl.gson.MethodAnnotationPair;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;
 import io.tracee.contextlogger.testdata.TestClassWithMethods;
 import org.hamcrest.MatcherAssert;

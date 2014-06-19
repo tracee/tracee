@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder.gson;
+package io.tracee.contextlogger.impl.gson;
 
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;
@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Collections.sort;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.gson.MethodAnnotationPair}.
+ * Test class for {@link MethodAnnotationPair}.
  * Created by Tobias Gindler, holistcon AG on 14.03.14.
  */
 public class MethodPairComparatorTest {

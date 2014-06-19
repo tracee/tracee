@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder.gson;
+package io.tracee.contextlogger.impl.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.hamcrest.MatcherAssert;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.gson.TraceeGenericGsonSerializer}.
+ * Test class for {@link TraceeGenericGsonSerializer}.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 public class TraceeGenericGsonSerializerTest {

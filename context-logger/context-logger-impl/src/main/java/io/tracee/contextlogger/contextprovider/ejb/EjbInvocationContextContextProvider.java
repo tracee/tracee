@@ -60,7 +60,7 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
     }
 
     @TraceeContextProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE,
-			order = 30)
+            order = 30)
     public final String getTargetInstance() {
         String result = null;
         if (this.invocationContext != null) {

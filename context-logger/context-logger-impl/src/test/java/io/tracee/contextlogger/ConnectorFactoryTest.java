@@ -1,11 +1,8 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger;
 
-import io.tracee.contextlogger.Connector;
-import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.connector.LogConnector;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Map;
@@ -16,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Test for {@link io.tracee.contextlogger.builder.ConnectorFactory}.
+ * Test for {@link io.tracee.contextlogger.ConnectorFactory}.
  * Created by Tobias Gindler, holisticon AG on 14.02.14.
  */
 public class ConnectorFactoryTest {
@@ -40,8 +37,7 @@ public class ConnectorFactoryTest {
                 + TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONTEXT_LOGGER_CONNECTOR_TYPE, "class3");
 
 
-
-        final Set<String> names = new ConnectorFactory(){
+        final Set<String> names = new ConnectorFactory() {
             @Override
             protected Properties getSystemProperties() {
                 return properties;
@@ -71,7 +67,7 @@ public class ConnectorFactoryTest {
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
 
-        final Connector connector = new ConnectorFactory(){
+        final Connector connector = new ConnectorFactory() {
             @Override
             protected Properties getSystemProperties() {
                 return properties;
@@ -102,7 +98,7 @@ public class ConnectorFactoryTest {
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key1, prop1Value1);
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name1 + "." + prop1Key2, prop1Value2);
 
-        final Connector connector = new ConnectorFactory(){
+        final Connector connector = new ConnectorFactory() {
             @Override
             protected Properties getSystemProperties() {
                 return properties;
@@ -139,7 +135,7 @@ public class ConnectorFactoryTest {
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "." + prop2Key1, prop2Value1);
         properties.setProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_CONNECTOR_PREFIX + name2 + "." + prop2Key2, prop2Value2);
 
-        final Map<String, String> properties1 = new ConnectorFactory(){
+        final Map<String, String> properties1 = new ConnectorFactory() {
             @Override
             protected Properties getSystemProperties() {
                 return properties;

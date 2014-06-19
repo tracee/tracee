@@ -8,7 +8,7 @@ import java.util.Comparator;
  */
 public final class NameValuePairComparator implements Comparator<NameValuePair> {
 
-	@Override
+    @Override
     public int compare(NameValuePair instance1, NameValuePair instance2) {
 
         // primary sort criteria is the order value of the annotation
