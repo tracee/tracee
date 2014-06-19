@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.utility;
 
 import io.tracee.contextlogger.api.Flatten;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.builder.gson.MethodAnnotationPair;
 
 import java.lang.reflect.Method;
@@ -22,21 +22,21 @@ public final class TraceeContextLogAnnotationUtilities {
     }
 
     /**
-     * gets the {@link io.tracee.contextlogger.api.TraceeContextLogProvider} annotation of passed instance.
+     * gets the {@link io.tracee.contextlogger.api.TraceeContextProvider} annotation of passed instance.
      *
      * @param instance the instance to get the annotation from
-     * @return the {@link io.tracee.contextlogger.api.TraceeContextLogProvider} annotation if present, otherwise null
+     * @return the {@link io.tracee.contextlogger.api.TraceeContextProvider} annotation if present, otherwise null
      */
-    public static TraceeContextLogProvider getAnnotationFromType(final Object instance) {
+    public static TraceeContextProvider getAnnotationFromType(final Object instance) {
         if (instance == null) {
             return null;
         }
-        return instance.getClass().getAnnotation(TraceeContextLogProvider.class);
+        return instance.getClass().getAnnotation(TraceeContextProvider.class);
     }
 
 
     /**
-     * Extracts all {@link io.tracee.contextlogger.api.TraceeContextLogProviderMethod} annotated methods of the passed instance.
+     * Extracts all {@link io.tracee.contextlogger.api.TraceeContextProviderMethod} annotated methods of the passed instance.
      *
      * @param instance the instance to check for
      * @return a list containing all annotated methods of an instance
@@ -50,7 +50,7 @@ public final class TraceeContextLogAnnotationUtilities {
 
             if (checkIsPublic(method) && checkMethodHasNoParameters(method) && checkMethodHasNonVoidReturnType(method)) {
 
-                TraceeContextLogProviderMethod annotation = method.getAnnotation(TraceeContextLogProviderMethod.class);
+                TraceeContextProviderMethod annotation = method.getAnnotation(TraceeContextProviderMethod.class);
 
                 // check if method has no parameters and is annotated
                 if (annotation != null) {

@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.testdata;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
-@TraceeContextLogProvider(displayName = "")
+@TraceeContextProvider(displayName = "")
 public class AnnotationTestClass {
 
     private int fieldA = 0;
@@ -26,32 +26,32 @@ public class AnnotationTestClass {
         fieldE.add(2);
     }
 
-    @TraceeContextLogProviderMethod(displayName = "A", propertyName = "A", order=200)
+    @TraceeContextProviderMethod(displayName = "A", propertyName = "A", order=200)
     public int getFieldA() {
         return this.fieldA;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "B", propertyName = "B")
+    @TraceeContextProviderMethod(displayName = "B", propertyName = "B")
     public String getFieldB() {
         return this.fieldB;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "C", propertyName = "C", order=50)
+    @TraceeContextProviderMethod(displayName = "C", propertyName = "C", order=50)
     public List<Integer> getFieldC() {
         return this.fieldC;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "D", propertyName = "D", order=50)
+    @TraceeContextProviderMethod(displayName = "D", propertyName = "D", order=50)
     public List<Integer> getFieldD(int x) {
         return this.fieldD;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "E", propertyName = "E", order=50)
+    @TraceeContextProviderMethod(displayName = "E", propertyName = "E", order=50)
     public List<Integer> getFieldE() {
         return this.fieldE;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "F", propertyName = "F", order=50)
+    @TraceeContextProviderMethod(displayName = "F", propertyName = "F", order=50)
     public void getFieldF() {
     }
 

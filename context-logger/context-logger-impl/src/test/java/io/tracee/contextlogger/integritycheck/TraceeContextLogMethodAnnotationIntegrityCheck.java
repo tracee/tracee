@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.integritycheck;
 
 import io.tracee.contextlogger.api.Flatten;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Does a integrity check for all (@link Flatten), {@link io.tracee.contextlogger.api.TraceeContextLogProvider}
- * and {@link io.tracee.contextlogger.api.TraceeContextLogProviderMethod} annotated  classes and methods.
+ * Does a integrity check for all (@link Flatten), {@link io.tracee.contextlogger.api.TraceeContextProvider}
+ * and {@link io.tracee.contextlogger.api.TraceeContextProviderMethod} annotated  classes and methods.
  * Created by Tobias Gindler, holisticon AG on 18.03.14.
  */
 public class TraceeContextLogMethodAnnotationIntegrityCheck {
@@ -35,7 +35,7 @@ public class TraceeContextLogMethodAnnotationIntegrityCheck {
     public void checkIntegrity () {
 
         Reflections reflections = new Reflections("io.tracee.contextlogger");
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(TraceeContextLogProvider.class);
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(TraceeContextProvider.class);
 
         for (Class clazz : annotated) {
 
@@ -45,7 +45,7 @@ public class TraceeContextLogMethodAnnotationIntegrityCheck {
 
             for (Method method:clazz.getDeclaredMethods()) {
 
-                boolean isTraceeContextLogMethodAnnotationSet = method.getAnnotation(TraceeContextLogProviderMethod.class) != null;
+                boolean isTraceeContextLogMethodAnnotationSet = method.getAnnotation(TraceeContextProviderMethod.class) != null;
                 boolean isFlattenAnnotationSet = method.getAnnotation(Flatten.class) != null;
                 if (isTraceeContextLogMethodAnnotationSet) {
 
@@ -67,7 +67,7 @@ public class TraceeContextLogMethodAnnotationIntegrityCheck {
                     }
 
                 } else if (isFlattenAnnotationSet){
-                    Assert.fail(clazz.getCanonicalName() + "." + method.getName() + " Flatten Annotation is set without TraceeContextLogProviderMethod Method.");
+                    Assert.fail(clazz.getCanonicalName() + "." + method.getName() + " Flatten Annotation is set without TraceeContextProviderMethod Method.");
                 }
 
 

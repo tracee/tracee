@@ -1,8 +1,7 @@
 package io.tracee.contextlogger.data.subdata.tracee;
 
 import io.tracee.contextlogger.api.Flatten;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import io.tracee.contextlogger.utility.PassedContextDataElementWrapper;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
 
-@TraceeContextLogProvider(displayName = "contexts")
+@io.tracee.contextlogger.api.TraceeContextProvider(displayName = "contexts")
 public class PassedDataContextProvider implements WrappedContextData<Object[]> {
 
     private Object[] instances;
@@ -49,7 +48,7 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]> {
     }
 
     @Flatten
-    @TraceeContextLogProviderMethod(displayName = "instances", propertyName = "")
+    @TraceeContextProviderMethod(displayName = "instances", propertyName = "")
     public List<NameObjectValuePair> getContextData() {
 
         if (instances == null) {

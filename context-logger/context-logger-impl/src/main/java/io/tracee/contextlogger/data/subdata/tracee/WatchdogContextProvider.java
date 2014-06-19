@@ -1,8 +1,6 @@
 package io.tracee.contextlogger.data.subdata.tracee;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
-import io.tracee.contextlogger.api.WrappedContextData;
+import io.tracee.contextlogger.api.*;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.aspectj.AspectjProceedingJoinPointContextProvider;
 import io.tracee.contextlogger.data.wrapper.WatchdogDataWrapper;
@@ -13,7 +11,7 @@ import io.tracee.contextlogger.profile.ProfilePropertyNames;
  * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 @SuppressWarnings("unused")
-@TraceeContextLogProvider(displayName = "watchdog", order = Order.WATCHDOG)
+@io.tracee.contextlogger.api.TraceeContextProvider(displayName = "watchdog", order = Order.WATCHDOG)
 public final class WatchdogContextProvider implements WrappedContextData<WatchdogDataWrapper> {
 
     private WatchdogDataWrapper watchdogDataWrapper;
@@ -37,7 +35,7 @@ public final class WatchdogContextProvider implements WrappedContextData<Watchdo
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "id",
             propertyName = ProfilePropertyNames.WATCHDOG_ID,
             order = 10)
@@ -49,7 +47,7 @@ public final class WatchdogContextProvider implements WrappedContextData<Watchdo
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "aspectj.proceedingJoinPoint",
             propertyName = ProfilePropertyNames.WATCHDOG_ASPECTJ_CONTEXT,
             order = 20)

@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.data.subdata;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
+import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
 
 /**
@@ -29,7 +29,7 @@ public class NameObjectValuePair extends NameValuePair<Object> {
             return DEFAULT_NAME;
         }
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(instance);
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(instance);
         if (annotation != null) {
             return annotation.displayName();
         } else {

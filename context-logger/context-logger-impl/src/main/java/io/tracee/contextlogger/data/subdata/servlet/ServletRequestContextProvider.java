@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.servlet;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 
-@TraceeContextLogProvider(displayName = "servletRequest", order = Order.SERVLET)
+@TraceeContextProvider(displayName = "servletRequest", order = Order.SERVLET)
 public final class ServletRequestContextProvider implements WrappedContextData<HttpServletRequest> {
 
 
@@ -44,7 +44,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "url",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_URL,
             order = 10)
@@ -56,7 +56,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-method",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_METHOD,
             order = 20)
@@ -68,7 +68,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-parameters",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_PARAMETERS,
             order = 30)
@@ -97,7 +97,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-request-headers",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_HTTP_HEADER,
             order = 40)
@@ -120,7 +120,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-request-attributes",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_ATTRIBUTES,
             order = 45)
@@ -144,7 +144,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
 
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "cookies",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_COOKIES,
             order = 50)
@@ -163,7 +163,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
 
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-remote-address",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_ADDRESS,
             order = 150)
@@ -175,7 +175,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-remote-host",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_HOST,
             order = 160)
@@ -187,7 +187,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-remote-port",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_REMOTE_PORT,
             order = 170)
@@ -199,7 +199,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "scheme",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_SCHEME,
             order = 200)
@@ -212,7 +212,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "is-secure",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_IS_SECURE,
             order = 210)
@@ -225,7 +225,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "content-type",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_TYPE,
             order = 220)
@@ -238,7 +238,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "content-length",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_CONTENT_LENGTH,
             order = 230)
@@ -250,7 +250,7 @@ public final class ServletRequestContextProvider implements WrappedContextData<H
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "locale",
             propertyName = ProfilePropertyNames.SERVLET_REQUEST_LOCALE,
             order = 240)

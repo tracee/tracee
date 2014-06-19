@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.data.subdata.aspectj;
 
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
 import io.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
@@ -16,7 +16,7 @@ import java.util.List;
  * Context provider for ProceedingJoinPoint.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-@TraceeContextLogProvider(displayName = "proceedingJoinPoint")
+@TraceeContextProvider(displayName = "proceedingJoinPoint")
 public class AspectjProceedingJoinPointContextProvider implements WrappedContextData<ProceedingJoinPoint> {
 
     private ProceedingJoinPoint proceedingJoinPoint;
@@ -43,7 +43,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "class",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_CLASS,
             order = 20)
@@ -55,7 +55,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "method",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_METHOD,
             order = 30)
@@ -67,7 +67,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "parameters",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_PARAMETERS,
             order = 40)
@@ -91,7 +91,7 @@ public class AspectjProceedingJoinPointContextProvider implements WrappedContext
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "deserialized-instance",
             propertyName = ProfilePropertyNames.ASPECTJ_PROCEEDING_JOIN_POINT_DESERIALIZED_INSTANCE,
             order = 50)

@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.api;
 
 /**
- * Annotation to mark methods annotated by {@link io.tracee.contextlogger.api.TraceeContextLogProviderMethod}
+ * Annotation to mark methods annotated by {@link io.tracee.contextlogger.api.TraceeContextProviderMethod}
  * with return value of type {@link io.tracee.contextlogger.data.subdata.NameStringValuePair}
  * to be printed inline.
  * Used for dynamic context informations.

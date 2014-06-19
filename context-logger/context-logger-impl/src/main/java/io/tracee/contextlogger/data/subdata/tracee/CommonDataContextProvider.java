@@ -2,9 +2,7 @@ package io.tracee.contextlogger.data.subdata.tracee;
 
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.api.ImplicitContextData;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.*;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
@@ -15,7 +13,7 @@ import java.util.Date;
  * Common context data provider.
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
-@TraceeContextLogProvider(displayName = "common", order = Order.COMMON)
+@io.tracee.contextlogger.api.TraceeContextProvider(displayName = "common", order = Order.COMMON)
 public class CommonDataContextProvider implements ImplicitContextData {
 
     @Override
@@ -24,7 +22,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "timestamp",
             propertyName = ProfilePropertyNames.COMMON_TIMESTAMP,
             order = 10)
@@ -34,7 +32,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "stage",
             propertyName = ProfilePropertyNames.COMMON_STAGE,
             order = 20)
@@ -44,7 +42,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "system-name",
             propertyName = ProfilePropertyNames.COMMON_SYSTEM_NAME,
             order = 30)
@@ -54,7 +52,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "thread-name",
             propertyName = ProfilePropertyNames.COMMON_THREAD_NAME,
             order = 40)
@@ -64,7 +62,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "thread-id",
             propertyName = ProfilePropertyNames.COMMON_THREAD_ID,
             order = 50)

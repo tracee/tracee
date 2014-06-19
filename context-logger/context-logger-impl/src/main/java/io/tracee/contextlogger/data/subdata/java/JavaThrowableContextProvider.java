@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.java;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
@@ -14,7 +14,7 @@ import java.io.StringWriter;
  * Created by Tobias Gindler, holisticon AG on 17.03.14.
  */
 @SuppressWarnings("unused")
-@TraceeContextLogProvider(displayName = "throwable", order = Order.EXCEPTION)
+@TraceeContextProvider(displayName = "throwable", order = Order.EXCEPTION)
 public final class JavaThrowableContextProvider implements WrappedContextData<Throwable> {
 
 
@@ -39,7 +39,7 @@ public final class JavaThrowableContextProvider implements WrappedContextData<Th
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "message",
             propertyName = ProfilePropertyNames.EXCEPTION_MESSAGE,
             order = 10)
@@ -48,7 +48,7 @@ public final class JavaThrowableContextProvider implements WrappedContextData<Th
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "stacktrace",
             propertyName = ProfilePropertyNames.EXCEPTION_STACKTRACE,
             order = 20)

@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.ejb;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Context provider for ProceedingJoinPoint.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-@TraceeContextLogProvider(displayName = "invocationContext", order = Order.EJB)
+@TraceeContextProvider(displayName = "invocationContext", order = Order.EJB)
 public class EjbInvocationContextContextProvider implements WrappedContextData<InvocationContext> {
 
     private InvocationContext invocationContext;
@@ -38,12 +38,12 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
         return InvocationContext.class;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
+    @TraceeContextProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
     public final String getMethodName() {
         return this.invocationContext != null && this.invocationContext.getMethod() != null ? this.invocationContext.getMethod().getName() : null;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_PARAMETERS, order = 20)
+    @TraceeContextProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_PARAMETERS, order = 20)
     public final List<String> getParameters() {
 
         List<String> result = new ArrayList<String>();
@@ -59,7 +59,7 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
         return result.size() > 0 ? result : null;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE,
+    @TraceeContextProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_TARGET_INSTANCE,
 			order = 30)
     public final String getTargetInstance() {
         String result = null;
@@ -75,7 +75,7 @@ public class EjbInvocationContextContextProvider implements WrappedContextData<I
         return result;
     }
 
-    @TraceeContextLogProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_DATA, order = 40)
+    @TraceeContextProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.EJB_INVOCATION_CONTEXT_DATA, order = 40)
     public final List<NameStringValuePair> getContextData() {
 
         List<NameStringValuePair> result = new ArrayList<NameStringValuePair>();

@@ -1,13 +1,13 @@
 package io.tracee.contextlogger.data.subdata;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 
 /**
  * Main Interface for name value pairs.
  * Created by Tobias Gindler on 21.03.14.
  */
-@TraceeContextLogProvider(displayName = "name-value-pair")
+@TraceeContextProvider(displayName = "name-value-pair")
 public abstract class NameValuePair<T> {
 
     protected static final String DEFAULT_NAME = "<null>";
@@ -25,7 +25,7 @@ public abstract class NameValuePair<T> {
      *
      * @return the name for the value
      */
-    @TraceeContextLogProviderMethod(displayName = "name", propertyName = "", order = 1)
+    @TraceeContextProviderMethod(displayName = "name", propertyName = "", order = 1)
     public final String getName() {
         return this.name;
     }
@@ -35,7 +35,7 @@ public abstract class NameValuePair<T> {
      *
      * @return the value
      */
-    @TraceeContextLogProviderMethod(displayName = "value", propertyName = "", order = 2)
+    @TraceeContextProviderMethod(displayName = "value", propertyName = "", order = 2)
     public final T getValue() {
         return this.value;
     }

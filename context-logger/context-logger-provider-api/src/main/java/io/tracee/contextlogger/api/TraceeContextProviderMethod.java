@@ -8,13 +8,13 @@ import java.lang.annotation.Target;
 /**
  * This annotation is used to mark methods that provide context information for context logging.
  * This annotation must reside in classes that are annotated with the
- * {@link TraceeContextLogProvider} annotation.
+ * {@link TraceeContextProvider} annotation.
  * <p/>
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = { ElementType.METHOD })
-public @interface TraceeContextLogProviderMethod {
+public @interface TraceeContextProviderMethod {
 
 	String displayName();
 

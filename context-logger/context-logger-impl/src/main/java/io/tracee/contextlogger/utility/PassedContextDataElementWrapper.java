@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.utility;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
+import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
 
 /**
@@ -15,7 +15,7 @@ public final class PassedContextDataElementWrapper {
     public PassedContextDataElementWrapper(NameObjectValuePair nameObjectValuePair) {
         this.nameObjectValuePair = nameObjectValuePair;
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(nameObjectValuePair.getValue());
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(nameObjectValuePair.getValue());
 
         if (annotation != null) {
             order = annotation.order();

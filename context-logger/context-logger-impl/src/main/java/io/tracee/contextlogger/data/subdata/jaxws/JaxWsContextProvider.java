@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.jaxws;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.wrapper.JaxWsWrapper;
@@ -10,7 +10,7 @@ import io.tracee.contextlogger.profile.ProfilePropertyNames;
 /**
  * JaxWsContextProvider context provider.
  */
-@TraceeContextLogProvider(displayName = "jaxWs", order = Order.JAXWS)
+@TraceeContextProvider(displayName = "jaxWs", order = Order.JAXWS)
 public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
 
     private JaxWsWrapper jaxWsWrapper;
@@ -28,7 +28,7 @@ public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
 
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "soapRequest",
             propertyName = ProfilePropertyNames.JAXWS_SOAP_REQUEST,
             order = 40)
@@ -40,7 +40,7 @@ public class JaxWsContextProvider implements WrappedContextData<JaxWsWrapper> {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "soapResponse",
             propertyName = ProfilePropertyNames.JAXWS_SOAP_RESPONSE,
             order = 50)

@@ -7,7 +7,7 @@ import com.google.gson.JsonSerializer;
 import io.tracee.Tracee;
 import io.tracee.TraceeLogger;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
+import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
 import io.tracee.contextlogger.profile.ProfileSettings;
@@ -40,7 +40,7 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
 
         JsonObject result;
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(instance);
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(instance);
         if (annotation == null) {
 
             // to be ignored

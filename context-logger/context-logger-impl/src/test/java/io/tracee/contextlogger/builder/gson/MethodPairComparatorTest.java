@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.builder.gson;
 
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;
 import io.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
 import org.hamcrest.MatcherAssert;
@@ -44,14 +44,14 @@ public class MethodPairComparatorTest {
     public void should_compare_two_not_null_valued_instances_with_first_order_is_greater_correctly () {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod1 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod2 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextLogProviderMethod1);
-        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextLogProviderMethod2);
-        Mockito.when(traceeContextLogProviderMethod1.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod2.order()).thenReturn(1);
-        Mockito.when(traceeContextLogProviderMethod1.displayName()).thenReturn("A");
-        Mockito.when(traceeContextLogProviderMethod2.displayName()).thenReturn("B");
+        TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
+        TraceeContextProviderMethod traceeContextProviderMethod2 = Mockito.mock(TraceeContextProviderMethod.class);
+        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextProviderMethod1);
+        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextProviderMethod2);
+        Mockito.when(traceeContextProviderMethod1.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod2.order()).thenReturn(1);
+        Mockito.when(traceeContextProviderMethod1.displayName()).thenReturn("A");
+        Mockito.when(traceeContextProviderMethod2.displayName()).thenReturn("B");
 
         int result = new MethodAnnotationPairComparator().compare(methodAnnotationPair1, methodAnnotationPair2);
         MatcherAssert.assertThat(result, Matchers.equalTo(1));
@@ -61,14 +61,14 @@ public class MethodPairComparatorTest {
     public void should_compare_two_not_null_valued_instances_with_first_order_is_less_correctly () {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod1 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod2 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextLogProviderMethod1);
-        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextLogProviderMethod2);
-        Mockito.when(traceeContextLogProviderMethod1.order()).thenReturn(1);
-        Mockito.when(traceeContextLogProviderMethod2.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod1.displayName()).thenReturn("A");
-        Mockito.when(traceeContextLogProviderMethod2.displayName()).thenReturn("B");
+        TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
+        TraceeContextProviderMethod traceeContextProviderMethod2 = Mockito.mock(TraceeContextProviderMethod.class);
+        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextProviderMethod1);
+        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextProviderMethod2);
+        Mockito.when(traceeContextProviderMethod1.order()).thenReturn(1);
+        Mockito.when(traceeContextProviderMethod2.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod1.displayName()).thenReturn("A");
+        Mockito.when(traceeContextProviderMethod2.displayName()).thenReturn("B");
 
         int result = new MethodAnnotationPairComparator().compare(methodAnnotationPair1, methodAnnotationPair2);
         MatcherAssert.assertThat(result, Matchers.equalTo(-1));
@@ -78,14 +78,14 @@ public class MethodPairComparatorTest {
     public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_less_correctly () {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod1 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod2 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextLogProviderMethod1);
-        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextLogProviderMethod2);
-        Mockito.when(traceeContextLogProviderMethod1.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod2.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod1.displayName()).thenReturn("A");
-        Mockito.when(traceeContextLogProviderMethod2.displayName()).thenReturn("B");
+        TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
+        TraceeContextProviderMethod traceeContextProviderMethod2 = Mockito.mock(TraceeContextProviderMethod.class);
+        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextProviderMethod1);
+        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextProviderMethod2);
+        Mockito.when(traceeContextProviderMethod1.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod2.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod1.displayName()).thenReturn("A");
+        Mockito.when(traceeContextProviderMethod2.displayName()).thenReturn("B");
 
         int result = new MethodAnnotationPairComparator().compare(methodAnnotationPair1, methodAnnotationPair2);
         MatcherAssert.assertThat(result, Matchers.equalTo(-1));
@@ -95,14 +95,14 @@ public class MethodPairComparatorTest {
     public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_greater_correctly () {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod1 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod2 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextLogProviderMethod1);
-        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextLogProviderMethod2);
-        Mockito.when(traceeContextLogProviderMethod1.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod2.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod1.displayName()).thenReturn("C");
-        Mockito.when(traceeContextLogProviderMethod2.displayName()).thenReturn("B");
+        TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
+        TraceeContextProviderMethod traceeContextProviderMethod2 = Mockito.mock(TraceeContextProviderMethod.class);
+        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextProviderMethod1);
+        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextProviderMethod2);
+        Mockito.when(traceeContextProviderMethod1.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod2.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod1.displayName()).thenReturn("C");
+        Mockito.when(traceeContextProviderMethod2.displayName()).thenReturn("B");
 
         int result = new MethodAnnotationPairComparator().compare(methodAnnotationPair1, methodAnnotationPair2);
         MatcherAssert.assertThat(result, Matchers.equalTo(1));
@@ -112,14 +112,14 @@ public class MethodPairComparatorTest {
     public void should_compare_two_not_null_valued_instances_with_equal_order_and_displayname_correctly () {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod1 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        TraceeContextLogProviderMethod traceeContextLogProviderMethod2 = Mockito.mock(TraceeContextLogProviderMethod.class);
-        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextLogProviderMethod1);
-        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextLogProviderMethod2);
-        Mockito.when(traceeContextLogProviderMethod1.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod2.order()).thenReturn(2);
-        Mockito.when(traceeContextLogProviderMethod1.displayName()).thenReturn("C");
-        Mockito.when(traceeContextLogProviderMethod2.displayName()).thenReturn("C");
+        TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
+        TraceeContextProviderMethod traceeContextProviderMethod2 = Mockito.mock(TraceeContextProviderMethod.class);
+        Mockito.when(methodAnnotationPair1.getAnnotation()).thenReturn(traceeContextProviderMethod1);
+        Mockito.when(methodAnnotationPair2.getAnnotation()).thenReturn(traceeContextProviderMethod2);
+        Mockito.when(traceeContextProviderMethod1.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod2.order()).thenReturn(2);
+        Mockito.when(traceeContextProviderMethod1.displayName()).thenReturn("C");
+        Mockito.when(traceeContextProviderMethod2.displayName()).thenReturn("C");
 
         int result = new MethodAnnotationPairComparator().compare(methodAnnotationPair1, methodAnnotationPair2);
         MatcherAssert.assertThat(result, Matchers.equalTo(0));

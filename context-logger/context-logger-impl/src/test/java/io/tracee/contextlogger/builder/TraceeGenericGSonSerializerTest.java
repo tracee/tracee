@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.builder;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
+import io.tracee.contextlogger.api.TraceeContextProvider;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class TraceeGenericGSonSerializerTest {
 
     @Test
     public void abs() throws IOException {
-        Enumeration<URL> urls = TraceeContextLogProvider.class.getClassLoader().getResources( "io.tracee.contextlogger.api");
+        Enumeration<URL> urls = TraceeContextProvider.class.getClassLoader().getResources( "io.tracee.contextlogger.api");
         while (urls.hasMoreElements()) {
             URL nextElement = urls.nextElement();
             System.out.println(nextElement.toString());

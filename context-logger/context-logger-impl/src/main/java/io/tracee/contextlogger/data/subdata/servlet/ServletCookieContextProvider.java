@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.servlet;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
@@ -12,7 +12,7 @@ import javax.servlet.http.Cookie;
  * Context provider for ServletCookieContextProvider.
  * Created by Tobias Gindler, holisticon AG on 24.01.14.
  */
-@TraceeContextLogProvider(displayName = "servletCookies", order = Order.SERVLET)
+@TraceeContextProvider(displayName = "servletCookies", order = Order.SERVLET)
 public final class ServletCookieContextProvider implements WrappedContextData<Cookie> {
 
 	private Cookie cookie;
@@ -35,7 +35,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "name",
 			propertyName = ProfilePropertyNames.COOKIE_NAME,
 			order = 10)
@@ -47,7 +47,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "value",
 			propertyName = ProfilePropertyNames.COOKIE_VALUE,
 			order = 20)
@@ -59,7 +59,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "domain",
 			propertyName = ProfilePropertyNames.COOKIE_DOMAIN,
 			order = 30)
@@ -71,7 +71,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "path",
 			propertyName = ProfilePropertyNames.COOKIE_PATH,
 			order = 40
@@ -84,7 +84,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "secure",
 			propertyName = ProfilePropertyNames.COOKIE_SECURE,
 			order = 50)
@@ -96,7 +96,7 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
 	}
 
 	@SuppressWarnings("unused")
-	@TraceeContextLogProviderMethod(
+	@TraceeContextProviderMethod(
 			displayName = "max-age",
 			propertyName = ProfilePropertyNames.COOKIE_MAXAGE,
 			order = 60)

@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.data.subdata.servlet;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
@@ -16,7 +16,7 @@ import java.util.List;
  * Context provider for HttpServletResponse.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-@TraceeContextLogProvider(displayName = "servletResponse", order = Order.SERVLET)
+@TraceeContextProvider(displayName = "servletResponse", order = Order.SERVLET)
 public final class ServletResponseContextProvider implements WrappedContextData<HttpServletResponse> {
 
     private HttpServletResponse response;
@@ -39,7 +39,7 @@ public final class ServletResponseContextProvider implements WrappedContextData<
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-status-code",
             propertyName = ProfilePropertyNames.SERVLET_RESPONSE_HTTP_STATUS_CODE,
             order = 10
@@ -52,7 +52,7 @@ public final class ServletResponseContextProvider implements WrappedContextData<
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "http-header",
             propertyName = ProfilePropertyNames.SERVLET_RESPONSE_HTTP_HEADER,
             order = 20

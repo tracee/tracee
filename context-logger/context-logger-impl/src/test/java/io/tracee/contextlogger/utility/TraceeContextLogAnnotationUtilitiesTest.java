@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.utility;
 
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
+import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.builder.gson.MethodAnnotationPair;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;
 import io.tracee.contextlogger.testdata.TestClassWithMethods;
@@ -29,7 +29,7 @@ public class TraceeContextLogAnnotationUtilitiesTest {
     @Test
     public void getAnnotationFromType_should_return_annotation() {
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(TEST_INSTANCE_WITH_ANNOTATION);
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(TEST_INSTANCE_WITH_ANNOTATION);
         MatcherAssert.assertThat(annotation, Matchers.notNullValue());
 
     }
@@ -37,7 +37,7 @@ public class TraceeContextLogAnnotationUtilitiesTest {
     @Test
     public void getAnnotationFromType_should_return_null_for_passed_null_value() {
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(null);
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(null);
         MatcherAssert.assertThat(annotation, Matchers.nullValue());
 
     }
@@ -45,7 +45,7 @@ public class TraceeContextLogAnnotationUtilitiesTest {
     @Test
     public void getAnnotationFromType_should_return_null_for_not_annotated_class() {
 
-        TraceeContextLogProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(TEST_INSTANCE_WITHOUT_ANNOTATION);
+        TraceeContextProvider annotation = TraceeContextLogAnnotationUtilities.getAnnotationFromType(TEST_INSTANCE_WITHOUT_ANNOTATION);
         MatcherAssert.assertThat(annotation, Matchers.nullValue());
 
     }

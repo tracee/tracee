@@ -5,8 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.api.Flatten;
 import io.tracee.contextlogger.api.ImplicitContextData;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
@@ -20,7 +19,7 @@ import java.util.List;
  * Created by Tobias Gindler, holisticon AG on 14.03.14.
  */
 @SuppressWarnings("unused")
-@TraceeContextLogProvider(displayName = "tracee", order = Order.TRACEE)
+@io.tracee.contextlogger.api.TraceeContextProvider(displayName = "tracee", order = Order.TRACEE)
 public final class TraceeContextProvider implements ImplicitContextData {
 
     private final TraceeBackend traceeBackend;
@@ -36,7 +35,7 @@ public final class TraceeContextProvider implements ImplicitContextData {
 
     @SuppressWarnings("unused")
     @Flatten
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "DYNAMIC",
             propertyName = ProfilePropertyNames.TRACEE,
             order = 10)

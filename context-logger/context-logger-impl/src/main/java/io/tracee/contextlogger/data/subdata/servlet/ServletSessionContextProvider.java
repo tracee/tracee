@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.data.subdata.servlet;
 
 import io.tracee.contextlogger.api.Flatten;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.data.Order;
 import io.tracee.contextlogger.data.subdata.NameStringValuePair;
@@ -16,7 +16,7 @@ import java.util.List;
  * Context provider for HttpSession.
  * Created by Tobias Gindler, holisticon AG on 19.03.14.
  */
-@TraceeContextLogProvider(displayName = "servletSession", order = Order.SERVLET)
+@TraceeContextProvider(displayName = "servletSession", order = Order.SERVLET)
 public final class ServletSessionContextProvider implements WrappedContextData<HttpSession> {
 
     private HttpSession session;
@@ -41,7 +41,7 @@ public final class ServletSessionContextProvider implements WrappedContextData<H
 
     @SuppressWarnings("unused")
     @Flatten
-    @TraceeContextLogProviderMethod(displayName = "DYNAMIC", propertyName = "DYNAMIC")
+    @TraceeContextProviderMethod(displayName = "DYNAMIC", propertyName = "DYNAMIC")
     public List<NameStringValuePair> getSessionAttributes() {
 
         if (session == null) {

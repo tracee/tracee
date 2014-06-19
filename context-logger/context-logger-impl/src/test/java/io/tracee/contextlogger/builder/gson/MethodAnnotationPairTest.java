@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.builder.gson;
 
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.profile.Profile;
 import io.tracee.contextlogger.profile.ProfileSettings;
 import org.hamcrest.MatcherAssert;
@@ -22,12 +22,12 @@ public class MethodAnnotationPairTest {
     private static Method METHOD_WITH_PROPERTY_NAME;
 
 
-    @TraceeContextLogProviderMethod(propertyName = "", displayName = "")
+    @TraceeContextProviderMethod(propertyName = "", displayName = "")
     public void testWithEmptyPropertyName() {
 
     }
 
-    @TraceeContextLogProviderMethod(propertyName = PROPERTY_NAME, displayName = "")
+    @TraceeContextProviderMethod(propertyName = PROPERTY_NAME, displayName = "")
     public void testWithPropertyName() {
 
     }
@@ -108,8 +108,8 @@ public class MethodAnnotationPairTest {
 
     }
 
-    private TraceeContextLogProviderMethod getAnnotation(final Method method) {
-        return method.getAnnotation(TraceeContextLogProviderMethod.class);
+    private TraceeContextProviderMethod getAnnotation(final Method method) {
+        return method.getAnnotation(TraceeContextProviderMethod.class);
     }
 
 }
