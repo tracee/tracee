@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.builder;
 
-import io.tracee.contextlogger.api.TraceeContextLogBuilder;
+import io.tracee.contextlogger.api.TraceeContextStringRepresentationBuilder;
 import io.tracee.contextlogger.profile.Profile;
 
 import java.util.HashMap;
@@ -11,11 +11,12 @@ import java.util.Set;
  * Abstract base class for all context toJson builder implementations.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-public abstract class AbstractContextLogBuilder implements TraceeContextLogBuilder {
+public abstract class AbstractContextStringRepresentationBuilder implements TraceeContextStringRepresentationBuilder {
 
 	private Set<Class> wrapperClasses;
 	private Profile profile;
 	private Map<String, Boolean> manualContextOverrides;
+    private boolean keepOrder;
 
 	@Override
 	public final Set<Class> getWrapperClasses() {
@@ -42,5 +43,13 @@ public abstract class AbstractContextLogBuilder implements TraceeContextLogBuild
 	public final Map<String, Boolean> getManualContextOverrides() {
 		return manualContextOverrides != null ? manualContextOverrides : new HashMap<String, Boolean>();
 	}
+
+    public final boolean getKeepOrder(){
+        return keepOrder;
+    }
+
+    public final void setKeepOrder(final boolean keepOrder) {
+        this.keepOrder = keepOrder;
+    }
 
 }

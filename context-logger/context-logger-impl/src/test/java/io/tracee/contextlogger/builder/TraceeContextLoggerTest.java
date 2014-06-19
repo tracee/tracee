@@ -2,7 +2,7 @@ package io.tracee.contextlogger.builder;
 
 import io.tracee.contextlogger.ImplicitContext;
 import io.tracee.contextlogger.RegexMatcher;
-import io.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
+import io.tracee.contextlogger.builder.gson.TraceeGsonContextStringRepresentationBuilder;
 import io.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider;
 import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import io.tracee.contextlogger.profile.Profile;
@@ -41,7 +41,7 @@ public class TraceeContextLoggerTest {
             throw new NullPointerException();
         } catch (NullPointerException e) {
 
-            TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
+            TraceeGsonContextStringRepresentationBuilder logBuilder = new TraceeGsonContextStringRepresentationBuilder();
             Set<Class> classes = new HashSet<Class>();
             classes.add(PassedDataContextProvider.class);
 

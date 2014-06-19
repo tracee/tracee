@@ -1,25 +1,28 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger.builder.config;
 
+import io.tracee.contextlogger.api.ConfigBuilder;
+import io.tracee.contextlogger.api.ContextLoggerBuilder;
+import io.tracee.contextlogger.api.internal.Configuration;
 import io.tracee.contextlogger.profile.Profile;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation class to create a configuration by using the fluent api.
+ */
+public class ConfigBuilderImpl implements Configuration {
 
-public class ConfigBuilderImpl implements ConfigBuilder {
-
-	private ContextLoggerBuilderImpl owningBuilder;
+	private ContextLoggerBuilder owningBuilder;
 
 	private Profile profile = null;
 
-	public Profile getProfile() {
-		return profile;
-	}
+    private boolean keepOrder = false;
 
 	private Map<String, Boolean> manualContextOverrides = new HashMap<String, Boolean>();
 
 
-	public ConfigBuilderImpl(ContextLoggerBuilderImpl owningBuilder) {
+	public ConfigBuilderImpl(ContextLoggerBuilder owningBuilder) {
 		this.owningBuilder = owningBuilder;
 	}
 
@@ -41,15 +44,28 @@ public class ConfigBuilderImpl implements ConfigBuilder {
 		return this;
 	}
 
-	@Override
+    @Override
+    public ConfigBuilder keepOrder() {
+        this.keepOrder = true;
+        return this;
+    }
+
+    @Override
 	public ContextLoggerBuilder apply() {
 		return owningBuilder;
 	}
 
-	Map<String, Boolean> getManualContextOverrides() {
+	public Map<String, Boolean> getManualContextOverrides() {
 		return manualContextOverrides;
 	}
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public boolean getKeepOrder() {
+        return keepOrder;
+    }
 
 
 	/**

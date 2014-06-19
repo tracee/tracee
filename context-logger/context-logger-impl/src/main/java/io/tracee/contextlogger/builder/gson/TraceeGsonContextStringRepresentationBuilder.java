@@ -2,7 +2,7 @@ package io.tracee.contextlogger.builder.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.tracee.contextlogger.builder.AbstractContextLogBuilder;
+import io.tracee.contextlogger.builder.AbstractContextStringRepresentationBuilder;
 import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 import io.tracee.contextlogger.profile.ProfileSettings;
 
@@ -10,7 +10,7 @@ import io.tracee.contextlogger.profile.ProfileSettings;
  * Context Logger implementation for gson.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
+public class TraceeGsonContextStringRepresentationBuilder extends AbstractContextStringRepresentationBuilder {
 
 	private Gson gson = null;
 
@@ -37,12 +37,12 @@ public class TraceeGsonContextLogBuilder extends AbstractContextLogBuilder {
 
 
 	@Override
-	public final String log(Object... instancesToLog) {
+	public final String createStringRepresentation(Object... instancesToLog) {
 		return getOrCreateGson().toJson(instancesToLog);
 	}
 
 	@Override
-	public final String logPassedContext(PassedDataContextProvider passedContextData) {
+	public final String createStringRepresentationForPassedDataContextProvider(PassedDataContextProvider passedContextData) {
 		return getOrCreateGson().toJson(passedContextData);
 	}
 }

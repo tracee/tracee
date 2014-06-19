@@ -1,4 +1,4 @@
-package io.tracee.contextlogger.builder;
+package io.tracee.contextlogger.api;
 
 /**
  * The context logger interface used to enable fluent API.

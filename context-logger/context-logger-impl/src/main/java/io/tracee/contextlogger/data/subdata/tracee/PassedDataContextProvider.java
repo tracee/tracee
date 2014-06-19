@@ -22,12 +22,19 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]> {
 
     private Object[] instances;
 
+    private boolean keepOrder = false;
+
     public PassedDataContextProvider() {
 
     }
 
-    public PassedDataContextProvider(Object[] instances) {
+    public PassedDataContextProvider(Object[] instances, boolean keepOrder) {
         this.instances = instances;
+        this.keepOrder = keepOrder;
+    }
+
+    public PassedDataContextProvider(Object[] instances) {
+        this(instances, false);
     }
 
 
@@ -58,7 +65,9 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]> {
             }
 
         }
-        Collections.sort(toSortList, new PassedContextDataElementWrapperComparator());
+        if (!keepOrder) {
+            Collections.sort(toSortList, new PassedContextDataElementWrapperComparator());
+        }
 
         // Now create the List of NameObjectPairs
         List<NameObjectValuePair> nameObjectValuePairs = new ArrayList<NameObjectValuePair>();

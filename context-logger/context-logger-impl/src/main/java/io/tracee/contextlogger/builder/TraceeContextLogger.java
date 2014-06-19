@@ -1,10 +1,7 @@
 package io.tracee.contextlogger.builder;
 
 import io.tracee.contextlogger.*;
-import io.tracee.contextlogger.api.CustomImplicitContextData;
-import io.tracee.contextlogger.api.ImplicitContextData;
-import io.tracee.contextlogger.api.TraceeContextLogBuilder;
-import io.tracee.contextlogger.api.WrappedContextData;
+import io.tracee.contextlogger.api.*;
 import io.tracee.contextlogger.data.TypeToWrapper;
 import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
 
@@ -20,10 +17,10 @@ public final class TraceeContextLogger implements ContextLogger {
 	private ConnectorFactory connectorsWrapper;
 
 	private final ContextLoggerConfiguration contextLoggerConfiguration;
-	private final TraceeContextLogBuilder traceeGsonContextLogBuilder;
+	private final TraceeContextStringRepresentationBuilder traceeGsonContextLogBuilder;
 
 
-	TraceeContextLogger(TraceeContextLogBuilder traceeGsonContextLogBuilder, ContextLoggerConfiguration contextLoggerConfiguration) {
+	TraceeContextLogger(TraceeContextStringRepresentationBuilder traceeGsonContextLogBuilder, ContextLoggerConfiguration contextLoggerConfiguration) {
 		this.contextLoggerConfiguration = contextLoggerConfiguration;
 		this.traceeGsonContextLogBuilder = traceeGsonContextLogBuilder;
 		initConnectors();
@@ -77,7 +74,8 @@ public final class TraceeContextLogger implements ContextLogger {
 			}
 		}
 
-		return traceeGsonContextLogBuilder.logPassedContext(new PassedDataContextProvider(propagateArray));
+
+		return traceeGsonContextLogBuilder.createStringRepresentationForPassedDataContextProvider(new PassedDataContextProvider(propagateArray, traceeGsonContextLogBuilder.getKeepOrder()));
 	}
 
 

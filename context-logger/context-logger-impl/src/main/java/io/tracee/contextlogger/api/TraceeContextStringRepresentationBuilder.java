@@ -8,14 +8,18 @@ import java.util.Set;
  * Annotation to mark class as toJson builder implementations.
  * Created by Tobias Gindler, holisticon AG on 20.03.14.
  */
-public interface TraceeContextLogBuilder {
+public interface TraceeContextStringRepresentationBuilder {
 
     Set<Class> getWrapperClasses();
 
     void setWrapperClasses(final Set<Class> wrapperClasses);
 
-    String log(final Object... instancesToLog);
+    boolean getKeepOrder();
 
-    String logPassedContext(final PassedDataContextProvider passedContextData);
+    void setKeepOrder(final boolean keepOrder);
+
+    String createStringRepresentation(final Object... instancesToLog);
+
+    String createStringRepresentationForPassedDataContextProvider(final PassedDataContextProvider passedContextData);
 
 }

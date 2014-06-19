@@ -12,24 +12,24 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Test class for {@link io.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder}.
+ * Test class for {@link TraceeGsonContextStringRepresentationBuilder}.
  * Created by Tobias Gindler on 20.03.14.
  */
 public class TraceeGsonContextLogBuilderTest {
 
 	@Test
 	public void should_create_context_log() {
-		final TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
+		final TraceeGsonContextStringRepresentationBuilder logBuilder = new TraceeGsonContextStringRepresentationBuilder();
 		logBuilder.setWrapperClasses(new HashSet<Class>(Arrays.<Class>asList(JavaThrowableContextProvider.class)));
 
-		String json = logBuilder.log(new JavaThrowableContextProvider(new NullPointerException()));
+		String json = logBuilder.createStringRepresentation(new JavaThrowableContextProvider(new NullPointerException()));
 
 		assertThat(json, RegexMatcher.matches("\\[\\{\\\"stacktrace\\\":\\\"java.lang.Null.*\\}\\]"));
 	}
 
 	@Test
 	public void should_create_mixed_context_log() {
-		TraceeGsonContextLogBuilder logBuilder = new TraceeGsonContextLogBuilder();
+		TraceeGsonContextStringRepresentationBuilder logBuilder = new TraceeGsonContextStringRepresentationBuilder();
 		Set<Class> classes = new HashSet<Class>();
 		classes.add(PassedDataContextProvider.class);
 		classes.add(JavaThrowableContextProvider.class);
@@ -41,7 +41,7 @@ public class TraceeGsonContextLogBuilderTest {
 		oarray[1] = "TATA";
 		PassedDataContextProvider cp = new PassedDataContextProvider(oarray);
 
-		String json = logBuilder.log(cp);
+		String json = logBuilder.createStringRepresentation(cp);
 
 		assertThat(json, RegexMatcher.matches("\\[\\{\\\"throwable\\\":\\{\\\"stacktrace\\\":\\\"java.lang.NullPointerException.*java.lang.String\\\":\\\"TATA\\\"\\}\\]"));
 	}

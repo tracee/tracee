@@ -68,7 +68,7 @@ public class ConnectorFactory {
     /**
      * Send error report to all initialized connector instances.
      *
-     * @param prefix the prefix to prepend only via the log connector output
+     * @param prefix the prefix to prepend only via the createStringRepresentation connector output
      * @param json   the context data to output
      */
     public final void sendErrorReportToConnectors(String prefix, String json) {

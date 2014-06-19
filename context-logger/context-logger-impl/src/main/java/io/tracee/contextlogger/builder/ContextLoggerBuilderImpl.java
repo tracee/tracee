@@ -1,14 +1,23 @@
 package io.tracee.contextlogger.builder;
 
 
-import io.tracee.contextlogger.builder.gson.TraceeGsonContextLogBuilder;
+import io.tracee.contextlogger.api.ContextLogger;
+import io.tracee.contextlogger.api.ConfigBuilder;
+import io.tracee.contextlogger.api.ContextLoggerBuilder;
+import io.tracee.contextlogger.api.internal.Configuration;
+import io.tracee.contextlogger.builder.config.ConfigBuilderImpl;
+import io.tracee.contextlogger.builder.gson.TraceeGsonContextStringRepresentationBuilder;
 
+/**
+ * Class for creating and configuring a gson context logger.
+ * Supports the fluent builder api.
+ */
 class ContextLoggerBuilderImpl implements ContextLoggerBuilder {
 
 
 	private final ContextLoggerConfiguration contextLoggerConfiguration;
 
-	private ConfigBuilderImpl configBuilder = new ConfigBuilderImpl(this);
+	private Configuration configuration = new ConfigBuilderImpl(this);
 
 	public ContextLoggerBuilderImpl(ContextLoggerConfiguration contextLoggerConfiguration) {
 		this.contextLoggerConfiguration = contextLoggerConfiguration;
@@ -16,27 +25,28 @@ class ContextLoggerBuilderImpl implements ContextLoggerBuilder {
 
 	@Override
 	public ConfigBuilder config() {
-		return configBuilder;
+		return configuration;
 	}
 
 	@Override
 	public ContextLogger build() {
-		return new TraceeContextLogger(createGsonLogBuilder(), contextLoggerConfiguration);
+		return (ContextLogger)new TraceeContextLogger(createGsonContextStringRepresentationLogBuilder(), contextLoggerConfiguration);
 	}
 
 
 	/**
-	 * Creates a TraceeGsonContextLogBuilder instance which can be used for creating the log message.
+	 * Creates a TraceeGsonContextStringRepresentationBuilder instance which can be used for creating the createStringRepresentation message.
 	 *
-	 * @return An instance of TraceeGsonContextLogBuilder
+	 * @return An instance of TraceeGsonContextStringRepresentationBuilder
 	 */
-	private TraceeGsonContextLogBuilder createGsonLogBuilder() {
+	private TraceeGsonContextStringRepresentationBuilder createGsonContextStringRepresentationLogBuilder() {
 
-		TraceeGsonContextLogBuilder tmpTraceeGsonContextLogBuilder = new TraceeGsonContextLogBuilder();
-		tmpTraceeGsonContextLogBuilder.setWrapperClasses(contextLoggerConfiguration.getWrapperClasses());
-		tmpTraceeGsonContextLogBuilder.setManualContextOverrides(configBuilder.getManualContextOverrides());
-		tmpTraceeGsonContextLogBuilder.setProfile(this.configBuilder.getProfile());
+		TraceeGsonContextStringRepresentationBuilder tmpTraceeGsonContextStringRepresentationBuilder = new TraceeGsonContextStringRepresentationBuilder();
+		tmpTraceeGsonContextStringRepresentationBuilder.setWrapperClasses(contextLoggerConfiguration.getWrapperClasses());
+		tmpTraceeGsonContextStringRepresentationBuilder.setManualContextOverrides(configuration.getManualContextOverrides());
+		tmpTraceeGsonContextStringRepresentationBuilder.setProfile(this.configuration.getProfile());
+        tmpTraceeGsonContextStringRepresentationBuilder.setKeepOrder(this.configuration.getKeepOrder());
 
-		return tmpTraceeGsonContextLogBuilder;
+		return tmpTraceeGsonContextStringRepresentationBuilder;
 	}
 }
