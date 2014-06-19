@@ -1,7 +1,5 @@
 package io.tracee.contextlogger.api;
 
-import io.tracee.contextlogger.ImplicitContext;
-
 /**
  * Interface to mark a class that provides implicit context data.(Class doesn't need external context information)
  * Created by Tobias Gindler, holisticon AG on 21.03.14.

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.tracee.contextlogger.RegexMatcher;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
-import io.tracee.contextlogger.data.subdata.tracee.CommonDataContextProvider;
+import io.tracee.contextlogger.contextprovider.tracee.CommonDataContextProvider;
 import io.tracee.contextlogger.profile.Profile;
 import io.tracee.contextlogger.profile.ProfileSettings;
 import io.tracee.contextlogger.testdata.AnnotationTestClass;

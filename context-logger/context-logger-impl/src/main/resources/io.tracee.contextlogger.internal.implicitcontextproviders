@@ -1,2 +1,2 @@
-io.tracee.contextlogger.data.subdata.tracee.TraceeContextProvider
-io.tracee.contextlogger.data.subdata.tracee.CommonDataContextProvider
+io.tracee.contextlogger.contextprovider.tracee.TraceeContextProvider
+io.tracee.contextlogger.contextprovider.tracee.CommonDataContextProvider

@@ -8,8 +8,8 @@ import io.tracee.Tracee;
 import io.tracee.TraceeLogger;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.api.TraceeContextProvider;
-import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
-import io.tracee.contextlogger.data.subdata.NameStringValuePair;
+import io.tracee.contextlogger.contextprovider.utility.NameObjectValuePair;
+import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
 import io.tracee.contextlogger.profile.ProfileSettings;
 import io.tracee.contextlogger.utility.ListUtilities;
 import io.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
@@ -152,10 +152,10 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
     }
 
     /**
-     * Checks if the passed instance is of type {@link io.tracee.contextlogger.data.subdata.NameStringValuePair}.
+     * Checks if the passed instance is of type {@link io.tracee.contextlogger.contextprovider.utility.NameStringValuePair}.
      *
      * @param instance the instance to check
-     * @return returns true if the instance is of type {@link io.tracee.contextlogger.data.subdata.NameStringValuePair}, otherwise false
+     * @return returns true if the instance is of type {@link io.tracee.contextlogger.contextprovider.utility.NameStringValuePair}, otherwise false
      */
     static boolean isNameStringValuePair(Object instance) {
 
@@ -164,10 +164,10 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
     }
 
     /**
-     * Checks if the passed instance is of type {@link io.tracee.contextlogger.data.subdata.NameStringValuePair}.
+     * Checks if the passed instance is of type {@link io.tracee.contextlogger.contextprovider.utility.NameStringValuePair}.
      *
      * @param instance the instance to check
-     * @return returns true if the instance is of type {@link io.tracee.contextlogger.data.subdata.NameStringValuePair}, otherwise false
+     * @return returns true if the instance is of type {@link io.tracee.contextlogger.contextprovider.utility.NameStringValuePair}, otherwise false
      */
     static boolean isNameObjectValuePair(Object instance) {
 

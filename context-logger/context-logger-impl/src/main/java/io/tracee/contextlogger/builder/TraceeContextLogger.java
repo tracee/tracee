@@ -1,9 +1,8 @@
 package io.tracee.contextlogger.builder;
 
-import io.tracee.contextlogger.*;
 import io.tracee.contextlogger.api.*;
-import io.tracee.contextlogger.data.TypeToWrapper;
-import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
+import io.tracee.contextlogger.contextprovider.TypeToWrapper;
+import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
 
 /**
  * The main context logger class.

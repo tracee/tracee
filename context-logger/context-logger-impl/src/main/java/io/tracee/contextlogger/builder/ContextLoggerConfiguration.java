@@ -1,9 +1,9 @@
 package io.tracee.contextlogger.builder;
 
-import io.tracee.contextlogger.ImplicitContext;
+import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.CustomImplicitContextData;
 import io.tracee.contextlogger.api.ImplicitContextData;
-import io.tracee.contextlogger.data.TypeToWrapper;
+import io.tracee.contextlogger.contextprovider.TypeToWrapper;
 import io.tracee.contextlogger.profile.Profile;
 
 import java.util.Collections;

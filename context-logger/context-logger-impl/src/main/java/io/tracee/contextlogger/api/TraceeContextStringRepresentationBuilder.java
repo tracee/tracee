@@ -1,6 +1,6 @@
 package io.tracee.contextlogger.api;
 
-import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
+import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
 
 import java.util.Set;
 

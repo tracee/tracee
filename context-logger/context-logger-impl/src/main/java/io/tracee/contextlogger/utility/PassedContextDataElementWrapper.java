@@ -1,7 +1,7 @@
 package io.tracee.contextlogger.utility;
 
 import io.tracee.contextlogger.api.TraceeContextProvider;
-import io.tracee.contextlogger.data.subdata.NameObjectValuePair;
+import io.tracee.contextlogger.contextprovider.utility.NameObjectValuePair;
 
 /**
  * Wrapper class used to sort passed instances.

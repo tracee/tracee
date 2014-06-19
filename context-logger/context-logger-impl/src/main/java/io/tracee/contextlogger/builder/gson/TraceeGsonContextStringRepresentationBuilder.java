@@ -3,7 +3,7 @@ package io.tracee.contextlogger.builder.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.tracee.contextlogger.builder.AbstractContextStringRepresentationBuilder;
-import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
+import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
 import io.tracee.contextlogger.profile.ProfileSettings;
 
 /**

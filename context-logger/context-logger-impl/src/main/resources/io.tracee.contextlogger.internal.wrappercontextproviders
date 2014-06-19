@@ -1,12 +1,12 @@
-io.tracee.contextlogger.data.subdata.aspectj.AspectjProceedingJoinPointContextProvider
-io.tracee.contextlogger.data.subdata.ejb.EjbInvocationContextContextProvider
-io.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider
-io.tracee.contextlogger.data.subdata.servlet.ServletCookieContextProvider
-io.tracee.contextlogger.data.subdata.servlet.ServletRequestContextProvider
-io.tracee.contextlogger.data.subdata.servlet.ServletResponseContextProvider
-io.tracee.contextlogger.data.subdata.servlet.ServletSessionContextProvider
-io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider
-io.tracee.contextlogger.data.subdata.tracee.WatchdogContextProvider
-io.tracee.contextlogger.data.NameValuePair
+io.tracee.contextlogger.contextprovider.aspectj.AspectjProceedingJoinPointContextProvider
+io.tracee.contextlogger.contextprovider.ejb.EjbInvocationContextContextProvider
+io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider
+io.tracee.contextlogger.contextprovider.servlet.ServletCookieContextProvider
+io.tracee.contextlogger.contextprovider.servlet.ServletRequestContextProvider
+io.tracee.contextlogger.contextprovider.servlet.ServletResponseContextProvider
+io.tracee.contextlogger.contextprovider.servlet.ServletSessionContextProvider
+io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider
+io.tracee.contextlogger.contextprovider.tracee.WatchdogContextProvider
+io.tracee.contextlogger.contextprovider.utility.NameValuePair
 
 

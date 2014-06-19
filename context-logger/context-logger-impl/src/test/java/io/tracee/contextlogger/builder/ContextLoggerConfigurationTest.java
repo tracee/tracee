@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.builder;
 
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider;
-import io.tracee.contextlogger.data.subdata.servlet.ServletRequestContextProvider;
+import io.tracee.contextlogger.api.ImplicitContext;
+import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider;
+import io.tracee.contextlogger.contextprovider.servlet.ServletRequestContextProvider;
 import io.tracee.contextlogger.profile.Profile;
 import io.tracee.contextlogger.profile.ProfilePropertyNames;
 import org.hamcrest.MatcherAssert;

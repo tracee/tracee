@@ -1,8 +1,8 @@
 package io.tracee.contextlogger.builder.gson;
 
 import io.tracee.contextlogger.RegexMatcher;
-import io.tracee.contextlogger.data.subdata.java.JavaThrowableContextProvider;
-import io.tracee.contextlogger.data.subdata.tracee.PassedDataContextProvider;
+import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider;
+import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
 import org.junit.Test;
 
 import java.util.Arrays;
