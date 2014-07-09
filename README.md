@@ -138,7 +138,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>io.tracee</groupId>
+        <groupId>io.tracee.inbound</groupId>
         <artifactId>tracee-servlet</artifactId>
         <version>0.3.0</version>
     </dependency>
@@ -157,7 +157,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>io.tracee</groupId>
+        <groupId>io.tracee.inbound</groupId>
         <artifactId>tracee-servlet</artifactId>
         <version>0.4.0-SNAPSHOT</version>
     </dependency>
