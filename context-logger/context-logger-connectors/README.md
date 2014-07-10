@@ -1,5 +1,5 @@
-> This document contains documentation for the tracee-api module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the context-logger-connectors module. Click [here](/README.md) to get an overview that TracEE is about.
 
-# context-logger
+# context-logger-connectors
 
 TODO
