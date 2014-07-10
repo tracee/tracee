@@ -33,7 +33,7 @@
 
 		<dependency>
 			<artifactId>tracee-context-logger-impl</artifactId>
-			<groupId>io.tracee</groupId>
+			<groupId>io.tracee.contextlogger</groupId>
 			<version>${project.version}</version>
 		</dependency>
 

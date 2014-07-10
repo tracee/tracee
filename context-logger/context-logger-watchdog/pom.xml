@@ -12,7 +12,7 @@
 
     <name>tracee-context-logger-watchdog</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -31,7 +31,7 @@
 									<includes>
 										<include>*:*:*:*:test:*</include>
 										<include>*:*:*:*:provided:*</include>
-										<include>io.tracee:*</include>										
+										<include>io.tracee:*</include>
 										<include>org.aspectj:*</include>
 									</includes>
 								</bannedDependencies>
@@ -41,13 +41,13 @@
 				</executions>
 			</plugin>
 		</plugins>
-		
-	</build>	
-	
+
+	</build>
+
     <dependencies>
 
         <dependency>
-            <groupId>io.tracee</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
