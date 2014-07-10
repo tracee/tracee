@@ -115,7 +115,8 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-api](api/)                    | Contains Objects to interact with the TracEE context. Use it to write contextual information from your application into the TracEE context.
 | [tracee-core](core/)                  | Common utility classes, configuration system and serialization helpers. You will not need to use this module directly.
 | __connector modules__                 |
-| [tracee-httpclient](httpclient/)      | Adapter for `org.apache.httpcomponents:httpclient`-library. Use it to traceefy your JAX-RS or raw http clients.
+| [tracee-httpcomponents](httpcomponents/) | Adapter for `org.apache.httpcomponents:httpclient`-library (known as HttpClient 4.x). Use it to traceefy your JAX-RS or raw http clients.
+| [tracee-httpclient](httpclient/)      | Adapter for `commons-httpclient`-library (known as HttpClient 3.x). Use it to traceefy your JAX-RS or raw http clients.
 | [tracee-jaxrs2](jaxrs2)               | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
 | [tracee-jaxws](jaxws)                 | HandlerChains for JAX-WS endpoints and clients.
 | [tracee-jms](jms)                     | EJB-Interceptors and MessageProducers that allow you to pass around your TracEE context with JMS.
