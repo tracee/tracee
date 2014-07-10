@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Scanner;
 
-/**
- * Created by TGI on 21.02.14.
- */
+
 @WebServlet(name = "test", urlPatterns = {"/abc"})
 public class TestServlet extends HttpServlet {
     @Override

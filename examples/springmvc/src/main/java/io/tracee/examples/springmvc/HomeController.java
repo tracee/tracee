@@ -4,18 +4,18 @@ import io.tracee.Tracee;
 import io.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Random;
 
 @Controller
 public class HomeController {
 
-	@Autowired
-	TraceeJaxWsTestWS wsClient;
+	@Resource(name = "traceeJaxWsTestWS")
+	private TraceeJaxWsTestWS wsClient;
 
 	private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 

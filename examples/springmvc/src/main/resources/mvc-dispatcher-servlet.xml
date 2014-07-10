@@ -25,9 +25,10 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 
-	<!-- JAX-WS client configuration -->
+	<!-- TracEE JAX-WS client configuration -->
 	<bean id="traceeClientHandlerResolver" class="io.tracee.jaxws.client.TraceeClientHandlerResolver" />
-	<bean id="accountWebService" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+
+	<bean id="traceeJaxWsTestWS" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
 		<property name="serviceInterface" value="io.tracee.examples.jaxws.client.testclient.TraceeJaxWsTestWS"/>
 		<property name="wsdlDocumentUrl" value="classpath:/META-INF/wsdl/serviceHandler.wsdl"/>
 		<property name="endpointAddress" value="http://${JBOSSAS7_PORT_8080_TCP_ADDR}:${JBOSSAS7_PORT_8080_TCP_PORT}/tracee-examples-jaxws-service/TraceeJaxWsTestService/TraceeJaxWsTestService" />
