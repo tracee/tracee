@@ -1,13 +1,13 @@
 package io.tracee.contextlogger.integrationtest;
 
 import io.tracee.contextlogger.api.CustomImplicitContextData;
-import io.tracee.contextlogger.api.TraceeContextLogProvider;
-import io.tracee.contextlogger.api.TraceeContextLogProviderMethod;
+import io.tracee.contextlogger.api.TraceeContextProvider;
+import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 
 /**
  * Test provider that provides implicit context information but which has no args constructor.
  */
-@TraceeContextLogProvider(displayName = "testBrokenImplicitContentDataProviderWithoutDefaultConstructor", order = 200)
+@TraceeContextProvider(displayName = "testBrokenImplicitContentDataProviderWithoutDefaultConstructor", order = 200)
 public class TestBrokenImplicitContentDataProviderWithoutDefaultConstructor implements CustomImplicitContextData {
 
     public static final String PROPERTY_NAME = "TestBrokenImplicitContentDataProviderWithoutDefaultConstructor.testOutputPropertyName";
@@ -18,7 +18,7 @@ public class TestBrokenImplicitContentDataProviderWithoutDefaultConstructor impl
 
 
     @SuppressWarnings("unused")
-    @TraceeContextLogProviderMethod(
+    @TraceeContextProviderMethod(
             displayName = "output",
             propertyName = TestImplicitContextDataProvider.PROPERTY_NAME,
             order = 10)

@@ -1,7 +1,8 @@
+
 package io.tracee.contextlogger.servlet;
 
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

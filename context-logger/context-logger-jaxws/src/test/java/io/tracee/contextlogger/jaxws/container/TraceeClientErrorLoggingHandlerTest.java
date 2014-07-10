@@ -3,7 +3,7 @@ package io.tracee.contextlogger.jaxws.container;
 import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+import io.tracee.contextlogger.TraceeContextLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +14,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import static io.tracee.contextlogger.jaxws.container.AbstractTraceeErrorLoggingHandler.THREAD_LOCAL_SOAP_MESSAGE_STR;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -29,7 +25,6 @@ public class TraceeClientErrorLoggingHandlerTest {
 
     private final TraceeBackend mockedBackend = mock(TraceeBackend.class);
     private NoopTraceeLoggerFactory loggerFactory = spy(NoopTraceeLoggerFactory.INSTANCE);
-    private TraceeContextLogger contextLogger;
     private TraceeClientErrorLoggingHandler unit;
 
     private SOAPMessageContext contextMock;

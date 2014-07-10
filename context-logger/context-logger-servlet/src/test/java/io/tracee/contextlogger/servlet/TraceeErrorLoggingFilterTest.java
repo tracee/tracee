@@ -1,11 +1,8 @@
 package io.tracee.contextlogger.servlet;
 
-import io.tracee.SimpleTraceeBackend;
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
 import io.tracee.TraceeException;
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,17 +14,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)

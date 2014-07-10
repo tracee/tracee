@@ -1,10 +1,8 @@
 package io.tracee.contextlogger.javaee;
 
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.ContextLogger;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
-import io.tracee.contextlogger.javaee.TraceeEjbErrorContextLoggingInterceptor;
-import io.tracee.contextlogger.javaee.TraceeJmsErrorMessageListener;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,16 +11,12 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.interceptor.InvocationContext;
-import java.lang.reflect.Method;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
