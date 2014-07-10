@@ -1,6 +1,7 @@
 # TracEE 0.3.0
 
 [![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
+[![drone.io Build Status](https://drone.io/github.com/holisticon/tracee/status.png)](https://drone.io/github.com/holisticon/tracee/latest)
 [![Coverage Status](https://coveralls.io/repos/holisticon/tracee/badge.png)](https://coveralls.io/r/holisticon/tracee)
 
 TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
