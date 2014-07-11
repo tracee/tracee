@@ -1,7 +1,6 @@
 language: java
 jdk:
 - openjdk6
-install: mvn install -DskipTests=true -B
 script: mvn verify -B
 after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/tracee"
   && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location
