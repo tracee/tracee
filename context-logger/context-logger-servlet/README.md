@@ -17,7 +17,7 @@ You have to add the following maven dependencies to your web applications pom.xm
       <version>0.3.0</version>
     </dependency>
 
-    <!-- Tracee log provider, depending on your logging config -->
+    <!-- Tracee log provider, depending on your logging framework -->
     <dependency>
       <groupId>io.tracee.backend</groupId>
       <artifactId>tracee-slf4j</artifactId>
