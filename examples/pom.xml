@@ -12,6 +12,7 @@
 		<module>ejb</module>
 		<module>jms</module>
 		<module>springmvc</module>
+		<module>springaop</module>
 		<module>ear</module>
 	</modules>
 
