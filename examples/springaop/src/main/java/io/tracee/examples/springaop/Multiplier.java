@@ -3,9 +3,8 @@ package io.tracee.examples.springaop;
 import io.tracee.contextlogger.watchdog.Watchdog;
 
 /**
- * Created by TGI on 01.08.14.
+ * Multiplier with method level watchdog annotation.
  */
-
 public class Multiplier {
 
     @Watchdog(id = "MULTIPLIER_BEAN",isActive = true)
