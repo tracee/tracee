@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>tracee-examples-springaop</artifactId>
+    <packaging>war</packaging>
+
+    <parent>
+        <groupId>io.tracee.examples</groupId>
+        <artifactId>tracee-examples</artifactId>
+        <version>0.4.0-SNAPSHOT</version>
+    </parent>
+
+    <name>tracee-examples-springaop</name>
+    <description>Please refer to https://github.com/holisticon/tracee.</description>
+
+
+    <properties>
+        <!-- Spring -->
+        <spring-framework.version>4.0.2.RELEASE</spring-framework.version>
+        <aspectj.version>1.7.4</aspectj.version>
+
+</properties>
+
+    <build>
+		<finalName>tracee-springaop-example</finalName>
+        <plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>ch.qos.logback</groupId>
+						<artifactId>logback-classic</artifactId>
+						<version>${logback.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>io.tracee.examples</groupId>
+            <artifactId>tracee-examples-ejb-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee</groupId>
+            <artifactId>tracee-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee.backend</groupId>
+            <artifactId>tracee-slf4j</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee.inbound</groupId>
+            <artifactId>tracee-springmvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee.examples</groupId>
+            <artifactId>tracee-examples-jaxws-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.tracee.contextlogger</groupId>
+            <artifactId>tracee-context-logger-watchdog</artifactId>
+            <version>0.4.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Spring AOP and AspectJ related dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+
+    </dependencies>
+</project>

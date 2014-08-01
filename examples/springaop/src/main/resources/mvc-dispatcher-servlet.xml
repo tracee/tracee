@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+        >
+
+    <context:component-scan base-package="io.tracee.examples.springaop" />
+
+    <!-- Enable AspectJ style of Spring AOP -->
+    <aop:aspectj-autoproxy/>
+
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_FALLBACK"/>
+        <!-- Give spring access to ENV variables -->
+        <property name="searchSystemEnvironment" value="true"/>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- Example spring beans -->
+    <bean id="multiplier" class="io.tracee.examples.springaop.Multiplier"/>
+    <bean id="multiplierWithClassLevelAnnotation" class="io.tracee.examples.springaop.MultiplierWithClassLevelWatchdog"/>
+
+
+    <!-- Configure Aspect Beans, without this Aspects advices wont execute -->
+    <bean id="watchdog" class="io.tracee.contextlogger.watchdog.WatchdogAspect"/>
+
+
+
+    <mvc:interceptors>
+        <bean class="io.tracee.springmvc.TraceeInterceptor">
+            <property name="profileName" value="default" />
+        </bean>
+    </mvc:interceptors>
+
+</beans>
