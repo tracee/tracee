@@ -71,6 +71,7 @@ The following table describes all available TracEE-context-logger modules and th
 
 ## Configuration
 
+### Output Profile Selection
 The output produced by the TracEE contextual logger can be configured very flexible by allowing you to choose between predefined and custom profiles or by offering you the possibility to overwrite profile settings by system properties.
 You can choose between those profiles by setting the **io.tracee.contextlogger.profile** system property in your application server or by adding a **ProfileSelector.properties** file to your webapp. The property file must define the **io.tracee.contextlogger.profile** property. 
 Possible values are: 
@@ -84,4 +85,10 @@ Possible values are:
 
 You can combine those configurations in any way you want. The settings will be applied in a specific order. Application server wide profile selection will be overwritten by application based profile selection. If no profile selection is configured, basic profile will be used as default.
 
+### TracEE common context information
+Please add the following system properties to your application server configuration:
 
+| Property name | Description |
+|--------------:|:-----------:|
+| io.tracee.contextlogger.tracee-standard-stage| Defines the stage of the system - for example DEV, INT, TEST,...|
+| io.tracee.contextlogger.tracee-standard-system| Defines the name of the system|
