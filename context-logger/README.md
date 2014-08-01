@@ -72,7 +72,7 @@ The following table describes all available TracEE-context-logger modules and th
 ## Configuration
 
 The output produced by the TracEE contextual logger can be configured very flexible by allowing you to choose between predefined and custom profiles or by offering you the possibility to overwrite profile settings by system properties.
-You can choose between those profiles by setting the io.tracee.contextlogger.profile system property in your application server or by adding a ProfileSelector.properties file to your webapp. The property file must define the io.tracee.contextlogger.profile property. 
+You can choose between those profiles by setting the **io.tracee.contextlogger.profile** system property in your application server or by adding a **ProfileSelector.properties** file to your webapp. The property file must define the **io.tracee.contextlogger.profile** property. 
 Possible values are: 
 
 | Value    | Description |
@@ -80,7 +80,7 @@ Possible values are:
 | BASIC    | Default profile, provides most important and secure contextual information.  |
 | ENHANCED | Provides additional contextual information not included in basic profile     |
 | FULL     | Outputs almost everything available to the handlers - even security related data, therefore this profile shouldn't be used in production environments  |
-| CUSTOM   | Allows you to use a custom profile. Custom profiles are defined by adding a file named 'TraceeContextLoggerCustomProfile.properties'. Please copy and customize existing profiles offered by the context-logger-impl project |
+| CUSTOM   | Allows you to use a custom profile. Custom profiles are defined by adding a file named **TraceeContextLoggerCustomProfile.properties**. Please copy and customize existing profiles offered by the context-logger-impl project |
 
 
 
