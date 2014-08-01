@@ -63,8 +63,23 @@ The following table describes all available TracEE-context-logger modules and th
 | [context-logger-connectors](context-logger-connectors)              | Provides support for writing contextual data to other target as log files (f.e. send error via Http) |
 | [context-logger-impl](context-logger-impl)                          | The implementation of the context logger |
 | [context-logger-integration-test](context-logger-integration-test)  | Does some integration test for custom data providers |
-| [context-logger-javaee](context-logger-javaee)                      | Provides support for EJB / CDI /JMS by offering Interceptors |
+| [context-logger-javaee](context-logger-javaee)                      | Provides support for EJB / CDI /JMS by offering interceptors |
 | [context-logger-jaxws](context-logger-jaxws)                        | Provides support for JAXWS via Message handlers. |
 | [context-logger-provider-api](context-logger-provider-api)          | Provides support for Servlets via ServletFilter |
 | [context-logger-servlet](context-logger-servlet)                    | Provides support for Servlets via ServletFilter |
 | [context-logger-watchdog](context-logger-watchdog)                  | AspectJ / Spring-AOP powered contextual logging|
+
+## Configuration
+The output produced by the TracEE contextual logger can be configured very flexible by allowing you to choose between predefined and custom profiles or by offering you the possibility to overwrite profile settings by system properties.
+You can choose between those profiles by setting the io.tracee.contextlogger.profile system property in your application server or by adding a ProfileSelector.properties file to your webapp. The property file must define the io.tracee.contextlogger.profile property.
+
+Possible values are : 
+| Value    | Description |
+|:--------:|:-----------:|
+| BASIC    | Default profile, provides most important and secure contextual information.  |
+| ENHANCED | Provides additional contextual information not included in basic profile     |
+| FULL     | Outputs almost everything available to the handlers - even security related data, therefore this profile shouldn't be used in production environments  |
+| CUSTOM   | Allows you to use a custom profile. Custom profiles are defined by adding a file named 'TraceeContextLoggerCustomProfile.properties'. Please copy and customize existing profiles offered by the context-logger-impl project |
+
+
+
