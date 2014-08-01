@@ -82,5 +82,6 @@ Possible values are:
 | FULL     | Outputs almost everything available to the handlers - even security related data, therefore this profile shouldn't be used in production environments  |
 | CUSTOM   | Allows you to use a custom profile. Custom profiles are defined by adding a file named **TraceeContextLoggerCustomProfile.properties**. Please copy and customize existing profiles offered by the context-logger-impl project |
 
+You can combine those configurations in any way you want. The settings will be applied in a specific order. Application server wide profile selection will be overwritten by application based profile selection. If no profile selection is configured, basic profile will be used as default.
 
 
