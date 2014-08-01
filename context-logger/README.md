@@ -67,15 +67,16 @@ The following table describes all available TracEE-context-logger modules and th
 | [context-logger-jaxws](context-logger-jaxws)                        | Provides support for JAXWS via Message handlers. |
 | [context-logger-provider-api](context-logger-provider-api)          | Provides support for Servlets via ServletFilter |
 | [context-logger-servlet](context-logger-servlet)                    | Provides support for Servlets via ServletFilter |
-| [context-logger-watchdog](context-logger-watchdog)                  | AspectJ / Spring-AOP powered contextual logging|
+| [context-logger-watchdog](context-logger-watchdog)                  | AspectJ / Spring-AOP powered contextual logging |
 
 ## Configuration
-The output produced by the TracEE contextual logger can be configured very flexible by allowing you to choose between predefined and custom profiles or by offering you the possibility to overwrite profile settings by system properties.
-You can choose between those profiles by setting the io.tracee.contextlogger.profile system property in your application server or by adding a ProfileSelector.properties file to your webapp. The property file must define the io.tracee.contextlogger.profile property.
 
-Possible values are : 
+The output produced by the TracEE contextual logger can be configured very flexible by allowing you to choose between predefined and custom profiles or by offering you the possibility to overwrite profile settings by system properties.
+You can choose between those profiles by setting the io.tracee.contextlogger.profile system property in your application server or by adding a ProfileSelector.properties file to your webapp. The property file must define the io.tracee.contextlogger.profile property. 
+Possible values are: 
+
 | Value    | Description |
-|:--------:|:-----------:|
+| --------:|:-----------:|
 | BASIC    | Default profile, provides most important and secure contextual information.  |
 | ENHANCED | Provides additional contextual information not included in basic profile     |
 | FULL     | Outputs almost everything available to the handlers - even security related data, therefore this profile shouldn't be used in production environments  |
