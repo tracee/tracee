@@ -27,10 +27,11 @@ So what is this all about?
 
 An example:
 - A user is using your JavaEE application. After a short time an exception was thrown in the application server. This could happen due to a lot of reasons (corrupt data, error in software, infrastructure problems).
-- If you have luck, the user will notify you about the error or if you monitor your logfiles, you are going to detect the error on your own.
+- If you are monitoring your logfiles, you are going to detect the error on your own, otherwise if you have luck, the user will notify you about the error.
 - Now your operations employees or developers come into play and are trying to analyze the cause of the error. This can be a very difficult and time consuming task. Success and speed are directly affected by the information you are able to gather from your log files.
 
-The TracEE context logger subproject will help you to easily provide contextual invocation data, if an error occurs in your application. Therefore it is providing handlers for most JavaEE technologies.
+The TracEE context logger subproject will help you to easily provide contextual invocation data, if an error occurs in your application. Therefore it is providing handlers for most JavaEE technologies. Those handler will provide the contextual data in JSON Format, so the output can easily read and processed by automated systems.
+
 It is also possible and very easy to add custom functionality and handlers to the contextual logger.
 
 # Integrating TracEE into your application
@@ -46,8 +47,8 @@ The steps to get TracEE contextual logging up and running pretty much depend on 
 | JAX-RS       | Use [context-logger-servlet](context-logger-servlet) as a servlet filter. |
 | JAX-RS2      | TODO |
 | JAX-WS       | Use [context-logger-jaxws](context-logger-jaxws) as a message listener. |
-| SPRING-AOP   | Use [context-logger-watchdog] (context-logger-watchdog) |
-| ASPECTJ      | Use [context-logger-watchdog] (context-logger-watchdog) |
+| SPRING-AOP   | Use [context-logger-watchdog] (context-logger-watchdog) by offering an aspect triggered by a simple java annotation|
+| ASPECTJ      | Use [context-logger-watchdog] (context-logger-watchdog) by offering an aspect triggered by a simple java annotation|
 
 
 
