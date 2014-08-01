@@ -93,9 +93,22 @@
             <version>0.4.0-SNAPSHOT</version>
         </dependency>
 
+
+
+        <!-- UNCOMMENT THIS IF YOU WANT TO DEPLOY IT TO A PLAIN TOMCAT -->
+        <!--
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        -->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <!-- UNCOMMENT THIS IF YOU WANT TO DEPLOY IT TO A PLAIN TOMCAT -->
+            <!--<scope>compile</scope>-->
         </dependency>
 
         <!-- Spring AOP and AspectJ related dependencies -->
@@ -128,7 +141,6 @@
             <artifactId>cglib-nodep</artifactId>
             <version>3.1</version>
         </dependency>
-
 
     </dependencies>
 </project>
