@@ -83,3 +83,6 @@ You have to add the following to your web applications **web.xml** for servlet c
 		<listener-class>io.tracee.servlet.TraceeSessionListener</listener-class>
 	</listener>
 ```
+
+## Remarks
+If you catch exceptions by using a servlet filter, you must make sure that the context-logging filter is executed before that filter.
