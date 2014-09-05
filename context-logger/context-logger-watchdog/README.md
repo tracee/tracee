@@ -51,7 +51,7 @@ Depending on the selected context logger profile the output consists of invoked 
 The behavior and output of the Watchdog annotation can be configured by defining the following annotation attributes:
 
 | Attribute name | Type | Description | Default |
-|---------------:|:----:|:-----------:|: ----- :|
+|:---------------|:-----|:------------|:--------|
 | id | String | the id will be part of the contextual information output | empty String - will be ignored |
 | suppressThrowsExceptions | boolean | Defines if exceptions defined in the throws block of the method signature should be ignored | false |
 | isActive | boolean | Defines if the watchdog is active | true |
