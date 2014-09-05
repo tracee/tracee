@@ -62,7 +62,8 @@ Currently the AspectJ and spring-AOP frameworks are supported by this project.
 
 ### Using AspectJ
 You have to start your application server / application by using the following java options / agent to enable AspectJ runtime weaving.
-   -Daj.weaving.verbose=true -javaagent:<path to your aspectj library home>\aspectjweaver.jar
+
+    -Daj.weaving.verbose=true -javaagent:<path to your aspectj library home>\aspectjweaver.jar
 
 
 ### Using Spring-AOP
