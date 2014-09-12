@@ -32,6 +32,7 @@
                                         <include>*:*:*:*:test:*</include>
                                         <include>*:*:*:*:provided:*</include>
                                         <include>io.tracee:*</include>
+                                        <include>io.tracee.contextlogger:*</include>
                                         <include>com.ning:async-http-client</include>
                                     </includes>
                                 </bannedDependencies>

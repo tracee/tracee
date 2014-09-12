@@ -1,6 +1,5 @@
 package io.tracee.contextlogger.integrationtest;
 
-
 import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
@@ -25,7 +24,7 @@ public class BrokenCustomContextDataWrapper implements WrappedContextData<Wrappe
 
     @Override
     public void setContextData(Object instance) throws ClassCastException {
-        this.contextData = (WrappedBrokenTestContextData) instance;
+        this.contextData = (WrappedBrokenTestContextData)instance;
     }
 
     @Override
@@ -34,10 +33,7 @@ public class BrokenCustomContextDataWrapper implements WrappedContextData<Wrappe
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(
-            displayName = "testoutput",
-            propertyName = TestContextDataWrapper.PROPERTY_NAME,
-            order = 10)
+    @TraceeContextProviderMethod(displayName = "testoutput", propertyName = TestContextDataWrapper.PROPERTY_NAME, order = 10)
     public String getOutput() {
         throw new NullPointerException("Whoops!!!");
     }

@@ -14,10 +14,7 @@ public class TestImplicitContextDataProvider implements CustomImplicitContextDat
     public static final String OUTPUT = "IT WORKS TOO!!!";
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(
-            displayName = "output",
-            propertyName = TestImplicitContextDataProvider.PROPERTY_NAME,
-            order = 10)
+    @TraceeContextProviderMethod(displayName = "output", propertyName = TestImplicitContextDataProvider.PROPERTY_NAME, order = 10)
     public final String getOutput() {
         return OUTPUT;
     }

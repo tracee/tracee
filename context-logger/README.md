@@ -2,7 +2,7 @@
 
 # context-logger
 
-> __The TracEE context logger subproject helps you to analyze errors in your application by collecting contextual invocation data and writing it to your log files.
+> The TracEE context logger subproject helps you to analyze errors in your application by collecting contextual invocation data and writing it to your log files.
 
 
 The *TracEE* main project helps you to aggregate all your log files. This will technically enable you to track user requests or session throughout the log but does not have an influence on what will be written to the logs.
@@ -86,9 +86,9 @@ Possible values are:
 You can combine those configurations in any way you want. The settings will be applied in a specific order. Application server wide profile selection will be overwritten by application based profile selection. If no profile selection is configured, basic profile will be used as default.
 
 ### TracEE common context information
-Please add the following system properties to your application server configuration:
+You can add the following optional system properties to your application server configuration to configure the common context information:
 
-| Property name | Description |
-|--------------:|:-----------:|
-| io.tracee.contextlogger.tracee-standard-stage| Defines the stage of the system - for example DEV, INT, TEST,...|
-| io.tracee.contextlogger.tracee-standard-system| Defines the name of the system|
+| Property name | Description | Default |
+|--------------:|:-----------:|: ----- :|
+| io.tracee.contextlogger.tracee-standard-stage| Defines the stage of the system - for example DEV, INT, TEST,... | won't be used if not set explicitly |
+| io.tracee.contextlogger.tracee-standard-system| Defines the name of the system | system name will be determined automatically by calling InetAddress.getLocalHost().getHostName() |

@@ -12,7 +12,39 @@
 
     <name>tracee-context-logger-watchdog</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
-
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<searchTransitive>false</searchTransitive>
+									<excludes><exclude>*</exclude></excludes>
+									<includes>
+										<include>*:*:*:*:test:*</include>
+										<include>*:*:*:*:provided:*</include>
+										<include>io.tracee:*</include>
+                                        <include>io.tracee.contextlogger:*</include>
+                                        <include>org.aspectj:*</include>
+									</includes>
+								</bannedDependencies>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		
+	</build>	
+	
     <dependencies>
 
         <dependency>

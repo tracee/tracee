@@ -1,6 +1,7 @@
 package io.tracee.contextlogger.integrationtest;
 
 
+
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.profile.Profile;
 import org.hamcrest.MatcherAssert;

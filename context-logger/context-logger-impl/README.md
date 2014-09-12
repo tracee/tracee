@@ -2,4 +2,4 @@
 
 # TracEE context-logger-impl
 
-TODO
+This project provides the implementation of the context logger. This includes loading of configuration / profiles, providing some basic context providers and data wrappers.

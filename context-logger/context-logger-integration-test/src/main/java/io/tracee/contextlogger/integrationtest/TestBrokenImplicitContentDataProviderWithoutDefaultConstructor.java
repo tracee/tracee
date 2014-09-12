@@ -12,16 +12,12 @@ public class TestBrokenImplicitContentDataProviderWithoutDefaultConstructor impl
 
     public static final String PROPERTY_NAME = "TestBrokenImplicitContentDataProviderWithoutDefaultConstructor.testOutputPropertyName";
 
-    TestBrokenImplicitContentDataProviderWithoutDefaultConstructor (String something) {
+    TestBrokenImplicitContentDataProviderWithoutDefaultConstructor(String something) {
 
     }
 
-
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(
-            displayName = "output",
-            propertyName = TestImplicitContextDataProvider.PROPERTY_NAME,
-            order = 10)
+    @TraceeContextProviderMethod(displayName = "output", propertyName = TestImplicitContextDataProvider.PROPERTY_NAME, order = 10)
     public final String getOutput() {
         throw new NullPointerException("Whoops!!!");
     }

@@ -22,49 +22,40 @@
 		<module>context-logger-servlet</module>
 		<module>context-logger-jaxws</module>
 		<module>context-logger-javaee</module>
-		<module>context-logger-watchdog</module>
+		<module>context-logger-watchdog</module>		
 		<module>context-logger-integration-test</module>
+        <!--<module>context-logger-deserializer</module>-->
 	</modules>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>enforce</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireMavenVersion>
-									<version>[3.1.0,)</version>
-								</requireMavenVersion>
-								<requireJavaVersion>
-									<version>1.6</version>
-								</requireJavaVersion>
-								<bannedDependencies>
-									<searchTransitive>false</searchTransitive>
-									<excludes><exclude>*</exclude></excludes>
-									<includes>
-										<include>*:*:*:*:test:*</include>
-										<include>*:*:*:*:provided:*</include>
-										<include>io.tracee:*</include>
-										<include>io.tracee.contextlogger:*</include>
-										<include>com.google.code.gson:gson:jar</include>
-										<include>org.apache.commons:commons-lang3</include>
-										<include>org.aspectj:*</include>
-									</includes>
-								</bannedDependencies>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <searchTransitive>false</searchTransitive>
+                                    <excludes><exclude>*</exclude></excludes>
+                                    <includes>
+                                        <include>*:*:*:*:test:*</include>
+                                        <include>*:*:*:*:provided:*</include>
+                                        <include>io.tracee:*</include>
+                                        <include>io.tracee.contextlogger:*</include>
+                                    </includes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
-	</build>
-
+    </build>
 
 </project>

@@ -36,6 +36,11 @@
             <artifactId>tracee-context-logger-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.tracee.contextlogger</groupId>
+            <artifactId>tracee-context-logger-provider-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- dependecies for unittests -->
         <dependency>

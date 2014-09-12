@@ -2,5 +2,4 @@
 
 # context-logger-integration-test
 
-
-TODO
+This project is used to provide some integration tests for all context logger projects.

@@ -3,6 +3,7 @@ package io.tracee.contextlogger.jaxws.container;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeLogger;
+
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.contextprovider.jaxws.JaxWsWrapper;
@@ -46,7 +47,8 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
                 ImplicitContext.COMMON,
                 ImplicitContext.TRACEE,
                 JaxWsWrapper.wrap(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
-						convertSoapMessageAsString(soapMessage)));
+                        convertSoapMessageAsString(soapMessage)));
+
         return true;
     }
 
@@ -67,7 +69,7 @@ public abstract class AbstractTraceeErrorLoggingHandler extends AbstractTraceeHa
         }
     }
 
-    final Charset determineMessageEncoding(SOAPMessage soapMessage) {
+    Charset determineMessageEncoding(SOAPMessage soapMessage) {
         try {
             final Object encProp = soapMessage.getProperty(SOAPMessage.CHARACTER_SET_ENCODING);
             if (encProp != null) {

@@ -13,10 +13,7 @@ public class TestBrokenImplicitContextDataProvider implements CustomImplicitCont
     public static final String PROPERTY_NAME = "TestBrokenImplicitContextDataProvider.testOutputPropertyName";
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(
-            displayName = "output",
-            propertyName = TestImplicitContextDataProvider.PROPERTY_NAME,
-            order = 10)
+    @TraceeContextProviderMethod(displayName = "output", propertyName = TestImplicitContextDataProvider.PROPERTY_NAME, order = 10)
     public final String getOutput() {
         throw new NullPointerException("Whoops!!!");
     }

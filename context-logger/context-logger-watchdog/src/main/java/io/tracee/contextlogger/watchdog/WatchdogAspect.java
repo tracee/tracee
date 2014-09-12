@@ -3,6 +3,7 @@ package io.tracee.contextlogger.watchdog;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
+
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.contextprovider.aspectj.WatchdogDataWrapper;

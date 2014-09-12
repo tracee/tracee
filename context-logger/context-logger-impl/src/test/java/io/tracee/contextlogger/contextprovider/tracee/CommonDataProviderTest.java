@@ -2,10 +2,13 @@ package io.tracee.contextlogger.contextprovider.tracee;
 
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -79,11 +82,11 @@ public class CommonDataProviderTest {
     }
 
     @Test
-    public void should_get_null_for_not_set_system() {
+    public void should_get_null_for_not_set_system() throws UnknownHostException {
         setSystemProperties(true,false);
 
         String result = commonDataContextProvider.getSystemName();
-        assertThat(result, nullValue());
+        assertThat(result, equalTo(InetAddress.getLocalHost().getHostName()));
     }
 
     @Test

@@ -13,7 +13,38 @@
     <name>tracee-context-logger-impl</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <searchTransitive>false</searchTransitive>
+                                    <excludes><exclude>*</exclude></excludes>
+                                    <includes>
+                                        <include>*:*:*:*:test:*</include>
+                                        <include>*:*:*:*:provided:*</include>
+                                        <include>io.tracee:*</include>
+                                        <include>io.tracee.contextlogger:*</include>
+										<include>com.google.code.gson:gson:jar</include>
+                                        <include>org.apache.commons:commons-lang3</include>
+                                    </includes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
+    </build>
 
     <dependencies>
 
@@ -34,13 +65,13 @@
             <artifactId>tracee-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-
-        <dependency>
+		
+        <dependency>	
             <groupId>org.jboss.spec.javax.servlet</groupId>
             <artifactId>jboss-servlet-api_3.0_spec</artifactId>
             <version>1.0.0.Final</version>

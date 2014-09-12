@@ -1,5 +1,6 @@
 package io.tracee.contextlogger.javaee;
 
+
 import io.tracee.contextlogger.TraceeContextLogger;
 import io.tracee.contextlogger.api.ImplicitContext;
 

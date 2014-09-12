@@ -92,13 +92,14 @@ public class HomeController {
 
 
     /**
-     * Using watchdog annotation on a non interface method of a mvc controller bean doesn't work, seems to be an spring-mvc / spring-aop proxy issue.
+     * Using a watchdog annotation only works if the method is invoked via a spring bean proxy. Therefore this will not work if the method is used directly via this.multiply().
+     * To make this work you have to invoke the method by using the current proxy. You can do this by invoking ((HomeController) AopContext.currentProxy()).multiply()
      *
      * @param a first parameter
      * @param b second parameter
      * @return result
      */
-    // !!! NOT WORKING !!!
+    // !!! NOT WORKING if called directly instead of using a proxy !!!
     @Watchdog(id = "HOME_CONTROLLER_MULTIPLY", isActive = true)
     public int multiply(int a, int b) {
         if (a < 5) {
