@@ -90,7 +90,7 @@ You have to start your application server / application by using the following j
 
 
 ### Using Spring-AOP
-Using spring-AOP, aspects will only be applied at method invocations on spring proxy instances. Therefore the following spring-MVC example will not work.
+Using spring-AOP, aspects will only be applied at method invocations on spring proxy instances. Therefore the following spring-MVC example will not work, if you call the exampleMethod via this.
 
     @Controller
     public class Example {

@@ -1,11 +1,21 @@
 package io.tracee.contextlogger.jaxws.container;
 
-import io.tracee.NoopTraceeLoggerFactory;
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
-import io.tracee.contextlogger.data.wrapper.JaxWsWrapper;
+import static io.tracee.contextlogger.jaxws.container.TraceeServerErrorLoggingHandler.THREAD_LOCAL_SOAP_MESSAGE_STR;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
+import javax.xml.namespace.QName;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.handler.soap.SOAPMessageContext;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,27 +24,19 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.xml.namespace.QName;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
-import static io.tracee.contextlogger.jaxws.container.TraceeServerErrorLoggingHandler.THREAD_LOCAL_SOAP_MESSAGE_STR;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import io.tracee.NoopTraceeLoggerFactory;
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
+import io.tracee.contextlogger.contextprovider.jaxws.JaxWsWrapper;
 
 /**
- * Test class for {@link io.tracee.contextlogger.jaxws.container.AbstractTraceeErrorLoggingHandler}
- * and {@link io.tracee.contextlogger.jaxws.container.TraceeServerErrorLoggingHandler}.
+ * Test class for {@link io.tracee.contextlogger.jaxws.container.AbstractTraceeErrorLoggingHandler} and
+ * {@link io.tracee.contextlogger.jaxws.container.TraceeServerErrorLoggingHandler}.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TraceeContextLogger.class, Tracee.class})
+@PrepareForTest({ TraceeContextLogger.class, Tracee.class })
 public class TraceeServerErrorLoggingHandlerTest {
 
     private final TraceeBackend mockedBackend = mock(TraceeBackend.class);
@@ -61,7 +63,7 @@ public class TraceeServerErrorLoggingHandlerTest {
         mockStatic(Tracee.class);
         when(Tracee.getBackend()).thenReturn(mockedBackend);
         new TraceeServerErrorLoggingHandler();
-        //Verification of call Tracee.getBackend:
+        // Verification of call Tracee.getBackend:
         verifyStatic();
         Tracee.getBackend();
     }
@@ -75,8 +77,8 @@ public class TraceeServerErrorLoggingHandlerTest {
     public void shouldConvertSoapMessageToString() throws Exception {
         final SOAPMessage message = buildSpiedTestMessage("vÄ");
 
-        assertThat(unit.convertSoapMessageAsString(message), Matchers.allOf(containsString("SOAP-ENV:Body A=\"vÄ\"/>"),
-                containsString("SOAP-ENV:Envelope")));
+        assertThat(unit.convertSoapMessageAsString(message),
+                Matchers.allOf(containsString("SOAP-ENV:Body A=\"vÄ\"/>"), containsString("SOAP-ENV:Envelope")));
     }
 
     @Test
@@ -85,8 +87,7 @@ public class TraceeServerErrorLoggingHandlerTest {
         when(context.getMessage()).thenReturn(buildSpiedTestMessage("vÄ"));
         unit.handleIncoming(context);
         assertThat(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
-                Matchers.allOf(notNullValue(), containsString("SOAP-ENV:Body A=\"vÄ\"/>"),
-                        containsString("SOAP-ENV:Envelope")));
+                Matchers.allOf(notNullValue(), containsString("SOAP-ENV:Body A=\"vÄ\"/>"), containsString("SOAP-ENV:Envelope")));
     }
 
     @Test
@@ -97,8 +98,7 @@ public class TraceeServerErrorLoggingHandlerTest {
         when(context.getMessage()).thenReturn(soapMessage);
 
         unit.handleIncoming(context);
-        assertThat(THREAD_LOCAL_SOAP_MESSAGE_STR.get(),
-                Matchers.allOf(notNullValue(), containsString("SOAP-ENV:Body A=\"vř\"/>")));
+        assertThat(THREAD_LOCAL_SOAP_MESSAGE_STR.get(), Matchers.allOf(notNullValue(), containsString("SOAP-ENV:Body A=\"vř\"/>")));
     }
 
     @Test
@@ -143,8 +143,7 @@ public class TraceeServerErrorLoggingHandlerTest {
         final SOAPMessageContext messageContext = mock(SOAPMessageContext.class);
         when(messageContext.getMessage()).thenReturn(buildSpiedTestMessage("vA"));
         unit.handleFault(messageContext);
-        verify(contextLogger).logJsonWithPrefixedMessage(eq("TRACEE JAXWS ERROR CONTEXT LISTENER"),
-                eq(ImplicitContext.COMMON), eq(ImplicitContext.TRACEE),
+        verify(contextLogger).logJsonWithPrefixedMessage(eq("TRACEE JAXWS ERROR CONTEXT LISTENER"), eq(ImplicitContext.COMMON), eq(ImplicitContext.TRACEE),
                 Mockito.any(JaxWsWrapper.class));
     }
 

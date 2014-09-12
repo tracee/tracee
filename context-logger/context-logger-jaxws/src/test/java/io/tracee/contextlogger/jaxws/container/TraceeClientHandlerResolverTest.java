@@ -1,9 +1,13 @@
 package io.tracee.contextlogger.jaxws.container;
 
-import io.tracee.NoopTraceeLoggerFactory;
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+import static io.tracee.contextlogger.jaxws.container.AbstractTraceeErrorLoggingHandler.THREAD_LOCAL_SOAP_MESSAGE_STR;
+import static org.mockito.Mockito.*;
+
+import javax.xml.ws.handler.HandlerResolver;
+import javax.xml.ws.handler.PortInfo;
+import javax.xml.ws.handler.soap.SOAPHandler;
+import javax.xml.ws.handler.soap.SOAPMessageContext;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -12,24 +16,18 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.xml.ws.handler.PortInfo;
-
-import javax.xml.ws.handler.HandlerResolver;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
-
-import static io.tracee.contextlogger.jaxws.container.AbstractTraceeErrorLoggingHandler.THREAD_LOCAL_SOAP_MESSAGE_STR;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import io.tracee.NoopTraceeLoggerFactory;
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.contextlogger.TraceeContextLogger;
 
 /**
- * Test class for {@link io.tracee.contextlogger.jaxws.container.TraceeClientHandlerResolver}
- * and fluent api ({@link io.tracee.contextlogger.jaxws.container.TraceeClientHandlerResolverBuilder}).
+ * Test class for {@link io.tracee.contextlogger.jaxws.container.TraceeClientHandlerResolver} and fluent api (
+ * {@link io.tracee.contextlogger.jaxws.container.TraceeClientHandlerResolverBuilder}).
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TraceeContextLogger.class, Tracee.class})
+@PrepareForTest({ TraceeContextLogger.class, Tracee.class })
 public class TraceeClientHandlerResolverTest {
 
     private final TraceeBackend mockedBackend = mock(TraceeBackend.class);
@@ -40,9 +38,8 @@ public class TraceeClientHandlerResolverTest {
     @Mock
     private PortInfo portInfo;
 
-
     @Test
-    public void setup () {
+    public void setup() {
 
         when(mockedBackend.getLoggerFactory()).thenReturn(loggerFactory);
         unit = new TraceeClientErrorLoggingHandler(mockedBackend);
@@ -51,14 +48,15 @@ public class TraceeClientHandlerResolverTest {
     }
 
     @Test
-    public void shouldCreateSimpleHandlerResolver () {
+    public void shouldCreateSimpleHandlerResolver() {
 
         HandlerResolver handlerResolver = TraceeClientHandlerResolver.createSimpleHandlerResolver();
 
         MatcherAssert.assertThat(handlerResolver, Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(1));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 
@@ -71,8 +69,8 @@ public class TraceeClientHandlerResolverTest {
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(2));
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TestHandler.class));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(1).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
-
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(1).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 
@@ -85,8 +83,8 @@ public class TraceeClientHandlerResolverTest {
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(2));
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TestHandler.class));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(1).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
-
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(1).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 
@@ -98,34 +96,34 @@ public class TraceeClientHandlerResolverTest {
         MatcherAssert.assertThat(handlerResolver, Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(1));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
-
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 
     @Test
     public void shouldCreateHandlerResolverAndIgnoreNullValuedHandlerInstance() {
 
-        HandlerResolver handlerResolver = TraceeClientHandlerResolver.buildHandlerResolver().add((SOAPHandler) null).build();
+        HandlerResolver handlerResolver = TraceeClientHandlerResolver.buildHandlerResolver().add((SOAPHandler)null).build();
 
         MatcherAssert.assertThat(handlerResolver, Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(1));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
-
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 
     @Test
     public void shouldCreateHandlerResolverAndIgnoreNullValuedHandlerType() {
 
-        HandlerResolver handlerResolver = TraceeClientHandlerResolver.buildHandlerResolver().add((Class<SOAPHandler<SOAPMessageContext>>) null).build();
+        HandlerResolver handlerResolver = TraceeClientHandlerResolver.buildHandlerResolver().add((Class<SOAPHandler<SOAPMessageContext>>)null).build();
 
         MatcherAssert.assertThat(handlerResolver, Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo), Matchers.notNullValue());
         MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).size(), Matchers.is(1));
-        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(), Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
-
+        MatcherAssert.assertThat(handlerResolver.getHandlerChain(portInfo).get(0).getClass(),
+                Matchers.typeCompatibleWith(TraceeClientErrorLoggingHandler.class));
 
     }
 

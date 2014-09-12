@@ -31,8 +31,9 @@
 									<includes>
 										<include>*:*:*:*:test:*</include>
 										<include>*:*:*:*:provided:*</include>
-										<include>io.tracee:*</include>										
-										<include>org.aspectj:*</include>
+										<include>io.tracee:*</include>
+                                        <include>io.tracee.contextlogger:*</include>
+                                        <include>org.aspectj:*</include>
 									</includes>
 								</bannedDependencies>
 							</rules>
@@ -47,7 +48,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.tracee</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

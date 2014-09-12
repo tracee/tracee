@@ -1,9 +1,9 @@
 package io.tracee.contextlogger.javaee;
 
-import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
+
+
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;

@@ -1,10 +1,14 @@
 package io.tracee.contextlogger.javaee;
 
-import io.tracee.contextlogger.ImplicitContext;
-import io.tracee.contextlogger.builder.ContextLogger;
-import io.tracee.contextlogger.builder.TraceeContextLogger;
-import io.tracee.contextlogger.javaee.TraceeEjbErrorContextLoggingInterceptor;
-import io.tracee.contextlogger.javaee.TraceeJmsErrorMessageListener;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+
+import javax.interceptor.InvocationContext;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,18 +16,9 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.interceptor.InvocationContext;
-import java.lang.reflect.Method;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ContextLogger;
+import io.tracee.contextlogger.api.ImplicitContext;
 
 /**
  * Test class for {@link io.tracee.contextlogger.javaee.TraceeEjbErrorContextLoggingInterceptor}.
@@ -32,7 +27,6 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(TraceeContextLogger.class)
 public class TraceeEjbErrorContextLoggingInterceptorTest {
-
 
     private final TraceeEjbErrorContextLoggingInterceptor unit = mock(TraceeEjbErrorContextLoggingInterceptor.class);
 
@@ -71,10 +65,11 @@ public class TraceeEjbErrorContextLoggingInterceptorTest {
 
         try {
             unit.intercept(invocationContext);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             verify(invocationContext).proceed();
-            verify(contextLogger).logJsonWithPrefixedMessage(TraceeEjbErrorContextLoggingInterceptor.JSON_PREFIXED_MESSAGE,
-                    ImplicitContext.COMMON, ImplicitContext.TRACEE, invocationContext, exception);
+            verify(contextLogger).logJsonWithPrefixedMessage(TraceeEjbErrorContextLoggingInterceptor.JSON_PREFIXED_MESSAGE, ImplicitContext.COMMON,
+                    ImplicitContext.TRACEE, invocationContext, exception);
             throw e;
         }
     }
