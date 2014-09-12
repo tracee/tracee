@@ -3,40 +3,52 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  >
 
 <h:head>
 </h:head>
 
 <h:body>
-    <f:view>
-        <h1>Tracee example webapp</h1>
-        <h:form>
+	<f:view>
+		<h1>Tracee example webapp</h1>
+		<h:form>
 
-            First Attribute:
-            <h:inputText value="#{payload.firstArgument}">
-                <f:convertNumber integerOnly="true"/>
-            </h:inputText>
-            <br/>
-            Second Attribute:
-            <h:inputText value="#{payload.secondArgument}">
-                <f:convertNumber integerOnly="true"/>
-            </h:inputText>
-            <br/>
-            Result: <h:outputText value="#{payload.result}"></h:outputText> <br />
+			First Attribute:
+			<h:inputText value="#{payload.firstArgument}">
+				<f:convertNumber integerOnly="true"/>
+			</h:inputText>
+			<br/>
+			Second Attribute:
+			<h:inputText value="#{payload.secondArgument}">
+				<f:convertNumber integerOnly="true"/>
+			</h:inputText>
+			<br/>
+			Result:
+			<h:outputText value="#{payload.result}"></h:outputText>
+			<br/>
 
-            <h:commandButton action="#{testWebappController.sum}" value="Sum" /><br />
-            <h:commandButton action="#{testWebappController.multiply}" value="Multiply" /><br />
-            <h:commandButton action="#{testWebappController.sumJaxWsRemotely}" value="JaxWS Sum" /><br />
-            <h:commandButton action="#{testWebappController.multiplyJaxWsRemotely}" value="JaxWS Multiply" /><br />
-            <h:commandButton action="#{testWebappController.triggerJaxWsRemoteError}" value="JaxWS Trigger Exception" /><br />
-            <h:commandButton action="#{testWebappEjbController.sumEjbRemotely}" value="Remote EJB Sum" /><br />
-            <h:commandButton action="#{testWebappEjbController.multiplyEjbRemotely}" value="Remote EJB Multiply" /><br />
-            <h:commandButton action="#{testWebappEjbController.triggerEjbRemoteError}" value="Remote EJB Trigger Exception" /><br />
-        </h:form>
+			<h:commandButton action="#{testWebappController.sum}" value="Sum"/>
+			<br/>
+			<h:commandButton action="#{testWebappController.multiply}" value="Multiply"/>
+			<br/>
+			<h:commandButton action="#{testWebappController.sumJaxWsRemotely}" value="JaxWS Sum"/>
+			<br/>
+			<h:commandButton action="#{testWebappController.multiplyJaxWsRemotely}" value="JaxWS Multiply"/>
+			<br/>
+			<h:commandButton action="#{testWebappController.triggerJaxWsRemoteError}" value="JaxWS Trigger Exception"/>
+			<br/>
+			<h:commandButton action="#{testWebappEjbController.sumEjbRemotely}" value="Remote EJB Sum"/>
+			<br/>
+			<h:commandButton action="#{testWebappEjbController.multiplyEjbRemotely}" value="Remote EJB Multiply"/>
+			<br/>
+			<h:commandButton action="#{testWebappEjbController.triggerEjbRemoteError}"
+							 value="Remote EJB Trigger Exception"/>
+			<br/>
+		</h:form>
 
-    </f:view>
+	</f:view>
 </h:body>
 
 </html>

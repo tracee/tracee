@@ -3,9 +3,6 @@ package io.tracee.examples.webapp;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-/**
- * Created by Tobias Gindler, holisticon AG on 10.01.14.
- */
 
 @ManagedBean(name = "payload")
 @RequestScoped
