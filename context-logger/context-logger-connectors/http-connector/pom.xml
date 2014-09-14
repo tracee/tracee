@@ -46,7 +46,7 @@
     </build>
 
     <dependencies>
-	
+
         <dependency>
             <groupId>io.tracee</groupId>
             <artifactId>tracee-api</artifactId>
@@ -54,7 +54,7 @@
         </dependency>
 
         <dependency>
-            <groupId>io.tracee</groupId>
+            <groupId>io.tracee.contextlogger</groupId>
             <artifactId>tracee-context-logger-connector-api</artifactId>
             <version>${project.version}</version>
         </dependency>
