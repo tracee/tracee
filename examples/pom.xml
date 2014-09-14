@@ -34,6 +34,14 @@
 					<goals>install</goals>
 				</configuration>
 			</plugin>
+			<!-- Dont deploy examples to sonatype snapshots -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 			<!-- Examples are not so restrictive like the api modules of tracee -->
 			<plugin>
 				<artifactId>maven-enforcer-plugin</artifactId>
