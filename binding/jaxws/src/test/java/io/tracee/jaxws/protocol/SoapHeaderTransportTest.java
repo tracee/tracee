@@ -1,6 +1,6 @@
 package io.tracee.jaxws.protocol;
 
-import io.tracee.jaxws.TraceeWsHandlerConstants;
+import io.tracee.TraceeConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
@@ -14,7 +14,6 @@ import javax.xml.soap.SOAPHeaderElement;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
@@ -42,7 +41,7 @@ public class SoapHeaderTransportTest {
 	public void testRenderTo() throws SOAPException {
 		final Map<String, String> context = Collections.singletonMap("FOO", "BAR");
 		unit.renderTo(context, soapHeader);
-		verify(soapHeader).addHeaderElement(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME);
+		verify(soapHeader).addHeaderElement(TraceeConstants.TRACEE_SOAP_HEADER_QNAME);
 		verify(soapHeaderElement).addChildElement("FOO");
 		verify(soapElement).setValue("BAR");
 	}
@@ -53,7 +52,7 @@ public class SoapHeaderTransportTest {
 		final Node node = mock(Node.class);
 		final NodeList nodeList = new SimpleNodeList(Collections.singleton(node));
 
-		when(soapHeader.getElementsByTagName(eq(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_TAG_NAME))).thenReturn(nodeList);
+		when(soapHeader.getElementsByTagName(eq(TraceeConstants.TRACEE_SOAP_HEADER_TAG_NAME))).thenReturn(nodeList);
 
 		final Node childNode = mock(Node.class);
 		when(childNode.getNodeName()).thenReturn("FOO");

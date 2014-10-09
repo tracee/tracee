@@ -52,7 +52,6 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 				}
 
             } catch (final SOAPException e) {
-                e.printStackTrace();
                 traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
             }
 

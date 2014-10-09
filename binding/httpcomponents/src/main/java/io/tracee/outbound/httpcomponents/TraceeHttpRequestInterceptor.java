@@ -44,5 +44,4 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}
 	}
-
 }

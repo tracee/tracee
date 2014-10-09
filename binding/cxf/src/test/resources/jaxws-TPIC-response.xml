@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+	<SOAP-ENV:Header>
+		<TPIC xmlns="https://github.com/tracee/tracee">
+			<traceeRequestId>ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ</traceeRequestId>
+		</TPIC>
+	</SOAP-ENV:Header>
+	<S:Body>
+		<ns2:sumResponse xmlns:ns2="https://github.com/tracee/tracee/examples/jaxws/service/wsdl">
+			<return xmlns="">11</return>
+		</ns2:sumResponse>
+	</S:Body>
+</S:Envelope>

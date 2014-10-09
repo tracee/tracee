@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>tracee-cxf</artifactId>
+	<packaging>bundle</packaging>
+	<parent>
+		<artifactId>tracee-parent</artifactId>
+		<groupId>io.tracee</groupId>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<name>tracee-cxf</name>
+	<description>Please refer to https://github.com/holisticon/tracee.</description>
+
+	<dependencies>
+		<dependency>
+			<artifactId>tracee-api</artifactId>
+			<groupId>io.tracee</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>tracee-core</artifactId>
+			<groupId>io.tracee</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-bindings-soap</artifactId>
+			<version>3.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.tracee.backend</groupId>
+			<artifactId>tracee-slf4j</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.1.2.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.1.2.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>3.0.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-local</artifactId>
+			<version>3.0.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>testService</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+						<configuration>
+							<testSourceRoot>${basedir}/target/generated-test-sources/cxf</testSourceRoot>
+							<testWsdlRoot>${basedir}/src/test/resources</testWsdlRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>src/test/resources/test.wsdl</wsdl>
+									<wsdlLocation>test.wsdl</wsdlLocation>
+									<extraargs>
+										<extraarg>-p</extraarg>
+										<extraarg>io.tracee.cxf.test</extraarg>
+										<extraarg>-fe</extraarg>
+										<extraarg>cxf</extraarg>
+										<extraarg>-verbose</extraarg>
+									</extraargs>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
