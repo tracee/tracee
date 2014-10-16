@@ -13,7 +13,8 @@
     <name>tracee-context-logger-connector-parent</name>
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
-	<modules>		
+	<modules>
+        <module>connector-api</module>
 		<module>http-connector</module>	
 	</modules>	
 	

@@ -13,5 +13,4 @@ public final class WellKnownConnectorClassNames {
 
     public static final String HTTP_CONNECTOR = "io.tracee.contextlogger.connector.HttpConnector";
 
-
 }

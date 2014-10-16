@@ -59,7 +59,6 @@ The following table describes all available TracEE-context-logger modules and th
 
 | Module                                | Usage |
 |--------------------------------------:|:-----:|
-| [context-logger-connector-api](context-logger-connector-api)        | Provides an api for developing custom connectors |
 | [context-logger-connectors](context-logger-connectors)              | Provides support for writing contextual data to other target as log files (f.e. send error via Http) |
 | [context-logger-impl](context-logger-impl)                          | The implementation of the context logger |
 | [context-logger-integration-test](context-logger-integration-test)  | Does some integration test for custom data providers |
