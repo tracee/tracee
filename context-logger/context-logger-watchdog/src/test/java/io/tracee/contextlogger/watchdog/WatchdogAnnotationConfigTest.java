@@ -7,9 +7,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.Method;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-
 /**
  * Test extraction of annotated settings.
  * Created by Tobias Gindler, holisticon AG on 20.02.14.

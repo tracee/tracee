@@ -5,6 +5,7 @@ io.tracee.contextlogger.contextprovider.servlet.ServletCookieContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletRequestContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletResponseContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletSessionContextProvider
+io.tracee.contextlogger.contextprovider.tracee.TraceeMessageContextProvider
 io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider
 io.tracee.contextlogger.contextprovider.tracee.WatchdogContextProvider
 io.tracee.contextlogger.contextprovider.utility.NameValuePair

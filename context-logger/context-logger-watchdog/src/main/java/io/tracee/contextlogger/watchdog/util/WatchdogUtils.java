@@ -1,8 +1,10 @@
 package io.tracee.contextlogger.watchdog.util;
 
-import io.tracee.contextlogger.watchdog.Watchdog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+
+import io.tracee.contextlogger.api.ErrorMessage;
+import io.tracee.contextlogger.watchdog.Watchdog;
 
 /**
  * Utility class for watchdog aspect
@@ -23,7 +25,7 @@ public final class WatchdogUtils {
     public static Watchdog getWatchdogAnnotation(final ProceedingJoinPoint proceedingJoinPoint) {
 
         // get watchdog annotation from method
-        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature)proceedingJoinPoint.getSignature();
         Watchdog methodAnnotation = methodSignature.getMethod().getAnnotation(Watchdog.class);
 
         if (methodAnnotation != null) {
@@ -31,7 +33,28 @@ public final class WatchdogUtils {
         }
 
         // get watchdog annotation at class
-        return (Watchdog) proceedingJoinPoint.getSignature().getDeclaringType().getAnnotation(Watchdog.class);
+        return (Watchdog)proceedingJoinPoint.getSignature().getDeclaringType().getAnnotation(Watchdog.class);
+
+    }
+
+    /**
+     * Tries to get the watchdog annotation for the called method or the methods class.
+     *
+     * @param proceedingJoinPoint The aspectj join point
+     * @return The watchdog annotation of the method, the class or null if neither the method or class aren't annotated with the watchdog annotation
+     */
+    public static ErrorMessage getErrorMessageAnnotation(final ProceedingJoinPoint proceedingJoinPoint) {
+
+        // get watchdog annotation from method
+        MethodSignature methodSignature = (MethodSignature)proceedingJoinPoint.getSignature();
+        ErrorMessage methodAnnotation = methodSignature.getMethod().getAnnotation(ErrorMessage.class);
+
+        if (methodAnnotation != null) {
+            return methodAnnotation;
+        }
+        else {
+            return null;
+        }
 
     }
 
@@ -39,7 +62,7 @@ public final class WatchdogUtils {
      * Checks whether the passed Throwable is contained in methods throws part.
      *
      * @param proceedingJoinPoint The aspectj join point
-     * @param thrownException     The Throwable which must be looked for
+     * @param thrownException The Throwable which must be looked for
      * @return true if Throwable was found and must be suppressed, otherwise false
      */
     public static boolean checkIfMethodThrowsContainsPassedException(final ProceedingJoinPoint proceedingJoinPoint, Throwable thrownException) {
@@ -55,7 +78,7 @@ public final class WatchdogUtils {
     /**
      * Checks whether the passed Throwable is defined included in passed classes array or is subtype of one of the included classes.
      *
-     * @param classes         the classes to search
+     * @param classes the classes to search
      * @param thrownException the Throwable which must be searched for
      * @return true if Throwable was found, otherwise false
      */
@@ -80,6 +103,7 @@ public final class WatchdogUtils {
 
     /**
      * Gets all Exceptions declared at the throws part of the method signature.
+     *
      * @param proceedingJoinPoint the proceeding join point to get the method signature from.
      * @return All defined exceptions that must be caught (are defined in the method signature in the throws part)
      */
@@ -90,14 +114,14 @@ public final class WatchdogUtils {
         }
 
         // get watchdog annotation from method
-        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature)proceedingJoinPoint.getSignature();
 
         return methodSignature.getMethod().getExceptionTypes();
     }
 
-
     /**
      * Checks whether the exception should be processed or not.
+     *
      * @param watchdogAnnotation the watchdog annotation to check.
      * @return true, if passed watchdogAnnotation is not null and not disabled vie system properties, otherwise false.
      */

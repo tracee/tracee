@@ -23,13 +23,15 @@ public final class ProfilePropertyNames {
     // Tracee - only dynamic context
     public static final String TRACEE = "tracee";
 
+    // Message
+    public static final String MESSAGE_VALUE = "messsage.value";
+
     // Common
     public static final String COMMON_TIMESTAMP = "common.timestamp";
     public static final String COMMON_STAGE = "common.stage";
     public static final String COMMON_SYSTEM_NAME = "common.systemName";
     public static final String COMMON_THREAD_NAME = "common.threadName";
     public static final String COMMON_THREAD_ID = "common.threadId";
-
 
     // Explicit:
     // servlet
@@ -45,7 +47,6 @@ public final class ProfilePropertyNames {
     public static final String SERVLET_REQUEST_CONTENT_TYPE = "servlet.servletRequest.contentType";
     public static final String SERVLET_REQUEST_CONTENT_LENGTH = "servlet.servletRequest.contentLength";
     public static final String SERVLET_REQUEST_LOCALE = "servlet.servletRequest.locale";
-
 
     // servlet - remote info
     public static final String SERVLET_REQUEST_REMOTE_ADDRESS = "servlet.servletRequest.remoteAddress";
@@ -69,7 +70,6 @@ public final class ProfilePropertyNames {
     public static final String EXCEPTION_MESSAGE = "exception.message";
     public static final String EXCEPTION_STACKTRACE = "exception.stacktrace";
 
-
     // watchdog
     public static final String WATCHDOG_ID = "watchdog.id";
     public static final String WATCHDOG_ASPECTJ_CONTEXT = "watchdog.aspectj.context";
@@ -89,6 +89,5 @@ public final class ProfilePropertyNames {
     // jaxws
     public static final String JAXWS_SOAP_REQUEST = "jaxws.soapRequest";
     public static final String JAXWS_SOAP_RESPONSE = "jaxws.soapResponse";
-
 
 }

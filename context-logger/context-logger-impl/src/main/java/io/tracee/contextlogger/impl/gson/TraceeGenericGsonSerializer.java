@@ -1,9 +1,16 @@
 package io.tracee.contextlogger.impl.gson;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import io.tracee.Tracee;
 import io.tracee.TraceeLogger;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
@@ -14,11 +21,6 @@ import io.tracee.contextlogger.profile.ProfileSettings;
 import io.tracee.contextlogger.utility.ListUtilities;
 import io.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
 import io.tracee.contextlogger.utility.TraceeContextLogAnnotationUtilities;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Generic serializer for context logging output.
@@ -47,7 +49,8 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
             logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Got non annotated class");
             result = new JsonObject();
 
-        } else {
+        }
+        else {
 
             // get those annotated methods
             final List<MethodAnnotationPair> entriesToPrint = TraceeContextLogAnnotationUtilities.getAnnotatedMethodsOfInstance(instance);
@@ -57,7 +60,6 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
 
             // now wrap json object and add those items
             result = new JsonObject();
-
 
             for (MethodAnnotationPair singleEntry : entriesToPrint) {
 
@@ -72,49 +74,53 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
                     if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod()) && (isNameStringValuePair(returnValue))) {
 
                         // returnValue is single NameStringValuePair
-                        final NameStringValuePair nameStringValuePair = (NameStringValuePair) returnValue;
+                        final NameStringValuePair nameStringValuePair = (NameStringValuePair)returnValue;
                         result.add(nameStringValuePair.getName(), jsonSerializationContext.serialize(nameStringValuePair.getValue()));
 
                     }
                     if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod()) && (isNameObjectValuePair(returnValue))) {
 
                         // returnValue is single NameObjectValuePair
-                        final NameObjectValuePair nameObjectValuePair = (NameObjectValuePair) returnValue;
+                        final NameObjectValuePair nameObjectValuePair = (NameObjectValuePair)returnValue;
 
-                        //  ObjectValuePairs will be deserialized by ReflectionToStringBuilder
+                        // ObjectValuePairs will be deserialized by ReflectionToStringBuilder
                         final Object value = getValueOfNameObjectValuePair(nameObjectValuePair);
                         result.add(nameObjectValuePair.getName(), jsonSerializationContext.serialize(value));
 
-                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
+                    }
+                    else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
                             && ListUtilities.isListOfType(returnValue, NameStringValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
-                        final List<NameStringValuePair> list = (List<NameStringValuePair>) returnValue;
+                        final List<NameStringValuePair> list = (List<NameStringValuePair>)returnValue;
 
                         for (NameStringValuePair nameStringValuePair : list) {
                             result.add(nameStringValuePair.getName(), jsonSerializationContext.serialize(nameStringValuePair.getValue()));
                         }
 
-                    } else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
+                    }
+                    else if (TraceeContextLogAnnotationUtilities.isFlatable(singleEntry.getMethod())
                             && ListUtilities.isListOfType(returnValue, NameObjectValuePair.class)) {
 
                         // returnValue is List of NameValuePairs
-                        List<NameObjectValuePair> list = (List<NameObjectValuePair>) returnValue;
+                        List<NameObjectValuePair> list = (List<NameObjectValuePair>)returnValue;
 
                         for (NameObjectValuePair nameObjectValuePair : list) {
-                            //  ObjectValuePairs will be deserialized by ReflectionToStringBuilder
+                            // ObjectValuePairs will be deserialized by ReflectionToStringBuilder
                             final Object value = getValueOfNameObjectValuePair(nameObjectValuePair);
                             result.add(nameObjectValuePair.getName(), jsonSerializationContext.serialize(value));
                         }
 
-                    } else {
+                    }
+                    else {
 
                         // returnValue is not a NameStringValuePair == static context data
                         result.add(singleEntry.getAnnotation().displayName(), jsonSerializationContext.serialize(returnValue));
 
                     }
 
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
 
                     // to be ignored
                     logger.debug("TRACEE-CONTEXTLOGGER-GSON-SERIALIZER - Exception during serialization.", e);
@@ -139,14 +145,17 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
 
             if (TraceeContextLogAnnotationUtilities.getAnnotationFromType(nameObjectValuePair.getValue()) != null) {
                 return nameObjectValuePair.getValue();
-            } else if (!shouldBeIgnoreAtDeSerialization(nameObjectValuePair.getValue())) {
+            }
+            else if (!shouldBeIgnoreAtDeSerialization(nameObjectValuePair.getValue())) {
                 return ReflectionToStringBuilder.reflectionToString(nameObjectValuePair.getValue(), new RecursiveReflectionToStringStyle());
-            } else {
+            }
+            else {
                 // not null value - but type is in IGNORED_AT_DESERIALIZATION set
                 return nameObjectValuePair.getValue().toString();
             }
 
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -184,6 +193,5 @@ public final class TraceeGenericGsonSerializer implements JsonSerializer<Object>
     static boolean shouldBeIgnoreAtDeSerialization(final Object instance) {
         return instance == null || TraceeContextLoggerConstants.IGNORED_AT_DESERIALIZATION.contains(instance.getClass());
     }
-
 
 }

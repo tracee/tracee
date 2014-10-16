@@ -1,12 +1,12 @@
 package io.tracee.contextlogger.watchdog;
 
-
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-
 import io.tracee.contextlogger.TraceeContextLogger;
+import io.tracee.contextlogger.api.ErrorMessage;
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.contextprovider.aspectj.WatchdogDataWrapper;
+import io.tracee.contextlogger.contextprovider.tracee.TraceeMessage;
 import io.tracee.contextlogger.watchdog.util.WatchdogUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,7 +32,6 @@ public class WatchdogAspect {
     WatchdogAspect(boolean active) {
         this.active = active;
     }
-
 
     @SuppressWarnings("unused")
     @Pointcut("(execution(* *(..)) && @annotation(io.tracee.contextlogger.watchdog.Watchdog))")
@@ -74,9 +73,8 @@ public class WatchdogAspect {
                     // check if watchdog aspect processing is deactivated by annotation
                     if (WatchdogUtils.checkProcessWatchdog(watchdog, proceedingJoinPoint, e)) {
 
-                            String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
-                            sendErrorReportToConnectors(traceeBackend, proceedingJoinPoint, annotatedId, e);
-                            writeMethodCallToMdc(traceeBackend, proceedingJoinPoint, annotatedId);
+                        String annotatedId = watchdog.id().isEmpty() ? null : watchdog.id();
+                        sendErrorReportToConnectors(traceeBackend, proceedingJoinPoint, annotatedId, e);
 
                     }
 
@@ -92,21 +90,6 @@ public class WatchdogAspect {
     }
 
     /**
-     * Adds or enhances an mdc variable by call information.
-     *
-     * @param traceeBackend       the tracee backend
-     * @param proceedingJoinPoint the aspectj calling context
-     * @param annotatedId         the id defined in the watchdog annotation
-     */
-    void writeMethodCallToMdc(TraceeBackend traceeBackend, ProceedingJoinPoint proceedingJoinPoint, String annotatedId) {
-
-        String json = TraceeContextLogger.createDefault().createJson(WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint));
-        String existingContent = traceeBackend.get(Constants.TRACEE_ATTRIBUTE_NAME);
-        traceeBackend.put(Constants.TRACEE_ATTRIBUTE_NAME, existingContent != null ? existingContent + Constants.SEPARATOR + json : json);
-
-    }
-
-    /**
      * Sends the error reports to all connectors.
      *
      * @param traceeBackend       the tracee backend
@@ -114,9 +97,18 @@ public class WatchdogAspect {
      * @param annotatedId         the id defined in the watchdog annotation
      */
     void sendErrorReportToConnectors(TraceeBackend traceeBackend, ProceedingJoinPoint proceedingJoinPoint, String annotatedId, Throwable e) {
-        TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :",
-				ImplicitContext.COMMON, ImplicitContext.TRACEE, WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
-    }
 
+        // try to get error message annotation
+        ErrorMessage errorMessage = WatchdogUtils.getErrorMessageAnnotation(proceedingJoinPoint);
+
+        if (errorMessage == null) {
+            TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :", ImplicitContext.COMMON,
+                    ImplicitContext.TRACEE, WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
+        } else {
+            TraceeContextLogger.createDefault().logJsonWithPrefixedMessage("TRACEE WATCHDOG ERROR CONTEXT LISTENER :",
+                    TraceeMessage.wrap(errorMessage.value()), ImplicitContext.COMMON, ImplicitContext.TRACEE,
+                    WatchdogDataWrapper.wrap(annotatedId, proceedingJoinPoint), e);
+        }
+    }
 
 }
