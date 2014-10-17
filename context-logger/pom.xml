@@ -15,9 +15,8 @@
     <description>Please refer to https://github.com/holisticon/tracee.</description>
 
 	<modules>
-		<module>context-logger-connector-api</module>
-		<module>context-logger-provider-api</module>
 		<module>context-logger-connectors</module>
+		<module>context-logger-provider-api</module>
 		<module>context-logger-impl</module>
 		<module>context-logger-servlet</module>
 		<module>context-logger-jaxws</module>
