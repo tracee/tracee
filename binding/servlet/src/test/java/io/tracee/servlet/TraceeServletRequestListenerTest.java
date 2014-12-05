@@ -31,7 +31,8 @@ import static org.mockito.internal.verification.VerificationModeFactory.atLeastO
 
 public class TraceeServletRequestListenerTest {
 
-	private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory());
+    private static final String A_RANDOM_SESSION_ID = "A_RANDOM_SESSION_ID";
+    private final TransportSerialization<String> transportSerialization = new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory());
 	private final TraceeBackend backend = Mockito.mock(TraceeBackend.class);
 	private final TraceeServletRequestListener unit = new TraceeServletRequestListener(backend, transportSerialization);
 	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);
@@ -48,7 +49,7 @@ public class TraceeServletRequestListenerTest {
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
-		verify(backend, atLeastOnce()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(backend, atLeastOnce()).generateRequestIdIfNecessary(eq(configuration));
 	}
 
 	@Test
@@ -59,7 +60,6 @@ public class TraceeServletRequestListenerTest {
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
 	}
-
 
 	@Test
 	public void testAcceptIncomingRequestId() throws Exception {
@@ -84,10 +84,10 @@ public class TraceeServletRequestListenerTest {
 		when(configuration.shouldGenerateSessionId()).thenReturn(true);
 		final HttpSession session = Mockito.mock(HttpSession.class);
 		when(httpServletRequest.getSession(any(Boolean.class))).thenReturn(session);
-		when(session.getId()).thenReturn("A_RANDOM_SESSION_ID");
+		when(session.getId()).thenReturn(A_RANDOM_SESSION_ID);
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
-		verify(backend, atLeastOnce()).put(eq(SESSION_ID_KEY), anyString());
+		verify(backend, atLeastOnce()).generateSessionIdIfNecessary(eq(configuration), eq(A_RANDOM_SESSION_ID));
 	}
 
 	@Test

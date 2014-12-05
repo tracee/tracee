@@ -41,7 +41,21 @@ public class SimpleTraceeBackend extends HashMap<String, String> implements Trac
 		return configuration;
 	}
 
-	@Override
+    @Override
+    public void generateRequestIdIfNecessary(TraceeFilterConfiguration configuration) {
+        if (get(TraceeConstants.REQUEST_ID_KEY) == null && configuration.shouldGenerateRequestId()) {
+            put(TraceeConstants.REQUEST_ID_KEY, "simpleId");
+        }
+    }
+
+    @Override
+    public void generateSessionIdIfNecessary(TraceeFilterConfiguration configuration, String sessionId) {
+        if (get(TraceeConstants.SESSION_ID_KEY) == null && configuration.shouldGenerateSessionId()) {
+            put(TraceeConstants.SESSION_ID_KEY, "sessionId");
+        }
+    }
+
+    @Override
 	public TraceeLoggerFactory getLoggerFactory() {
 		return loggerFactory;
 	}

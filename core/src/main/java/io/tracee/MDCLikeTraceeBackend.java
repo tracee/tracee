@@ -36,6 +36,20 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
 		return new PropertiesBasedTraceeFilterConfiguration(lazyPropertyChain, profileName);
 	}
 
+    @Override
+    public void generateRequestIdIfNecessary(TraceeFilterConfiguration configuration) {
+        if (!containsKey(TraceeConstants.REQUEST_ID_KEY) && configuration.shouldGenerateRequestId()) {
+            put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
+        }
+    }
+
+    @Override
+    public void generateSessionIdIfNecessary(TraceeFilterConfiguration configuration, String sessionId) {
+        if (!containsKey(TraceeConstants.SESSION_ID_KEY) && configuration.shouldGenerateSessionId()) {
+            put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(sessionId, configuration.generatedSessionIdLength()));
+        }
+    }
+
 	private PropertyChain loadPropertyChain() {
 		try {
 			final Properties traceeDefaultFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TRACEE_DEFAULT_PROPERTIES_FILE);

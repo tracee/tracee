@@ -10,6 +10,7 @@ import java.util.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 public class MDCLikeTraceeBackendTest {
 
@@ -181,4 +182,40 @@ public class MDCLikeTraceeBackendTest {
 	public void testLoadUserDefinedProfileFromProperties() {
 		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
 	}
+
+    @Test
+    public void testGeneratesRequestId() throws Exception {
+        TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
+        when(configuration.shouldGenerateRequestId()).thenReturn(true);
+
+        unit.generateRequestIdIfNecessary(configuration);
+        verify(mdcLikeMock, atLeastOnce()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+    }
+
+    @Test
+    public void testDoesNotGeneratesRequestId() throws Exception {
+        TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
+        when(configuration.shouldGenerateRequestId()).thenReturn(false);
+
+        unit.generateRequestIdIfNecessary(configuration);
+        verify(mdcLikeMock, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+    }
+
+    @Test
+    public void testGeneratesSessionId() throws Exception {
+        TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
+        when(configuration.shouldGenerateSessionId()).thenReturn(true);
+
+        unit.generateSessionIdIfNecessary(configuration, "sessionId");
+        verify(mdcLikeMock, atLeastOnce()).put(eq(TraceeConstants.SESSION_ID_KEY), anyString());
+    }
+
+    @Test
+    public void testDoesNotGeneratesSessionId() throws Exception {
+        TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
+        when(configuration.shouldGenerateSessionId()).thenReturn(false);
+
+        unit.generateSessionIdIfNecessary(configuration, "sessionId");
+        verify(mdcLikeMock, never()).put(eq(TraceeConstants.SESSION_ID_KEY), anyString());
+    }
 }

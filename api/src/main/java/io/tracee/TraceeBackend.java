@@ -22,6 +22,18 @@ public interface TraceeBackend extends Map<String, String> {
 	 */
 	TraceeFilterConfiguration getConfiguration();
 
+    /**
+     * Generates new request id if it doesn't exist
+     * @param configuration
+     */
+    void generateRequestIdIfNecessary(TraceeFilterConfiguration configuration);
+
+    /**
+     * Generates new session id if it doesn't exist
+     * @param configuration
+     */
+    void generateSessionIdIfNecessary(TraceeFilterConfiguration configuration, String sessionId);
+
     @Override
     Collection<String> values();
 

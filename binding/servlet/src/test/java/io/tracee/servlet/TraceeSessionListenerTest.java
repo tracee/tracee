@@ -16,7 +16,8 @@ import static org.mockito.internal.verification.VerificationModeFactory.atLeastO
 
 public class TraceeSessionListenerTest {
 
-	private final TraceeBackend backend = mock(TraceeBackend.class);
+    private static final String A_SESSION_ID = "A_SESSION_ID";
+    private final TraceeBackend backend = mock(TraceeBackend.class);
 	private final HttpSession session = mock(HttpSession.class);
 	private final TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
 	private final TraceeSessionListener unit = new TraceeSessionListener(backend);
@@ -25,14 +26,14 @@ public class TraceeSessionListenerTest {
 	public void setUpMocks() {
 		when(backend.getConfiguration()).thenReturn(configuration);
 
-		when(session.getId()).thenReturn("A_SESSION_ID");
+		when(session.getId()).thenReturn(A_SESSION_ID);
 	}
 
 	@Test
 	public void testWriteSessionIdToContextOnCreateIfConfigured() {
 		when(configuration.shouldGenerateSessionId()).thenReturn(true);
 		unit.sessionCreated(new HttpSessionEvent(session));
-		verify(backend, atLeastOnce()).put(eq(SESSION_ID_KEY), anyString());
+		verify(backend, atLeastOnce()).generateSessionIdIfNecessary(eq(configuration), eq(A_SESSION_ID));
 	}
 
 	@Test

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -43,7 +44,7 @@ public class TraceeInterceptorTest {
 	@Test
 	public void shouldSetRequestIdToBackend() throws Exception {
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
-		verify(mockedBackend).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(mockedBackend).generateRequestIdIfNecessary(any(TraceeFilterConfiguration.class));
 	}
 
 	@Test
@@ -51,7 +52,7 @@ public class TraceeInterceptorTest {
 		when(httpServletRequest.getSession(anyBoolean())).thenReturn(httpServletSession);
 		when(httpServletSession.getId()).thenReturn(anyString());
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
-		verify(mockedBackend).put(eq(TraceeConstants.SESSION_ID_KEY), anyString());
+		verify(mockedBackend).generateSessionIdIfNecessary(any(TraceeFilterConfiguration.class), anyString());
 	}
 
 	@Test
