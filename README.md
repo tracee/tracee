@@ -42,13 +42,13 @@ This is the happy path. But what if something goes wrong? Lets name it: Exceptio
 The stack trace often shows a very narrow scope of what went wrong, namely the current thread.
 
 An __invocation context__ is a temporal or logical boundary in which a system invocation happens.
-Since each system invocation may cause further system interactions, every subsequent system invocation belongs to the
+Since each system invocation may cause further system interactions, every subsequent system invocation logically belongs to the
 same context as the invoking interaction.
 
 An example for an invocation context in a servlet based application would be a HTTP-Request. Every system interaction
 that is directly or indirectly caused by a browser asking a servlet-container lies within the context of its HTTP-Request.
 
-Another example would be the invocation context of a servlet session in which every request within this session belongs to
+Another example would be the context of a servlet session in which every request within this session belongs to
 the session invocation context.
 
 It can be a great benefit to make those invocation contexts visible in the log files. So if a failure happens, you could
@@ -56,12 +56,12 @@ lookup the invocation context in which it occurred and see pretty clearly what h
 server gave up with an error. And it does not end here.
 
 Even without errors, the invocation context information empowers you to measure the reaction time
-of your application at the level of every single service.
+of your application at the level of every single service call.
 
 So how do you implement this in an JavaEE-Application? An obvious way would be to pass an invocation context identifier
 around as a parameter of every of your business interfaces (EBJ, SOAP, REST, whatsoever) and write it explicitly into each
 log statement. It should also be obvious that this is a dumb idea because it pollutes all of our business interfaces with
-unnecessary dependencies. We can do better.
+unnecessary artificial parameters just for the benefit of making the invocation context explicit. But we can do better!
 
 ## The propagated Mapped Diagnostic Context
 
@@ -70,21 +70,53 @@ without explicitly passing them them to each log statement. A MDC is bound to it
 
 Invocations of JavaEE components are seldom fully processed within a single thread - they might not even be fully processed
 on the same JVM. So each time an invocation escapes its original executing thread, the MDC is lost in the nested processing.
-We call these context boundaries MDC gaps. There are different kinds of those gaps:
+We may call these context boundaries MDC gaps. There are different kinds of those gaps:
 
 * Remote calls
     * Remote EJB calls
     * Invoking and accepting arbitrary HTTP requests (Servlet, HttpClient)
     * Invoking and accepting remote web-service calls (JAX-WS)
     * Invoking and accepting remote rest-services calls(JAX-RS)
-* Asynchronous
+* Asynchronous dispatch
     * Async processing of a servlet request (Servlet3 Async)
     * Async EJB calls
     * JMS messaging
 
 TracEE acts as a gap closer for different types of MDC gaps and enables you to carry your contextual information through
-your whole application and beyond. You can even configure TracEE to map third-party correlation and transaction ids to
+your whole application and beyond. You may even configure TracEE to map third-party correlation and transaction ids to
 your logging context without polluting your business logic.
+
+## On the wire
+
+So how does an mapped diagnosis context look like on the wire? That does depend on the transport.
+The most prominent transports are native java serialization formats, HTTP and SOAP.
+
+Using Java serialization the invocation context is simply encoded as a java map of strings.
+
+On HTTP-Transports, like JAX-RS or Servlets, JSPs, whatsoever, the invocation context is encoded as a custom HTTP-Header 
+__X-TracEE-Context__ with an JSON encoded invocation context map as value.
+ 
+```
+GET / HTTP/1.1
+TracEE-Context: {"inRequest":"yes"}
+User-Agent: Jakarta Commons-HttpClient/3.1
+Host: localhost:2000
+```
+ 
+In the SOAP-World the invocation context is, regardless of the underlying transport mechanism, encoded as a special header
+in the SOAP-Request-Envelope, and SOAP-Response-Envelope.
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<tracee xmlns="https://github.com/holisticon/tracee">
+			<inRequest>yes</inRequest>
+		</tracee>
+	</soap:Header>
+	<soap:Body>
+		<ns2:myWebServiceMethod xmlns:ns2="https://example.com/myBusinessWorld/wsdl"/>
+	</soap:Body>
+</soap:Envelope>
+```
 
 
 # Integrating TracEE into your application
@@ -107,17 +139,17 @@ propagate context information from a servlet container based frontend to an ejb 
 
 ## Modules
 
-TracEE is built highly modular. The modules you need depend on your application and the underlying frameworks and containers.
+TracEE is highly modular. What modules actually you need depends on your application and its underlying frameworks and containers.
 The following table describes all available TracEE-modules and their usage scenarios.
 
 | Module                                | Usage |
 |--------------------------------------:|:-----:|
 | __core modules__                      |       |
-| [tracee-api](api/)                    | Contains Objects to interact with the TracEE context. Use it to write contextual information from your application into the TracEE context.
-| [tracee-core](core/)                  | Common utility classes, configuration system and serialization helpers. You will not need to use this module directly.
+| [tracee-api](api/)                    | Contains an API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
+| [tracee-core](core/)                  | Common utility classes, configuration system and transport serialization mechanisms. You wont need this module as a direct dependency.
 | __connector modules__                 |
-| [tracee-httpcomponents](httpcomponents/) | Adapter for `org.apache.httpcomponents:httpclient`-library (known as HttpClient 4.x). Use it to traceefy your JAX-RS or raw http clients.
-| [tracee-httpclient](httpclient/)      | Adapter for `commons-httpclient`-library (known as HttpClient 3.x). Use it to traceefy your JAX-RS or raw http clients.
+| [tracee-httpcomponents](httpcomponents/) | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
+| [tracee-httpclient](httpclient/)      | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-jaxrs2](jaxrs2)               | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
 | [tracee-jaxws](jaxws)                 | HandlerChains for JAX-WS endpoints and clients.
 | [tracee-jms](jms)                     | EJB-Interceptors and MessageProducers that allow you to pass around your TracEE context with JMS.
@@ -127,8 +159,8 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-slf4j](slf4j)                 | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
 | [tracee-log4j](log4j)                 | Backend implementation for containers using log4j for logging.
 | [tracee-log4j2](log4j2)               | Backend implementation for containers using log4j2 for logging.
-| [tracee-jboss-logging](jboss-logging) | Backend implementation for containers using jboss-logging like JBoss EAP5/AS6.
-| [threadlocal-store](threadlocal-store)| Backend implementation for containers that use no common logging framework. Use it in scenarios where you just want to propagate the context information.
+| [tracee-jboss-logging](jboss-logging) | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
+| [threadlocal-store](threadlocal-store)| Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
 
 All TracEE modules are (hopefully) OSGI compliant.
 
@@ -147,7 +179,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 </dependencies>
 ```
 
-... or use the very latest SNAPSHOT
+... or use the very latest SNAPSHOT from the sonatype snapshot repository
 
 ```xml
 <repositories>
@@ -189,12 +221,17 @@ to choose a tradeoff between the chance of _uniqueness_ in time and data overhea
 
 Since you may pass sensitive user information within your TracEE-Context, it is important to cancel the propagation at
 trust boundaries (like HTTP-Responses to users or third-party Web-Services). TracEE offers filter configuration mechanisms
-that allow you to selectively decide at which point in your application you want to pass around what contextual information.
+that allow you to selectively decide at which point in your application you want to pass around what contextual identifiers.
 
 ## Classloader considerations
 
 You can bundle TracEE with your application or install it as global library to your container.
 
+You just need to understand, that the invocation context identifiers are stored in the MDC of your logging framework (and therefore also share its lifecycle). 
+So when you host multiple applications within a container with classloader isolation, an inter-application invocation context 
+(like remote EJBs) can only be propagated when they share the same MDC (MDCs in the end just little more than a thread-local per class-loader).
+Therefore it is highly recommended to use your containers logging framework because it resides in the container classloader and can be
+accessed by all your applications.
 
 # Contributing to TracEE
 
