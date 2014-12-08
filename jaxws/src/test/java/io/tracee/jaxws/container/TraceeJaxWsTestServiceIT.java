@@ -33,7 +33,7 @@ public class TraceeJaxWsTestServiceIT {
 
 		p.setProperty("log4j.category.io.tracee", "info");
 		p.setProperty("log4j.appender.C.layout", "org.apache.log4j.PatternLayout");
-		p.setProperty("log4j.appender.C.layout.ConversionPattern", "%d{yyyy-MM-dd HH:mm:ss.SSSS} %t:[x-tracee-request:%X{x-tracee-request}] \n %m%n");
+		p.setProperty("log4j.appender.C.layout.ConversionPattern", "%d{yyyy-MM-dd HH:mm:ss.SSSS} %t:[x-tracee-request:%X{" + TraceeConstants.HTTP_HEADER_NAME+ "}] \n %m%n");
 		ejbContainer = EJBContainer.createEJBContainer(p);
 	}
 
