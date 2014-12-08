@@ -11,8 +11,8 @@
     </parent>
 
     <name>tracee-context-logger-watchdog</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
-	
+    <description>Please refer to https://github.com/tracee/tracee.</description>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -42,9 +42,9 @@
 				</executions>
 			</plugin>
 		</plugins>
-		
-	</build>	
-	
+
+	</build>
+
     <dependencies>
 
         <dependency>

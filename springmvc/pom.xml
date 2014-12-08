@@ -4,7 +4,7 @@
 	<groupId>io.tracee.inbound</groupId>
 	<artifactId>tracee-springmvc</artifactId>
 	<packaging>bundle</packaging>
-	
+
 	<parent>
 		<artifactId>tracee-parent</artifactId>
 		<groupId>io.tracee</groupId>
@@ -12,7 +12,7 @@
 	</parent>
 
 	<name>tracee-springmvc</name>
-	<description>Please refer to https://github.com/holisticon/tracee.</description>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<dependencies>
 		<dependency>

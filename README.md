@@ -108,7 +108,7 @@ in the SOAP-Request-Envelope, and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Header>
-		<TPIC xmlns="https://github.com/holisticon/tracee"> <!-- TODO: this namespace should be io.tracee and provide a real XSD-file hosted at http://tracee.io/ -->
+		<TPIC xmlns="https://github.com/tracee/tracee"> <!-- TODO: this namespace should be io.tracee and provide a real XSD-file hosted at http://tracee.io/ -->
 			<inRequest>yes</inRequest>
 		</TPIC>
 	</soap:Header>

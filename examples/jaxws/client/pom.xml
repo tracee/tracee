@@ -11,7 +11,7 @@
         <version>0.6.0-SNAPSHOT</version>
     </parent>
 
-	<description>Please refer to https://github.com/holisticon/tracee.</description>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 
     <build>

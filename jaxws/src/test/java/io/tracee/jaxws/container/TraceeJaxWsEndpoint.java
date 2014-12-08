@@ -7,7 +7,7 @@ import java.util.List;
 public interface TraceeJaxWsEndpoint {
 
     interface Descriptor {
-        String TNS = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl";
+        String TNS = "https://github.com/tracee/tracee/examples/jaxws/service/wsdl";
     }
 
     List<String> getCurrentTraceeContext();
