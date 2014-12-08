@@ -1,20 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.tracee.backend</groupId>
-    <artifactId>tracee-threadlocal-store</artifactId>
+	<groupId>io.tracee.backend</groupId>
+    <artifactId>tracee-jboss-logging</artifactId>
     <packaging>bundle</packaging>
 
     <parent>
         <groupId>io.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
         <version>0.6.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <name>tracee-threadlocal-store</name>
-    <description>This is a simple implementation of a tracee backend. It might be used for system where no supported
-        logging framework is present or for test purpose.
-    </description>
+    <name>tracee-jboss-logging</name>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
     <dependencies>
         <dependency>
@@ -22,6 +21,13 @@
             <groupId>io.tracee</groupId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.0.1.GA</version>
+            <scope>provided</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
