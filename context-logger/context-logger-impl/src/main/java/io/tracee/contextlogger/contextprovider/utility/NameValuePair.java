@@ -25,7 +25,7 @@ public abstract class NameValuePair<T> {
      *
      * @return the name for the value
      */
-    @TraceeContextProviderMethod(displayName = "name", propertyName = "", order = 1)
+    @TraceeContextProviderMethod(displayName = "name", order = 1)
     public final String getName() {
         return this.name;
     }
@@ -35,7 +35,7 @@ public abstract class NameValuePair<T> {
      *
      * @return the value
      */
-    @TraceeContextProviderMethod(displayName = "value", propertyName = "", order = 2)
+    @TraceeContextProviderMethod(displayName = "value", order = 2)
     public final T getValue() {
         return this.value;
     }

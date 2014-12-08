@@ -8,7 +8,6 @@ import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +36,6 @@ public final class TraceeContextProvider implements ImplicitContextData {
     @Flatten
     @TraceeContextProviderMethod(
             displayName = "DYNAMIC",
-            propertyName = ProfilePropertyNames.TRACEE,
             order = 10)
     public List<NameStringValuePair> getNameValuePairs() {
 

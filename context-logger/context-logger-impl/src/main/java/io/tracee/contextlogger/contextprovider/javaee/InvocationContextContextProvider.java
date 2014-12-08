@@ -5,7 +5,6 @@ import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 import io.tracee.contextlogger.utility.RecursiveReflectionToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
@@ -38,12 +37,17 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return InvocationContext.class;
     }
 
-    @TraceeContextProviderMethod(displayName = "methodName", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_METHOD_NAME, order = 10)
+    @TraceeContextProviderMethod(displayName = "typeName", order = 0)
+    public final String getTypeName() {
+        return this.invocationContext != null && this.invocationContext.getTarget() != null && this.invocationContext.getTarget().getClass() != null ? this.invocationContext.getTarget().getClass().getCanonicalName() : null;
+    }
+
+    @TraceeContextProviderMethod(displayName = "methodName", order = 10)
     public final String getMethodName() {
         return this.invocationContext != null && this.invocationContext.getMethod() != null ? this.invocationContext.getMethod().getName() : null;
     }
 
-    @TraceeContextProviderMethod(displayName = "parameters", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_PARAMETERS, order = 20)
+    @TraceeContextProviderMethod(displayName = "parameters", order = 20)
     public final List<String> getParameters() {
 
         List<String> result = new ArrayList<String>();
@@ -59,9 +63,9 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return result.size() > 0 ? result : null;
     }
 
-    @TraceeContextProviderMethod(displayName = "deserialized.targetInstance", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_TARGET_INSTANCE,
+    @TraceeContextProviderMethod(displayName = "serialized-target-instance",
             order = 30)
-    public final String getTargetInstance() {
+    public final String getSerializedTargetInstance() {
         String result = null;
         if (this.invocationContext != null) {
             Object targetInstance = this.invocationContext.getTarget();
@@ -75,7 +79,7 @@ public class InvocationContextContextProvider implements WrappedContextData<Invo
         return result;
     }
 
-    @TraceeContextProviderMethod(displayName = "deserialized.contextData", propertyName = ProfilePropertyNames.JAVAEE_INVOCATION_CONTEXT_DATA, order = 40)
+    @TraceeContextProviderMethod(displayName = "deserialized.contextData", order = 40)
     public final List<NameStringValuePair> getContextData() {
 
         List<NameStringValuePair> result = new ArrayList<NameStringValuePair>();

@@ -4,7 +4,6 @@ import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,7 +40,6 @@ public final class JavaThrowableContextProvider implements WrappedContextData<Th
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "message",
-            propertyName = ProfilePropertyNames.EXCEPTION_MESSAGE,
             order = 10)
     public String getMessage() {
         return throwable != null ? throwable.getMessage() : null;
@@ -50,7 +48,6 @@ public final class JavaThrowableContextProvider implements WrappedContextData<Th
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "stacktrace",
-            propertyName = ProfilePropertyNames.EXCEPTION_STACKTRACE,
             order = 20)
     public String getStacktrace() {
         if (this.throwable != null) {

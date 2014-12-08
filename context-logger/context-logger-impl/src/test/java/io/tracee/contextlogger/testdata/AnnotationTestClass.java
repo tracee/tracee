@@ -26,32 +26,32 @@ public class AnnotationTestClass {
         fieldE.add(2);
     }
 
-    @TraceeContextProviderMethod(displayName = "A", propertyName = "A", order=200)
+    @TraceeContextProviderMethod(displayName = "A", order = 200)
     public int getFieldA() {
         return this.fieldA;
     }
 
-    @TraceeContextProviderMethod(displayName = "B", propertyName = "B")
+    @TraceeContextProviderMethod(displayName = "B")
     public String getFieldB() {
         return this.fieldB;
     }
 
-    @TraceeContextProviderMethod(displayName = "C", propertyName = "C", order=50)
+    @TraceeContextProviderMethod(displayName = "C", order = 50)
     public List<Integer> getFieldC() {
         return this.fieldC;
     }
 
-    @TraceeContextProviderMethod(displayName = "D", propertyName = "D", order=50)
+    @TraceeContextProviderMethod(displayName = "D", order = 50)
     public List<Integer> getFieldD(int x) {
         return this.fieldD;
     }
 
-    @TraceeContextProviderMethod(displayName = "E", propertyName = "E", order=50)
+    @TraceeContextProviderMethod(displayName = "E", order = 50)
     public List<Integer> getFieldE() {
         return this.fieldE;
     }
 
-    @TraceeContextProviderMethod(displayName = "F", propertyName = "F", order=50)
+    @TraceeContextProviderMethod(displayName = "F", order = 50)
     public void getFieldF() {
     }
 

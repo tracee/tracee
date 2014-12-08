@@ -5,7 +5,6 @@ import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.contextprovider.aspectj.AspectjProceedingJoinPointContextProvider;
 import io.tracee.contextlogger.contextprovider.aspectj.WatchdogDataWrapper;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 /**
  * Watchdog context data provider.
@@ -38,7 +37,6 @@ public final class WatchdogContextProvider implements WrappedContextData<Watchdo
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "id",
-            propertyName = ProfilePropertyNames.WATCHDOG_ID,
             order = 10)
     public String getId() {
         if (watchdogDataWrapper != null) {
@@ -50,7 +48,6 @@ public final class WatchdogContextProvider implements WrappedContextData<Watchdo
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "aspectj.proceedingJoinPoint",
-            propertyName = ProfilePropertyNames.WATCHDOG_ASPECTJ_CONTEXT,
             order = 20)
     public AspectjProceedingJoinPointContextProvider getProceedingJoinPoint() {
         if (watchdogDataWrapper != null && watchdogDataWrapper.getProceedingJoinPoint() != null) {

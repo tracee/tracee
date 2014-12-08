@@ -1,6 +1,7 @@
 io.tracee.contextlogger.contextprovider.aspectj.AspectjProceedingJoinPointContextProvider
 io.tracee.contextlogger.contextprovider.javaee.InvocationContextContextProvider
 io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider
+io.tracee.contextlogger.contextprovider.jaxws.JaxWsContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletCookieContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletRequestContextProvider
 io.tracee.contextlogger.contextprovider.servlet.ServletResponseContextProvider

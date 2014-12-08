@@ -41,7 +41,7 @@ public final class ServletSessionContextProvider implements WrappedContextData<H
 
     @SuppressWarnings("unused")
     @Flatten
-    @TraceeContextProviderMethod(displayName = "DYNAMIC", propertyName = "DYNAMIC")
+    @TraceeContextProviderMethod(displayName = "DYNAMIC")
     public List<NameStringValuePair> getSessionAttributes() {
 
         if (session == null) {

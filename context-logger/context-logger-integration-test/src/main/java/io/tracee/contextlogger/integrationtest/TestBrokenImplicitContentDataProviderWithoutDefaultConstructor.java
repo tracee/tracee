@@ -10,16 +10,16 @@ import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 @TraceeContextProvider(displayName = "testBrokenImplicitContentDataProviderWithoutDefaultConstructor", order = 200)
 public class TestBrokenImplicitContentDataProviderWithoutDefaultConstructor implements CustomImplicitContextData {
 
-    public static final String PROPERTY_NAME = "TestBrokenImplicitContentDataProviderWithoutDefaultConstructor.testOutputPropertyName";
+	public static final String PROPERTY_NAME = "io.tracee.contextlogger.integrationtest.TestBrokenImplicitContentDataProviderWithoutDefaultConstructor.output";
 
-    TestBrokenImplicitContentDataProviderWithoutDefaultConstructor(String something) {
+	TestBrokenImplicitContentDataProviderWithoutDefaultConstructor(String something) {
 
-    }
+	}
 
-    @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "output", propertyName = TestImplicitContextDataProvider.PROPERTY_NAME, order = 10)
-    public final String getOutput() {
-        throw new NullPointerException("Whoops!!!");
-    }
+	@SuppressWarnings("unused")
+	@TraceeContextProviderMethod(displayName = "output", order = 10)
+	public final String getOutput() {
+		throw new NullPointerException("Whoops!!!");
+	}
 
 }

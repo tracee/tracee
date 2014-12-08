@@ -1,16 +1,16 @@
 package io.tracee.contextlogger.contextprovider;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.*;
-
 import io.tracee.Tracee;
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.api.CustomImplicitContextData;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.WrappedContextData;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 /**
  * Class to store class to wrapper mapppings.
@@ -104,10 +104,10 @@ public final class TypeToWrapper {
     /**
      * Generic function to get a implicit data provider classes from resource files.
      *
-     * @param type the type of implicit context data provider to look for
+     * @param type        the type of implicit context data provider to look for
      * @param resourceUrl the resource file url process
-     * @param <T> The generic type of implicit data provider either {@link io.tracee.contextlogger.api.CustomImplicitContextData} or
-     *        {@link io.tracee.contextlogger.api.ImplicitContextData}
+     * @param <T>         The generic type of implicit data provider either {@link io.tracee.contextlogger.api.CustomImplicitContextData} or
+     *                    {@link io.tracee.contextlogger.api.ImplicitContextData}
      * @return a set that contains all context provider type the were found
      */
     static <T> Set<T> getImplicitWrappers(final Class<T> type, final String resourceUrl) {
@@ -133,24 +133,19 @@ public final class TypeToWrapper {
                         T instance = type.cast(clazz.newInstance());
                         result.add(instance);
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // to be ignored
-                }
-                catch (NoClassDefFoundError error) {
+                } catch (NoClassDefFoundError error) {
                     // to be ignored
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logError("Context logger - An error occurred while loading implicit type wrappers.", e);
-        }
-        finally {
+        } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
-                }
-                catch (IOException ignored) {
+                } catch (IOException ignored) {
                     // ignore
                 }
             }
@@ -199,30 +194,25 @@ public final class TypeToWrapper {
 
                     if (WrappedContextData.class.isAssignableFrom(clazz)) {
                         // try to create instance to get the wrapped type
-                        final WrappedContextData instance = (WrappedContextData)clazz.newInstance();
+                        final WrappedContextData instance = (WrappedContextData) clazz.newInstance();
                         result.add(new TypeToWrapper(instance.getWrappedType(), clazz));
                     }
 
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // to be ignored
-                }
-                catch (NoClassDefFoundError error) {
+                } catch (NoClassDefFoundError error) {
                     // to be ignored
                 }
 
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logError("Context logger - An error occurred while loading explicit type wrappers.", e);
 
-        }
-        finally {
+        } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     // ignore
                 }
             }

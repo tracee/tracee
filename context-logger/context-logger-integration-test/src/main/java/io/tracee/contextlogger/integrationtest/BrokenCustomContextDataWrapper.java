@@ -10,31 +10,31 @@ import io.tracee.contextlogger.api.WrappedContextData;
 @TraceeContextProvider(displayName = "brokenCustomContextDataWrapper", order = 50)
 public class BrokenCustomContextDataWrapper implements WrappedContextData<WrappedBrokenTestContextData> {
 
-    public static final String PROPERTY_NAME = "brokenCustomContextDataWrapper.testOutputPropertyName";
+	public static final String PROPERTY_NAME = "io.tracee.contextlogger.integrationtest.BrokenCustomContextDataWrapper.output";
 
-    private WrappedBrokenTestContextData contextData;
+	private WrappedBrokenTestContextData contextData;
 
-    public BrokenCustomContextDataWrapper() {
+	public BrokenCustomContextDataWrapper() {
 
-    }
+	}
 
-    public BrokenCustomContextDataWrapper(final WrappedBrokenTestContextData contextData) {
-        this.contextData = contextData;
-    }
+	public BrokenCustomContextDataWrapper(final WrappedBrokenTestContextData contextData) {
+		this.contextData = contextData;
+	}
 
-    @Override
-    public void setContextData(Object instance) throws ClassCastException {
-        this.contextData = (WrappedBrokenTestContextData)instance;
-    }
+	@Override
+	public void setContextData(Object instance) throws ClassCastException {
+		this.contextData = (WrappedBrokenTestContextData) instance;
+	}
 
-    @Override
-    public Class<WrappedBrokenTestContextData> getWrappedType() {
-        return WrappedBrokenTestContextData.class;
-    }
+	@Override
+	public Class<WrappedBrokenTestContextData> getWrappedType() {
+		return WrappedBrokenTestContextData.class;
+	}
 
-    @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "testoutput", propertyName = TestContextDataWrapper.PROPERTY_NAME, order = 10)
-    public String getOutput() {
-        throw new NullPointerException("Whoops!!!");
-    }
+	@SuppressWarnings("unused")
+	@TraceeContextProviderMethod(displayName = "testoutput", order = 10)
+	public String getOutput() {
+		throw new NullPointerException("Whoops!!!");
+	}
 }

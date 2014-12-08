@@ -81,7 +81,7 @@ public class AspectjProceedingJoinPointContextProviderTest {
         AspectjProceedingJoinPointContextProvider givenAspectjProceedingJoinPointContextProvider = new AspectjProceedingJoinPointContextProvider();
         givenAspectjProceedingJoinPointContextProvider.setContextData(null);
 
-        String result = givenAspectjProceedingJoinPointContextProvider.getDeserializedInstance();
+        String result = givenAspectjProceedingJoinPointContextProvider.getSerializedTargetInstance();
 
         MatcherAssert.assertThat(result, Matchers.nullValue());
     }
@@ -150,7 +150,7 @@ public class AspectjProceedingJoinPointContextProviderTest {
         AspectjProceedingJoinPointContextProvider givenAspectjProceedingJoinPointContextProvider = new AspectjProceedingJoinPointContextProvider();
         givenAspectjProceedingJoinPointContextProvider.setContextData(proceedingJoinPoint);
 
-        String result = givenAspectjProceedingJoinPointContextProvider.getDeserializedInstance();
+        String result = givenAspectjProceedingJoinPointContextProvider.getSerializedTargetInstance();
 
         MatcherAssert.assertThat(result, Matchers.notNullValue());
         MatcherAssert.assertThat(result, Matchers.startsWith("AspectjProceedingJoinPointContextProviderTest@"));

@@ -78,7 +78,7 @@ public class InvocationContextContextProviderTest {
         InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
         givenInvocationContextContextProvider.setContextData(null);
 
-        String targetInstance = givenInvocationContextContextProvider.getTargetInstance();
+        String targetInstance = givenInvocationContextContextProvider.getSerializedTargetInstance();
 
         MatcherAssert.assertThat(targetInstance, Matchers.nullValue());
 
@@ -139,7 +139,7 @@ public class InvocationContextContextProviderTest {
         InvocationContextContextProvider givenInvocationContextContextProvider = new InvocationContextContextProvider();
         givenInvocationContextContextProvider.setContextData(invocationContext);
 
-        String targetInstance = givenInvocationContextContextProvider.getTargetInstance();
+        String targetInstance = givenInvocationContextContextProvider.getSerializedTargetInstance();
 
         MatcherAssert.assertThat(targetInstance, Matchers.notNullValue());
         MatcherAssert.assertThat(targetInstance, Matchers.startsWith("InvocationContextContextProviderTest@"));

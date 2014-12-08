@@ -1,16 +1,15 @@
 package io.tracee.contextlogger.contextprovider.tracee;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.Date;
-
 import io.tracee.contextlogger.TraceeContextLoggerConstants;
 import io.tracee.contextlogger.api.ImplicitContext;
 import io.tracee.contextlogger.api.ImplicitContextData;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.contextprovider.Order;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Common context data provider.
@@ -25,19 +24,19 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "timestamp", propertyName = ProfilePropertyNames.COMMON_TIMESTAMP, order = 10)
+    @TraceeContextProviderMethod(displayName = "timestamp", order = 10)
     public final Date getTimestamp() {
         return Calendar.getInstance().getTime();
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "stage", propertyName = ProfilePropertyNames.COMMON_STAGE, order = 20)
+    @TraceeContextProviderMethod(displayName = "stage", order = 20)
     public final String getStage() {
         return getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_STAGE);
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "system-name", propertyName = ProfilePropertyNames.COMMON_SYSTEM_NAME, order = 30)
+    @TraceeContextProviderMethod(displayName = "system-name", order = 30)
     public final String getSystemName() {
 
         String systemName = getSystemProperty(TraceeContextLoggerConstants.SYSTEM_PROPERTY_NAME_SYSTEM);
@@ -45,8 +44,7 @@ public class CommonDataContextProvider implements ImplicitContextData {
         if (systemName == null) {
             try {
                 systemName = InetAddress.getLocalHost().getHostName();
-            }
-            catch (UnknownHostException e) {
+            } catch (UnknownHostException e) {
                 // ignore
             }
         }
@@ -56,13 +54,13 @@ public class CommonDataContextProvider implements ImplicitContextData {
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "thread-name", propertyName = ProfilePropertyNames.COMMON_THREAD_NAME, order = 40)
+    @TraceeContextProviderMethod(displayName = "thread-name", order = 40)
     public final String getThreadName() {
         return Thread.currentThread().getName();
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "thread-id", propertyName = ProfilePropertyNames.COMMON_THREAD_ID, order = 50)
+    @TraceeContextProviderMethod(displayName = "thread-id", order = 50)
     public final Long getThreadId() {
         return Thread.currentThread().getId();
     }

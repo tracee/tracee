@@ -7,7 +7,6 @@ import io.tracee.contextlogger.contextprovider.java.JavaThrowableContextProvider
 import io.tracee.contextlogger.contextprovider.tracee.PassedDataContextProvider;
 import io.tracee.contextlogger.impl.gson.TraceeGsonContextStringRepresentationBuilder;
 import io.tracee.contextlogger.profile.Profile;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -94,7 +93,7 @@ public class TraceeContextLoggerTest {
             throw new NullPointerException("acd");
         } catch (NullPointerException e) {
 
-            String json = TraceeContextLogger.create().config().enforceProfile(Profile.NONE).enable(ProfilePropertyNames.EXCEPTION_MESSAGE).apply().build().createJson(e);
+            String json = TraceeContextLogger.create().config().enforceProfile(Profile.NONE).enable(JavaThrowableContextProvider.class.getCanonicalName() + ".message").apply().build().createJson(e);
 
             MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"message\":\"acd\"\\}\\}"));
 
@@ -108,7 +107,7 @@ public class TraceeContextLoggerTest {
             throw new NullPointerException("acd");
         } catch (NullPointerException e) {
 
-            String json = TraceeContextLogger.create().config().enforceProfile(Profile.BASIC).disable(ProfilePropertyNames.EXCEPTION_STACKTRACE).apply().build().createJson(e);
+            String json = TraceeContextLogger.create().config().enforceProfile(Profile.BASIC).disable(JavaThrowableContextProvider.class.getCanonicalName() + ".stacktrace").apply().build().createJson(e);
 
             MatcherAssert.assertThat(json, RegexMatcher.matches("\\{\\\"throwable\\\":\\{\"message\":\"acd\"\\}\\}"));
 

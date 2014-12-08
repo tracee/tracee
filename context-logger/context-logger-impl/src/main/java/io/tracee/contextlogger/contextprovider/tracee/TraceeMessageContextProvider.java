@@ -4,7 +4,6 @@ import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 /**
  * Message Context Provider. Used to add message to tracee log output.
@@ -34,7 +33,7 @@ public class TraceeMessageContextProvider implements WrappedContextData<TraceeMe
 
     @Override
     public void setContextData(Object instance) throws ClassCastException {
-        message = (TraceeMessage)instance;
+        message = (TraceeMessage) instance;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class TraceeMessageContextProvider implements WrappedContextData<TraceeMe
     }
 
     @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "value", propertyName = ProfilePropertyNames.MESSAGE_VALUE, order = 10)
+    @TraceeContextProviderMethod(displayName = "value", order = 10, enabledPerDefault = true)
     public String getValue() {
         if (message != null && message.getMessage() != null) {
             return message.getMessage().toString();

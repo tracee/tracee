@@ -4,7 +4,6 @@ import io.tracee.contextlogger.api.TraceeContextProvider;
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import javax.servlet.http.Cookie;
 
@@ -37,7 +36,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "name",
-            propertyName = ProfilePropertyNames.COOKIE_NAME,
             order = 10)
     public String getName() {
         if (cookie != null) {
@@ -49,7 +47,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "value",
-            propertyName = ProfilePropertyNames.COOKIE_VALUE,
             order = 20)
     public String getValue() {
         if (cookie != null) {
@@ -61,7 +58,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "domain",
-            propertyName = ProfilePropertyNames.COOKIE_DOMAIN,
             order = 30)
     public String getDomain() {
         if (cookie != null) {
@@ -73,7 +69,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "path",
-            propertyName = ProfilePropertyNames.COOKIE_PATH,
             order = 40
     )
     public String getPath() {
@@ -86,7 +81,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "secure",
-            propertyName = ProfilePropertyNames.COOKIE_SECURE,
             order = 50)
     public Boolean getSecure() {
         if (cookie != null) {
@@ -98,7 +92,6 @@ public final class ServletCookieContextProvider implements WrappedContextData<Co
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "max-age",
-            propertyName = ProfilePropertyNames.COOKIE_MAXAGE,
             order = 60)
     public Integer getMaxAge() {
         if (cookie != null) {

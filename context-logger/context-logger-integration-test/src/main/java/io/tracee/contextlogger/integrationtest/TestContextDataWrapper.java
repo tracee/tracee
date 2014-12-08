@@ -10,31 +10,31 @@ import io.tracee.contextlogger.api.WrappedContextData;
 @TraceeContextProvider(displayName = "testdata", order = 50)
 public class TestContextDataWrapper implements WrappedContextData<WrappedTestContextData> {
 
-    public static final String PROPERTY_NAME = "WrappedTestContextData.testOutputPropertyName";
+	public static final String PROPERTY_NAME = "io.tracee.contextlogger.integrationtest.TestContextDataWrapper.output";
 
-    private WrappedTestContextData contextData;
+	private WrappedTestContextData contextData;
 
-    public TestContextDataWrapper() {
+	public TestContextDataWrapper() {
 
-    }
+	}
 
-    public TestContextDataWrapper(final WrappedTestContextData contextData) {
-        this.contextData = contextData;
-    }
+	public TestContextDataWrapper(final WrappedTestContextData contextData) {
+		this.contextData = contextData;
+	}
 
-    @Override
-    public void setContextData(Object instance) throws ClassCastException {
-        this.contextData = (WrappedTestContextData)instance;
-    }
+	@Override
+	public void setContextData(Object instance) throws ClassCastException {
+		this.contextData = (WrappedTestContextData) instance;
+	}
 
-    @Override
-    public Class<WrappedTestContextData> getWrappedType() {
-        return WrappedTestContextData.class;
-    }
+	@Override
+	public Class<WrappedTestContextData> getWrappedType() {
+		return WrappedTestContextData.class;
+	}
 
-    @SuppressWarnings("unused")
-    @TraceeContextProviderMethod(displayName = "testoutput", propertyName = TestContextDataWrapper.PROPERTY_NAME, order = 10)
-    public String getOutput() {
-        return contextData != null ? contextData.getOutput() : null;
-    }
+	@SuppressWarnings("unused")
+	@TraceeContextProviderMethod(displayName = "testoutput", order = 10)
+	public String getOutput() {
+		return contextData != null ? contextData.getOutput() : null;
+	}
 }

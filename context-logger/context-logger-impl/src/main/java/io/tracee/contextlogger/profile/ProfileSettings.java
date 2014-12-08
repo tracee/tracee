@@ -28,10 +28,10 @@ public class ProfileSettings {
         this.manualContextOverrides = manualContextOverrides;
     }
 
-    public final boolean getPropertyValue(final String propertyKey) {
+    public final Boolean getPropertyValue(final String propertyKey) {
 
         if (propertyKey == null) {
-            return false;
+            return null;
         }
 
         // check system property override
@@ -45,12 +45,14 @@ public class ProfileSettings {
         // check profile properties
         if (profileProperties != null) {
             for (final Properties properties : profileProperties) {
-                String value = properties.getProperty(propertyKey, "false");
-                return Boolean.valueOf(value);
+                String value = properties.getProperty(propertyKey);
+                if (value != null) {
+                    return Boolean.valueOf(value);
+                }
             }
         }
 
-        return false;
+        return null;
     }
 
 }

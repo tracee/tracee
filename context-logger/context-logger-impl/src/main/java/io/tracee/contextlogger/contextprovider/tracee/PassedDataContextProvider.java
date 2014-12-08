@@ -48,7 +48,7 @@ public class PassedDataContextProvider implements WrappedContextData<Object[]> {
     }
 
     @Flatten
-    @TraceeContextProviderMethod(displayName = "instances", propertyName = "")
+    @TraceeContextProviderMethod(displayName = "instances", enabledPerDefault = true)
     public List<NameObjectValuePair> getContextData() {
 
         if (instances == null) {

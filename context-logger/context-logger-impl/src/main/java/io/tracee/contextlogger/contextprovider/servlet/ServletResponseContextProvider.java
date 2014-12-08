@@ -5,7 +5,6 @@ import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.api.WrappedContextData;
 import io.tracee.contextlogger.contextprovider.Order;
 import io.tracee.contextlogger.contextprovider.utility.NameStringValuePair;
-import io.tracee.contextlogger.profile.ProfilePropertyNames;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ public final class ServletResponseContextProvider implements WrappedContextData<
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "http-status-code",
-            propertyName = ProfilePropertyNames.SERVLET_RESPONSE_HTTP_STATUS_CODE,
             order = 10
     )
     public Integer getHttpStatusCode() {
@@ -54,7 +52,6 @@ public final class ServletResponseContextProvider implements WrappedContextData<
     @SuppressWarnings("unused")
     @TraceeContextProviderMethod(
             displayName = "http-header",
-            propertyName = ProfilePropertyNames.SERVLET_RESPONSE_HTTP_HEADER,
             order = 20
     )
     public List<NameStringValuePair> getHttpResponseHeaders() {

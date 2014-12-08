@@ -8,11 +8,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-
 import java.util.Collections;
 import java.util.List;
-
-import static java.util.Collections.sort;
 
 /**
  * Test class for {@link MethodAnnotationPair}.
@@ -23,25 +20,25 @@ public class MethodPairComparatorTest {
     public static final AnnotationTestClass TEST_INSTANCE_WITH_ANNOTATION = new AnnotationTestClass();
 
     @Test
-    public void should_compare_two_null_valued_instances_correctly () {
-        int result = new MethodAnnotationPairComparator().compare(null,null);
+    public void should_compare_two_null_valued_instances_correctly() {
+        int result = new MethodAnnotationPairComparator().compare(null, null);
         MatcherAssert.assertThat(result, Matchers.equalTo(0));
     }
 
     @Test
-    public void should_compare_null_valued_with_not_null_valued_instance_correctly () {
-        int result = new MethodAnnotationPairComparator().compare(null,new MethodAnnotationPair(null,null));
+    public void should_compare_null_valued_with_not_null_valued_instance_correctly() {
+        int result = new MethodAnnotationPairComparator().compare(null, new MethodAnnotationPair(null, null, null));
         MatcherAssert.assertThat(result, Matchers.equalTo(-1));
     }
 
     @Test
-    public void should_compare_not_null_valued_with_null_valued_instance_correctly () {
-        int result = new MethodAnnotationPairComparator().compare(new MethodAnnotationPair(null,null),null);
+    public void should_compare_not_null_valued_with_null_valued_instance_correctly() {
+        int result = new MethodAnnotationPairComparator().compare(new MethodAnnotationPair(null, null, null), null);
         MatcherAssert.assertThat(result, Matchers.equalTo(1));
     }
 
     @Test
-    public void should_compare_two_not_null_valued_instances_with_first_order_is_greater_correctly () {
+    public void should_compare_two_not_null_valued_instances_with_first_order_is_greater_correctly() {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
         TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
@@ -58,7 +55,7 @@ public class MethodPairComparatorTest {
     }
 
     @Test
-    public void should_compare_two_not_null_valued_instances_with_first_order_is_less_correctly () {
+    public void should_compare_two_not_null_valued_instances_with_first_order_is_less_correctly() {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
         TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
@@ -75,7 +72,7 @@ public class MethodPairComparatorTest {
     }
 
     @Test
-    public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_less_correctly () {
+    public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_less_correctly() {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
         TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
@@ -92,7 +89,7 @@ public class MethodPairComparatorTest {
     }
 
     @Test
-    public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_greater_correctly () {
+    public void should_compare_two_not_null_valued_instances_with_equal_order_and_first_displayname_is_greater_correctly() {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
         TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
@@ -109,7 +106,7 @@ public class MethodPairComparatorTest {
     }
 
     @Test
-    public void should_compare_two_not_null_valued_instances_with_equal_order_and_displayname_correctly () {
+    public void should_compare_two_not_null_valued_instances_with_equal_order_and_displayname_correctly() {
         MethodAnnotationPair methodAnnotationPair1 = Mockito.mock(MethodAnnotationPair.class);
         MethodAnnotationPair methodAnnotationPair2 = Mockito.mock(MethodAnnotationPair.class);
         TraceeContextProviderMethod traceeContextProviderMethod1 = Mockito.mock(TraceeContextProviderMethod.class);
@@ -130,7 +127,7 @@ public class MethodPairComparatorTest {
     public void should_sort_method_annotation_pairs_correctly() {
 
         // first get method pairs fromAnnotationTestClass
-        List<MethodAnnotationPair> list = TraceeContextLogAnnotationUtilities.getAnnotatedMethodsOfInstance( TEST_INSTANCE_WITH_ANNOTATION);
+        List<MethodAnnotationPair> list = TraceeContextLogAnnotationUtilities.getAnnotatedMethodsOfInstance(TEST_INSTANCE_WITH_ANNOTATION);
 
 
         MatcherAssert.assertThat(list, Matchers.notNullValue());

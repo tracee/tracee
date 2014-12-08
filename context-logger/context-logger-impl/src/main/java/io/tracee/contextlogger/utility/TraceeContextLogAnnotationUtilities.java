@@ -54,7 +54,7 @@ public final class TraceeContextLogAnnotationUtilities {
 
                 // check if method has no parameters and is annotated
                 if (annotation != null) {
-                    result.add(new MethodAnnotationPair(method, annotation));
+                    result.add(new MethodAnnotationPair(instance.getClass(),method, annotation));
                 }
 
             }

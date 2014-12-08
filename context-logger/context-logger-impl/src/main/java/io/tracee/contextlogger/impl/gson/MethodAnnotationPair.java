@@ -2,6 +2,7 @@ package io.tracee.contextlogger.impl.gson;
 
 import io.tracee.contextlogger.api.TraceeContextProviderMethod;
 import io.tracee.contextlogger.profile.ProfileSettings;
+import io.tracee.contextlogger.utility.GetterUtilities;
 
 import java.lang.reflect.Method;
 
@@ -13,10 +14,12 @@ import java.lang.reflect.Method;
  */
 public class MethodAnnotationPair {
 
+    private final Class baseType;
     private final TraceeContextProviderMethod annotation;
     private final Method method;
 
-    public MethodAnnotationPair(final Method method, final TraceeContextProviderMethod annotation) {
+    public MethodAnnotationPair(final Class baseType, final Method method, final TraceeContextProviderMethod annotation) {
+        this.baseType = baseType;
         this.method = method;
         this.annotation = annotation;
     }
@@ -32,8 +35,24 @@ public class MethodAnnotationPair {
      */
     public boolean shouldBeProcessed(final ProfileSettings profileSettings) {
 
-        return annotation == null || annotation.propertyName().isEmpty()
-                || profileSettings == null || profileSettings.getPropertyValue(annotation.propertyName());
+        if (profileSettings != null) {
+
+            String propertyName = GetterUtilities.getFullQualifiedFieldName(baseType, method);
+            Boolean shouldBeProcessed = profileSettings.getPropertyValue(propertyName);
+            if (shouldBeProcessed == null) {
+                propertyName = baseType.getCanonicalName() + "." + method.getName();
+                shouldBeProcessed = profileSettings.getPropertyValue(propertyName);
+            }
+            if (shouldBeProcessed == null && annotation != null) {
+                shouldBeProcessed = annotation.enabledPerDefault();
+            }
+
+            if (shouldBeProcessed != null) {
+                return shouldBeProcessed;
+            }
+        }
+
+        return true;
 
     }
 
@@ -43,6 +62,12 @@ public class MethodAnnotationPair {
 
     public final Method getMethod() {
         return method;
+    }
+
+    public String getPropertyName() {
+
+        return method.getDeclaringClass().getCanonicalName() + "." + method.getName();
+
     }
 
 
