@@ -1,7 +1,7 @@
 # TracEE 0.5.0
 
-[![Build Status](https://secure.travis-ci.org/holisticon/tracee.png)](https://travis-ci.org/holisticon/tracee)
-[![Coverage Status](https://coveralls.io/repos/holisticon/tracee/badge.png)](https://coveralls.io/r/holisticon/tracee)
+[![Build Status](https://secure.travis-ci.org/tracee/tracee.png)](https://travis-ci.org/tracee/tracee)
+[![Coverage Status](https://coveralls.io/repos/tracee/tracee/badge.png)](https://coveralls.io/r/tracee/tracee)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
 
 TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
