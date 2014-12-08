@@ -1,7 +1,7 @@
 language: java
 jdk:
 - openjdk6
-script: mvn verify -B
+script: mvn verify -B -q
 after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/tracee"
   && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location
   --create-dirs -o target/travis/settings.xml; } && { mvn cobertura:cobertura coveralls:report deploy --settings target/travis/settings.xml
