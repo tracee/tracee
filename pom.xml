@@ -11,15 +11,15 @@
 		<module>core</module>
 		<module>testhelper</module>
 
+		<!-- backends -->
+		<module>backend/slf4j</module>
+		<module>backend/log4j</module>
+		<module>backend/log4j2</module>
+		<module>backend/jboss-logging</module>
+		<module>backend/threadlocal-store</module>
+
 		<!-- contextual logging -->
 		<module>context-logger</module>
-
-		<!-- backends -->
-		<module>slf4j</module>
-		<module>log4j</module>
-		<module>log4j2</module>
-		<module>jboss-logging</module>
-		<module>threadlocal-store</module>
 
 		<!-- incoming filters -->
 		<module>servlet</module>
