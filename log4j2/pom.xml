@@ -12,7 +12,7 @@
     </parent>
 
     <name>tracee-log4j2</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
     <dependencies>
         <dependency>

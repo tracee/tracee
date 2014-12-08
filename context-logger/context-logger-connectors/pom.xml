@@ -11,11 +11,11 @@
     </parent>
 
     <name>tracee-context-logger-connector-parent</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
-	<modules>		
-		<module>http-connector</module>	
-	</modules>	
-	
+	<modules>
+		<module>http-connector</module>
+	</modules>
+
 
 </project>

@@ -12,7 +12,7 @@
     </parent>
 
     <name>tracee-context-logger</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<modules>
 		<module>context-logger-connector-api</module>
@@ -22,7 +22,7 @@
 		<module>context-logger-servlet</module>
 		<module>context-logger-jaxws</module>
 		<module>context-logger-javaee</module>
-		<module>context-logger-watchdog</module>		
+		<module>context-logger-watchdog</module>
 		<module>context-logger-integration-test</module>
         <!--<module>context-logger-deserializer</module>-->
 	</modules>

@@ -11,7 +11,7 @@ import javax.jws.WebService;
 
 @Stateless
 @WebService(serviceName = "TraceeJaxWsTestService", portName = "TraceeJaxWsTestPort",
-        targetNamespace = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl")
+        targetNamespace = "https://github.com/tracee/tracee/examples/jaxws/service/wsdl")
 @HandlerChain(file = "/traceeHandlerChain.xml")
 public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 

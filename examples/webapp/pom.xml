@@ -11,7 +11,7 @@
     </parent>
 
     <name>tracee-examples-webapp</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

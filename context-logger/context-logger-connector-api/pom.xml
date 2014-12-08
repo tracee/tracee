@@ -11,6 +11,6 @@
     </parent>
 
     <name>tracee-context-logger-connector-api</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
 </project>

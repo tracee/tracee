@@ -46,8 +46,8 @@
 	</parent>
 
 	<name>tracee</name>
-	<description>Please refer to https://github.com/holisticon/tracee.</description>
-	<url>https://github.com/holisticon/tracee</url>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
+	<url>https://github.com/tracee/tracee</url>
 
 	<organization>
 		<name>Holisticon AG</name>
@@ -92,7 +92,7 @@
 	</prerequisites>
 
 	<issueManagement>
-		<url>https://github.com/holisticon/tracee/issues</url>
+		<url>https://github.com/tracee/tracee/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 

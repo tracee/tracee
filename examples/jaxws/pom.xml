@@ -16,6 +16,6 @@
     </parent>
 
     <name>tracee-examples-jaxws</name>
-    <description>Please refer to https://github.com/holisticon/tracee.</description>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
 
 </project>
