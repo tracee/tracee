@@ -148,8 +148,8 @@ This is a an example for an output with ENHANCED context logger profile.
     	"servletResponse": {
     		"http-status-code": 500,
     		"http-header": [{
-    			"name": "X-TracEE-Context",
-    			"value": "{\"TracEE-requestId\":\"SHX5FB9C7PAMSDOJWJPHZIBFKATX63NB\",\"TracEE-sessionId\":\"030f1790ce0ac0fc08e677f0920f3450\"}"
+    			"name": "TPIC",
+    			"value": "{\"traceeRequestId\":\"SHX5FB9C7PAMSDOJWJPHZIBFKATX63NB\",\"traceeSessionId\":\"030f1790ce0ac0fc08e677f0920f3450\"}"
     		},
     		{
     			"name": "Set-Cookie",

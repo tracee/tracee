@@ -94,7 +94,7 @@ The most prominent transports are native java serialization formats, HTTP and SO
 Using Java serialization the Propagated Invocation Context is simply encoded as a Java map of strings.
 
 On HTTP-Transports, like JAX-RS or Servlets, JSPs, or whatsoever, the invocation context is encoded as a custom HTTP-Header 
-__X-TracEE-Context__ with an JSON encoded invocation context map as value.
+__TPIC__ with an JSON encoded invocation context map as value.
  
 ```
 GET / HTTP/1.1
