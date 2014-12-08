@@ -97,8 +97,8 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:git:git@github.com:holisticon/tracee.git</connection>
-		<developerConnection>scm:git:git@github.com:holisticon/tracee.git</developerConnection>
+		<connection>scm:git:git@github.com:tracee/tracee.git</connection>
+		<developerConnection>scm:git:git@github.com:tracee/tracee.git</developerConnection>
 		<url>git@github.com:holisticon/tracee.git</url>
 		<tag>HEAD</tag>
 	</scm>
