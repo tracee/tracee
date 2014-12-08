@@ -25,7 +25,7 @@ This project is still in an experimental stage and the api may change during fur
 
 # Getting started
 
-## The invocation context
+## The Invocation Context
 
 So what is this all about?
 
@@ -63,7 +63,7 @@ around as a parameter of every of your business interfaces (EBJ, SOAP, REST, wha
 log statement. It should also be obvious that this is a dumb idea because it pollutes all of our business interfaces with
 unnecessary artificial parameters just for the benefit of making the invocation context explicit. But we can do better!
 
-## The propagated Mapped Diagnostic Context
+## The Propagated Invocation Context (PIC)
 
 The [Mapped Diagnostic Context (MDC)](http://logback.qos.ch/manual/mdc.html) is a logging concept that allows printing of contextual information in log messages
 without explicitly passing them them to each log statement. A MDC is bound to its executing thread (in fact they are backed by thread locals).
@@ -82,23 +82,23 @@ We may call these context boundaries MDC gaps. There are different kinds of thos
     * Async EJB calls
     * JMS messaging
 
-TracEE acts as a gap closer for different types of MDC gaps and enables you to carry your contextual information through
-your whole application and beyond. You may even configure TracEE to map third-party correlation and transaction ids to
+TracEE acts as a gap closer for different types of MDC gaps and boosts the concept of the MDC by enabling you to carry your contextual information through
+your whole application and beyond. You may easily configure TracEE to map arbitrary third-party correlation and transaction ids to
 your logging context without polluting your business logic.
 
 ## On the wire
 
-So how does an mapped diagnosis context look like on the wire? That does depend on the transport.
+So how does a Propagated Invocation Context look like on the wire? This naturally depends on the transport.
 The most prominent transports are native java serialization formats, HTTP and SOAP.
 
-Using Java serialization the invocation context is simply encoded as a java map of strings.
+Using Java serialization the Propagated Invocation Context is simply encoded as a Java map of strings.
 
-On HTTP-Transports, like JAX-RS or Servlets, JSPs, whatsoever, the invocation context is encoded as a custom HTTP-Header 
+On HTTP-Transports, like JAX-RS or Servlets, JSPs, or whatsoever, the invocation context is encoded as a custom HTTP-Header 
 __X-TracEE-Context__ with an JSON encoded invocation context map as value.
  
 ```
 GET / HTTP/1.1
-TracEE-Context: {"inRequest":"yes"}
+TPIC: {"inRequest":"yes"}
 User-Agent: Jakarta Commons-HttpClient/3.1
 Host: localhost:2000
 ```
@@ -108,9 +108,9 @@ in the SOAP-Request-Envelope, and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Header>
-		<tracee xmlns="https://github.com/holisticon/tracee">
+		<TPIC xmlns="https://github.com/holisticon/tracee"> <!-- TODO: this namespace should be io.tracee and provide a real XSD-file hosted at http://tracee.io/ -->
 			<inRequest>yes</inRequest>
-		</tracee>
+		</TPIC>
 	</soap:Header>
 	<soap:Body>
 		<ns2:myWebServiceMethod xmlns:ns2="https://example.com/myBusinessWorld/wsdl"/>
