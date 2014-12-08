@@ -15,7 +15,7 @@ public final class TraceeWsHandlerConstants {
             TRACEE_SOAP_HEADER_TAG_NAME);
 
     public static final String TRACEE_HANDLER_CHAIN_URL =
-            "/io/tracee/jaxws/TraceeHandlerChain.xml";
+			"/io/tracee/jaxws/TraceeHandlerChain.xml";
 
 
 

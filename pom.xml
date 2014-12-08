@@ -22,20 +22,20 @@
 		<module>threadlocal-store</module>
 
 		<!-- incoming filters -->
-		<module>servlet</module>
+		<module>binding/servlet</module>
 
 		<!-- outgoing filters -->
-		<module>httpclient</module>
-		<module>httpcomponents</module>
+		<module>binding/httpclient</module>
+		<module>binding/httpcomponents</module>
 
 		<!-- bidi filters -->
-		<module>jaxrs2</module>
-		<module>jaxws</module>
-		<module>jms</module>
+		<module>binding/jaxrs2</module>
+		<module>binding/jaxws</module>
+		<module>binding/jms</module>
+		<module>binding/springmvc</module>
 
 		<!-- examples -->
 		<module>examples</module>
-		<module>springmvc</module>
 	</modules>
 
 	<parent>
