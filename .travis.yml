@@ -3,7 +3,7 @@ jdk:
 - openjdk6
 install: mvn install -DskipTests=true -q
 script: mvn verify -B -q
-after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "holisticon/tracee"
+after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "tracee/tracee"
   && $TRAVIS_PULL_REQUEST == "false" ]] && { curl https://raw.githubusercontent.com/holisticon/travis-configuration/master/settings.xml --location
   --create-dirs -o target/travis/settings.xml; } && { mvn cobertura:cobertura coveralls:report deploy -q --settings target/travis/settings.xml
   -Dgpg.skip=true; }'
