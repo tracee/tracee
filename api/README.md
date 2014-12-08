@@ -10,7 +10,7 @@ This module contains the public api for users (applications) and service provide
 TracEE is designed to keep your application and business code free from the aspect of propagation of contextual information.
 But it is still valid if your business code emits context information that you want to follow within further processing.
 
-_tracee-api_ contains a lightweight client api that allows you to put parameters into the current executing context.
+_tracee-api_ contains a lightweight client api that allows you to attach parameters into the current invocation context.
 Use the `TraceeBackend#put(String key, String value)`-method to add a context parameter.
 
 The key shares a namespace with all MDC entries, so make sure it is unique in your business code and does not conflict
@@ -45,7 +45,7 @@ public class MyBusinessService {
 Be aware, that you _really should_ remove your custom context parameters as soon as the become invalid.
 
 > Please keep in mind that parameters in the TracEE-Context are meant for logging. Do not use it as a _hack_ to pass
-> business parameters alongside your business method signatures.
+> actual business parameters alongside your business method signatures.
 
 ## TracEE backends
 
@@ -53,6 +53,7 @@ TracEE already ships with a number of adapters for popular logging frameworks, n
 
 * [slf4j](../slf4j)
 * [log4j](../log4j)
+* [log4j2](../log4j2)
 * [jboss-logging](../jboss-logging)
 
 If you have no logging backend present in a component, you can still use the [threadlocal-store](../threadlocal-store) as
@@ -60,7 +61,7 @@ backend that supports propagation of parameters (but leaves out the logging part
 
 ### Implementing custom backends
 
-You can implement your own backend by implementing the `io.tracee.spi.TraceeBackendProvider` interface
+You can make your own backend by implementing the `io.tracee.spi.TraceeBackendProvider` interface
 and create a _provider-configuration file_ `classpath:/META-INF/services/io.tracee.spi.TraceeContextProvider`
 (see JDKs [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)).
 
