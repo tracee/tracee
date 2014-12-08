@@ -1,5 +1,6 @@
 package io.tracee.examples.jms;
 
+import io.tracee.contextlogger.javaee.TraceeJmsErrorMessageListener;
 import io.tracee.jms.TraceeMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,10 @@ import javax.jms.MessageListener;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(
-				propertyName = "destinationType", propertyValue = "javax.javaee.Topic"),
+				propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
 		@ActivationConfigProperty(
-				propertyName = "destination", propertyValue = "exampleTopic") })
-@Interceptors(TraceeMessageListener.class)
+				propertyName = "destination", propertyValue = "exampleTopic")})
+@Interceptors({TraceeMessageListener.class, TraceeJmsErrorMessageListener.class})
 public class MessageTopicListener implements MessageListener {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageTopicListener.class);

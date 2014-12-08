@@ -42,7 +42,7 @@ public class MessageProducerImpl implements MessageProducer {
 			textMessage.setText(message);
 			LOG.info("I am about to send the message \"{]\" to {}", message, destination.toString());
 			producer.send(textMessage);
-			session.commit();
+			//session.commit();
 		} catch (JMSException jmse) {
 			throw new RuntimeException("This example is so cheap, this must not have happened!", jmse);
 		}

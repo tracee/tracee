@@ -9,12 +9,18 @@ import javax.jws.WebService;
 public interface TraceeJaxWsTestWS {
 
 	@WebMethod(operationName = "multiply", action = "multiplyAction")
-    int multiply(int mul1, int mul2);
+	int multiply(int mul1, int mul2);
 
 	@WebMethod(operationName = "sum", action = "sumAction")
-    int sum(int add1, int add2);
+	int sum(int add1, int add2);
+
+	@WebMethod(operationName = "multiplyWithJms", action = "multiplyAction")
+	int multiplyWithJms(int mul1, int mul2);
+
+	@WebMethod(operationName = "sumWithJms", action = "sumAction")
+	int sumWithJms(int add1, int add2);
 
 	@WebMethod(operationName = "error", action = "errorAction")
-    int error(int a, int b);
+	int error(int a, int b);
 }
 
