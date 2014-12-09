@@ -1,79 +1,89 @@
 package io.tracee.cxf.client;
 
 import io.tracee.Tracee;
+import io.tracee.TraceeConstants;
+import io.tracee.cxf.interceptor.TraceeOutInterceptor;
 import io.tracee.cxf.test.HelloWorldPortType;
 import io.tracee.cxf.test.HelloWorldService;
-import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.CXFBusFactory;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.interceptor.InterceptorProvider;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.AbstractPhaseInterceptor;
+import org.apache.cxf.phase.Phase;
+import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebserviceClientTest.ContextConfig.class)
 public class WebserviceClientTest {
 
-	@Autowired
-	@Qualifier("helloWorldPort")
 	private HelloWorldPortType helloWorldPort;
 
-	@Autowired
-	@Qualifier("helloWorldTestBean")
-	private HelloWorldPortType helloWorldService;
+	private boolean backendCleared = false;
 
-	@Test
-	public void testContext() {
-		assertNotNull(helloWorldPort);
-		assertNotNull(helloWorldService);
+	@Before
+	public void setup() {
+		final Bus bus = CXFBusFactory.getDefaultBus();
+
+		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer(new HelloWorldTestService(), bus);
+		jaxWsServer.getFeatures().add(new LoggingFeature());
+		jaxWsServer.getFeatures().add(new TraceeCxfFeature());
+		jaxWsServer.create();
+
+		helloWorldPort = new HelloWorldService().getHelloWorldPort();
+
+		Client client = ClientProxy.getClient(helloWorldPort);
+		client.getOutInterceptors().add(new LoggingOutInterceptor());
+		client.getOutInterceptors().add(new TraceeOutInterceptor());
+		client.getOutInterceptors().add(new ResetBackendInterceptor());
+	}
+
+	@After
+	public void traceeBackendShouldBeClearedDuringTest() {
+		assertThat(backendCleared, is(true));
 	}
 
 	@Test
-	public void testCall() {
-		Tracee.getBackend().put("sss", "123");
+	@Ignore
+	public void transportTraceeVariablesFromCxfToJaxWsBackend() {
+		Tracee.getBackend().put(TraceeConstants.REQUEST_ID_KEY, "123");
 		final String answer = helloWorldPort.sayHelloWorld("Michail");
-		assertNotNull(answer);
-		assertTrue(answer.endsWith("Michail"));
+		assertThat(answer, allOf(containsString("Michail"), endsWith("requestId was 123")));
 	}
 
-	@Configuration
-	public static class ContextConfig {
-		@Bean(destroyMethod = "shutdown")
-		public SpringBus cxf() {
-			final SpringBus bus = new SpringBus();
-			bus.getFeatures().add(new LoggingFeature());
-			bus.getFeatures().add(new TraceeCxfFeature());
-			return bus;
+	public JaxWsServerFactoryBean createJaxWsServer(HelloWorldTestService helloWorldBean, Bus bus) {
+		JaxWsServerFactoryBean serverFactoryBean = new JaxWsServerFactoryBean();
+		serverFactoryBean.setServiceClass(HelloWorldTestService.class);
+		serverFactoryBean.setAddress("local://localPath");
+		serverFactoryBean.setServiceBean(helloWorldBean);
+		serverFactoryBean.setBus(bus);
+		return serverFactoryBean;
+	}
+
+	class ResetBackendInterceptor extends AbstractPhaseInterceptor<Message> {
+
+		public ResetBackendInterceptor() {
+			super(Phase.POST_LOGICAL);
 		}
 
-		@Bean(initMethod = "create", destroyMethod = "destroy")
-		@DependsOn("cxf")
-		public JaxWsServerFactoryBean helloWorldServer(HelloWorldTestService helloWorldBean) {
-			JaxWsServerFactoryBean serverFactoryBean = new JaxWsServerFactoryBean();
-			serverFactoryBean.setServiceClass(HelloWorldTestService.class);
-			serverFactoryBean.setAddress("local://localPath");
-			serverFactoryBean.setServiceBean(helloWorldBean);
-			return serverFactoryBean;
-		}
-
-		@Bean
-		public HelloWorldTestService helloWorldTestBean() {
-			return new HelloWorldTestService();
-		}
-
-		@Bean
-		@DependsOn("cxf")
-		public HelloWorldPortType helloWorldPort() {
-			return new HelloWorldService().getHelloWorldPort();
+		@Override
+		public void handleMessage(Message message) throws Fault {
+			Tracee.getBackend().clear();
+			backendCleared = true;
 		}
 	}
 }

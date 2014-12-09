@@ -151,8 +151,6 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
         }
     }
 
-
-
     @Override
     public final Set<Map.Entry<String, String>> entrySet() {
         final Set<Map.Entry<String, String>> entries = new HashSet<Map.Entry<String, String>>();
@@ -191,5 +189,4 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
             return MDCLikeTraceeBackend.this.put(key, value);
         }
     }
-
 }

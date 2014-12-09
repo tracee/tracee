@@ -19,21 +19,23 @@ public class SoapHeaderTransport {
 	 * Parses a context map from a given soap header.
 	 */
 	public Map<String, String> parse(Element header) {
-		final NodeList nodeList = header.getElementsByTagName(TraceeConstants.TRACEE_SOAP_HEADER_TAG_NAME);
+		final NodeList nodeList = header.getElementsByTagNameNS(TraceeConstants.TRACEE_SOAP_HEADER_CONTEXT_URL, TraceeConstants.TRACEE_SOAP_HEADER_TAG_NAME);
 		final Map<String, String> context = new HashMap<String, String>();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			final Node node = nodeList.item(i);
-			final NodeList childNodeList = node.getChildNodes();
+		if (nodeList != null) {
+			for (int i = 0; i < nodeList.getLength(); i++) {
+				final Node node = nodeList.item(i);
+				final NodeList childNodeList = node.getChildNodes();
 
-			for (int j = 0; j < childNodeList.getLength(); j++) {
-				final Node childNode = childNodeList.item(j);
-				final String attributeName = childNode.getNodeName();
-				final String value = childNode.getTextContent();
-				if (attributeName != null
-						&& !attributeName.isEmpty()
-						&& !"#text".equals(attributeName)) {
-					context.put(attributeName, value);
+				for (int j = 0; j < childNodeList.getLength(); j++) {
+					final Node childNode = childNodeList.item(j);
+					final String attributeName = childNode.getNodeName();
+					if (attributeName != null
+							&& !attributeName.isEmpty()
+							&& !"#text".equals(attributeName)) {
+						final String value = childNode.getTextContent();
+						context.put(attributeName, value);
+					}
 				}
 			}
 		}
