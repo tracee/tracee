@@ -3,14 +3,14 @@ package io.tracee.cxf.client;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.cxf.interceptor.TraceeOutInterceptor;
+import io.tracee.transport.SoapHeaderTransport;
 import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.w3c.dom.Element;
 
 import java.util.Map;
 
@@ -29,6 +29,7 @@ public class OutgoingSoapMessageTest {
 
 	@Before
 	public void onSetup() throws Exception {
+		backend.clear();
 		outInterceptor = new TraceeOutInterceptor(backend);
 	}
 
@@ -39,12 +40,13 @@ public class OutgoingSoapMessageTest {
 	}
 
 	@Test
-	@Ignore
 	public void renderContextToSoapHeader() {
 		backend.put("mySoapContext", "mySoapContextValue");
 		outInterceptor.handleMessage(soapMessage);
-		final Map<Object, Object> contextMap = CastUtils.cast((Map<?, ?>) soapMessage.getHeader(TRACEE_SOAP_HEADER_QNAME).getObject());
-		assertThat((String) contextMap.get("mySoapContext"), is("mySoapContextValue"));
+
+		final Map<String, String> contextMap = new SoapHeaderTransport().parse((Element) soapMessage.getHeader(TRACEE_SOAP_HEADER_QNAME).getObject());
+
+		assertThat(contextMap.get("mySoapContext"), is("mySoapContextValue"));
 	}
 
 }

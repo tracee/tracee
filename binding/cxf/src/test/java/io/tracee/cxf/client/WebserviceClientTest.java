@@ -5,7 +5,6 @@ import io.tracee.cxf.test.HelloWorldPortType;
 import io.tracee.cxf.test.HelloWorldService;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,8 +62,6 @@ public class WebserviceClientTest {
 			serverFactoryBean.setServiceClass(HelloWorldTestService.class);
 			serverFactoryBean.setAddress("local://localPath");
 			serverFactoryBean.setServiceBean(helloWorldBean);
-
-//            serverFactoryBean.getFeatures().add(new TraceeCxfFeature());
 			return serverFactoryBean;
 		}
 
@@ -76,21 +73,7 @@ public class WebserviceClientTest {
 		@Bean
 		@DependsOn("cxf")
 		public HelloWorldPortType helloWorldPort() {
-//            return new HelloWorldService(new TraceeCxfFeature()).getHelloWorldPort();
 			return new HelloWorldService().getHelloWorldPort();
-		}
-
-		@Bean
-		@DependsOn("cxf")
-		public HelloWorldPortType helloWorldPort2() {
-			JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-
-			factoryBean.setServiceClass(HelloWorldPortType.class);
-			factoryBean.setAddress("local://localPath");
-
-//            factoryBean.getFeatures().add(new TraceeCxfFeature());
-
-			return (HelloWorldPortType) factoryBean.create();
 		}
 	}
 }

@@ -3,7 +3,7 @@ package io.tracee.jaxws.container;
 import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.PermitAllTraceeFilterConfiguration;
 import io.tracee.TraceeBackend;
-import io.tracee.jaxws.protocol.SoapHeaderTransport;
+import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 

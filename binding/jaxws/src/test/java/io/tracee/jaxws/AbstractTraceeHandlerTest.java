@@ -17,7 +17,7 @@ public class AbstractTraceeHandlerTest {
 
 	private TestTraceeHandler unit;
 
-private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
+	private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
 
 	@Before
 	public void setupMocks() {

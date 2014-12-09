@@ -5,6 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.SoapHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.databinding.DataReader;
@@ -17,6 +18,7 @@ import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.xml.bind.JAXBException;
@@ -89,14 +91,6 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 	}
 
 	private Map<String, String> readSoapHeader(Header soapHeader) {
-		try {
-			DataReader<Node> dataReader = new JAXBDataBinding(SoapHeaderMap.class).createReader(Node.class);
-			final SoapHeaderMap soapHeaderMap = (SoapHeaderMap) dataReader.read(TraceeConstants.TRACEE_SOAP_HEADER_QNAME, (Node) soapHeader.getObject(), SoapHeaderMap.class);
-			return soapHeaderMap.getDataMap();
-		} catch (JAXBException e) {
-			LOGGER.warn("Error occured during TracEE soap header extraction: {}", e.getMessage());
-			LOGGER.debug("Detailed exception", e);
-		}
-		return Collections.emptyMap();
+		return new SoapHeaderTransport().parse((Element) soapHeader.getObject());
 	}
 }

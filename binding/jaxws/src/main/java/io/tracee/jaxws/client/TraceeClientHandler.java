@@ -4,7 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeLogger;
 import io.tracee.jaxws.AbstractTraceeHandler;
-import io.tracee.jaxws.protocol.SoapHeaderTransport;
+import io.tracee.transport.SoapHeaderTransport;
 
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;

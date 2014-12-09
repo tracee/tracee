@@ -7,7 +7,6 @@ import io.tracee.cxf.interceptor.TraceeOutInterceptor;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.helpers.CastUtils;
-import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
@@ -23,7 +22,7 @@ public class OutgoingMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private Interceptor<Message> OUT;
+	private TraceeOutInterceptor outInterceptor;
 
 	private final MessageImpl message = new MessageImpl();
 
@@ -31,22 +30,22 @@ public class OutgoingMessageTest {
 
 	@Before
 	public void onSetup() throws Exception {
-		OUT = new TraceeOutInterceptor(backend);
+		backend.clear();
+		outInterceptor = new TraceeOutInterceptor(backend);
 		httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Test
 	public void renderEmptyContextToResponse() {
-		OUT.handleMessage(message);
+		outInterceptor.handleMessage(message);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void renderContextToResponse() {
 		backend.put("myContextKey", "contextValue2");
-		OUT.handleMessage(message);
-		final Map<Object, Object> headers = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
-		final Map<String, String> traceeContext = httpSerializer.parse(((List<String>) headers.get(TraceeConstants.HTTP_HEADER_NAME)).get(0));
+		outInterceptor.handleMessage(message);
+		final Map<Object, List<String>> headers = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
+		final Map<String, String> traceeContext = httpSerializer.parse(headers.get(TraceeConstants.HTTP_HEADER_NAME).get(0));
 		assertThat(traceeContext.get("myContextKey"), is("contextValue2"));
 	}
 }

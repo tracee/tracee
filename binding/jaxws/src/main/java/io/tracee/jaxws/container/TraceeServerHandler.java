@@ -3,7 +3,7 @@ package io.tracee.jaxws.container;
 
 import io.tracee.*;
 import io.tracee.jaxws.AbstractTraceeHandler;
-import io.tracee.jaxws.protocol.SoapHeaderTransport;
+import io.tracee.transport.SoapHeaderTransport;
 
 import javax.xml.soap.*;
 import javax.xml.ws.handler.soap.SOAPMessageContext;

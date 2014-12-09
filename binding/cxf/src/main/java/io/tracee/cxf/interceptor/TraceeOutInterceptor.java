@@ -1,20 +1,24 @@
 package io.tracee.cxf.interceptor;
 
+import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.SoapHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.binding.soap.SoapHeader;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 
-import javax.xml.bind.JAXBException;
+import javax.xml.soap.SOAPException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +28,21 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 public class TraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TraceeInInterceptor.class);
+
 	private final TraceeBackend backend;
 
 	private final TransportSerialization<String> httpSerializer;
 
 	private String profile;
+
+	public TraceeOutInterceptor() {
+		this(Tracee.getBackend());
+	}
+
+	public TraceeOutInterceptor(String profile) {
+		this(Tracee.getBackend(), profile);
+	}
 
 	public TraceeOutInterceptor(TraceeBackend backend) {
 		this(backend, null);
@@ -66,9 +80,11 @@ public class TraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
 	private void addSoapHeader(Map<String, String> filteredParams, SoapMessage soapMessage) {
 		try {
-			final SoapHeader soapHeader = new SoapHeader(TraceeConstants.TRACEE_SOAP_HEADER_QNAME, new SoapHeaderMap(filteredParams), new JAXBDataBinding(SoapHeaderMap.class));
-			soapMessage.getHeaders().add(soapHeader);
-		} catch (JAXBException ignored) {
+			Element soapHeader = new SoapHeaderTransport().renderTo(filteredParams);
+			soapMessage.getHeaders().add(new SoapHeader(TraceeConstants.TRACEE_SOAP_HEADER_QNAME, soapHeader));
+		} catch (SOAPException e) {
+			LOGGER.warn("Error occured during TracEE soap header creation: {}", e.getMessage());
+			LOGGER.debug("Detailed exception", e);
 		}
 	}
 }

@@ -6,12 +6,9 @@ import io.tracee.TraceeConstants;
 import io.tracee.cxf.interceptor.TraceeInInterceptor;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.TransportSerialization;
-import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -19,9 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 public class IncomingMessageTest {
 
-	private Interceptor<Message> OUT;
+	private TraceeInInterceptor inInterceptor;
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
@@ -31,25 +31,23 @@ public class IncomingMessageTest {
 
 	@Before
 	public void onSetup() throws Exception {
-		OUT = new TraceeInInterceptor(backend);
+		backend.clear();
+		inInterceptor = new TraceeInInterceptor(backend);
 		httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Test
 	public void shouldHandleMessageWithoutHeader() {
-		OUT.handleMessage(message);
+		inInterceptor.handleMessage(message);
 	}
 
 	@Test
-	@Ignore
 	public void shouldHandleMessageWithoutTraceeHeader() {
 		final Map<String, List<String>> headers = new HashMap<String, List<String>>();
 		final String context = "myContext";
 		headers.put(TraceeConstants.HTTP_HEADER_NAME, Arrays.asList(context));
 		message.put(Message.PROTOCOL_HEADERS, headers);
-		OUT.handleMessage(message);
-
-		//TODO: ASSERT
-		Assert.fail();
+		inInterceptor.handleMessage(message);
+		assertThat(backend.size(), is(0));
 	}
 }

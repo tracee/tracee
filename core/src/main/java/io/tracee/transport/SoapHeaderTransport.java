@@ -1,10 +1,11 @@
-package io.tracee.jaxws.protocol;
+package io.tracee.transport;
 
 import io.tracee.TraceeConstants;
-import io.tracee.jaxws.TraceeWsHandlerConstants;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
@@ -17,7 +18,7 @@ public class SoapHeaderTransport {
 	/**
 	 * Parses a context map from a given soap header.
 	 */
-	public Map<String, String> parse(SOAPHeader header) {
+	public Map<String, String> parse(Element header) {
 		final NodeList nodeList = header.getElementsByTagName(TraceeConstants.TRACEE_SOAP_HEADER_TAG_NAME);
 		final Map<String, String> context = new HashMap<String, String>();
 
@@ -53,5 +54,12 @@ public class SoapHeaderTransport {
 			//TODO: entry.getValue() could be null - throws NPE in com.sun.xml.internal.messaging.saaj.soap.impl.ElementImpl
 			traceeSoapHeaderElement.setValue(entry.getValue());
 		}
+	}
+
+	public Element renderTo(Map<String, String> context) throws SOAPException {
+		final MessageFactory messageFactory = MessageFactory.newInstance();
+		final SOAPHeader soapHeader = messageFactory.createMessage().getSOAPHeader();
+		renderTo(context, soapHeader);
+		return soapHeader;
 	}
 }

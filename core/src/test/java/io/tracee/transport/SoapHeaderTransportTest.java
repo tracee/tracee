@@ -1,4 +1,4 @@
-package io.tracee.jaxws.protocol;
+package io.tracee.transport;
 
 import io.tracee.TraceeConstants;
 import org.junit.Before;
