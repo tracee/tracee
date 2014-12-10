@@ -46,7 +46,6 @@
         @SuppressWarnings("unused")
         @TraceeContextProviderMethod(
                 displayName = "name",
-                propertyName = ProfilePropertyNames.COOKIE_NAME,
                 order = 10)
         public String getName() {
             if (cookie != null) {
@@ -58,7 +57,6 @@
         @SuppressWarnings("unused")
         @TraceeContextProviderMethod(
                 displayName = "value",
-                propertyName = ProfilePropertyNames.COOKIE_VALUE,
                 order = 20)
         public String getValue() {
             if (cookie != null) {
