@@ -88,6 +88,6 @@ You can combine those configurations in any way you want. The settings will be a
 You can add the following optional system properties to your application server configuration to configure the common context information:
 
 | Property name | Description | Default |
-|--------------:|:-----------:|: ----- :|
-| io.tracee.contextlogger.tracee-standard-stage| Defines the stage of the system - for example DEV, INT, TEST,... | won't be used if not set explicitly |
-| io.tracee.contextlogger.tracee-standard-system| Defines the name of the system | system name will be determined automatically by calling InetAddress.getLocalHost().getHostName() |
+| -------------:|:-----------:|:-------:|
+| io.tracee.contextlogger.tracee-standard-stage | Defines the stage of the system - for example DEV, INT, TEST,... | won't be used if not set explicitly |
+| io.tracee.contextlogger.tracee-standard-system | Defines the name of the system | system name will be determined automatically by calling InetAddress.getLocalHost().getHostName() |
