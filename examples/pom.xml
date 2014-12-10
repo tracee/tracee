@@ -16,7 +16,6 @@
 		<module>springaop</module>
 		<module>ear</module>
 		<module>docker</module>
-		<module>cxf-hack</module>
 	</modules>
 
 	<parent>
