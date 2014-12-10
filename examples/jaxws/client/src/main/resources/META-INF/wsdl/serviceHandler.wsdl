@@ -1,15 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-				  xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl"
-				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-				  name="TraceeJaxWsTestService"
-				  targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="TraceeJaxWsTestService" targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<wsdl:types>
-		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-				   xmlns:tns="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl"
-				   elementFormDefault="unqualified"
-				   targetNamespace="https://github.com/holisticon/tracee/examples/jaxws/service/wsdl" version="1.0">
-
+		<xs:schema elementFormDefault="unqualified" targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl" version="1.0" xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 			<xs:element name="error" type="tns:error"/>
 
 			<xs:element name="errorResponse" type="tns:errorResponse"/>

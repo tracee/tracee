@@ -5,7 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @Remote
-@WebService(targetNamespace = "https://github.com/holisticon/tracee/examples/jaxws/service/wsdl")
+@WebService(targetNamespace = "https://github.com/tracee/tracee/examples/jaxws/service/wsdl")
 public interface TraceeJaxWsTestWS {
 
 	@WebMethod(operationName = "multiply", action = "multiplyAction")
