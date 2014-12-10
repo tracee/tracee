@@ -162,7 +162,7 @@ This is a an example for an output with ENHANCED context logger profile.
     	}
     }
     
-    ## Maven artifacts
+## Maven artifacts
 You have to add the following Maven dependencies to your project:
 
     <dependency>
