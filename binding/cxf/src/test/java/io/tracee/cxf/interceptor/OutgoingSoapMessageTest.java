@@ -1,20 +1,20 @@
-package io.tracee.cxf.client;
+package io.tracee.cxf.interceptor;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
-import io.tracee.cxf.interceptor.TraceeOutInterceptor;
-import io.tracee.transport.SoapHeaderTransport;
+import io.tracee.TraceeConstants;
+import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.headers.Header;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Element;
 
-import java.util.Map;
+import javax.xml.bind.JAXBException;
 
-import static io.tracee.TraceeConstants.TRACEE_SOAP_HEADER_QNAME;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -36,17 +36,17 @@ public class OutgoingSoapMessageTest {
 	@Test
 	public void shouldHandleSoapMessageWithoutSoapHeader() {
 		outInterceptor.handleMessage(soapMessage);
-		assertThat(soapMessage.getHeader(TRACEE_SOAP_HEADER_QNAME), is(nullValue()));
+		assertThat(soapMessage.getHeader(TraceeConstants.SOAP_HEADER_QNAME), is(nullValue()));
 	}
 
 	@Test
-	public void renderContextToSoapHeader() {
+	public void shouldAddHeaderWithDataBindingToSoapMessage() throws JAXBException {
 		backend.put("mySoapContext", "mySoapContextValue");
 		outInterceptor.handleMessage(soapMessage);
 
-		final Map<String, String> contextMap = new SoapHeaderTransport().parse((Element) soapMessage.getHeader(TRACEE_SOAP_HEADER_QNAME).getObject());
-
-		assertThat(contextMap.get("mySoapContext"), is("mySoapContextValue"));
+		final Header tpicHeader = soapMessage.getHeaders().get(0);
+		assertThat(tpicHeader.getName(), is(TraceeConstants.SOAP_HEADER_QNAME));
+		assertThat(tpicHeader.getObject(), instanceOf(TpicMap.class));
+		assertThat(((TpicMap) tpicHeader.getObject()), is(TpicMap.wrap(backend)));
 	}
-
 }

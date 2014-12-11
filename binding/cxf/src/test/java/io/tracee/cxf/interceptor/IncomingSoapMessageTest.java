@@ -1,24 +1,27 @@
-package io.tracee.cxf.client;
+package io.tracee.cxf.interceptor;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.cxf.interceptor.TraceeInInterceptor;
-import io.tracee.transport.SoapHeaderTransport;
+import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.databinding.DataWriter;
 import org.apache.cxf.headers.Header;
-import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.jaxb.JAXBDataBinding;
-import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeaderElement;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -45,22 +48,34 @@ public class IncomingSoapMessageTest {
 
 	@Test
 	public void shouldHandleMessageWithoutTraceeHeader() throws JAXBException {
-		final HashMap<String, String> contextMap = new HashMap<String, String>();
+		final Map<String, String> contextMap = new HashMap<String, String>();
 		contextMap.put("mySoapKey", "mySoapContextValue");
-		soapMessage.getHeaders().add(new Header(new QName(TraceeConstants.TRACEE_SOAP_HEADER_CONTEXT_URL, "SOME_OTHER"), contextMap, new JAXBDataBinding(HashMap.class)));
+		soapMessage.getHeaders().add(new Header(new QName(TraceeConstants.SOAP_HEADER_NAMESPACE, "SOME_OTHER"), contextMap, new JAXBDataBinding(HashMap.class)));
 
 		inInterceptor.handleMessage(soapMessage);
 		assertThat(backend.size(), is(0));
 	}
 
 	@Test
-	public void shouldHandleMessageWithTraceeHeader() throws SOAPException {
-		final HashMap<String, String> contextMap = new HashMap<String, String>();
+	public void shouldHandleMessageWithTraceeHeader() throws SOAPException, JAXBException {
+		final Map<String, String> contextMap = new HashMap<String, String>();
 		contextMap.put("mySoapKey", "mySoapContextValue");
-		Element soapHeader = new SoapHeaderTransport().renderTo(contextMap);
-		soapMessage.getHeaders().add(new Header(TraceeConstants.TRACEE_SOAP_HEADER_QNAME, soapHeader));
+		final Element element = render(contextMap);
+		final Header e = new Header(TraceeConstants.SOAP_HEADER_QNAME, element);
+		soapMessage.getHeaders().add(e);
 
 		inInterceptor.handleMessage(soapMessage);
 		assertThat(backend.get("mySoapKey"), is("mySoapContextValue"));
+	}
+
+	private Element render(Map<String, String> context) throws JAXBException, SOAPException {
+			final MessageFactory messageFactory = MessageFactory.newInstance();
+		final SOAPHeaderElement dummyContainerElement = messageFactory.createMessage().getSOAPHeader().addHeaderElement(new QName("http://test", "elem"));
+
+
+		DataWriter<Node> writer = new JAXBDataBinding(TpicMap.class).createWriter(Node.class);
+			writer.write(TpicMap.wrap(context), dummyContainerElement);
+
+		return (Element)dummyContainerElement.getFirstChild();
 	}
 }

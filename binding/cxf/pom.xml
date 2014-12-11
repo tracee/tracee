@@ -51,6 +51,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-jaxws</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<scope>test</scope>
@@ -68,39 +74,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>${cxf.version}</version>
-				<executions>
-					<execution>
-						<id>testService</id>
-						<phase>generate-test-sources</phase>
-						<goals>
-							<goal>wsdl2java</goal>
-						</goals>
-						<configuration>
-							<testSourceRoot>${basedir}/target/generated-test-sources/cxf</testSourceRoot>
-							<testWsdlRoot>${basedir}/src/test/resources</testWsdlRoot>
-							<wsdlOptions>
-								<wsdlOption>
-									<wsdl>src/test/resources/test.wsdl</wsdl>
-									<wsdlLocation>test.wsdl</wsdlLocation>
-									<extraargs>
-										<extraarg>-p</extraarg>
-										<extraarg>io.tracee.cxf.test</extraarg>
-										<extraarg>-verbose</extraarg>
-									</extraargs>
-								</wsdlOption>
-							</wsdlOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

@@ -1,4 +1,4 @@
-package io.tracee.cxf.client;
+package io.tracee.cxf.interceptor;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;

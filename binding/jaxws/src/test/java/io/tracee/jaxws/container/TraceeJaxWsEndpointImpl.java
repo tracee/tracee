@@ -11,12 +11,11 @@ import javax.jws.WebService;
 import java.util.*;
 
 @Stateless
-@WebService(serviceName = "TraceeJaxWsEndpoint", portName = "TraceeJaxWsEndpointPort",
+@WebService(serviceName = TraceeJaxWsEndpointImpl.Descriptor.SERVICE_NAME, portName = "TraceeJaxWsEndpointPort",
         targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS,
         endpointInterface = "io.tracee.jaxws.container.TraceeJaxWsEndpoint")
 @HandlerChain(file = TraceeWsHandlerConstants.TRACEE_HANDLER_CHAIN_URL)
 public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
-
 
     private final Logger LOGGER = Logger.getLogger(TraceeJaxWsEndpointImpl.class);
 

@@ -1,8 +1,6 @@
 package io.tracee.transport.jaxb;
 
-import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,17 +16,14 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 
 public class TpicHeaderValueAdapterTest {
 
 	private static final String XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-			"<ns2:TPIC xmlns:ns2=\"https://github.com/tracee/tracee\">\n" +
-			"    <values>\n" +
-			"        <value key=\"traceeRequestId\">1234567890</value>\n" +
-			"        <value key=\"traceeSessionId\">ABCDEFGHIJ</value>\n" +
-			"    </values>\n" +
-			"</ns2:TPIC>\n";
+			"<tpic xmlns=\"http://tracee.io/tpic/1.0\">\n" +
+			"    <entry key=\"traceeRequestId\">1234567890</entry>\n" +
+			"    <entry key=\"traceeSessionId\">ABCDEFGHIJ</entry>\n" +
+			"</tpic>\n";
 
 	private JAXBContext jaxbContext;
 
@@ -40,8 +35,8 @@ public class TpicHeaderValueAdapterTest {
 	@Test
 	public void marshallRequestAndSessionId() throws JAXBException {
 		final Map<String, String> context = new HashMap<String, String>();
-		context.put(TraceeConstants.REQUEST_ID_KEY, "1234567890");
 		context.put(TraceeConstants.SESSION_ID_KEY, "ABCDEFGHIJ");
+		context.put(TraceeConstants.REQUEST_ID_KEY, "1234567890");
 
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -53,8 +48,21 @@ public class TpicHeaderValueAdapterTest {
 	@Test
 	public void unmarshallRequestAndSessionId() throws JAXBException {
 		final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-		final Map<String, String> context = ((TpicMap) unmarshaller.unmarshal(new StringReader(XML))).unwrap();
+		final Map<String, String> context = ((TpicMap) unmarshaller.unmarshal(new StringReader(XML))).unwrapValues();
 		assertThat(context, Matchers.hasEntry(TraceeConstants.REQUEST_ID_KEY, "1234567890")) ;
 		assertThat(context, Matchers.hasEntry(TraceeConstants.SESSION_ID_KEY, "ABCDEFGHIJ")) ;
+	}
+
+	@Test
+	public void shouldTransferSpecialCharactersDueMarshallUnmarshall() throws JAXBException {
+		final Map<String, String> context = new HashMap<String, String>();
+		context.put("ugly&<not>Xml-Fröndly", "H€@D-H|t$_K€Yb0\"<r>ß¿");
+		Marshaller marshaller = jaxbContext.createMarshaller();
+		final StringWriter writer = new StringWriter();
+		marshaller.marshal(TpicMap.wrap(context), writer);
+		System.out.println(writer.toString());
+
+		final TpicMap mangledMap = (TpicMap) jaxbContext.createUnmarshaller().unmarshal(new StringReader(writer.toString()));
+		assertThat(mangledMap.unwrapValues(), is(context));
 	}
 }

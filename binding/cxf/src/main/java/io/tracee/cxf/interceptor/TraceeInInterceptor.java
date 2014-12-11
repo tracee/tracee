@@ -6,23 +6,18 @@ import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.SoapHeaderTransport;
-import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.databinding.DataReader;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import javax.xml.bind.JAXBException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +29,8 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 
 	private final TraceeBackend backend;
 
-	private final TransportSerialization<String> httpSerializer;
+	private final HttpJsonHeaderTransport httpJsonSerializer;
+	private final SoapHeaderTransport httpSoapSerializer;
 
 	private String profile;
 
@@ -54,7 +50,8 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 		super(Phase.PRE_INVOKE);
 		this.backend = backend;
 		this.profile = profile;
-		this.httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.httpJsonSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.httpSoapSerializer = new SoapHeaderTransport();
 	}
 
 	@Override
@@ -63,7 +60,11 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 
 		if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			if (message instanceof SoapMessage) {
-				handleSoapMessage((SoapMessage) message, filterConfiguration);
+				try {
+					handleSoapMessage((SoapMessage) message, filterConfiguration);
+				} catch (JAXBException e) {
+					throw new Fault(e);
+				}
 			} else {
 				handleHttpMessage(message, filterConfiguration);
 			}
@@ -76,21 +77,17 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
             final List<String> traceeHeader = requestHeaders.get(TraceeConstants.HTTP_HEADER_NAME);
 
             if (traceeHeader != null && !traceeHeader.isEmpty()) {
-                final Map<String, String> parsedContext = httpSerializer.parse(traceeHeader.get(0));
+                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader.get(0));
                 backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
             }
         }
 	}
 
-	private void handleSoapMessage(SoapMessage message, TraceeFilterConfiguration filterConfiguration) {
-		final Header soapHeader = message.getHeader(TraceeConstants.TRACEE_SOAP_HEADER_QNAME);
+	private void handleSoapMessage(SoapMessage message, TraceeFilterConfiguration filterConfiguration) throws JAXBException {
+		final Header soapHeader = message.getHeader(TraceeConstants.SOAP_HEADER_QNAME);
 		if (soapHeader != null) {
-            final Map<String, String> parsedContext = readSoapHeader(soapHeader);
+			final Map<String, String> parsedContext = httpSoapSerializer.parseTpicHeader((Element) soapHeader.getObject());
             backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
         }
-	}
-
-	private Map<String, String> readSoapHeader(Header soapHeader) {
-		return new SoapHeaderTransport().parse((Element) soapHeader.getObject());
 	}
 }

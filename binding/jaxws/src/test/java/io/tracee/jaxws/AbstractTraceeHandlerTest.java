@@ -51,7 +51,7 @@ public class AbstractTraceeHandlerTest {
 
 	@Test
 	public void shouldRegisterForTraceeHeaders() {
-		assertThat(unit.getHeaders(), hasItem(TraceeConstants.TRACEE_SOAP_HEADER_QNAME));
+		assertThat(unit.getHeaders(), hasItem(TraceeConstants.SOAP_HEADER_QNAME));
 	}
 
 	@Test

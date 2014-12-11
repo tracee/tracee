@@ -17,10 +17,7 @@ public final class TraceeConstants {
 	public static final String PROFILE_HIDE_INBOUND = "HideInbound";
 	public static final String PROFILE_HIDE_OUTBOUND = "HideOutbound";
 
-	public static final String TRACEE_SOAP_HEADER_CONTEXT_URL = "https://github.com/tracee/tracee";
-	public static final String TRACEE_SOAP_HEADER_TAG_NAME = "TPIC";
-	public static final QName TRACEE_SOAP_HEADER_QNAME = new QName(
-			TRACEE_SOAP_HEADER_CONTEXT_URL,
-			TRACEE_SOAP_HEADER_TAG_NAME);
-
+	public static final String SOAP_HEADER_NAMESPACE = "http://tracee.io/tpic/1.0";
+	public static final String SOAP_HEADER_NAME = "tpic";
+	public static final QName SOAP_HEADER_QNAME = new QName(SOAP_HEADER_NAMESPACE,SOAP_HEADER_NAME);
 }

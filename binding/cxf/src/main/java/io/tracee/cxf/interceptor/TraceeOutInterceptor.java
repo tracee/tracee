@@ -7,10 +7,13 @@ import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.SoapHeaderTransport;
 import io.tracee.transport.TransportSerialization;
+import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapHeader;
 import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.soap.SOAPException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,9 +84,10 @@ public class TraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
 	private void addSoapHeader(Map<String, String> filteredParams, SoapMessage soapMessage) {
 		try {
-			Element soapHeader = new SoapHeaderTransport().renderTo(filteredParams);
-			soapMessage.getHeaders().add(new SoapHeader(TraceeConstants.TRACEE_SOAP_HEADER_QNAME, soapHeader));
-		} catch (SOAPException e) {
+			final Header tpicHeader = new Header(TraceeConstants.SOAP_HEADER_QNAME, TpicMap.wrap(filteredParams),
+					new JAXBDataBinding(TpicMap.class));
+			soapMessage.getHeaders().add(tpicHeader);
+		} catch (JAXBException e) {
 			LOGGER.warn("Error occured during TracEE soap header creation: {}", e.getMessage());
 			LOGGER.debug("Detailed exception", e);
 		}

@@ -1,67 +1,58 @@
 package io.tracee.transport;
 
 import io.tracee.TraceeConstants;
+import io.tracee.transport.jaxb.TpicMap;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPElement;
+import javax.xml.bind.*;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
-import javax.xml.soap.SOAPHeaderElement;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SoapHeaderTransport {
 
+	private final JAXBContext jaxbContext;
+
+	public SoapHeaderTransport() {
+		try {
+			this.jaxbContext = JAXBContext.newInstance(TpicMap.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public Map<String, String> parseSoapHeader(Element soapHeader) throws JAXBException {
+		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.SOAP_HEADER_NAME);
+		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
+			Element tpicHeader = (Element) tpicHeaders.item(0);
+			return parseTpicHeader(tpicHeader);
+		}
+		return new HashMap<String, String>();
+	}
+
 	/**
 	 * Parses a context map from a given soap header.
 	 */
-	public Map<String, String> parse(Element header) {
-		final NodeList nodeList = header.getElementsByTagNameNS(TraceeConstants.TRACEE_SOAP_HEADER_CONTEXT_URL, TraceeConstants.TRACEE_SOAP_HEADER_TAG_NAME);
-		final Map<String, String> context = new HashMap<String, String>();
-
-		if (nodeList != null) {
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				final Node node = nodeList.item(i);
-				final NodeList childNodeList = node.getChildNodes();
-
-				for (int j = 0; j < childNodeList.getLength(); j++) {
-					final Node childNode = childNodeList.item(j);
-					final String attributeName = childNode.getNodeName();
-					if (attributeName != null
-							&& !attributeName.isEmpty()
-							&& !"#text".equals(attributeName)) {
-						final String value = childNode.getTextContent();
-						context.put(attributeName, value);
-					}
-				}
+	public Map<String, String> parseTpicHeader(Element header) throws JAXBException {
+		if (header != null && header.hasChildNodes()) {
+			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			JAXBElement<TpicMap> unmarshal = unmarshaller.unmarshal(header, TpicMap.class);
+			if (unmarshal != null) {
+				return unmarshal.getValue().unwrapValues();
 			}
 		}
-		return context;
+		return new HashMap<String, String>();
 	}
 
 	/**
 	 * Renders a given context map into a given soapHeader.
 	 */
-	public void renderTo(Map<String, String> context, SOAPHeader soapHeader) throws SOAPException {
-		// create soap header element for tracee entries
-		final SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(
-				TraceeConstants.TRACEE_SOAP_HEADER_QNAME);
+	public void renderSoapHeader(Map<String, String> context, SOAPHeader soapHeader) throws SOAPException, JAXBException {
 
-		// loop over context attributes and add them to the header
-		for (final Map.Entry<String, String> entry : context.entrySet()) {
-			final SOAPElement traceeSoapHeaderElement = soapHeaderElement.addChildElement(entry.getKey());
-			//TODO: entry.getValue() could be null - throws NPE in com.sun.xml.internal.messaging.saaj.soap.impl.ElementImpl
-			traceeSoapHeaderElement.setValue(entry.getValue());
-		}
-	}
 
-	public Element renderTo(Map<String, String> context) throws SOAPException {
-		final MessageFactory messageFactory = MessageFactory.newInstance();
-		final SOAPHeader soapHeader = messageFactory.createMessage().getSOAPHeader();
-		renderTo(context, soapHeader);
-		return soapHeader;
+		Marshaller marshaller = jaxbContext.createMarshaller();
+		marshaller.marshal(TpicMap.wrap(context), soapHeader);
 	}
 }

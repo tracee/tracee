@@ -6,13 +6,16 @@ import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.soap.*;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import java.util.Collections;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,16 +44,16 @@ public class TraceeServerHandlerTest {
 	}
 
 	@Test
-	public void testHandleIncoming() {
-		when(soapHeaderTransport.parse(eq(soapHeader))).thenReturn(Collections.singletonMap("FOO","BAR"));
+	public void testHandleIncoming() throws JAXBException {
+		when(soapHeaderTransport.parseSoapHeader(eq(soapHeader))).thenReturn(Collections.singletonMap("FOO","BAR"));
 		unit.handleIncoming(soapMessageContext);
 		verify(backend).putAll(Collections.singletonMap("FOO", "BAR"));
 	}
 
 	@Test
-	public void testHandleOutgoing() throws SOAPException {
+	public void testHandleOutgoing() throws SOAPException, JAXBException {
 		unit.handleOutgoing(soapMessageContext);
-		verify(soapHeaderTransport).renderTo(eq(backend),eq(soapHeader));
+		verify(soapHeaderTransport).renderSoapHeader(eq(backend), eq(soapHeader));
 	}
 
 	@Test
@@ -58,5 +61,4 @@ public class TraceeServerHandlerTest {
 		unit.handleOutgoing(soapMessageContext);
 		verify(backend).clear();
 	}
-
 }

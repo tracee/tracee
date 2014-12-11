@@ -1,4 +1,4 @@
-package io.tracee.cxf.client;
+package io.tracee.cxf.interceptor;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
@@ -27,13 +27,10 @@ public class IncomingMessageTest {
 
 	private final MessageImpl message = new MessageImpl();
 
-	private TransportSerialization<String> httpSerializer;
-
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
 		inInterceptor = new TraceeInInterceptor(backend);
-		httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Test
