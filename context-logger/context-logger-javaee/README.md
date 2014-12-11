@@ -50,7 +50,7 @@ You can use the context logger by annotating the ejb method you want to be handl
     
         // ...
     
-        @Interceptors({ TraceeEjbErrorContextLoggingInterceptor.class })
+        @Interceptors({ TraceeErrorContextLoggingInterceptor.class })
         public int multiply(int a, int b) {
             // ...
         }
