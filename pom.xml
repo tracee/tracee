@@ -33,9 +33,6 @@
 		<module>binding/jaxws</module>
 		<module>binding/jms</module>
 		<module>binding/springmvc</module>
-
-		<!-- examples -->
-		<module>examples</module>
 	</modules>
 
 	<parent>
