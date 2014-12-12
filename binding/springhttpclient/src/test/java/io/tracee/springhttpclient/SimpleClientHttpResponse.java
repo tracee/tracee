@@ -26,6 +26,11 @@ final class SimpleClientHttpResponse implements ClientHttpResponse {
 	}
 
 	@Override
+	public int getRawStatusCode() throws IOException {
+		return statusCode.value();
+	}
+
+	@Override
 	public String getStatusText() throws IOException {
 		return statusText;
 	}
