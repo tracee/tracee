@@ -24,6 +24,7 @@
 		<!-- outgoing filters -->
 		<module>binding/httpclient</module>
 		<module>binding/httpcomponents</module>
+		<module>binding/springhttpclient</module>
 
 		<!-- bidi filters -->
 		<module>binding/jaxrs2</module>
@@ -114,7 +115,7 @@
 		<log4j2.version>2.0.2</log4j2.version>
 		<logback.version>0.9.30</logback.version>
 		<gson.version>2.2.4</gson.version>
-		<spring.version>3.0.7.RELEASE</spring.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
 	</properties>
 
 	<build>
@@ -420,6 +421,12 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 				<scope>provided</scope>
 			</dependency>
