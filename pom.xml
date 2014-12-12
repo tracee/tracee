@@ -18,9 +18,6 @@
 		<module>backend/jboss-logging</module>
 		<module>backend/threadlocal-store</module>
 
-		<!-- contextual logging -->
-		<module>context-logger</module>
-
 		<!-- incoming filters -->
 		<module>binding/servlet</module>
 
