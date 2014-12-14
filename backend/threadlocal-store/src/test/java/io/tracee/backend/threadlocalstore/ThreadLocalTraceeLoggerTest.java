@@ -93,7 +93,7 @@ public class ThreadLocalTraceeLoggerTest {
 	@Test
 	public void errorWithStacktraceShouldBeLogged() throws Exception {
 		final Error t = mock(Error.class);
-		unit.warn("ErrorString", t);
+		unit.error("ErrorString", t);
 		verify(System.err, atLeastOnce()).println(anyString());
 		verify(t).printStackTrace(System.err);
 	}
