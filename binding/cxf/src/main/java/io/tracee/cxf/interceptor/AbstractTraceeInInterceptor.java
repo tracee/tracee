@@ -1,6 +1,5 @@
 package io.tracee.cxf.interceptor;
 
-import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
@@ -11,8 +10,8 @@ import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.message.MessageUtils;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
-import org.apache.cxf.phase.Phase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -21,12 +20,8 @@ import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.Map;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
-
-public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TraceeInInterceptor.class);
-
+abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeInInterceptor.class);
 	private final TraceeBackend backend;
 
 	private final HttpJsonHeaderTransport httpJsonSerializer;
@@ -34,39 +29,37 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 
 	private String profile;
 
-	public TraceeInInterceptor() {
-		this(Tracee.getBackend());
-	}
+	private final TraceeFilterConfiguration.Channel channel;
 
-	public TraceeInInterceptor(String profile) {
-		this(Tracee.getBackend(), profile);
-	}
-
-	public TraceeInInterceptor(TraceeBackend backend) {
-		this(backend, null);
-	}
-
-	public TraceeInInterceptor(TraceeBackend backend, String profile) {
-		super(Phase.PRE_INVOKE);
+	public AbstractTraceeInInterceptor(String phase, TraceeFilterConfiguration.Channel channel, TraceeBackend backend,
+									   String profile) {
+		super(phase);
+		this.channel = channel;
 		this.backend = backend;
 		this.profile = profile;
 		this.httpJsonSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 		this.httpSoapSerializer = new SoapHeaderTransport();
 	}
 
+	protected abstract boolean shouldHandleMessage(Message message);
+
 	@Override
 	public void handleMessage(Message message) throws Fault {
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		if (shouldHandleMessage(message)) {
+			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
-		if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
-			if (message instanceof SoapMessage) {
-				try {
-					handleSoapMessage((SoapMessage) message, filterConfiguration);
-				} catch (JAXBException e) {
-					throw new Fault(e);
+			LOGGER.info("Interceptor {} handles message in direction {}", this.getClass().getSimpleName(),
+					MessageUtils.isOutbound(message) ? "OUT" : "IN");
+			if (filterConfiguration.shouldProcessContext(channel)) {
+				if (message instanceof SoapMessage) {
+					try {
+						handleSoapMessage((SoapMessage) message, filterConfiguration);
+					} catch (JAXBException e) {
+						throw new Fault(e);
+					}
+				} else {
+					handleHttpMessage(message, filterConfiguration);
 				}
-			} else {
-				handleHttpMessage(message, filterConfiguration);
 			}
 		}
 	}
@@ -78,7 +71,7 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 
             if (traceeHeader != null && !traceeHeader.isEmpty()) {
                 final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader.get(0));
-                backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+                backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
             }
         }
 	}
@@ -87,7 +80,7 @@ public class TraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 		final Header soapHeader = message.getHeader(TraceeConstants.SOAP_HEADER_QNAME);
 		if (soapHeader != null) {
 			final Map<String, String> parsedContext = httpSoapSerializer.parseTpicHeader((Element) soapHeader.getObject());
-            backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+            backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
         }
 	}
 }

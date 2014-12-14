@@ -3,7 +3,6 @@ package io.tracee.cxf.interceptor;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.cxf.interceptor.TraceeInInterceptor;
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.databinding.DataWriter;
@@ -26,18 +25,18 @@ import java.util.Map;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class IncomingSoapMessageTest {
+public class IncomingRequestSoapMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private TraceeInInterceptor inInterceptor;
+	private AbstractTraceeInInterceptor inInterceptor;
 
 	private final SoapMessage soapMessage = new SoapMessage(new MessageImpl());
 
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		inInterceptor = new TraceeInInterceptor(backend);
+		inInterceptor = new TraceeRequestInInterceptor(backend);
 	}
 
 	@Test

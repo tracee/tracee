@@ -2,8 +2,7 @@ package io.tracee.cxf.client;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.cxf.interceptor.TraceeInInterceptor;
-import io.tracee.cxf.interceptor.TraceeOutInterceptor;
+import io.tracee.cxf.interceptor.*;
 import org.apache.cxf.Bus;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.interceptor.InterceptorProvider;
@@ -28,12 +27,19 @@ public class TraceeCxfFeature extends AbstractFeature {
 
 	@Override
 	protected void initializeProvider(InterceptorProvider provider, Bus bus) {
-		final TraceeInInterceptor inInterceptor = new TraceeInInterceptor(backend, profile);
-		final TraceeOutInterceptor outInterceptor = new TraceeOutInterceptor(backend, profile);
+		final TraceeRequestInInterceptor requestInInterceptor = new TraceeRequestInInterceptor(backend, profile);
+		final TraceeResponseInInterceptor responseInInterceptor = new TraceeResponseInInterceptor(backend, profile);
+		final TraceeRequestOutInterceptor requestOutInterceptor = new TraceeRequestOutInterceptor(backend, profile);
+		final TraceeResponseOutInterceptor responseOutInterceptor = new TraceeResponseOutInterceptor(backend, profile);
 
-		provider.getInInterceptors().add(inInterceptor);
-		provider.getInFaultInterceptors().add(inInterceptor);
-		provider.getOutInterceptors().add(outInterceptor);
-		provider.getOutFaultInterceptors().add(outInterceptor);
+		provider.getInInterceptors().add(requestInInterceptor);
+		provider.getInInterceptors().add(responseInInterceptor);
+
+		provider.getOutInterceptors().add(requestOutInterceptor);
+		provider.getOutInterceptors().add(responseOutInterceptor);
+
+		provider.getInFaultInterceptors().add(requestInInterceptor);
+		provider.getOutFaultInterceptors().add(responseOutInterceptor);
 	}
+
 }

@@ -3,7 +3,6 @@ package io.tracee.cxf.interceptor;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.cxf.interceptor.TraceeOutInterceptor;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.helpers.CastUtils;
@@ -22,7 +21,7 @@ public class OutgoingMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private TraceeOutInterceptor outInterceptor;
+	private AbstractTraceeOutInterceptor outInterceptor;
 
 	private final MessageImpl message = new MessageImpl();
 
@@ -31,7 +30,7 @@ public class OutgoingMessageTest {
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		outInterceptor = new TraceeOutInterceptor(backend);
+		outInterceptor = new TraceeResponseOutInterceptor(backend);
 		httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
 

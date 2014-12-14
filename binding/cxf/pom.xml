@@ -18,7 +18,6 @@
 
 	<properties>
 		<cxf.version>2.7.13</cxf.version>
-		<spring.version>3.2.12.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -69,7 +68,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-local</artifactId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 			<version>${cxf.version}</version>
 			<scope>test</scope>
 		</dependency>

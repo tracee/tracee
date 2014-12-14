@@ -1,6 +1,5 @@
 package io.tracee.cxf.testSoapService;
 
-import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
@@ -10,6 +9,8 @@ import javax.jws.WebService;
 public interface HelloWorldTestService {
 
 	public static final String NAMESPACE = "https://github.com/tracee/tracee";
+
+	public static final String TEST_KEY = "serverKey";
 
 	@WebResult(partName = "greeting")
 	public String sayHelloWorld(

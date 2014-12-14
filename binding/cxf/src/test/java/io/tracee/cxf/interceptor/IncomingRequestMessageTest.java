@@ -3,9 +3,6 @@ package io.tracee.cxf.interceptor;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.cxf.interceptor.TraceeInInterceptor;
-import io.tracee.transport.HttpJsonHeaderTransport;
-import io.tracee.transport.TransportSerialization;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
@@ -19,9 +16,9 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class IncomingMessageTest {
+public class IncomingRequestMessageTest {
 
-	private TraceeInInterceptor inInterceptor;
+	private AbstractTraceeInInterceptor inInterceptor;
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
@@ -30,7 +27,7 @@ public class IncomingMessageTest {
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		inInterceptor = new TraceeInInterceptor(backend);
+		inInterceptor = new TraceeRequestInInterceptor(backend);
 	}
 
 	@Test

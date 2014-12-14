@@ -35,24 +35,24 @@ public class TraceeCxfFeatureTest {
 	@Test
 	public void shouldAddInInterceptorToDefaultMessage() {
 		new TraceeCxfFeature(backend).initializeProvider(interceptorProvider, bus);
-		verify(interceptorProvider).getInInterceptors();
+		verify(interceptorProvider, times(2)).getInInterceptors();
 	}
 
 	@Test
 	public void shouldAddInFaultInterceptorToDefaultMessage() {
 		new TraceeCxfFeature(backend).initializeProvider(interceptorProvider, bus);
-		verify(interceptorProvider).getInFaultInterceptors();
+		verify(interceptorProvider, times(1)).getInFaultInterceptors();
 	}
 
 	@Test
 	public void shouldAddOutInterceptorToDefaultMessage() {
 		new TraceeCxfFeature(backend).initializeProvider(interceptorProvider, bus);
-		verify(interceptorProvider).getOutInterceptors();
+		verify(interceptorProvider, times(2)).getOutInterceptors();
 	}
 
 	@Test
 	public void shouldAddOutFaultInterceptorToDefaultMessage() {
 		new TraceeCxfFeature(backend).initializeProvider(interceptorProvider, bus);
-		verify(interceptorProvider).getOutInterceptors();
+		verify(interceptorProvider, times(1)).getOutFaultInterceptors();
 	}
 }

@@ -30,7 +30,7 @@ public class OutgoingSoapMessageTest {
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		outInterceptor = new TraceeOutInterceptor(backend);
+		outInterceptor = new TraceeResponseOutInterceptor(backend);
 	}
 
 	@Test

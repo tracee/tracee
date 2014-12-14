@@ -2,16 +2,19 @@ package io.tracee.cxf;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
-import io.tracee.cxf.interceptor.TraceeOutInterceptor;
+import io.tracee.cxf.client.TraceeCxfFeature;
 import io.tracee.cxf.testSoapService.HelloWorldTestService;
 import io.tracee.jaxws.client.TraceeClientHandler;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class CxfClientToJaxwsServerIT extends AbstractConnectionITHelper {
@@ -20,22 +23,29 @@ public class CxfClientToJaxwsServerIT extends AbstractConnectionITHelper {
 
 	@Before
 	public void setup() {
-		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer(bus);
+		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer();
 		jaxWsServer.getHandlers().add(new TraceeClientHandler());
 		server = jaxWsServer.create();
 
 		final ClientProxyFactoryBean factoryBean = new ClientProxyFactoryBean();
-		factoryBean.getOutInterceptors().add(new LoggingOutInterceptor());
-		factoryBean.getOutInterceptors().add(new TraceeOutInterceptor());
+		factoryBean.getFeatures().add(new LoggingFeature());
+		factoryBean.getFeatures().add(new TraceeCxfFeature());
+		factoryBean.getFeatures().add(new ResetBackendFeature());
 		factoryBean.setServiceClass(HelloWorldTestService.class);
-		factoryBean.setAddress("local://localPath");
+		factoryBean.setAddress(endpointAddress);
 		helloWorldPort = (HelloWorldTestService) factoryBean.create();
 	}
 
 	@Test
-	public void transportTraceeVariablesFromCxfToJaxWsBackend() {
+	public void transportTraceeVariablesFromClientToBackend() {
 		Tracee.getBackend().put(TraceeConstants.REQUEST_ID_KEY, "123");
 		final String answer = helloWorldPort.sayHelloWorld("Michail");
 		assertThat(answer, allOf(containsString("Michail"), endsWith("requestId was 123")));
+	}
+
+	@Test
+	public void transportTraceeVariablesFromBackendToTheClient() {
+		helloWorldPort.sayHelloWorld("Michail");
+		assertThat(Tracee.getBackend().get(HelloWorldTestService.TEST_KEY), is("accepted"));
 	}
 }
