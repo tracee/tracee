@@ -12,9 +12,24 @@ tracee-servlet contains Servlet-Listeners and -Filters that allows you to use Tr
 
 Its super-easy for Servlet3+-Containers. Just add tracee-servlet-VERSION.jar to your webapp-classpath (`WEB-INF/lib` or as maven runtime dependency). tracee-servlet contains a [web-fragment.xml](src/main/resources/META-INF/web-fragment.xml) that registers all required filters and event listeners.
 
+If you're use Maven for your dependency management simple add this to your pom:
+
+```xml
+<dependencies>
+...
+    <dependency>
+        <groupId>io.tracee.inbound</groupId>
+        <artifactId>tracee-servlet</artifactId>
+        <version>RELEASE</version>
+    </dependency>
+...
+</dependencies>
+```
+
 If you are on a servlet Servlet<3-Container, you need to register the following filters in your web.xml:
 
-```
+```xml
+...
     <filter>
         <filter-name>traceeFilter</filter-name>
         <filter-class>io.tracee.servlet.TraceeFilter</filter-class>
@@ -29,6 +44,7 @@ If you are on a servlet Servlet<3-Container, you need to register the following 
 	<listener>
 		<listener-class>io.tracee.servlet.TraceeSessionListener</listener-class>
 	</listener>
+...
 ```
 You may change the filter-mapping:url-pattern according to your needs.
 

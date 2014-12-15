@@ -173,20 +173,7 @@ All TracEE modules are (hopefully) OSGI compliant.
 
 ## Maven artifacts
 
-Tracee is released to maven central via Sonatype OSS Repository Hosting.
-
-Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.tracee.inbound</groupId>
-        <artifactId>tracee-servlet</artifactId>
-        <version>0.5.0</version>
-    </dependency>
-</dependencies>
-```
-
-... or use the very latest SNAPSHOT from the sonatype snapshot repository
+Tracee is released to maven central via Sonatype OSS Repository Hosting. Just add a maven/gradle/sbt dependency as usual. If you are a crazy one, you could use the very latest SNAPSHOT as well by adding the sonatype snapshot repository:
 
 ```xml
 <repositories>
@@ -196,15 +183,7 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
         <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
 </repositories>
-<dependencies>
-    <dependency>
-        <groupId>io.tracee.inbound</groupId>
-        <artifactId>tracee-servlet</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
-    </dependency>
-</dependencies>
 ```
-
 
 # More
 
@@ -212,9 +191,8 @@ Just add a maven/gradle/sbt dependency. For example _tracee-servlet_:
 TracEE creates the following context identfiers on the fly if not configured otherwise:
 
     * it generates a pseudo-unique request id (configurable length)
-    * it generates a session id based on the servlet session id. Since the servlet session id is a secure item that should not 
+    * it generates a session hash based on the servlet session id. Since the servlet session id is a secure item that should not 
     be passed around unnecessarily, we use a hash of it.
-
 
 ## Performance considerations
 
