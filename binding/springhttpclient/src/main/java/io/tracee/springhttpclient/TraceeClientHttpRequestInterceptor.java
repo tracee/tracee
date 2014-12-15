@@ -24,10 +24,12 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 	private final TransportSerialization<String> transportSerialization;
 	private final String profile;
 
+	public TraceeClientHttpRequestInterceptor() {
+		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()), null);
+	}
+
 	public TraceeClientHttpRequestInterceptor(String profile) {
-		this.backend = Tracee.getBackend();
-		this.transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
-		this.profile = profile;
+		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()), profile);
 	}
 
 	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, TransportSerialization<String> transportSerialization, String profile) {
@@ -35,7 +37,6 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 		this.transportSerialization = transportSerialization;
 		this.profile = profile;
 	}
-
 
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
