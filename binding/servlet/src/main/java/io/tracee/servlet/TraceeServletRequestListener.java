@@ -57,21 +57,12 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 			mergeIncomingContextToBackend(request);
 		}
 
-		if (configuration.shouldGenerateRequestId() && !backend.containsKey(TraceeConstants.REQUEST_ID_KEY)) {
-			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
+		Utilities.generateRequestIdIfNecessary(backend);
+
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			Utilities.generateSessionIdIfNecessary(backend, session.getId());
 		}
-
-		if (configuration.shouldGenerateSessionId() && !backend.containsKey(TraceeConstants.SESSION_ID_KEY)) {
-			final HttpSession session = request.getSession(false);
-			if (session != null) {
-				backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(session.getId(), configuration.generatedSessionIdLength()));
-			}
-		}
-	}
-
-
-	private String anonymizedSessionKey(String sessionKey, int length) {
-		return Utilities.createAlphanumericHash(sessionKey, length);
 	}
 
 	private void mergeIncomingContextToBackend(HttpServletRequest request) {
@@ -89,6 +80,4 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, IncomingRequest);
 		backend.putAll(filtered);
 	}
-
-
 }

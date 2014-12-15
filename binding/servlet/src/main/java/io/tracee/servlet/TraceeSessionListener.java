@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSessionListener;
  * <li>Jetty</li>
  * <li>Tomcat</li>
  * </ul>
- *
  */
 public class TraceeSessionListener implements HttpSessionListener {
 
@@ -31,20 +30,13 @@ public class TraceeSessionListener implements HttpSessionListener {
 		this.backend = backend;
 	}
 
-    @Override
-    public final void sessionCreated(HttpSessionEvent httpSessionEvent) {
-		if (backend.getConfiguration().shouldGenerateSessionId()) {
-			final String sessionId = httpSessionEvent.getSession().getId();
-			backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(sessionId, backend.getConfiguration().generatedSessionIdLength()));
-		}
+	@Override
+	public final void sessionCreated(HttpSessionEvent httpSessionEvent) {
+		Utilities.generateSessionIdIfNecessary(backend, httpSessionEvent.getSession().getId());
 	}
 
-    @Override
-    public final void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+	@Override
+	public final void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 		backend.remove(TraceeConstants.SESSION_ID_KEY);
-    }
-
-	private String anonymizedSessionKey(String sessionKey, int length) {
-		return Utilities.createAlphanumericHash(sessionKey, length);
 	}
 }
