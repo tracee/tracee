@@ -5,6 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -33,10 +34,7 @@ public class TraceeSessionListener implements HttpSessionListener {
 
     @Override
     public final void sessionCreated(HttpSessionEvent httpSessionEvent) {
-		if (backend.getConfiguration().shouldGenerateSessionId()) {
-			final String sessionId = httpSessionEvent.getSession().getId();
-			backend.put(TraceeConstants.SESSION_ID_KEY, anonymizedSessionKey(sessionId, backend.getConfiguration().generatedSessionIdLength()));
-		}
+        backend.generateSessionIdIfNecessary(backend.getConfiguration(), httpSessionEvent.getSession().getId());
 	}
 
     @Override
@@ -44,7 +42,4 @@ public class TraceeSessionListener implements HttpSessionListener {
 		backend.remove(TraceeConstants.SESSION_ID_KEY);
     }
 
-	private String anonymizedSessionKey(String sessionKey, int length) {
-		return Utilities.createAlphanumericHash(sessionKey, length);
-	}
 }

@@ -32,9 +32,7 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
     public final void filter(ClientRequestContext requestContext) throws IOException {
 
         // generate request id if it doesn't exist
-        if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().shouldGenerateRequestId()) {
-            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
-        }
+        backend.generateRequestIdIfNecessary(backend.getConfiguration());
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);

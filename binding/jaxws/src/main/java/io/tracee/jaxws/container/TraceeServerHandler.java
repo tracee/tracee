@@ -42,12 +42,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			}
 
             // generate request id if it doesn't exist
-            if (getTraceeBackend().get(TraceeConstants.REQUEST_ID_KEY) == null
-					&& getTraceeBackend().getConfiguration().shouldGenerateRequestId()) {
-                getTraceeBackend().put(TraceeConstants.REQUEST_ID_KEY,
-						Utilities.createRandomAlphanumeric(getTraceeBackend().getConfiguration().generatedRequestIdLength()));
-            }
-
+            backend.generateRequestIdIfNecessary(backend.getConfiguration());
         } catch (final SOAPException e) {
             traceeLogger.error("TraceeServerHandler - Error during precessing of inbound soap header");
         }
