@@ -163,11 +163,11 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
 | __backends__                                        |
-| [tracee-slf4j](binding/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
-| [tracee-log4j](binding/log4j)                       | Backend implementation for containers using log4j for logging.
-| [tracee-log4j2](binding/log4j2)                     | Backend implementation for containers using log4j2 for logging.
-| [tracee-jboss-logging](binding/jboss-logging)       | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
-| [threadlocal-store](binding/threadlocal-store)      | Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
+| [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
+| [tracee-log4j](backend/log4j)                       | Backend implementation for containers using log4j for logging.
+| [tracee-log4j2](backend/log4j2)                     | Backend implementation for containers using log4j2 for logging.
+| [tracee-jboss-logging](backend/jboss-logging)       | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
+| [threadlocal-store](backend/threadlocal-store)      | Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
 
 All TracEE modules are (hopefully) OSGI compliant.
 
