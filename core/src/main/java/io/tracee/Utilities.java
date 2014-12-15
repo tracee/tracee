@@ -1,5 +1,7 @@
 package io.tracee;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
@@ -15,14 +17,14 @@ public final class Utilities {
 		// hide constructor
 	}
 
-	public static boolean isNullOrEmptyString(String value) {
+	public static boolean isNullOrEmptyString(final String value) {
 		return value == null || value.trim().isEmpty();
 	}
 
 	/**
 	 * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
 	 */
-	public static String createRandomAlphanumeric(int length) {
+	public static String createRandomAlphanumeric(final int length) {
 		final Random r = ThreadLocalRandom.current();
 		final char[] randomChars = new char[length];
 		for (int i = 0; i < length; ++i) {
@@ -34,12 +36,12 @@ public final class Utilities {
 	/**
 	 * Creates a alphanumeric projection with a given length of the given object using its {@link Object#hashCode()}.
 	 */
-	public static String createAlphanumericHash(String str, int length) {
+	public static String createAlphanumericHash(final String str, final int length) {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			final MessageDigest md = MessageDigest.getInstance("SHA-256");
 			final byte[] digest = md.digest(str.getBytes(Charset.forName("UTF-8")));
 			// To human
-			StringBuilder sb = new StringBuilder();
+			final StringBuilder sb = new StringBuilder();
 			for (byte b : digest) {
 				if (b < 16) sb.append("0");
 				sb.append(Integer.toHexString(b & 0xff));
@@ -56,6 +58,29 @@ public final class Utilities {
 		} catch (UnsupportedCharsetException e) {
 			// We should handle such error like the NoSuchAlgorithmException
 			return createRandomAlphanumeric(length);
+		}
+	}
+
+	/**
+	 * Generate request id if it doesn't exist in TraceeBackend and configuration asks for one
+	 *
+	 * @param backend Currently used TraceeBackend
+	 */
+	public static void generateRequestIdIfNecessary(final TraceeBackend backend) {
+		if (backend != null && !backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && backend.getConfiguration().shouldGenerateRequestId()) {
+			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
+		}
+	}
+
+	/**
+	 * Generate session id hash if it doesn't exist in TraceeBackend and configuration asks for one
+	 *
+	 * @param backend Currently used TraceeBackend
+	 * @param sessionId Current http sessionId
+	 */
+	public static void generateSessionIdIfNecessary(final TraceeBackend backend, final String sessionId) {
+		if (backend != null && !backend.containsKey(TraceeConstants.SESSION_ID_KEY) && backend.getConfiguration().shouldGenerateSessionId()) {
+			backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(sessionId, backend.getConfiguration().generatedSessionIdLength()));
 		}
 	}
 }

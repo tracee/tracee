@@ -41,21 +41,15 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
-		if (configuration.shouldProcessContext(IncomingRequest))
+		if (configuration.shouldProcessContext(IncomingRequest)) {
 			mergeIncomingContextToBackend(request, configuration);
-
-		// create random RequestId if not already set
-		if (!backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && configuration.shouldGenerateRequestId()) {
-			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(configuration.generatedRequestIdLength()));
 		}
 
-		// create another random id to identify the http session
-		if (!backend.containsKey(TraceeConstants.SESSION_ID_KEY) && configuration.shouldGenerateSessionId()) {
-			final HttpSession session = request.getSession(false);
-			if (session != null) {
-				backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(session.getId(),
-						configuration.generatedSessionIdLength()));
-			}
+		Utilities.generateRequestIdIfNecessary(backend);
+
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			Utilities.generateSessionIdIfNecessary(backend, session.getId());
 		}
 
 		return true;

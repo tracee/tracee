@@ -31,16 +31,14 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
     @Override
     public final void filter(ClientRequestContext requestContext) throws IOException {
 
-        // generate request id if it doesn't exist
-        if (backend.get(TraceeConstants.REQUEST_ID_KEY) == null && backend.getConfiguration().shouldGenerateRequestId()) {
-            backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
-        }
+		Utilities.generateRequestIdIfNecessary(backend);
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
 			final String serializedTraceeContext = transportSerialization.render(filtered);
-			if (serializedTraceeContext == null)
+			if (serializedTraceeContext == null) {
 				return;
+			}
 			requestContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedTraceeContext);
 		}
     }

@@ -56,7 +56,6 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldNotOverrideExistingRequestId() throws Exception {
-
 		when(mockedBackend.containsKey(eq(TraceeConstants.REQUEST_ID_KEY))).thenReturn(true);
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
