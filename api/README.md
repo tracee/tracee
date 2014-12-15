@@ -1,6 +1,5 @@
 > This document contains documentation for the tracee-api module. Click [here](/README.md) to get an overview that TracEE is about.
 
-
 # tracee-api
 
 This module contains the public api for users (applications) and service provider implementations.
@@ -51,18 +50,18 @@ Be aware, that you _really should_ remove your custom context parameters as soon
 
 TracEE already ships with a number of adapters for popular logging frameworks, namely:
 
-* [slf4j](../slf4j)
-* [log4j](../log4j)
-* [log4j2](../log4j2)
-* [jboss-logging](../jboss-logging)
+* [slf4j](/backend/slf4j)
+* [log4j](/backend/log4j)
+* [log4j2](/backend/log4j2)
+* [jboss-logging](/backend/jboss-logging)
 
-If you have no logging backend present in a component, you can still use the [threadlocal-store](../threadlocal-store) as
+If you have no logging backend present in a component, you can still use the [threadlocal-store](/backend/threadlocal-store) as
 backend that supports propagation of parameters (but leaves out the logging part).
 
 ### Implementing custom backends
 
 You can make your own backend by implementing the `io.tracee.spi.TraceeBackendProvider` interface
 and create a _provider-configuration file_ `classpath:/META-INF/services/io.tracee.spi.TraceeContextProvider`
-(see JDKs [ServiceLoader](http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html)).
+(see JDKs [ServiceLoader](http://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html)).
 
-The module [tracee-core](../core) contains abstractions over MDC-like logging backends that may help you with your integration.
+The module [tracee-core](/core) contains abstractions over MDC-like logging backends that may help you with your integration.

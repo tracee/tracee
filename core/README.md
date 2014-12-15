@@ -2,7 +2,7 @@
 
 This module contains implementation details and may be used by implementing features.
 
-For a user manual please visit the [tracee-api](/tracee-api) documentation.
+For a user manual please visit the [tracee-api](/api) documentation.
 
 # Filter Configuration
 
@@ -36,12 +36,12 @@ Just create a file with the name `META-INF/tracee.properties` in your applicatio
 ## Configuration resolution
 
 Loading order:
-- TracEE first scans for __all__ `META-INF/tracee.default.properties` files _in undefined order_ on the classpath and combines them to a _default_-properties object.
-- Then TracEE scans for __all__ `META-INF/tracee.properties` files _in undefined order_ on the classpath and combines them to an _application_-properties object.
+* TracEE first scans for __all__ `META-INF/tracee.default.properties` files _in undefined order_ on the classpath and combines them to a _default_-properties object.
+* Then TracEE scans for __all__ `META-INF/tracee.properties` files _in undefined order_ on the classpath and combines them to an _application_-properties object.
 
 Evaluation strategy:
-- When a connector is configured with a profile, it will lookup the configuration keys with the prefix `tracee.profile.PROFILE_NAME.`.
-- When there is no profile specific configuration for a certain key, it will fall back to the default configuration of the key `tracee.default.`.
+* When a connector is configured with a profile, it will lookup the configuration keys with the prefix `tracee.profile.PROFILE_NAME.`.
+* When there is no profile specific configuration for a certain key, it will fall back to the default configuration of the key `tracee.default.`.
 
 If no profile is configured for a connector, it will always lookup the default value.
 
