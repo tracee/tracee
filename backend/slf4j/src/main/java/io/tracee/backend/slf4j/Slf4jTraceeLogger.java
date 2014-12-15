@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 /**
  * TraceeLogger Abstraction for SLF4J.
  */
-public final class Slf4jTraceeLogger implements TraceeLogger {
+final class Slf4jTraceeLogger implements TraceeLogger {
 
     private final Logger logger;
 

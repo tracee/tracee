@@ -5,7 +5,7 @@ import org.slf4j.MDC;
 
 import java.util.Map;
 
-public final class Slf4jMdcAdapter implements MDCLike {
+final class Slf4jMdcAdapter implements MDCLike {
 
 	@Override
     public boolean containsKey(String key) {
