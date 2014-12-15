@@ -21,6 +21,11 @@ through your whole system and makes them visible in your logs. Therefore it cont
 * jax-rs2
 * jms
 
+Also supported are these common and widespread frameworks:
+
+* Spring MVC
+* Spring Web (RestClients)
+
 This project is still in an experimental stage and the api may change during further development.
 
 # Getting started
@@ -76,7 +81,7 @@ We may call these context boundaries MDC gaps. There are different kinds of thos
     * Remote EJB calls
     * Invoking and accepting arbitrary HTTP requests (Servlet, HttpClient)
     * Invoking and accepting remote web-service calls (JAX-WS)
-    * Invoking and accepting remote rest-services calls(JAX-RS)
+    * Invoking and accepting remote rest-services calls (JAX-RS, RestClients / Spring MVC)
 * Asynchronous dispatch
     * Async processing of a servlet request (Servlet3 Async)
     * Async EJB calls
@@ -126,41 +131,43 @@ propagate context information from a servlet container based frontend to an ejb 
 
 ## Integration scenarios
 
-| Framework  | Client | Container |
-| ----------:|:------:|:---------:|
-| Servlet    | - | Use [tracee-servlet](binding/servlet) as a servlet filter. |
-| Spring MVC | - | Use [tracee-springmvc](binding/springmvc)'s `TraceeInterceptor`. |
-| JAX-RS     | Configure [tracee-httpclient](binding/httpclient) as Executor | Use [tracee-servlet](binding/servlet) as a servlet filter. |
-| JAX-RS2    | Configure [tracee-jaxrs2](binding/jaxrs2)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
-| JAX-WS     | Use [tracee-jaxws](binding/jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
-| JMS        | Producer: Use [tracee-jms](binding/jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms)'s `TraceeMessageListener` as EJB interceptor. |
-| ApacheHttpClient | Use [tracee-httpclient](binding/httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
-| EJB3 remote  | - | - |
+| Framework                   | Client | Container |
+| ---------------------------:|:------:|:---------:|
+| Servlet                     | - | Use [tracee-servlet](binding/servlet) as a servlet filter. |
+| Spring MVC                  | - | Use [tracee-springmvc](binding/springmvc)'s `TraceeInterceptor`. |
+| Spring Web (Rest-Clients)   | Use [tracee-springhttpclient](binding/springhttpclient)'s `TraceeClientHttpRequestInterceptor`. | - |
+| JAX-RS                      | Configure [tracee-httpclient](binding/httpclient) as Executor | Use [tracee-servlet](binding/servlet) as a servlet filter. |
+| JAX-RS2                     | Configure [tracee-jaxrs2](binding/jaxrs2)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](binding/jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
+| JAX-WS                      | Use [tracee-jaxws](binding/jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](binding/jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
+| JMS                         | Producer: Use [tracee-jms](binding/jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](binding/jms)'s `TraceeMessageListener` as EJB interceptor. |
+| ApacheHttpClient            | Use [tracee-httpclient](binding/httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| EJB3 remote                 | - | - |
 
 ## Modules
 
 TracEE is highly modular. What modules actually you need depends on your application and its underlying frameworks and containers.
 The following table describes all available TracEE-modules and their usage scenarios.
 
-| Module                                | Usage |
-|--------------------------------------:|:-----:|
-| __core modules__                      |       |
-| [tracee-api](api/)                    | Contains an API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
-| [tracee-core](core/)                  | Common utility classes, configuration system and transport serialization mechanisms. You wont need this module as a direct dependency.
-| __connector modules__                 |
-| [tracee-httpcomponents](binding/httpcomponents/) | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
-| [tracee-httpclient](binding/httpclient/)      | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
-| [tracee-jaxrs2](binding/jaxrs2)               | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
-| [tracee-jaxws](binding/jaxws)                 | HandlerChains for JAX-WS endpoints and clients.
-| [tracee-jms](binding/jms)                     | EJB-Interceptors and MessageProducers that allow you to pass around your TracEE context with JMS.
-| [tracee-servlet](binding/servlet)        		| Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
-| [tracee-springmvc](binding/springmvc)         | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
-| __backends__                          |
-| [tracee-slf4j](binding/slf4j)                 | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
-| [tracee-log4j](binding/log4j)                 | Backend implementation for containers using log4j for logging.
-| [tracee-log4j2](binding/log4j2)               | Backend implementation for containers using log4j2 for logging.
-| [tracee-jboss-logging](binding/jboss-logging) | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
-| [threadlocal-store](binding/threadlocal-store)| Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
+| Module                                              | Usage |
+|----------------------------------------------------:|:-----:|
+| __core modules__                                    |       |
+| [tracee-api](api/)                                  | Contains an API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
+| [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. You wont need this module as a direct dependency.
+| __connector modules__                               |
+| [tracee-httpcomponents](binding/httpcomponents/)    | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
+| [tracee-httpclient](binding/httpclient/)            | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
+| [tracee-jaxrs2](binding/jaxrs2)                     | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
+| [tracee-jaxws](binding/jaxws)                       | HandlerChains for JAX-WS endpoints and clients.
+| [tracee-jms](binding/jms)                           | EJB-Interceptors and MessageProducers that allow you to pass around your TracEE context with JMS.
+| [tracee-servlet](binding/servlet)        		      | Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
+| [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
+| [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
+| __backends__                                        |
+| [tracee-slf4j](binding/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
+| [tracee-log4j](binding/log4j)                       | Backend implementation for containers using log4j for logging.
+| [tracee-log4j2](binding/log4j2)                     | Backend implementation for containers using log4j2 for logging.
+| [tracee-jboss-logging](binding/jboss-logging)       | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
+| [threadlocal-store](binding/threadlocal-store)      | Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
 
 All TracEE modules are (hopefully) OSGI compliant.
 
