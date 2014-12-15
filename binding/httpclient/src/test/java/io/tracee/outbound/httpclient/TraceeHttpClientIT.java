@@ -30,7 +30,7 @@ public class TraceeHttpClientIT {
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient(), null);
+		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient());
 
 		GetMethod getMethod = new GetMethod(serverEndpoint);
 		Tracee.getBackend().put("beforeRequest", "yip");
@@ -68,6 +68,4 @@ public class TraceeHttpClientIT {
 			server.join();
 		}
 	}
-
-
 }
