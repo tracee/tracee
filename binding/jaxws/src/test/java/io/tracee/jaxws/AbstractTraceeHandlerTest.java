@@ -1,6 +1,7 @@
 package io.tracee.jaxws;
 
 import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class AbstractTraceeHandlerTest {
 
 	private TestTraceeHandler unit;
 
-private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
+	private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
 
 	@Before
 	public void setupMocks() {
@@ -50,7 +51,7 @@ private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
 
 	@Test
 	public void shouldRegisterForTraceeHeaders() {
-		assertThat(unit.getHeaders(), hasItem(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME));
+		assertThat(unit.getHeaders(), hasItem(TraceeConstants.SOAP_HEADER_QNAME));
 	}
 
 	@Test

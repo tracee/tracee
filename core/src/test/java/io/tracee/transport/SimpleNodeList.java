@@ -1,4 +1,4 @@
-package io.tracee.jaxws.protocol;
+package io.tracee.transport;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

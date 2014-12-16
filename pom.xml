@@ -31,6 +31,7 @@
 		<module>binding/jaxws</module>
 		<module>binding/jms</module>
 		<module>binding/springmvc</module>
+		<module>binding/cxf</module>
 	</modules>
 
 	<parent>
@@ -119,7 +120,7 @@
 	</properties>
 
 	<build>
-		<defaultGoal>install</defaultGoal>
+		<defaultGoal>clean install</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

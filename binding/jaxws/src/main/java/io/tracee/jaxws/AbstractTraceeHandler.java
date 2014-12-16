@@ -1,6 +1,7 @@
 package io.tracee.jaxws;
 
 import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.handler.MessageContext;
@@ -15,7 +16,7 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
 	private final TraceeBackend traceeBackend;
 
 	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
-			new HashSet<QName>(Collections.singleton(TraceeWsHandlerConstants.TRACEE_SOAP_HEADER_QNAME)));
+			new HashSet<QName>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
 
 	public AbstractTraceeHandler(TraceeBackend traceeBackend) {
 		this.traceeBackend = traceeBackend;

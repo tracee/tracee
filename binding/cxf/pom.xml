@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>tracee-cxf</artifactId>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<artifactId>tracee-parent</artifactId>
+		<groupId>io.tracee</groupId>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<name>tracee-cxf</name>
+	<description>Please refer to https://github.com/holisticon/tracee.</description>
+
+	<properties>
+		<cxf.version>2.7.13</cxf.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<artifactId>tracee-api</artifactId>
+			<groupId>io.tracee</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>tracee-core</artifactId>
+			<groupId>io.tracee</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-bindings-soap</artifactId>
+			<version>${cxf.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.tracee.backend</groupId>
+			<artifactId>tracee-slf4j</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-jaxws</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>${cxf.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
