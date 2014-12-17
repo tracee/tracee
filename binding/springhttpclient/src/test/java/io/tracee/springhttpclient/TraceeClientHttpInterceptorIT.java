@@ -22,7 +22,7 @@ import java.util.Arrays;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class TraceeClientHttpInterceptorItest {
+public class TraceeClientHttpInterceptorIT {
 
 	private Server server;
 	private String serverEndpoint;
