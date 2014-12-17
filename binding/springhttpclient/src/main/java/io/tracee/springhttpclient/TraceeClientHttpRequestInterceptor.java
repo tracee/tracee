@@ -4,7 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -25,11 +25,11 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 	private final String profile;
 
 	public TraceeClientHttpRequestInterceptor() {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()), null);
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()), null);
 	}
 
 	public TraceeClientHttpRequestInterceptor(String profile) {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()), profile);
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()), profile);
 	}
 
 	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, TransportSerialization<String> transportSerialization, String profile) {

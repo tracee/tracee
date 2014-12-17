@@ -4,7 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.params.HttpClientParams;
@@ -45,7 +45,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	}
 
 	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, String profile) {
-		this(delegate, backend, new HttpJsonHeaderTransport(backend.getLoggerFactory()), profile);
+		this(delegate, backend, new HttpHeaderTransport(backend.getLoggerFactory()), profile);
 	}
 
 	public TraceeHttpClientDecorator(HttpClient delegate, String profile) {

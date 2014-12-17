@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class HttpHeaderTransportTest {
 
 	final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	final HttpHeaderTransport UNIT = new HttpHeaderTransport(backend);
+	final HttpHeaderTransport UNIT = new HttpHeaderTransport(backend.getLoggerFactory());
 
 	@Test
 	public void renderKeyValueWithEqualSignAndConcatWithComma() {

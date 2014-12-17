@@ -3,6 +3,7 @@ package io.tracee.transport;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeLogger;
+import io.tracee.TraceeLoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -18,11 +19,11 @@ public class HttpHeaderTransport implements TransportSerialization<String> {
 	private final TraceeLogger logger;
 
 	public HttpHeaderTransport() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend().getLoggerFactory());
 	}
 
-	public HttpHeaderTransport(TraceeBackend backend) {
-		this.logger = backend.getLoggerFactory().getLogger(HttpHeaderTransport.class);
+	public HttpHeaderTransport(TraceeLoggerFactory loggerFactory) {
+		this.logger = loggerFactory.getLogger(HttpHeaderTransport.class);
 	}
 
 	@Override

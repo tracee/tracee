@@ -2,7 +2,7 @@ package io.tracee.servlet;
 
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 
 import javax.servlet.*;
@@ -22,7 +22,7 @@ public class TraceeFilter implements Filter {
 	private String profile = TraceeFilterConfiguration.DEFAULT_PROFILE;
 
 	public TraceeFilter() {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
 	// VisibleForTesting

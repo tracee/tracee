@@ -4,7 +4,7 @@ import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientResponseFilterTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
+    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend, new HttpHeaderTransport(new NoopTraceeLoggerFactory()));
     private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
     private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<String, String>();
 
@@ -33,7 +33,7 @@ public class TraceeClientResponseFilterTest {
 
     @Test
     public void testFilterParsesContextFromHeaderToBackend() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"foo\":\"bar\"}");
+        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
         unit.filter(null, clientResponseContext);
         assertThat(backend.get("foo"), equalTo("bar"));
     }

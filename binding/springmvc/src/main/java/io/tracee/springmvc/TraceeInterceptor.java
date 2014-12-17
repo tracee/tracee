@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,7 +33,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	protected TraceeInterceptor(TraceeBackend backend) {
 		this.backend = backend;
-		httpJsonHeaderSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		httpJsonHeaderSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Override

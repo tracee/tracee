@@ -4,7 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -27,7 +27,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
 	TraceeHttpRequestInterceptor(TraceeBackend backend, String profile) {
 		this.backend = backend;
-		this.transportSerialization = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
 		this.profile = profile;
 	}
 

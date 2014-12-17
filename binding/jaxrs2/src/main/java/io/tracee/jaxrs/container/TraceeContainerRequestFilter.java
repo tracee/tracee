@@ -1,7 +1,7 @@
 package io.tracee.jaxrs.container;
 
 import io.tracee.*;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -21,7 +21,7 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 
 	@SuppressWarnings("unused")
 	public TraceeContainerRequestFilter() {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
 	TraceeContainerRequestFilter(TraceeBackend backend, TransportSerialization<String> transportSerialization) {

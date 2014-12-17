@@ -4,7 +4,7 @@ import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientRequestFilterTest {
 
     private final TraceeBackend traceeBackend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
+    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend, new HttpHeaderTransport(new NoopTraceeLoggerFactory()));
     private final ClientRequestContext clientRequestContext = Mockito.mock(ClientRequestContext.class);
 
     @Before
@@ -35,7 +35,7 @@ public class TraceeClientRequestFilterTest {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString("\"foo\":\"bar\""));
+                containsString("foo=bar"));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TraceeClientRequestFilterTest {
         unit.filter(clientRequestContext);
         assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\""));
+                containsString(TraceeConstants.REQUEST_ID_KEY + "="));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class TraceeClientRequestFilterTest {
         unit.filter(clientRequestContext);
         assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString("\"" + TraceeConstants.REQUEST_ID_KEY + "\":\"foo\""));
+                containsString(TraceeConstants.REQUEST_ID_KEY + "=foo"));
     }
 
 }

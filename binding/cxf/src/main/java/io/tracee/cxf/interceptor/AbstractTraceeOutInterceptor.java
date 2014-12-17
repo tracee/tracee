@@ -4,7 +4,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.TransportSerialization;
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
@@ -38,7 +38,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		this.backend = backend;
 		LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
-		this.httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.httpSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Override
