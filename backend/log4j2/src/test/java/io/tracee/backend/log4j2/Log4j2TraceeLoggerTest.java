@@ -3,14 +3,16 @@ package io.tracee.backend.log4j2;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class Log4j2TraceeLoggerTest {
 
 	private static final Object MESSAGE = "TEST";
 	private static final Exception EXCEPTION = new RuntimeException("My exception");
-
 
 	private final Logger mockedLogger = mock(Logger.class);
 	private final Log4J2TraceeLogger UNIT = new Log4J2TraceeLogger(mockedLogger);
@@ -63,4 +65,27 @@ public class Log4j2TraceeLoggerTest {
 		verify(mockedLogger).error(MESSAGE, EXCEPTION);
 	}
 
+	@Test
+	public void returnTrueIfDebugIsEnabled() {
+		when(mockedLogger.isDebugEnabled()).thenReturn(true);
+		assertThat(UNIT.isDebugEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfInfoIsEnabled() {
+		when(mockedLogger.isInfoEnabled()).thenReturn(true);
+		assertThat(UNIT.isInfoEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfWarnIsEnabled() {
+		when(mockedLogger.isWarnEnabled()).thenReturn(true);
+		assertThat(UNIT.isWarnEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfErrorIsEnabled() {
+		when(mockedLogger.isErrorEnabled()).thenReturn(true);
+		assertThat(UNIT.isErrorEnabled(), is(true));
+	}
 }

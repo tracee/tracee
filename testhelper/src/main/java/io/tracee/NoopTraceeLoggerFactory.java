@@ -19,6 +19,11 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			}
 
 			@Override
+			public boolean isDebugEnabled() {
+				return false;
+			}
+
+			@Override
 			public void error(Object message) {
 
 			}
@@ -26,6 +31,11 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			@Override
 			public void error(Object message, Throwable t) {
 
+			}
+
+			@Override
+			public boolean isErrorEnabled() {
+				return false;
 			}
 
 			@Override
@@ -39,6 +49,11 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			}
 
 			@Override
+			public boolean isInfoEnabled() {
+				return false;
+			}
+
+			@Override
 			public void warn(Object message) {
 
 			}
@@ -46,6 +61,11 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			@Override
 			public void warn(Object message, Throwable t) {
 
+			}
+
+			@Override
+			public boolean isWarnEnabled() {
+				return false;
 			}
 		};
 	}

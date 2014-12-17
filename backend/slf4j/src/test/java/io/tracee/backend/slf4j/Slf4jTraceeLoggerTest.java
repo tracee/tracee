@@ -4,14 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class Slf4jTraceeLoggerTest {
 
 	private static final String MESSAGE = "TEST";
 	private static final Exception EXCEPTION = new RuntimeException("My exception");
-	
+
 	private Slf4jTraceeLogger UNIT;
 
 	private Logger mockedLogger;
@@ -68,5 +71,29 @@ public class Slf4jTraceeLoggerTest {
 	public void logErrorMessageAndExceptionWithLogger() {
 		UNIT.error(MESSAGE, EXCEPTION);
 		verify(mockedLogger).error(MESSAGE, EXCEPTION);
+	}
+
+	@Test
+	public void returnTrueIfDebugIsEnabled() {
+		when(mockedLogger.isDebugEnabled()).thenReturn(true);
+		assertThat(UNIT.isDebugEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfInfoIsEnabled() {
+		when(mockedLogger.isInfoEnabled()).thenReturn(true);
+		assertThat(UNIT.isInfoEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfWarnIsEnabled() {
+		when(mockedLogger.isWarnEnabled()).thenReturn(true);
+		assertThat(UNIT.isWarnEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfErrorIsEnabled() {
+		when(mockedLogger.isErrorEnabled()).thenReturn(true);
+		assertThat(UNIT.isErrorEnabled(), is(true));
 	}
 }

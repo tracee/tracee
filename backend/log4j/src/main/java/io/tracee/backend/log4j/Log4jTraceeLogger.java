@@ -2,6 +2,7 @@ package io.tracee.backend.log4j;
 
 import io.tracee.TraceeLogger;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  * TraceeLogger Abstraction for Log4j.
@@ -22,12 +23,22 @@ final class Log4jTraceeLogger implements TraceeLogger {
 		this.logger.debug(message, t);
 	}
 
+	@Override
+	public boolean isDebugEnabled() {
+		return logger.isDebugEnabled();
+	}
+
 	public void error(final Object message) {
 		this.logger.error(message);
 	}
 
 	public void error(final Object message, final Throwable t) {
 		this.logger.error(message, t);
+	}
+
+	@Override
+	public boolean isErrorEnabled() {
+		return logger.isEnabledFor(Priority.ERROR);
 	}
 
 	public void info(final Object message) {
@@ -38,12 +49,22 @@ final class Log4jTraceeLogger implements TraceeLogger {
 		this.logger.info(message, t);
 	}
 
+	@Override
+	public boolean isInfoEnabled() {
+		return logger.isInfoEnabled();
+	}
+
 	public void warn(final Object message) {
 		this.logger.warn(message);
 	}
 
 	public void warn(final Object message, final Throwable t) {
 		this.logger.warn(message, t);
+	}
+
+	@Override
+	public boolean isWarnEnabled() {
+		return logger.isEnabledFor(Priority.WARN);
 	}
 
 

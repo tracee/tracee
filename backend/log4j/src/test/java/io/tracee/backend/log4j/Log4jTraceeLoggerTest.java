@@ -1,10 +1,15 @@
 package io.tracee.backend.log4j;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class Log4jTraceeLoggerTest {
 
@@ -64,4 +69,27 @@ public class Log4jTraceeLoggerTest {
 		verify(mockedLogger).error(MESSAGE, EXCEPTION);
 	}
 
+	@Test
+	public void returnTrueIfDebugIsEnabled() {
+		when(mockedLogger.isDebugEnabled()).thenReturn(true);
+		assertThat(UNIT.isDebugEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfInfoIsEnabled() {
+		when(mockedLogger.isInfoEnabled()).thenReturn(true);
+		assertThat(UNIT.isInfoEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfWarnIsEnabled() {
+		when(mockedLogger.isEnabledFor(eq(Priority.WARN))).thenReturn(true);
+		assertThat(UNIT.isWarnEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfErrorIsEnabled() {
+		when(mockedLogger.isEnabledFor(eq(Priority.ERROR))).thenReturn(true);
+		assertThat(UNIT.isErrorEnabled(), is(true));
+	}
 }
