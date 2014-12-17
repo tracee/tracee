@@ -1,5 +1,6 @@
 package io.tracee.backend.threadlocalstore;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
@@ -9,13 +10,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class ThreadLocalTraceeLoggerTest {
 
-	private final ThreadLocalTraceeLogger unit = new ThreadLocalTraceeLogger(this.getClass());
+	private final ThreadLocalTraceeLogger UNIT = new ThreadLocalTraceeLogger(this.getClass());
 
 	@Before
 	public void setupMocks() throws Exception {
@@ -32,44 +34,44 @@ public class ThreadLocalTraceeLoggerTest {
 
 	@Test
 	public void shouldCreateProperStringWithoutMessage() {
-		final String logString = unit.buildLogString(ThreadLocalTraceeLogger.LEVEL.WARN, null);
+		final String logString = UNIT.buildLogString(ThreadLocalTraceeLogger.LEVEL.WARN, null);
 		assertThat(logString, equalTo("WARN - (io.tracee.backend.threadlocalstore.ThreadLocalTraceeLoggerTest) :"));
 	}
 
 	@Test
 	public void shouldCreateProperStringWithMessage() {
-		final String logString = unit.buildLogString(ThreadLocalTraceeLogger.LEVEL.ERROR, "ErrorString");
+		final String logString = UNIT.buildLogString(ThreadLocalTraceeLogger.LEVEL.ERROR, "ErrorString");
 		assertThat(logString, equalTo("ERROR - (io.tracee.backend.threadlocalstore.ThreadLocalTraceeLoggerTest) :ErrorString"));
 	}
 
 	@Test
 	public void debugWithoutStacktraceShouldBeDiscarded() throws Exception {
-		unit.debug("DebugString");
+		UNIT.debug("DebugString");
 		verify(System.err, never()).println(anyString());
 	}
 
 	@Test
 	public void infoWithoutStacktraceShouldBeDiscarded() throws Exception {
-		unit.info("InfoString");
+		UNIT.info("InfoString");
 		verify(System.err, never()).println(anyString());
 	}
 
 	@Test
 	public void warnWithoutStacktraceShouldBeLogged() throws Exception {
-		unit.warn("WarnString");
+		UNIT.warn("WarnString");
 		verify(System.err).println(anyString());
 	}
 
 	@Test
 	public void errorWithoutStacktraceShouldBeLogged() throws Exception {
-		unit.error("ErrorString");
+		UNIT.error("ErrorString");
 		verify(System.err).println(anyString());
 	}
 
 	@Test
 	public void debugWithStacktraceShouldBeDiscarded() throws Exception {
 		final Error t = mock(Error.class);
-		unit.debug("DebugString", t);
+		UNIT.debug("DebugString", t);
 		verify(System.err, never()).println(anyString());
 		verify(t, never()).printStackTrace(System.err);
 	}
@@ -77,7 +79,7 @@ public class ThreadLocalTraceeLoggerTest {
 	@Test
 	public void infoWithStacktraceShouldBeDiscarded() throws Exception {
 		final Error t = mock(Error.class);
-		unit.info("InfoString", t);
+		UNIT.info("InfoString", t);
 		verify(System.err, never()).println(anyString());
 		verify(t, never()).printStackTrace(System.err);
 	}
@@ -85,7 +87,7 @@ public class ThreadLocalTraceeLoggerTest {
 	@Test
 	public void warnWithStacktraceShouldBeLogged() throws Exception {
 		final Error t = mock(Error.class);
-		unit.warn("WarnString", t);
+		UNIT.warn("WarnString", t);
 		verify(System.err, atLeastOnce()).println(anyString());
 		verify(t).printStackTrace(System.err);
 	}
@@ -93,8 +95,28 @@ public class ThreadLocalTraceeLoggerTest {
 	@Test
 	public void errorWithStacktraceShouldBeLogged() throws Exception {
 		final Error t = mock(Error.class);
-		unit.error("ErrorString", t);
+		UNIT.error("ErrorString", t);
 		verify(System.err, atLeastOnce()).println(anyString());
 		verify(t).printStackTrace(System.err);
+	}
+
+	@Test
+	public void returnFalseBecauseDebugLoggingIsAlwaysDisabled() {
+		MatcherAssert.assertThat(UNIT.isDebugEnabled(), is(false));
+	}
+
+	@Test
+	public void returnFalseBecauseInfoLoggingIsAlwaysDisabled() {
+		MatcherAssert.assertThat(UNIT.isInfoEnabled(), is(false));
+	}
+
+	@Test
+	public void returnTrueBecauseWarnLoggingIsAlwaysEnabled() {
+		MatcherAssert.assertThat(UNIT.isWarnEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueBecauseErrorLoggingIsAlwaysEnabled() {
+		MatcherAssert.assertThat(UNIT.isErrorEnabled(), is(true));
 	}
 }

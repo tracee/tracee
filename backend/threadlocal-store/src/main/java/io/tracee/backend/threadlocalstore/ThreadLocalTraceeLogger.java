@@ -26,7 +26,7 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
 		System.err.println(buildLogString(level, message));
         if (t != null) {
             t.printStackTrace(System.err);
-            System.err.println("");
+            System.err.println();
         }
     }
 
@@ -43,13 +43,23 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
         // drop debug message
     }
 
-    public void error(final Object message) {
+	@Override
+	public boolean isDebugEnabled() {
+		return false;
+	}
+
+	public void error(final Object message) {
         this.createLogEntry(LEVEL.ERROR, message);
     }
 
     public void error(final Object message, final Throwable t) {
         this.createLogEntry(LEVEL.ERROR, message, t);
     }
+
+	@Override
+	public boolean isErrorEnabled() {
+		return true;
+	}
 
     public void info(final Object message) {
         // drop info message
@@ -59,6 +69,11 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
         // drop info message
     }
 
+	@Override
+	public boolean isInfoEnabled() {
+		return false;
+	}
+
     public void warn(final Object message) {
         this.createLogEntry(LEVEL.WARN, message);
     }
@@ -67,4 +82,8 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
         this.createLogEntry(LEVEL.WARN, message, t);
     }
 
+	@Override
+	public boolean isWarnEnabled() {
+		return true;
+	}
 }

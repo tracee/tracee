@@ -3,8 +3,12 @@ package io.tracee.backend.jbosslogging;
 import org.jboss.logging.Logger;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class JbossLoggingTraceeLoggerTest {
 
@@ -60,5 +64,29 @@ public class JbossLoggingTraceeLoggerTest {
 	public void logErrorMessageAndExceptionWithLogger() {
 		UNIT.error(MESSAGE, EXCEPTION);
 		verify(mockedLogger).error(MESSAGE, EXCEPTION);
+	}
+
+	@Test
+	public void returnTrueIfDebugIsEnabled() {
+		when(mockedLogger.isDebugEnabled()).thenReturn(true);
+		assertThat(UNIT.isDebugEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfInfoIsEnabled() {
+		when(mockedLogger.isInfoEnabled()).thenReturn(true);
+		assertThat(UNIT.isInfoEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfWarnIsEnabled() {
+		when(mockedLogger.isEnabled(eq(Logger.Level.WARN))).thenReturn(true);
+		assertThat(UNIT.isWarnEnabled(), is(true));
+	}
+
+	@Test
+	public void returnTrueIfErrorIsEnabled() {
+		when(mockedLogger.isEnabled(eq(Logger.Level.ERROR))).thenReturn(true);
+		assertThat(UNIT.isErrorEnabled(), is(true));
 	}
 }

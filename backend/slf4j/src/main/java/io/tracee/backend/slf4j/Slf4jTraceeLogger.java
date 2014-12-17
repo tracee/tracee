@@ -27,13 +27,23 @@ final class Slf4jTraceeLogger implements TraceeLogger {
         logger.debug(nullsafeString(message), t);
     }
 
-    public void error(Object message) {
+	@Override
+	public boolean isDebugEnabled() {
+		return logger.isDebugEnabled();
+	}
+
+	public void error(Object message) {
         logger.error(nullsafeString(message));
     }
 
     public void error(Object message, Throwable t) {
         logger.error(nullsafeString(message), t);
     }
+
+	@Override
+	public boolean isErrorEnabled() {
+		return logger.isErrorEnabled();
+	}
 
     public void info(Object message) {
         logger.info(nullsafeString(message));
@@ -43,6 +53,11 @@ final class Slf4jTraceeLogger implements TraceeLogger {
         logger.info(nullsafeString(message), t);
     }
 
+	@Override
+	public boolean isInfoEnabled() {
+		return logger.isInfoEnabled();
+	}
+
     public void warn(Object message) {
         logger.warn(nullsafeString(message));
     }
@@ -50,6 +65,11 @@ final class Slf4jTraceeLogger implements TraceeLogger {
 	public void warn(Object message, Throwable t) {
         logger.warn(nullsafeString(message), t);
     }
+
+	@Override
+	public boolean isWarnEnabled() {
+		return logger.isWarnEnabled();
+	}
 
 	private String nullsafeString(Object message) {
 		return message != null ? message.toString() : "";

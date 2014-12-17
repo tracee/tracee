@@ -4,7 +4,7 @@ import io.tracee.TraceeLogger;
 import org.jboss.logging.Logger;
 
 /**
- * TraceeLogger Abstraction for Jboss Logging.
+ * TraceeLogger abstraction for Jboss Logging.
  */
 final class JbossLoggingTraceeLogger implements TraceeLogger {
 
@@ -15,35 +15,54 @@ final class JbossLoggingTraceeLogger implements TraceeLogger {
     }
 
     public void debug(final Object message) {
-        this.logger.debug(message);
+        logger.debug(message);
     }
 
     public void debug(final Object message, final Throwable t) {
-        this.logger.debug(message, t);
+        logger.debug(message, t);
     }
 
-    public void error(final Object message) {
+	@Override
+	public boolean isDebugEnabled() {
+		return logger.isDebugEnabled();
+	}
+
+	public void error(final Object message) {
         this.logger.error(message);
     }
 
     public void error(final Object message, final Throwable t) {
-        this.logger.error(message, t);
+        logger.error(message, t);
     }
 
+	@Override
+	public boolean isErrorEnabled() {
+		return logger.isEnabled(Logger.Level.ERROR);
+	}
+
     public void info(final Object message) {
-        this.logger.info(message);
+        logger.info(message);
     }
 
     public void info(final Object message, final Throwable t) {
-        this.logger.info(message, t);
+        logger.info(message, t);
     }
 
+	@Override
+	public boolean isInfoEnabled() {
+		return logger.isInfoEnabled();
+	}
+
     public void warn(final Object message) {
-        this.logger.warn(message);
+        logger.warn(message);
     }
 
     public void warn(final Object message, final Throwable t) {
-        this.logger.warn(message, t);
+        logger.warn(message, t);
     }
 
+	@Override
+	public boolean isWarnEnabled() {
+		return logger.isEnabled(Logger.Level.WARN);
+	}
 }
