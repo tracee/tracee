@@ -14,11 +14,11 @@ final class JbossLoggingTraceeLogger implements TraceeLogger {
         this.logger = logger;
     }
 
-    public void debug(final Object message) {
+    public void debug(final String message) {
         logger.debug(message);
     }
 
-    public void debug(final Object message, final Throwable t) {
+    public void debug(final String message, final Throwable t) {
         logger.debug(message, t);
     }
 
@@ -27,11 +27,11 @@ final class JbossLoggingTraceeLogger implements TraceeLogger {
 		return logger.isDebugEnabled();
 	}
 
-	public void error(final Object message) {
+	public void error(final String message) {
         this.logger.error(message);
     }
 
-    public void error(final Object message, final Throwable t) {
+    public void error(final String message, final Throwable t) {
         logger.error(message, t);
     }
 
@@ -40,11 +40,11 @@ final class JbossLoggingTraceeLogger implements TraceeLogger {
 		return logger.isEnabled(Logger.Level.ERROR);
 	}
 
-    public void info(final Object message) {
+    public void info(final String message) {
         logger.info(message);
     }
 
-    public void info(final Object message, final Throwable t) {
+    public void info(final String message, final Throwable t) {
         logger.info(message, t);
     }
 
@@ -53,11 +53,11 @@ final class JbossLoggingTraceeLogger implements TraceeLogger {
 		return logger.isInfoEnabled();
 	}
 
-    public void warn(final Object message) {
+    public void warn(final String message) {
         logger.warn(message);
     }
 
-    public void warn(final Object message, final Throwable t) {
+    public void warn(final String message, final Throwable t) {
         logger.warn(message, t);
     }
 
