@@ -20,8 +20,7 @@ final class JbossLoggingMdcLikeAdapter implements MDCLike {
 
     @Override
     public String get(String key) {
-
-        return (String) MDC.get(key);
+        return String.valueOf(MDC.get(key));
     }
 
     @Override
@@ -34,8 +33,7 @@ final class JbossLoggingMdcLikeAdapter implements MDCLike {
         final Map<String, Object> map = MDC.getMap();
         final Map<String, String> copy = new HashMap<String, String>(map.size());
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (!(entry.getValue() instanceof String)) continue;
-            copy.put(entry.getKey(), (String) entry.getValue());
+			copy.put(entry.getKey(), String.valueOf(entry.getValue()));
         }
         return copy;
     }
