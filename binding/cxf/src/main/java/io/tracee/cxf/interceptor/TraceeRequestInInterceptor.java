@@ -6,7 +6,7 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageUtils;
 import org.apache.cxf.phase.Phase;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 
 public class TraceeRequestInInterceptor extends AbstractTraceeInInterceptor {
 
@@ -19,7 +19,7 @@ public class TraceeRequestInInterceptor extends AbstractTraceeInInterceptor {
 	}
 
 	public TraceeRequestInInterceptor(TraceeBackend backend, String profile) {
-		super(Phase.PRE_INVOKE, IncomingResponse, backend, profile);
+		super(Phase.PRE_INVOKE, IncomingRequest, backend, profile);
 	}
 
 	@Override
