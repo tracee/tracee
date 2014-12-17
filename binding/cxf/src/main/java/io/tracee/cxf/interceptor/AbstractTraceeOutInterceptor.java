@@ -2,6 +2,7 @@ package io.tracee.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.TransportSerialization;
@@ -12,10 +13,7 @@ import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
-import org.apache.cxf.message.MessageUtils;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBException;
 import java.util.Arrays;
@@ -25,7 +23,7 @@ import java.util.Map;
 
 abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeOutInterceptor.class);
+	private final TraceeLogger LOGGER;
 
 	private final TraceeBackend backend;
 
@@ -38,6 +36,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
+		LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
 		this.httpSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 	}
@@ -49,8 +48,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, channel);
 
-				LOGGER.info("Interceptor {} handles message in direction {}", this.getClass().getSimpleName(),
-						MessageUtils.isOutbound(message) ? "OUT" : "IN");
+				LOGGER.debug("Interceptor handles message!");
                 if (message instanceof SoapMessage) {
                     final SoapMessage soapMessage = (SoapMessage) message;
 
@@ -75,7 +73,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 					new JAXBDataBinding(TpicMap.class));
 			soapMessage.getHeaders().add(tpicHeader);
 		} catch (JAXBException e) {
-			LOGGER.warn("Error occured during TracEE soap header creation: {}", e.getMessage());
+			LOGGER.warn("Error occured during TracEE soap header creation: " + e.getMessage());
 			LOGGER.debug("Detailed exception", e);
 		}
 

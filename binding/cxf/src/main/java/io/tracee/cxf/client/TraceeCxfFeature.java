@@ -7,7 +7,6 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.interceptor.InterceptorProvider;
 
-@SuppressWarnings("UnusedDeclaration")
 public class TraceeCxfFeature extends AbstractFeature {
 
 	private String profile;
@@ -41,5 +40,4 @@ public class TraceeCxfFeature extends AbstractFeature {
 		provider.getInFaultInterceptors().add(requestInInterceptor);
 		provider.getOutFaultInterceptors().add(responseOutInterceptor);
 	}
-
 }

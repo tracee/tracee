@@ -2,6 +2,7 @@ package io.tracee.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpJsonHeaderTransport;
 import io.tracee.transport.SoapHeaderTransport;
@@ -10,10 +11,7 @@ import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
-import org.apache.cxf.message.MessageUtils;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.JAXBException;
@@ -21,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeInInterceptor.class);
 	private final TraceeBackend backend;
+	private final TraceeLogger LOGGER;
 
 	private final HttpJsonHeaderTransport httpJsonSerializer;
 	private final SoapHeaderTransport httpSoapSerializer;
@@ -36,6 +34,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
+		this.LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
 		this.httpJsonSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
 		this.httpSoapSerializer = new SoapHeaderTransport();
@@ -48,8 +47,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 		if (shouldHandleMessage(message)) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
-			LOGGER.info("Interceptor {} handles message in direction {}", this.getClass().getSimpleName(),
-					MessageUtils.isOutbound(message) ? "OUT" : "IN");
+			LOGGER.debug("Interceptor handles message!");
 			if (filterConfiguration.shouldProcessContext(channel)) {
 				if (message instanceof SoapMessage) {
 					try {
