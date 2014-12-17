@@ -25,6 +25,7 @@ Also supported are these common and widespread frameworks:
 
 * Spring MVC
 * Spring Web (RestClients)
+* Apache CXF
 
 This project is still in an experimental stage and the api may change during further development.
 
@@ -109,20 +110,19 @@ Host: localhost:2000
 ```
  
 In the SOAP-World the invocation context is, regardless of the underlying transport mechanism, encoded as a special header
-in the SOAP-Request-Envelope, and SOAP-Response-Envelope.
+in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Header>
-		<TPIC xmlns="https://github.com/tracee/tracee"> <!-- TODO: this namespace should be io.tracee and provide a real XSD-file hosted at http://tracee.io/ -->
-			<inRequest>yes</inRequest>
-		</TPIC>
+		<tpic xmlns="http://tracee.io/tpic/1.0">
+			<entry key="traceeRequestId">ABCDEFG</entry>
+		</tpic>
 	</soap:Header>
 	<soap:Body>
 		<ns2:myWebServiceMethod xmlns:ns2="https://example.com/myBusinessWorld/wsdl"/>
 	</soap:Body>
 </soap:Envelope>
 ```
-
 
 # Integrating TracEE into your application
 
@@ -141,6 +141,7 @@ propagate context information from a servlet container based frontend to an ejb 
 | JAX-WS                      | Use [tracee-jaxws](binding/jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](binding/jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
 | JMS                         | Producer: Use [tracee-jms](binding/jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](binding/jms)'s `TraceeMessageListener` as EJB interceptor. |
 | ApacheHttpClient            | Use [tracee-httpclient](binding/httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| Apache CXF                  | Use [tracee-cxf](binding/cxf)'s `TraceeCxfFeature` | Use [tracee-cxf](binding/cxf)'s `TraceeCxfFeature` |
 | EJB3 remote                 | - | - |
 
 ## Modules
@@ -162,6 +163,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-servlet](binding/servlet)        		      | Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
+| [tracee-cxf](binding/cxf)                           | To transfer context informations with CXF add the `TraceeCxfFeature` to your Client oder Server.
 | __backends__                                        |
 | [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
 | [tracee-log4j](backend/log4j)                       | Backend implementation for containers using log4j for logging.
