@@ -37,7 +37,7 @@ public class TraceeCxfFeature extends AbstractFeature {
 		provider.getOutInterceptors().add(requestOutInterceptor);
 		provider.getOutInterceptors().add(responseOutInterceptor);
 
-		provider.getInFaultInterceptors().add(requestInInterceptor);
 		provider.getOutFaultInterceptors().add(responseOutInterceptor);
+		provider.getInFaultInterceptors().add(requestInInterceptor);
 	}
 }
