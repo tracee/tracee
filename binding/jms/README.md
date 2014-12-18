@@ -34,7 +34,7 @@ import javax.jms.*;
 @Stateless
 public class MessageProducerImpl implements MessageProducer {
 
-	@Resource(mappedName = "java:/ConnectionFactory")
+  	@Resource(mappedName = "java:/ConnectionFactory")
 	private ConnectionFactory connectionFactory;
 
 	@Resource(mappedName = "java:/exampleQueue")
@@ -57,14 +57,14 @@ public class MessageProducerImpl implements MessageProducer {
 	  Connection connection = null;
 		try {
 			connection = connectionFactory.createConnection();
-	    final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+	    		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 	    
-		  // wrap the producer to enable TracEE
-		  final javax.jms.MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(destination));
+		  	// wrap the producer to enable TracEE
+		  	final javax.jms.MessageProducer producer = 	TraceeMessageWriter.wrap(session.createProducer(destination));
 		  
-		  final TextMessage textMessage = session.createTextMessage();
-		  textMessage.setText(message);
-		  producer.send(textMessage);
+		  	final TextMessage textMessage = session.createTextMessage();
+		  	textMessage.setText(message);
+		  	producer.send(textMessage);
 		} catch (JMSException jmse) {
 			// handle exception ...
 		}
