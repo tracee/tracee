@@ -57,7 +57,7 @@ public class MessageProducerImpl implements MessageProducer {
 	  Connection connection = null;
 		try {
 			connection = connectionFactory.createConnection();
-	    		final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 	    
 		  	// wrap the producer to enable TracEE
 		  	final javax.jms.MessageProducer producer = 	TraceeMessageWriter.wrap(session.createProducer(destination));
