@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.TraceeLoggerFactory;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -24,7 +24,7 @@ public class TraceeFilterTest {
 
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final TraceeLoggerFactory traceeLoggerFactory = Mockito.mock(TraceeLoggerFactory.class);
-	private final TransportSerialization<String> transport =  new HttpHeaderTransport(traceeLoggerFactory);
+	private final HttpHeaderTransport transport =  new HttpHeaderTransport(traceeLoggerFactory);
 	private final TraceeFilter unit = new TraceeFilter(backend, transport);
 	private final FilterChain filterChain = Mockito.mock(FilterChain.class);
 	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);

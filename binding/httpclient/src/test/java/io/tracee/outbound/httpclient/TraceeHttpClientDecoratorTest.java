@@ -4,7 +4,8 @@ package io.tracee.outbound.httpclient;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.TransportSerialization;
+
+import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -28,7 +30,7 @@ public class TraceeHttpClientDecoratorTest {
 	private final TraceeFilterConfiguration configMock = mock(TraceeFilterConfiguration.class);
 	private final HttpMethod httpMethodMock = mock(HttpMethod.class);
 	@SuppressWarnings("unchecked")
-	private final TransportSerialization<String> transportSerializationMock = mock(TransportSerialization.class);
+	private final HttpHeaderTransport transportSerializationMock = mock(HttpHeaderTransport.class);
 	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(delegateMock, backendMock, transportSerializationMock, USED_PROFILE);
 
 	@Before
@@ -39,23 +41,22 @@ public class TraceeHttpClientDecoratorTest {
 
 	@Test
 	public void testContextWrittenToRequest() throws IOException {
-		when(transportSerializationMock.render(any(TraceeBackend.class))).thenReturn("{ \"foo\":\"bar\" }");
+		when(transportSerializationMock.render(any(TraceeBackend.class))).thenReturn("foo=bar");
 		unit.executeMethod(null, httpMethodMock, null);
-		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.HTTP_HEADER_NAME), eq("{ \"foo\":\"bar\" }"));
+		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.HTTP_HEADER_NAME), eq("foo=bar"));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testContextParsedFromResponse() throws IOException {
-		final Header responseHeader = new Header(TraceeConstants.HTTP_HEADER_NAME, "{ \"foo\":\"bar\" }");
+		final Header responseHeader = new Header(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
 		final Header[] responseHeaders = new Header[] { responseHeader };
 		when(httpMethodMock.getResponseHeaders(eq(TraceeConstants.HTTP_HEADER_NAME))).thenReturn(responseHeaders);
 		when(httpMethodMock.isRequestSent()).thenReturn(true);
 
 		unit.executeMethod(null, httpMethodMock, null);
 
-		verify(transportSerializationMock).parse(eq("{ \"foo\":\"bar\" }"));
+		verify(transportSerializationMock).parse(eq(Arrays.asList("foo=bar")));
 		verify(backendMock).putAll(Mockito.<String, String>anyMap());
 	}
-
 }

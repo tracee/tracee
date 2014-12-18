@@ -5,7 +5,7 @@ import io.tracee.TraceeConstants;
 import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
@@ -27,7 +27,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 
 	private final TraceeBackend backend;
 
-	private final TransportSerialization<String> httpSerializer;
+	private final HttpHeaderTransport httpSerializer;
 	private final TraceeFilterConfiguration.Channel channel;
 
 	private String profile;

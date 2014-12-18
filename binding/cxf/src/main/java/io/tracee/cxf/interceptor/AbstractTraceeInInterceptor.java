@@ -68,7 +68,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
             final List<String> traceeHeader = requestHeaders.get(TraceeConstants.HTTP_HEADER_NAME);
 
             if (traceeHeader != null && !traceeHeader.isEmpty()) {
-                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader.get(0));
+                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader);
                 backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
             }
         }

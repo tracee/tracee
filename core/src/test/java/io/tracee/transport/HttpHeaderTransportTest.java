@@ -4,8 +4,10 @@ import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.anyOf;
@@ -130,6 +132,16 @@ public class HttpHeaderTransportTest {
 		final Map<String, String> contextMap = UNIT.parse(",");
 		assertThat(contextMap, is(notNullValue()));
 		assertThat(contextMap.isEmpty(), is(true));
+	}
+
+	@Test
+	public void shouldParseTwoHeadersAndMergeThem() {
+		final List<String> headers = Arrays.asList("key1=value1,key2=value2", "key3=value3");
+		final Map<String, String> context = UNIT.parse(headers);
+		assertThat(context, hasEntry("key1", "value1"));
+		assertThat(context, hasEntry("key2", "value2"));
+		assertThat(context, hasEntry("key3", "value3"));
+		assertThat(context.size(), is(3));
 	}
 
 	private int countChars(String str, char c) {

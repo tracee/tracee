@@ -4,7 +4,7 @@ import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
@@ -25,7 +25,7 @@ public class OutgoingMessageTest {
 
 	private final MessageImpl message = new MessageImpl();
 
-	private TransportSerialization<String> httpSerializer;
+	private HttpHeaderTransport httpSerializer;
 
 	@Before
 	public void onSetup() throws Exception {
@@ -44,7 +44,7 @@ public class OutgoingMessageTest {
 		backend.put("myContextKey", "contextValue2");
 		outInterceptor.handleMessage(message);
 		final Map<Object, List<String>> headers = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
-		final Map<String, String> traceeContext = httpSerializer.parse(headers.get(TraceeConstants.HTTP_HEADER_NAME).get(0));
+		final Map<String, String> traceeContext = httpSerializer.parse(headers.get(TraceeConstants.HTTP_HEADER_NAME));
 		assertThat(traceeContext.get("myContextKey"), is("contextValue2"));
 	}
 }

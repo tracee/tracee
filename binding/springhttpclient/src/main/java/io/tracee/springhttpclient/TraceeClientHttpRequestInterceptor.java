@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -21,7 +21,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public final class TraceeClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
 	private final TraceeBackend backend;
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	public TraceeClientHttpRequestInterceptor() {
@@ -32,7 +32,7 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()), profile);
 	}
 
-	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, TransportSerialization<String> transportSerialization, String profile) {
+	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 		this.profile = profile;
@@ -61,10 +61,8 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
-				for (String header : headers) {
-					final Map<String, String> parsedContext = transportSerialization.parse(header);
-					backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
-				}
+				final Map<String, String> parsedContext = transportSerialization.parse(headers);
+				backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 			}
 		}
 	}

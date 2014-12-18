@@ -2,7 +2,7 @@ package io.tracee.springhttpclient;
 
 import io.tracee.*;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.hamcrest.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientHttpRequestInterceptorTest {
 
 	private static final String USED_PROFILE = "A_PROFILE";
-	private final TransportSerialization<String> transportSerializationMock = new HttpHeaderTransport(NoopTraceeLoggerFactory.INSTANCE);
+	private final HttpHeaderTransport transportSerializationMock = new HttpHeaderTransport(NoopTraceeLoggerFactory.INSTANCE);
 	private final TraceeBackend backend = new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration(), NoopTraceeLoggerFactory.INSTANCE);
 	private final TraceeClientHttpRequestInterceptor unit =
 			new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, USED_PROFILE);

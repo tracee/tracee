@@ -6,13 +6,15 @@ import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
@@ -26,9 +28,9 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 
 	private final TraceeBackend backend;
 
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 
-	protected TraceeServletRequestListener(TraceeBackend backend, TransportSerialization<String> transportSerialization) {
+	protected TraceeServletRequestListener(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 	}
@@ -54,7 +56,16 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
-			mergeIncomingContextToBackend(request);
+			final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
+
+			if (headers != null && headers.hasMoreElements() && configuration.shouldProcessContext(IncomingRequest)) {
+				final List<String> stringTraceeHeaders = new ArrayList<String>();
+				while (headers.hasMoreElements()) {
+					stringTraceeHeaders.add((String) headers.nextElement());
+				}
+				final Map<String, String> contextMap = transportSerialization.parse(stringTraceeHeaders);
+				backend.putAll(backend.getConfiguration().filterDeniedParams(contextMap, IncomingRequest));
+			}
 		}
 
 		Utilities.generateRequestIdIfNecessary(backend);
@@ -65,19 +76,4 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		}
 	}
 
-	private void mergeIncomingContextToBackend(HttpServletRequest request) {
-		final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
-		if (headers == null) {
-			throw new IllegalStateException("Could not read headers with name '"
-					+ HTTP_HEADER_NAME + "'. The access seem to be forbidden by the container.");
-		}
-
-		final Map<String, String> parsed = new HashMap<String, String>();
-		while (headers.hasMoreElements()) {
-			parsed.putAll(transportSerialization.parse((String) headers.nextElement()));
-		}
-
-		final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(parsed, IncomingRequest);
-		backend.putAll(filtered);
-	}
 }

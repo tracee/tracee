@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -32,7 +32,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 	}
 
 	private final TraceeBackend backend;
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	@Override

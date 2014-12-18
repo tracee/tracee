@@ -3,7 +3,7 @@ package io.tracee.servlet;
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -26,14 +26,14 @@ public class TraceeFilter implements Filter {
 	}
 
 	// VisibleForTesting
-	TraceeFilter(TraceeBackend backend, TransportSerialization<String> transportSerialization) {
+	TraceeFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 	}
 
 	private final TraceeBackend backend;
 
-    private final TransportSerialization<String> transportSerialization;
+    private final HttpHeaderTransport transportSerialization;
 
     @Override
     public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -13,6 +13,8 @@ import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
@@ -22,7 +24,7 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
 
     private final TraceeBackend backend;
-    private final TransportSerialization<String> transportSerialization;
+    private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	TraceeHttpResponseInterceptor(TraceeBackend backend, String profile) {
@@ -41,9 +43,13 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 	@Override
     public final void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
         final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
-		final Header traceeHeader = response.getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
-        if (traceeHeader != null && filterConfiguration.shouldProcessContext(IncomingResponse)) {
-			final Map<String, String> parsedContext = transportSerialization.parse(traceeHeader.getValue());
+		final Header[] responseHeaders = response.getHeaders(TraceeConstants.HTTP_HEADER_NAME);
+        if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
+			final List<String> stringTraceeHeaders = new ArrayList<String>();
+			for (Header header : responseHeaders) {
+				stringTraceeHeaders.add(header.getValue());
+			}
+			final Map<String, String> parsedContext = transportSerialization.parse(stringTraceeHeaders);
 			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 		}
     }

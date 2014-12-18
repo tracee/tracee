@@ -1,7 +1,6 @@
 package io.tracee.transport;
 
 import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
 import io.tracee.TraceeLogger;
 import io.tracee.TraceeLoggerFactory;
 
@@ -10,10 +9,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class HttpHeaderTransport implements TransportSerialization<String> {
+public class HttpHeaderTransport {
 
 	public static final String ENCODING_CHARSET = "UTF-8";
 	private final TraceeLogger logger;
@@ -26,8 +26,7 @@ public class HttpHeaderTransport implements TransportSerialization<String> {
 		this.logger = loggerFactory.getLogger(HttpHeaderTransport.class);
 	}
 
-	@Override
-	public Map<String, String> parse(String serialized) {
+	Map<String, String> parse(String serialized) {
 		final StringTokenizer pairTokenizer = new StringTokenizer(serialized.trim(), ",");
 		final Map<String, String> context = new HashMap<String, String>();
 		while(pairTokenizer.hasMoreTokens()) {
@@ -48,7 +47,15 @@ public class HttpHeaderTransport implements TransportSerialization<String> {
 		return context;
 	}
 
-	@Override
+	public Map<String, String> parse(List<String> serializedElements) {
+		final Map<String, String> contextMap = new HashMap<String, String>();
+		for (String serializedElement : serializedElements) {
+			contextMap.putAll(parse(serializedElement));
+		}
+
+		return contextMap;
+	}
+
 	public String render(Map<String, String> context) {
 		final StringBuilder sb = new StringBuilder(128);
 		for (Iterator<Map.Entry<String, String>> iterator = context.entrySet().iterator(); iterator.hasNext(); ) {

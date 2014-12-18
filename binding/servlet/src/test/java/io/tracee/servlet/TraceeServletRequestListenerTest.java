@@ -5,7 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.atLeastO
 
 public class TraceeServletRequestListenerTest {
 
-	private final TransportSerialization<String> transportSerialization = new HttpHeaderTransport(new NoopTraceeLoggerFactory());
+	private final HttpHeaderTransport transportSerialization = new HttpHeaderTransport(new NoopTraceeLoggerFactory());
 	private final TraceeBackend backend = Mockito.mock(TraceeBackend.class);
 	private final TraceeServletRequestListener unit = new TraceeServletRequestListener(backend, transportSerialization);
 	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);

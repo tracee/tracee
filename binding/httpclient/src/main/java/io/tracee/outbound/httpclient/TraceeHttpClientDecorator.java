@@ -5,11 +5,14 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.params.HttpClientParams;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
@@ -22,7 +25,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 
 	private final HttpClient delegate;
 	private final TraceeBackend backend;
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	public static HttpClient wrap(HttpClient httpClient) {
@@ -37,7 +40,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		}
 	}
 
-	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, TransportSerialization<String> transportSerialization, String profile) {
+	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
 		this.delegate = delegate;
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
@@ -94,9 +97,12 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.HTTP_HEADER_NAME);
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
-			final String serializedContext = responseHeaders[0].getValue();
+			final List<String> stringTraceeHeaders = new ArrayList<String>();
+			for (Header header : responseHeaders) {
+				stringTraceeHeaders.add(header.getValue());
+			}
 
-			final Map<String, String> parsedContext = transportSerialization.parse(serializedContext);
+			final Map<String, String> parsedContext = transportSerialization.parse(stringTraceeHeaders);
 			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 		}
 	}
