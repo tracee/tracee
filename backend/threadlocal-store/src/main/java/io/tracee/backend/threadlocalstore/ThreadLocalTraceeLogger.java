@@ -18,11 +18,11 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
     }
 
 
-    private void createLogEntry(final LEVEL level, final Object message) {
+    private void createLogEntry(final LEVEL level, final String message) {
         this.createLogEntry(level, message, null);
     }
 
-    private void createLogEntry(final LEVEL level, final Object message, final Throwable t) {
+    private void createLogEntry(final LEVEL level, final String message, final Throwable t) {
 		System.err.println(buildLogString(level, message));
         if (t != null) {
             t.printStackTrace(System.err);
@@ -30,16 +30,16 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
         }
     }
 
-	String buildLogString(LEVEL level, Object message) {
+	String buildLogString(LEVEL level, String message) {
 		return level.name()	+ " - (" + this.clazz.getCanonicalName() + ") :"
-					+ (message != null ? message.toString() : "");
+					+ (message != null ? message : "");
 	}
 
-	public void debug(final Object message) {
+	public void debug(final String message) {
         // drop debug message
     }
 
-    public void debug(final Object message, final Throwable t) {
+    public void debug(final String message, final Throwable t) {
         // drop debug message
     }
 
@@ -48,11 +48,11 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
 		return false;
 	}
 
-	public void error(final Object message) {
+	public void error(final String message) {
         this.createLogEntry(LEVEL.ERROR, message);
     }
 
-    public void error(final Object message, final Throwable t) {
+    public void error(final String message, final Throwable t) {
         this.createLogEntry(LEVEL.ERROR, message, t);
     }
 
@@ -61,11 +61,11 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
 		return true;
 	}
 
-    public void info(final Object message) {
+    public void info(final String message) {
         // drop info message
     }
 
-    public void info(final Object message, final Throwable t) {
+    public void info(final String message, final Throwable t) {
         // drop info message
     }
 
@@ -74,11 +74,11 @@ final class ThreadLocalTraceeLogger implements TraceeLogger {
 		return false;
 	}
 
-    public void warn(final Object message) {
+    public void warn(final String message) {
         this.createLogEntry(LEVEL.WARN, message);
     }
 
-    public void warn(final Object message, final Throwable t) {
+    public void warn(final String message, final Throwable t) {
         this.createLogEntry(LEVEL.WARN, message, t);
     }
 

@@ -5,27 +5,27 @@ package io.tracee;
  * It will resolve to the underlying logging system.
  */
 public interface TraceeLogger {
-    void debug(final Object message);
+    void debug(final String message);
 
-    void debug(final Object message, final Throwable t);
+    void debug(final String message, final Throwable t);
 
 	boolean isDebugEnabled();
 
-    void error(final Object message);
+    void error(final String message);
 
-    void error(final Object message, final Throwable t);
+    void error(final String message, final Throwable t);
 
 	boolean isErrorEnabled();
 
-    void info(final Object message);
+    void info(final String message);
 
-    void info(final Object message, final Throwable t);
+    void info(final String message, final Throwable t);
 
 	boolean isInfoEnabled();
 
-    void warn(final Object message);
+    void warn(final String message);
 
-    void warn(final Object message, final Throwable t);
+    void warn(final String message, final Throwable t);
 
 	boolean isWarnEnabled();
 }

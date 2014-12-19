@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 public class Log4j2TraceeLoggerTest {
 
-	private static final Object MESSAGE = "TEST";
+	private static final String MESSAGE = "TEST";
 	private static final Exception EXCEPTION = new RuntimeException("My exception");
 
 	private final Logger mockedLogger = mock(Logger.class);

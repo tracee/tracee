@@ -9,12 +9,12 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 	public final TraceeLogger getLogger(Class<?> clazz) {
 		return new TraceeLogger() {
 			@Override
-			public void debug(Object message) {
+			public void debug(String message) {
 
 			}
 
 			@Override
-			public void debug(Object message, Throwable t) {
+			public void debug(String message, Throwable t) {
 
 			}
 
@@ -24,12 +24,12 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			}
 
 			@Override
-			public void error(Object message) {
+			public void error(String message) {
 
 			}
 
 			@Override
-			public void error(Object message, Throwable t) {
+			public void error(String message, Throwable t) {
 
 			}
 
@@ -39,12 +39,12 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			}
 
 			@Override
-			public void info(Object message) {
+			public void info(String message) {
 
 			}
 
 			@Override
-			public void info(Object message, Throwable t) {
+			public void info(String message, Throwable t) {
 
 			}
 
@@ -54,12 +54,12 @@ public class NoopTraceeLoggerFactory implements TraceeLoggerFactory {
 			}
 
 			@Override
-			public void warn(Object message) {
+			public void warn(String message) {
 
 			}
 
 			@Override
-			public void warn(Object message, Throwable t) {
+			public void warn(String message, Throwable t) {
 
 			}
 
