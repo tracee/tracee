@@ -23,6 +23,10 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 		this(Tracee.getBackend(), new SoapHeaderTransport());
 	}
 
+	public TraceeServerHandler(TraceeBackend traceeBackend) {
+		this(traceeBackend, new SoapHeaderTransport());
+	}
+
 	TraceeServerHandler(TraceeBackend traceeBackend, SoapHeaderTransport soapHeaderTransport) {
 		super(traceeBackend);
 		this.transportSerialization = soapHeaderTransport;
