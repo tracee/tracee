@@ -4,7 +4,7 @@ import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class TraceeContainerRequestFilterTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeContainerRequestFilter unit = new TraceeContainerRequestFilter(backend, new HttpJsonHeaderTransport(new NoopTraceeLoggerFactory()));
+    private final TraceeContainerRequestFilter unit = new TraceeContainerRequestFilter(backend, new HttpHeaderTransport(new NoopTraceeLoggerFactory()));
     private final ContainerRequestContext requestContext = Mockito.mock(ContainerRequestContext.class);
     private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<String, String>();
 
@@ -33,14 +33,14 @@ public class TraceeContainerRequestFilterTest {
 
     @Test
     public void testFilterParsesContextFromHeaderToBackend() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"foo\":\"bar\"}");
+        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
         unit.filter(requestContext);
         assertThat(backend.get("foo"), equalTo("bar"));
     }
 
     @Test
     public void testFilterParsesExistingRequestId() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "{\"" + TraceeConstants.REQUEST_ID_KEY + "\":\"foo\"}");
+        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, TraceeConstants.REQUEST_ID_KEY + "=foo");
         unit.filter(requestContext);
         assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
     }

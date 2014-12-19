@@ -115,7 +115,6 @@
 		<log4j.version>1.2.4</log4j.version>
 		<log4j2.version>2.0.2</log4j2.version>
 		<logback.version>0.9.30</logback.version>
-		<gson.version>2.2.4</gson.version>
 		<spring.version>3.1.4.RELEASE</spring.version>
 	</properties>
 
@@ -183,7 +182,6 @@
 										<include>*:*:*:*:test:*</include>
 										<include>*:*:*:*:provided:*</include>
 										<include>io.tracee:*</include>
-										<include>com.google.code.gson:gson:jar</include>
 									</includes>
 								</bannedDependencies>
 							</rules>
@@ -389,11 +387,6 @@
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
 				<version>${logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>${gson.version}</version>
 			</dependency>
 
 			<!-- Provided dependencies -->

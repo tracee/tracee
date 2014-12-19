@@ -1,6 +1,5 @@
 package io.tracee.springmvc;
 
-import com.google.gson.Gson;
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import org.junit.Before;
@@ -106,7 +105,7 @@ public class TraceeInterceptorTest {
 		final Map<String, String> expected = new HashMap<String, String>();
 		expected.put("testkey", "testValue123");
 		final Vector<String> headers = new Vector<String>();
-		headers.add(new Gson().toJson(expected));
+		headers.add("testkey=testValue123");
 		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(headers.elements());
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend).putAll(eq(expected));
@@ -120,7 +119,7 @@ public class TraceeInterceptorTest {
 		final Map<String, String> expected = new HashMap<String, String>();
 		expected.put("testkey", "testValue123");
 
-		final Enumeration<String> headers = Collections.enumeration(Arrays.asList(new Gson().toJson(expected)));
+		final Enumeration<String> headers = Collections.enumeration(Arrays.asList("testkey=testValue123"));
 		when(httpServletRequest.getHeaders(incomingHeader)).thenReturn(headers);
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend).putAll(eq(expected));

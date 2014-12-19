@@ -21,7 +21,7 @@ public class TraceeHttpResponseInterceptorTest {
     @Test
     public void testResponseInterceptorParsesHttpHeaderToBackend() throws Exception {
         final HttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 404, "not found"));
-        httpResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "{\"foobi\":\"bar\"}");
+        httpResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "foobi=bar");
         unit.process(httpResponse, mock(HttpContext.class));
         assertThat(backend.get("foobi"), equalTo("bar"));
     }

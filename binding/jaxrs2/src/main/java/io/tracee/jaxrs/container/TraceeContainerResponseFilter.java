@@ -3,8 +3,8 @@ package io.tracee.jaxrs.container;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.transport.HttpJsonHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+import io.tracee.transport.HttpHeaderTransport;
+
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -19,16 +19,16 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 
 	private final TraceeBackend backend;
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 
-	TraceeContainerResponseFilter(TraceeBackend backend, TransportSerialization<String> transportSerialization) {
+	TraceeContainerResponseFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 	}
 
 	@SuppressWarnings("unused")
 	public TraceeContainerResponseFilter() {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
 

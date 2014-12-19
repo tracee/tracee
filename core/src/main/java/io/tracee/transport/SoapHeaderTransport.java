@@ -26,8 +26,7 @@ public class SoapHeaderTransport {
 	public Map<String, String> parseSoapHeader(Element soapHeader) throws JAXBException {
 		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.SOAP_HEADER_NAME);
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
-			Element tpicHeader = (Element) tpicHeaders.item(0);
-			return parseTpicHeader(tpicHeader);
+			return parseTpicHeader((Element) tpicHeaders.item(0));
 		}
 		return new HashMap<String, String>();
 	}
@@ -38,7 +37,7 @@ public class SoapHeaderTransport {
 	public Map<String, String> parseTpicHeader(Element header) throws JAXBException {
 		if (header != null && header.hasChildNodes()) {
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			JAXBElement<TpicMap> unmarshal = unmarshaller.unmarshal(header, TpicMap.class);
+			final JAXBElement<TpicMap> unmarshal = unmarshaller.unmarshal(header, TpicMap.class);
 			if (unmarshal != null) {
 				return unmarshal.getValue().unwrapValues();
 			}
@@ -50,8 +49,6 @@ public class SoapHeaderTransport {
 	 * Renders a given context map into a given soapHeader.
 	 */
 	public void renderSoapHeader(Map<String, String> context, SOAPHeader soapHeader) throws SOAPException, JAXBException {
-
-
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.marshal(TpicMap.wrap(context), soapHeader);
 	}

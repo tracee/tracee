@@ -1,8 +1,8 @@
 package io.tracee.springhttpclient;
 
 import io.tracee.*;
-import io.tracee.transport.HttpJsonHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+import io.tracee.transport.HttpHeaderTransport;
+
 import org.hamcrest.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class TraceeClientHttpRequestInterceptorTest {
 
 	private static final String USED_PROFILE = "A_PROFILE";
-	private final TransportSerialization<String> transportSerializationMock = new HttpJsonHeaderTransport(NoopTraceeLoggerFactory.INSTANCE);
+	private final HttpHeaderTransport transportSerializationMock = new HttpHeaderTransport(NoopTraceeLoggerFactory.INSTANCE);
 	private final TraceeBackend backend = new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration(), NoopTraceeLoggerFactory.INSTANCE);
 	private final TraceeClientHttpRequestInterceptor unit =
 			new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, USED_PROFILE);
@@ -43,7 +43,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 			@Override
 			public ClientHttpResponse answer(InvocationOnMock invocation) throws Throwable {
 				final HttpHeaders headers = new HttpHeaders();
-				headers.add(TraceeConstants.HTTP_HEADER_NAME,"{\"fromResponse\":\"true\"}");
+				headers.add(TraceeConstants.HTTP_HEADER_NAME,"fromResponse=true");
 				return new SimpleClientHttpResponse(HttpStatus.NO_CONTENT, "yawn", headers);
 			}
 		});
@@ -55,7 +55,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 		final HttpRequest request = new SimpleClientHttpRequestFactory().createRequest(URI.create("http://foo.bar"), HttpMethod.GET);
 		backend.put("inClientBeforeRequest", "true");
 		unit.intercept(request, payload, clientHttpRequestExecutionMock);
-		verify(clientHttpRequestExecutionMock).execute(argThat(headers(hasEntry(TraceeConstants.HTTP_HEADER_NAME, "{\"inClientBeforeRequest\":\"true\"}"))), any(byte[].class));
+		verify(clientHttpRequestExecutionMock).execute(argThat(headers(hasEntry(TraceeConstants.HTTP_HEADER_NAME, "inClientBeforeRequest=true"))), any(byte[].class));
 	}
 
 	@Test
@@ -63,7 +63,6 @@ public class TraceeClientHttpRequestInterceptorTest {
 		final HttpRequest request = new SimpleClientHttpRequestFactory().createRequest(URI.create("http://foo.bar"), HttpMethod.GET);
 		unit.intercept(request, payload, clientHttpRequestExecutionMock);
 		assertThat(backend, hasEntry("fromResponse", "true"));
-
 	}
 
 	final Matcher<HttpRequest> headers(Matcher<Map<? extends String, ? extends String>> submatcher) {

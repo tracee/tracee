@@ -4,7 +4,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.transport.HttpJsonHeaderTransport;
+import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.SoapHeaderTransport;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
@@ -22,7 +22,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 	private final TraceeBackend backend;
 	private final TraceeLogger LOGGER;
 
-	private final HttpJsonHeaderTransport httpJsonSerializer;
+	private final HttpHeaderTransport httpJsonSerializer;
 	private final SoapHeaderTransport httpSoapSerializer;
 
 	private String profile;
@@ -36,7 +36,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 		this.backend = backend;
 		this.LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
-		this.httpJsonSerializer = new HttpJsonHeaderTransport(backend.getLoggerFactory());
+		this.httpJsonSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
 		this.httpSoapSerializer = new SoapHeaderTransport();
 	}
 
@@ -68,7 +68,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
             final List<String> traceeHeader = requestHeaders.get(TraceeConstants.HTTP_HEADER_NAME);
 
             if (traceeHeader != null && !traceeHeader.isEmpty()) {
-                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader.get(0));
+                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader);
                 backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
             }
         }

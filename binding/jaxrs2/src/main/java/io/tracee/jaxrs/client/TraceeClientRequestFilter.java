@@ -1,8 +1,8 @@
 package io.tracee.jaxrs.client;
 
 import io.tracee.*;
-import io.tracee.transport.HttpJsonHeaderTransport;
-import io.tracee.transport.TransportSerialization;
+import io.tracee.transport.HttpHeaderTransport;
+
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -16,14 +16,14 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public class TraceeClientRequestFilter implements ClientRequestFilter {
 
 	private final TraceeBackend backend;
-	private final TransportSerialization<String> transportSerialization;
+	private final HttpHeaderTransport transportSerialization;
 
 	@SuppressWarnings("unused")
 	public TraceeClientRequestFilter() {
-		this(Tracee.getBackend(), new HttpJsonHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
-	TraceeClientRequestFilter(TraceeBackend backend, TransportSerialization<String> transportSerialization) {
+	TraceeClientRequestFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
 		this.backend = backend;
 		this.transportSerialization =  transportSerialization;
 	}

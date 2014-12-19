@@ -36,7 +36,7 @@ public class TraceeInterceptorIT {
 	@Before
 	public void startJetty() throws Exception {
 		Tracee.getBackend().clear();
-		
+
 		server = new Server(new InetSocketAddress("127.0.0.1",0));
 		ServletContextHandler context = new ServletContextHandler(null, "/", ServletContextHandler.NO_SECURITY);
 		final DispatcherServlet dispatcherServlet = new DispatcherServlet();
@@ -54,14 +54,14 @@ public class TraceeInterceptorIT {
 		}
 		Tracee.getBackend().clear();
 	}
-	
+
 	@Test
-	public void test() throws IOException {
-		final Header traceeResponseHeader = get("{ \"inClient\":\"yes\" }").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+	public void testTheIntegration() throws IOException {
+		final Header traceeResponseHeader = get("in+Client=yes").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
 
 		assertThat(traceeResponseHeader, notNullValue());
-		assertThat(traceeResponseHeader.getValue(), containsString("\"inInterceptor\":\"yes\""));
-		assertThat(traceeResponseHeader.getValue(), containsString("\"inClient\":\"yes\""));
+		assertThat(traceeResponseHeader.getValue(), containsString("inInterceptor=y+e+s"));
+		assertThat(traceeResponseHeader.getValue(), containsString("in+Client=yes"));
 	}
 
 	private HttpResponse get(String traceeHeaderValue) throws IOException {
@@ -75,14 +75,14 @@ public class TraceeInterceptorIT {
 
 	@Controller
 	public static class SillyController {
-		
+
 		@RequestMapping("/*")
 		@ResponseStatus(HttpStatus.NO_CONTENT)
 		public void handleGet(HttpServletRequest request) {
 			if (request.getHeader(TraceeConstants.HTTP_HEADER_NAME) == null) {
 				throw new AssertionError("No expected Header " + TraceeConstants.HTTP_HEADER_NAME + " in request set");
 			}
-			Tracee.getBackend().put("inInterceptor", "yes");
+			Tracee.getBackend().put("inInterceptor", "y e s");
 		}
 	}
 }

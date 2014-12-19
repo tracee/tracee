@@ -36,11 +36,11 @@ public class TraceeHttpInterceptorsIT {
 		httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
 
 		HttpGet getMethod = new HttpGet(serverEndpoint);
-		Tracee.getBackend().put("beforeRequest", "yip");
+		Tracee.getBackend().put("before Request", "yip");
 		final HttpResponse response = httpClient.execute(getMethod);
 
 		assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
-		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yesSir"));
+		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yes Sir"));
 	}
 
 	@Before
@@ -56,9 +56,9 @@ public class TraceeHttpInterceptorsIT {
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
 			final String incomingTraceeHeader = request.getHeader(TraceeConstants.HTTP_HEADER_NAME);
 
-			assertThat(incomingTraceeHeader, equalTo("{\"beforeRequest\":\"yip\"}"));
+			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
 
-			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "{ \"responseFromServer\":\"yesSir\" }");
+			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "responseFromServer=yes+Sir");
 			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			request.setHandled(true);
 		}
