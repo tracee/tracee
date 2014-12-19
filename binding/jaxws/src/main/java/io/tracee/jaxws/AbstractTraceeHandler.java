@@ -13,7 +13,7 @@ import java.util.Set;
 
 public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
-	private final TraceeBackend traceeBackend;
+	protected final TraceeBackend traceeBackend;
 
 	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
 			new HashSet<QName>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
@@ -40,10 +40,6 @@ public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageCo
     @Override
     public void close(MessageContext context) {
 
-    }
-
-    protected final TraceeBackend getTraceeBackend() {
-        return traceeBackend;
     }
 
     protected abstract void handleIncoming(SOAPMessageContext context);

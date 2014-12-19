@@ -19,7 +19,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 public class TraceeClientHandler extends AbstractTraceeHandler {
 
-	private final TraceeLogger traceeLogger = getTraceeBackend().getLoggerFactory().getLogger(TraceeClientHandler.class);
+	private final TraceeLogger traceeLogger;
 
 	private final SoapHeaderTransport transportSerialization = new SoapHeaderTransport();
 
@@ -27,8 +27,9 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 		this(Tracee.getBackend());
 	}
 
-	TraceeClientHandler(TraceeBackend traceeBackend) {
+	public TraceeClientHandler(TraceeBackend traceeBackend) {
 		super(traceeBackend);
+		traceeLogger = traceeBackend.getLoggerFactory().getLogger(TraceeClientHandler.class);
 	}
 
 	@Override
@@ -39,8 +40,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 	protected final void handleIncoming(final SOAPMessageContext context) {
 
 		final SOAPMessage msg = context.getMessage();
-		final TraceeBackend backend = getTraceeBackend();
-		if (msg != null && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
+		if (msg != null && traceeBackend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 
 			try {
 				final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -50,14 +50,13 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
 				if (header != null) {
 					final Map<String, String> parsedContext = transportSerialization.parseSoapHeader(header);
-					final Map<String, String> filteredContext = getTraceeBackend().getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest);
-					getTraceeBackend().putAll(filteredContext);
+					traceeBackend.putAll(traceeBackend.getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest));
 				}
 
 			} catch (final SOAPException e) {
 				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
 			} catch (JAXBException e) {
-				e.printStackTrace();
+				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
 			}
 
 		}
@@ -67,8 +66,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 	protected final void handleOutgoing(final SOAPMessageContext context) {
 
 		final SOAPMessage msg = context.getMessage();
-		final TraceeBackend backend = getTraceeBackend();
-		if (msg != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
+		if (msg != null && traceeBackend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 
 			try {
 				final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
@@ -78,7 +76,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 					header = env.addHeader();
 				}
 
-				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend, IncomingResponse);
+				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend, IncomingResponse);
 				transportSerialization.renderSoapHeader(filteredContext, header);
 
 				msg.saveChanges();

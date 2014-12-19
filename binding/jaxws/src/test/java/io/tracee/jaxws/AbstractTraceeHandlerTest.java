@@ -56,7 +56,7 @@ public class AbstractTraceeHandlerTest {
 
 	@Test
 	public void shouldReturnTraceeBackendFromInitializiation() {
-		assertThat(unit.getTraceeBackend(), is(traceeBackend));
+		assertThat(unit.traceeBackend, is(traceeBackend));
 	}
 
 
