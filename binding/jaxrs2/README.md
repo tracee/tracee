@@ -39,7 +39,9 @@ public class ApplicationConfig extends Application {
 You have to add register the TraceeClientResponseFilter and TraceeClientRequestFilter classes during the Client creation to enable TracEE support for JAX-RS clients. 
 
 ```java
-final Client client = ClientBuilder.newClient().register(TraceeClientRequestFilter.class).register(TraceeClientResponseFilter.class);
+final Client client = ClientBuilder.newClient()
+    .register(TraceeClientRequestFilter.class)
+    .register(TraceeClientResponseFilter.class);
 final Response response = client.target(ENDPOINT_URL).request().get();
 ```
 
