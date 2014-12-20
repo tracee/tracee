@@ -1,15 +1,13 @@
 package io.tracee.outbound.httpclient;
 
 
+import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.configuration.TraceeFilterConfiguration;
-
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -17,36 +15,35 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TraceeHttpClientDecoratorTest {
 
-	private static final String USED_PROFILE = "A_PROFILE";
-	private final HttpClient delegateMock = mock(HttpClient.class);
-	private final TraceeBackend backendMock = mock(TraceeBackend.class);
-	private final TraceeFilterConfiguration configMock = mock(TraceeFilterConfiguration.class);
+	private final TraceeBackend backendMock = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
 	private final HttpMethod httpMethodMock = mock(HttpMethod.class);
-	@SuppressWarnings("unchecked")
 	private final HttpHeaderTransport transportSerializationMock = mock(HttpHeaderTransport.class);
-	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(delegateMock, backendMock, transportSerializationMock, USED_PROFILE);
+	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(mock(HttpClient.class), backendMock, transportSerializationMock, null);
 
-	@Before
-	public void setupMocks() {
-		when(backendMock.getConfiguration(eq(USED_PROFILE))).thenReturn(configMock);
-		when(configMock.shouldProcessContext(any(TraceeFilterConfiguration.Channel.class))).thenReturn(true);
+	@Test
+	public void doNotRenderTpicHeaderIfBackendIsEmpty() throws IOException {
+		unit.executeMethod(null, httpMethodMock, null);
+		verify(httpMethodMock, never()).setRequestHeader(anyString(), anyString());
 	}
 
 	@Test
 	public void testContextWrittenToRequest() throws IOException {
+		backendMock.put("foo", "bar");
 		when(transportSerializationMock.render(any(TraceeBackend.class))).thenReturn("foo=bar");
 		unit.executeMethod(null, httpMethodMock, null);
 		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.HTTP_HEADER_NAME), eq("foo=bar"));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testContextParsedFromResponse() throws IOException {
 		final Header responseHeader = new Header(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
@@ -57,6 +54,6 @@ public class TraceeHttpClientDecoratorTest {
 		unit.executeMethod(null, httpMethodMock, null);
 
 		verify(transportSerializationMock).parse(eq(Arrays.asList("foo=bar")));
-		verify(backendMock).putAll(Mockito.<String, String>anyMap());
+		verify(backendMock).putAll(Mockito.anyMapOf(String.class, String.class));
 	}
 }
