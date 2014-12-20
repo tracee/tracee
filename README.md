@@ -124,24 +124,15 @@ in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 
 # Integrating TracEE into your application
 
-The steps to get TracEE up and running pretty much depend on your application scenario. The most common use case would be to
-propagate context information from a servlet container based frontend to an ejb based backend.
-
-## Integration scenarios
-
-Look into our [Bindings](binding/)-Page to get an overview about our incoming/outgoing bindings.
-
-## Modules
-
-TracEE is highly modular. What modules actually you need depends on your application and its underlying frameworks and containers.
+TracEE is highly modular. What modules actually you need for integration depends on your application, its underlying frameworks and containers.
 The following table describes all available TracEE-modules and their usage scenarios.
 
 | Module                                              | Usage |
 |----------------------------------------------------:|:-----:|
 | __core modules__                                    |       |
-| [tracee-api](api/)                                  | Contains an API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
-| [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. You wont need this module as a direct dependency.
-| __connector modules__                               |
+| [tracee-api](api/)                                  | API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
+| [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. *You won't need this module as a direct dependency.*
+| __connector / binding modules__                     | *These dependencies are needed due compile time* |
 | [tracee-httpcomponents](binding/httpcomponents/)    | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-httpclient](binding/httpclient/)            | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-jaxrs2](binding/jaxrs2)                     | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
@@ -151,12 +142,14 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
 | [tracee-cxf](binding/cxf)                           | To transfer context informations with CXF add the `TraceeCxfFeature` to your Client oder Server.
-| __backends__                                        |
+| __backends__                                        | *These dependencies are needed due runtime.*         |
 | [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
 | [tracee-log4j](backend/log4j)                       | Backend implementation for containers using log4j for logging.
 | [tracee-log4j2](backend/log4j2)                     | Backend implementation for containers using log4j2 for logging.
 | [tracee-jboss-logging](backend/jboss-logging)       | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
 | [threadlocal-store](backend/threadlocal-store)      | Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
+
+Look into our [Bindings](binding/)-Page to get a more detailed binding overview.
 
 All TracEE modules are (hopefully) OSGI compliant.
 
