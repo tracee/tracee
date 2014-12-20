@@ -1,0 +1,16 @@
+> Click [here](/README.md) to get an overview that TracEE is about.
+
+# The Bindings
+
+
+| Framework                   | Client | Server / Container |
+| ---------------------------:|:------:|:---------:|
+| Servlet                     | - | Use [tracee-servlet](servlet/) as a servlet filter. |
+| Spring MVC                  | - | Use [tracee-springmvc](springmvc/)'s `TraceeInterceptor`. |
+| Spring Web (Rest-Clients)   | Use [tracee-springhttpclient](springhttpclient/)'s `TraceeClientHttpRequestInterceptor`. | - |
+| JAX-RS                      | Configure [tracee-httpclient](httpclient/) as Executor | Use [tracee-servlet](servlet/) as a servlet filter. |
+| JAX-RS2                     | Configure [tracee-jaxrs2](jaxrs2/)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2/)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
+| JAX-WS                      | Use [tracee-jaxws](jaxws/)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws/)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
+| JMS                         | Producer: Use [tracee-jms](jms/)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms/)'s `TraceeMessageListener` as EJB interceptor. |
+| ApacheHttpClient            | Use [tracee-httpclient](httpclient/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| Apache CXF                  | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` |

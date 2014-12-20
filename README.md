@@ -118,9 +118,7 @@ in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 			<entry key="traceeRequestId">ABCDEFG</entry>
 		</tpic>
 	</soap:Header>
-	<soap:Body>
-		<ns2:myWebServiceMethod xmlns:ns2="https://example.com/myBusinessWorld/wsdl"/>
-	</soap:Body>
+...
 </soap:Envelope>
 ```
 
@@ -131,18 +129,7 @@ propagate context information from a servlet container based frontend to an ejb 
 
 ## Integration scenarios
 
-| Framework                   | Client | Container |
-| ---------------------------:|:------:|:---------:|
-| Servlet                     | - | Use [tracee-servlet](binding/servlet) as a servlet filter. |
-| Spring MVC                  | - | Use [tracee-springmvc](binding/springmvc)'s `TraceeInterceptor`. |
-| Spring Web (Rest-Clients)   | Use [tracee-springhttpclient](binding/springhttpclient)'s `TraceeClientHttpRequestInterceptor`. | - |
-| JAX-RS                      | Configure [tracee-httpclient](binding/httpclient) as Executor | Use [tracee-servlet](binding/servlet) as a servlet filter. |
-| JAX-RS2                     | Configure [tracee-jaxrs2](binding/jaxrs2)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](binding/jaxrs2)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
-| JAX-WS                      | Use [tracee-jaxws](binding/jaxws)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](binding/jaxws)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
-| JMS                         | Producer: Use [tracee-jms](binding/jms)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](binding/jms)'s `TraceeMessageListener` as EJB interceptor. |
-| ApacheHttpClient            | Use [tracee-httpclient](binding/httpclient)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
-| Apache CXF                  | Use [tracee-cxf](binding/cxf)'s `TraceeCxfFeature` | Use [tracee-cxf](binding/cxf)'s `TraceeCxfFeature` |
-| EJB3 remote                 | - | - |
+Look into our [Bindings](binding/)-Page to get an overview about our incoming/outgoing bindings.
 
 ## Modules
 
