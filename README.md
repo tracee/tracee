@@ -99,17 +99,17 @@ The most prominent transports are native java serialization formats, HTTP and SO
 
 Using Java serialization the Propagated Invocation Context is simply encoded as a Java map of strings.
 
-On HTTP-Transports, like JAX-RS or Servlets, JSPs, or whatsoever, the invocation context is encoded as a custom HTTP-Header 
-__TPIC__ with an JSON encoded invocation context map as value.
+On HTTP-Transports, like JAX-RS, Servlets, JSPs, or whatever, the invocation context is encoded as a custom HTTP-Header 
+__TPIC__. Key and value are URL-Encoded and concatenated with `=` and `,`.
  
 ```
 GET / HTTP/1.1
-TPIC: {"inRequest":"yes"}
+TPIC: in+Request=yes
 User-Agent: Jakarta Commons-HttpClient/3.1
 Host: localhost:2000
 ```
  
-In the SOAP-World the invocation context is, regardless of the underlying transport mechanism, encoded as a special header
+In the SOAP-world the invocation context is, regardless of the underlying transport mechanism, encoded as a special header
 in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
