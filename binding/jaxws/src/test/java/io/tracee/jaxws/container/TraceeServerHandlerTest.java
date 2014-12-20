@@ -1,31 +1,29 @@
 package io.tracee.jaxws.container;
 
-import io.tracee.NoopTraceeLoggerFactory;
-import io.tracee.PermitAllTraceeFilterConfiguration;
+import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.soap.*;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-
 import java.util.Collections;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TraceeServerHandlerTest {
 
-	private final TraceeBackend backend = mock(TraceeBackend.class);
-	{
-		when(backend.getLoggerFactory()).thenReturn(new NoopTraceeLoggerFactory());
-	}
+	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
 	private final SoapHeaderTransport soapHeaderTransport = mock(SoapHeaderTransport.class);
 	private final TraceeServerHandler unit = new TraceeServerHandler(backend, soapHeaderTransport);
 	private final SOAPMessageContext soapMessageContext = mock(SOAPMessageContext.class);
@@ -36,7 +34,6 @@ public class TraceeServerHandlerTest {
 
 	@Before
 	public void setUp() throws SOAPException {
-		when(backend.getConfiguration()).thenReturn(new PermitAllTraceeFilterConfiguration());
 		when(soapMessageContext.getMessage()).thenReturn(soapMessage);
 		when(soapMessage.getSOAPPart()).thenReturn(soapPart);
 		when(soapPart.getEnvelope()).thenReturn(soapEnvelope);
