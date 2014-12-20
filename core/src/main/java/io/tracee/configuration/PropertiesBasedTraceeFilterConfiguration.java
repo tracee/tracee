@@ -26,7 +26,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	private String getProfiledOrDefaultProperty(String propertyName) {
 		if (profileName != null) {
-			final String profiledProperty = propertyChain.getProperty(TRACEE_CONFIG_PREFIX + profileName + "." + propertyName);
+			final String profiledProperty = propertyChain.getProperty(TRACEE_CONFIG_PREFIX + profileName + '.' + propertyName);
 			if (profiledProperty != null)
 				return profiledProperty;
 		}
@@ -68,7 +68,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
-		final HashMap<String, String> filtered = new HashMap<String, String>(unfiltered.size());
+		final Map<String, String> filtered = new HashMap<String, String>(unfiltered.size());
 		for (Map.Entry<String, String> entry : unfiltered.entrySet()) {
 			if (shouldProcessParam(entry.getKey(), channel)) {
 				filtered.put(entry.getKey(), entry.getValue());
@@ -101,12 +101,12 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		if (propertyValue == null)
 			return Collections.emptyList();
 
-		final String[] rawPatterns = propertyValue.split(",");
-		final List<String> trimmedPatterns = new ArrayList<String>(rawPatterns.length);
-		for (String rawPattern : rawPatterns) {
-			final String trimmedPattern = rawPattern.trim();
-			if (!trimmedPattern.isEmpty()) {
-				trimmedPatterns.add(trimmedPattern);
+		final List<String> trimmedPatterns = new ArrayList<String>();
+		final StringTokenizer tokenizer = new StringTokenizer(propertyValue, ",");
+		while (tokenizer.hasMoreTokens()) {
+			final String trimmedString = tokenizer.nextToken().trim();
+			if (!trimmedString.isEmpty()) {
+				trimmedPatterns.add(trimmedString);
 			}
 		}
 		return trimmedPatterns;

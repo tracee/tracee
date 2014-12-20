@@ -8,9 +8,6 @@ import java.util.Properties;
 
 public final class TraceePropertiesFileLoader {
 
-
-
-
 	public Properties loadTraceeProperties(String traceePropertiesFile) throws IOException {
 		final Properties propertiesFromFile = new Properties();
 		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -32,5 +29,4 @@ public final class TraceePropertiesFileLoader {
 
 		return propertiesFromFile;
 	}
-
 }
