@@ -1,4 +1,4 @@
-> This document contains documentation for the tracee-httpclient module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the tracee-cxf module. Click [here](/README.md) to get an overview that TracEE is about.
 
 # tracee-cxf
 
