@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 
 public class TraceeMessageListenerTest {
 
-
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final TraceeMessageListener unit = new TraceeMessageListener(backend);
 	private final InvocationContext invocationContext = mock(InvocationContext.class);
@@ -52,16 +51,13 @@ public class TraceeMessageListenerTest {
 	public void testCleansUpContextAfterProcessing() throws Exception {
 		encodedContext.put("contextFromMessage","yes");
 		unit.intercept(invocationContext);
-		assertThat(backend.entrySet(), is(empty()));
+		assertThat(backend.isEmpty(), is(true));
 	}
-
 
 	@EJB
 	private class MdbLike {
 		public void onMessage(Message message) {
-			assertThat(backend, hasEntry("contextFromMessage", "yes"));
+			assertThat(backend.get("contextFromMessage"), is("yes"));
 		}
 	}
-
-
 }

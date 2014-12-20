@@ -9,7 +9,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ThreadLocalContextProviderIT {
 
-
     @Test
     public void testLoadProvierThenStoreAndRetrieve() {
         final TraceeBackend context = Tracee.getBackend();
@@ -17,6 +16,4 @@ public class ThreadLocalContextProviderIT {
         assertThat(context.get("FOO"), equalTo("BAR"));
         context.clear();
     }
-
-
 }

@@ -71,7 +71,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
 		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
-			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend, OutgoingResponse);
+			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
 		}
 		backend.clear();

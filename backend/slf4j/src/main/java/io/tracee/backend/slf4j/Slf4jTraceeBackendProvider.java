@@ -6,9 +6,9 @@ import io.tracee.spi.TraceeBackendProvider;
 
 public class Slf4jTraceeBackendProvider implements TraceeBackendProvider {
 
-    private final Slf4jMdcAdapter slf4jMdcAdapter = new Slf4jMdcAdapter();
-    private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
-    private final Slf4jTraceeBackend slf4jTraceeContext = new Slf4jTraceeBackend(slf4jMdcAdapter, traceeKeys);
+	private static final ThreadLocalHashSet<String> TRACEE_KEYS = new ThreadLocalHashSet<String>();
+
+    private final Slf4jTraceeBackend slf4jTraceeContext = new Slf4jTraceeBackend(TRACEE_KEYS);
 
     @Override
     public final TraceeBackend provideBackend() {

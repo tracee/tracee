@@ -8,9 +8,9 @@ import java.util.Set;
 
 public final class JbossLoggingTraceeBackendProvider implements TraceeBackendProvider {
 
-    private final JbossLoggingMdcLikeAdapter jbossLoggingMdcLikeAdapter = new JbossLoggingMdcLikeAdapter();
-    private final ThreadLocal<Set<String>> traceeKeys = new ThreadLocalHashSet<String>();
-    private final JbossLoggingTraceeBackend traceeContext = new JbossLoggingTraceeBackend(jbossLoggingMdcLikeAdapter, traceeKeys);
+	private static final ThreadLocalHashSet<String> TRACEE_KEYS = new ThreadLocalHashSet<String>();
+
+    private final JbossLoggingTraceeBackend traceeContext = new JbossLoggingTraceeBackend(TRACEE_KEYS);
 
     @Override
     public TraceeBackend provideBackend() {

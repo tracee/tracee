@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,7 +63,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 	public void testInterceptReadsContextFromClientResponse() throws Exception {
 		final HttpRequest request = new SimpleClientHttpRequestFactory().createRequest(URI.create("http://foo.bar"), HttpMethod.GET);
 		unit.intercept(request, payload, clientHttpRequestExecutionMock);
-		assertThat(backend, hasEntry("fromResponse", "true"));
+		assertThat(backend.get("fromResponse"), is("true"));
 	}
 
 	final Matcher<HttpRequest> headers(Matcher<Map<? extends String, ? extends String>> submatcher) {

@@ -12,7 +12,7 @@ public class JbossLoggingTraceeBackendTest {
 
 	@Test
 	public void shouldProvideSlf4JBackend() {
-		final JbossLoggingTraceeBackend backend = new JbossLoggingTraceeBackend(new JbossLoggingMdcLikeAdapter(), new ThreadLocalHashSet<String>());
+		final JbossLoggingTraceeBackend backend = new JbossLoggingTraceeBackend(new ThreadLocalHashSet<String>());
 		assertThat(backend.getLoggerFactory().getLogger(JbossLoggingTraceeBackendTest.class), is(not(nullValue())));
 	}
 }

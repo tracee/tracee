@@ -50,7 +50,7 @@ public class TraceeServerHandlerTest {
 	@Test
 	public void testHandleOutgoing() throws SOAPException, JAXBException {
 		unit.handleOutgoing(soapMessageContext);
-		verify(soapHeaderTransport).renderSoapHeader(eq(backend), eq(soapHeader));
+		verify(soapHeaderTransport).renderSoapHeader(eq(backend.copyToMap()), eq(soapHeader));
 	}
 
 	@Test

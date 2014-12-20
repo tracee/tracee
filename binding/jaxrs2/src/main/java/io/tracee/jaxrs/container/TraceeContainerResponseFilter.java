@@ -36,13 +36,12 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 	public final void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
-			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingResponse);
+			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			final String serializedContext = transportSerialization.render(filtered);
 			if (serializedContext != null)
 				responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedContext);
 		}
 
 		backend.clear();
-
 	}
 }

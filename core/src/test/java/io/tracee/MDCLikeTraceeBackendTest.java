@@ -13,13 +13,12 @@ import static org.mockito.Mockito.*;
 
 public class MDCLikeTraceeBackendTest {
 
-	private final MDCLike mdcLikeMock = Mockito.mock(MDCLike.class);
 	@SuppressWarnings("unchecked")
 	private final ThreadLocal<Set<String>> traceeKeysMock = (ThreadLocal<Set<String>>) Mockito.mock(ThreadLocal.class);
-	@SuppressWarnings("unchecked")
-	private final HashSet<String> traceeKeysSet = (HashSet<String>) Mockito.spy(new HashSet());
 
-	private final MDCLikeTraceeBackend unit = new MDCLikeTraceeBackend(mdcLikeMock, traceeKeysMock, null);
+	private final HashSet<String> traceeKeysSet = Mockito.spy(new HashSet<String>());
+
+	private final TestBackend unit = new TestBackend(traceeKeysMock, null);
 
 	@Before
 	public void setUpMocks() {
@@ -35,7 +34,7 @@ public class MDCLikeTraceeBackendTest {
 	@Test
 	public void putWritesEntryToMdcLike() {
 		unit.put("Foo", "bar");
-		verify(mdcLikeMock).put("Foo", "bar");
+		assertThat(unit.contextMap, hasEntry("Foo", "bar"));
 	}
 
 	@Test
@@ -54,8 +53,9 @@ public class MDCLikeTraceeBackendTest {
 		putMap.put("Foo", "bar");
 		putMap.put("Ping", "Pong");
 		unit.putAll(putMap);
-		verify(mdcLikeMock).put("Foo", "bar");
-		verify(mdcLikeMock).put("Ping", "Pong");
+		assertThat(unit.contextMap, hasEntry("Foo", "bar"));
+		assertThat(unit.contextMap, hasEntry("Ping", "Pong"));
+		assertThat(unit.contextMap.size(), is(2));
 	}
 
 	@Test
@@ -67,26 +67,31 @@ public class MDCLikeTraceeBackendTest {
 
 	@Test
 	public void clearRemovesRegisteredKeysFromMdcLike() {
-		when(traceeKeysSet.iterator()).thenReturn(Arrays.asList("A", "B").iterator());
+		traceeKeysSet.add("A");
+		traceeKeysSet.add("B");
+		unit.contextMap.put("A", "a");
+		unit.contextMap.put("B", "b");
 		unit.clear();
-		verify(mdcLikeMock).remove("A");
-		verify(mdcLikeMock).remove("B");
+		assertThat(unit.contextMap, not(hasEntry("A", "a")));
+		assertThat(unit.contextMap, not(hasEntry("B", "b")));
 	}
 
 	@Test
 	public void removeRemovesRegisteredKeysFromMDC() {
 		when(traceeKeysSet.remove("A")).thenReturn(true);
 		when(traceeKeysSet.contains("A")).thenReturn(true);
+		unit.contextMap.put("A", "a");
 		unit.remove("A");
-		verify(mdcLikeMock).remove("A");
+		assertThat(unit.contextMap.isEmpty(), is(true));
 	}
 
 	@Test
 	public void removeDoesNotRemoveUnregisteredKeysFromMDC() {
+		unit.contextMap.put("A", "a");
 		when(traceeKeysSet.remove("A")).thenReturn(false);
 		when(traceeKeysSet.contains("A")).thenReturn(false);
 		unit.remove("A");
-		verify(mdcLikeMock, never()).remove("A");
+		assertThat(unit.contextMap, hasEntry("A", "a"));
 	}
 
 	@Test
@@ -97,79 +102,34 @@ public class MDCLikeTraceeBackendTest {
 
 	@Test
 	public void getValueFromMdcIfInKeySet() {
+		unit.contextMap.put("A", "hurray");
 		when(traceeKeysSet.contains("A")).thenReturn(true);
-		when(mdcLikeMock.get("A")).thenReturn("hurray");
 		assertThat(unit.get("A"), equalTo("hurray"));
 	}
 
 	@Test
 	public void getDoesNotReadDirectlyFromMdcLike() {
+		unit.contextMap.put("A", "hurray");
 		when(traceeKeysSet.contains("A")).thenReturn(false);
-		when(mdcLikeMock.get("A")).thenReturn("hurray");
 		assertThat(unit.get("A"), nullValue());
 	}
 
 	@Test
 	public void containsShouldReturnTrueIfInMDC() {
+		unit.contextMap.put("A", "hurray");
 		when(traceeKeysSet.contains("A")).thenReturn(true);
-		when(mdcLikeMock.containsKey("A")).thenReturn(true);
 		assertThat(unit.containsKey("A"), is(true));
+	}
+
+	@Test
+	public void containsShouldReturnFalseIfInKeysetButNotMDC() {
+		when(traceeKeysSet.contains("A")).thenReturn(true);
+		assertThat(unit.containsKey("A"), is(false));
 	}
 
 	@Test
 	public void containsShouldreturnFalseIfNotInMDC() {
 		assertThat(unit.containsKey("A"), is(false));
-	}
-
-	@Test
-	public void keysetShouldReturnCopyOfSet() {
-		traceeKeysSet.addAll(Arrays.asList("A", "B", "C"));
-
-		assertThat(unit.keySet(), containsInAnyOrder("A", "B", "C"));
-		assertThat(unit.keySet(), hasSize(3));
-	}
-
-	@Test
-	public void valuesShouldReturnOnlyTheValues() {
-		traceeKeysSet.addAll(Arrays.asList("A", "B", "C"));
-		when(mdcLikeMock.get("A")).thenReturn("vA");
-		when(mdcLikeMock.get("B")).thenReturn("vB");
-		when(mdcLikeMock.get("C")).thenReturn("vC");
-		assertThat(unit.values(), containsInAnyOrder("vA", "vB" ,"vC"));
-		assertThat(unit.values(), hasSize(3));
-	}
-
-	@Test
-	public void entrySetShouldContainAllKeysAndValues() {
-		traceeKeysSet.addAll(Arrays.asList("A", "B"));
-		when(mdcLikeMock.get("A")).thenReturn("vA");
-		when(mdcLikeMock.get("B")).thenReturn("vB");
-		Set<Map.Entry<String, String>> entries = unit.entrySet();
-		assertThat(entries, hasSize(2));
-		for (Map.Entry<String, String> entry : entries) {
-			assertThat(entry.getValue(), equalTo("v" + entry.getKey()));
-		}
-	}
-
-	@Test
-	public void shouldReturnFalseIfValueIsNotInMDC() {
-		traceeKeysSet.addAll(Arrays.asList("A"));
-		when(mdcLikeMock.get("A")).thenReturn("vA");
-		assertThat(unit.containsValue("vB"), is(false));
-	}
-
-	@Test
-	public void shouldReturnTrueIfKeyIsInMDC() {
-		traceeKeysSet.addAll(Arrays.asList("A"));
-		when(mdcLikeMock.get("A")).thenReturn("vA");
-		assertThat(unit.containsValue("vA"), is(true));
-	}
-
-	@Test
-	public void containsValueShouldHandleNullValuesInMDCMap() {
-		traceeKeysSet.addAll(Arrays.asList("A"));
-		when(mdcLikeMock.get("A")).thenReturn(null);
-		assertThat(unit.containsValue("vA"), is(false));
 	}
 
 	@Test
@@ -180,5 +140,29 @@ public class MDCLikeTraceeBackendTest {
 	@Test
 	public void testLoadUserDefinedProfileFromProperties() {
 		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
+	}
+
+	class TestBackend extends MDCLikeTraceeBackend {
+
+		public Map<String, String> contextMap = new HashMap<String, String>();
+
+		protected TestBackend(ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {
+			super(traceeKeys, loggerFactory);
+		}
+
+		@Override
+		protected String getFromMdc(String key) {
+			return contextMap.get(key);
+		}
+
+		@Override
+		protected void putToMdc(String key, String value) {
+			contextMap.put(key, value);
+		}
+
+		@Override
+		protected void removeFromMdc(String key) {
+			contextMap.remove(key);
+		}
 	}
 }

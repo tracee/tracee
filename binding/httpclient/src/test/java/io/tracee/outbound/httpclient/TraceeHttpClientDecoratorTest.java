@@ -13,8 +13,10 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -39,7 +41,7 @@ public class TraceeHttpClientDecoratorTest {
 	@Test
 	public void testContextWrittenToRequest() throws IOException {
 		backendMock.put("foo", "bar");
-		when(transportSerializationMock.render(any(TraceeBackend.class))).thenReturn("foo=bar");
+		when(transportSerializationMock.render(anyMapOf(String.class, String.class))).thenReturn("foo=bar");
 		unit.executeMethod(null, httpMethodMock, null);
 		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.HTTP_HEADER_NAME), eq("foo=bar"));
 	}

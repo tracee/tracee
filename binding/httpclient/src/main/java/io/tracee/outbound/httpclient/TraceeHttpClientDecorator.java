@@ -89,7 +89,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	private void preRequest(HttpMethod httpMethod) {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, OutgoingRequest);
+			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
 			httpMethod.setRequestHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}

@@ -9,10 +9,12 @@ import java.util.Map;
 /**
  * A testhelper for TraceeBackend dependent tests.
  */
-public class SimpleTraceeBackend extends HashMap<String, String> implements TraceeBackend {
+public class SimpleTraceeBackend implements TraceeBackend {
 
 
 	private Map<String, String> valuesBeforeLastClear = Collections.emptyMap();
+
+	private Map<String, String> backendValues = new HashMap<String, String>();
 
 	public static SimpleTraceeBackend createNonLoggingAllPermittingBackend() {
 		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration(), new NoopTraceeLoggerFactory());
@@ -47,9 +49,49 @@ public class SimpleTraceeBackend extends HashMap<String, String> implements Trac
 	}
 
 	@Override
+	public boolean containsKey(String key) {
+		return backendValues.containsKey(key);
+	}
+
+	@Override
+	public String get(String key) {
+		return backendValues.get(key);
+	}
+
+	@Override
+	public int size() {
+		return backendValues.size();
+	}
+
+	@Override
 	public void clear() {
-		this.valuesBeforeLastClear = new HashMap<String, String>(this);
-		super.clear();
+		this.valuesBeforeLastClear = new HashMap<String, String>(this.copyToMap());
+		backendValues.clear();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return backendValues.isEmpty();
+	}
+
+	@Override
+	public void put(String key, String value) {
+		backendValues.put(key, value);
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends String> m) {
+		backendValues.putAll(m);
+	}
+
+	@Override
+	public Map<String, String> copyToMap() {
+		return new HashMap<String, String>(backendValues);
+	}
+
+	@Override
+	public void remove(String key) {
+		backendValues.remove(key);
 	}
 
 	public Map<String, String> getValuesBeforeLastClear() {

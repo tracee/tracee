@@ -7,13 +7,13 @@ import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
-
-import javax.servlet.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
