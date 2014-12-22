@@ -9,13 +9,16 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class MDCLikeTraceeBackend implements TraceeBackend {
-
+public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
 	public static final String TRACEE_PROPERTIES_FILE = "META-INF/tracee.properties";
 	public static final String TRACEE_DEFAULT_PROPERTIES_FILE = "META-INF/tracee.default.properties";
 
 	private PropertyChain lazyPropertyChain = null;
+
+	private final TraceeLoggerFactory loggerFactory;
+
+	private final ThreadLocal<Set<String>> traceeKeys;
 
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.
@@ -47,32 +50,14 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
 
 	}
 
-	protected MDCLikeTraceeBackend(MDCLike mdcAdapter, ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {
-        this.mdcAdapter = mdcAdapter;
+	protected MDCLikeTraceeBackend(ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {
         this.traceeKeys = traceeKeys;
 		this.loggerFactory = loggerFactory;
     }
 
-	private final TraceeLoggerFactory loggerFactory;
-
-    private final MDCLike mdcAdapter;
-
-    private final ThreadLocal<Set<String>> traceeKeys;
-
-
     @Override
-    public final boolean containsKey(Object key) {
-        return key instanceof String && traceeKeys.get().contains(key) && mdcAdapter.containsKey((String) key);
-    }
-
-    @Override
-    public final boolean containsValue(Object value) {
-        if (value == null) throw new NullPointerException("null values are not allowed.");
-        for (String key : traceeKeys.get()) {
-            if (value.equals(mdcAdapter.get(key)))
-                return true;
-        }
-        return false;
+    public final boolean containsKey(String key) {
+        return key != null && traceeKeys.get().contains(key) && getFromMdc(key) != null;
     }
 
     @Override
@@ -86,49 +71,28 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
     }
 
     @Override
-    public final String get(Object key) {
-        if ((key instanceof String) && traceeKeys.get().contains(key))
-            return mdcAdapter.get((String) key);
+    public final String get(String key) {
+        if ((key != null) && traceeKeys.get().contains(key))
+            return getFromMdc(key);
         else
             return null;
     }
 
-    @Override
-    public final Set<String> keySet() {
-        return Collections.unmodifiableSet(traceeKeys.get());
-    }
-
-    @Override
-    public final Collection<String> values() {
-        final Collection<String> values = new ArrayList<String>(traceeKeys.get().size());
-        for (String traceeKey : traceeKeys.get()) {
-            values.add(mdcAdapter.get(traceeKey));
-        }
-        return Collections.unmodifiableCollection(values);
-    }
-
-    @Override
-    public final String put(String key, String value) {
+    public final void put(String key, String value) {
         if (key == null) throw new NullPointerException("null keys are not allowed.");
         if (value == null) throw new NullPointerException("null values are not allowed.");
         final Set<String> registeredKeys = traceeKeys.get();
         if (!registeredKeys.contains(key)) {
             registeredKeys.add(key);
         }
-        final String current = mdcAdapter.get(key);
-        mdcAdapter.put(key, value);
-        return current;
+        putToMdc(key, value);
     }
 
-    @Override
-    public final String remove(Object key) {
+	@Override
+    public final void remove(String key) {
         if (key == null) throw new NullPointerException("null keys are not allowed.");
-        if ((key instanceof String) && traceeKeys.get().remove(key)) {
-            final String current = mdcAdapter.get((String) key);
-            mdcAdapter.remove((String) key);
-            return current;
-        } else {
-            return null;
+        if (traceeKeys.get().remove(key)) {
+            removeFromMdc(key);
         }
     }
 
@@ -137,9 +101,9 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
      */
     @Override
     public final void clear() {
-        final Set<String> keys = traceeKeys.get();
-        for (String s : keys) {
-            mdcAdapter.remove(s);
+        final Set<String> keys = new HashSet<String>(traceeKeys.get());
+        for (String key : keys) {
+            remove(key);
         }
         traceeKeys.remove();
     }
@@ -151,42 +115,28 @@ public class MDCLikeTraceeBackend implements TraceeBackend {
         }
     }
 
-    @Override
-    public final Set<Map.Entry<String, String>> entrySet() {
-        final Set<Map.Entry<String, String>> entries = new HashSet<Map.Entry<String, String>>();
-        for (String traceeKey : traceeKeys.get()) {
-            entries.add(new Entry(traceeKey));
-        }
-        return Collections.unmodifiableSet(entries);
-    }
+	@Override
+	public Map<String, String> copyToMap() {
+		final Map<String, String> traceeMap = new HashMap<String, String>();
+		final Set<String> keys = traceeKeys.get();
+		for (String traceeKey : keys) {
+			final String value = getFromMdc(traceeKey);
+			if (value != null) {
+				traceeMap.put(traceeKey, value);
+			}
+		}
+		return traceeMap;
+	}
 
 	@Override
 	public final TraceeLoggerFactory getLoggerFactory() {
 		return loggerFactory;
 	}
 
+	protected abstract String getFromMdc(String key);
 
-	private final class Entry implements Map.Entry<String, String> {
+	protected abstract void putToMdc(String key, String value);
 
-        public final String key;
+	protected abstract void removeFromMdc(String key);
 
-        private Entry(String key) {
-            this.key = key;
-        }
-
-        @Override
-        public String getKey() {
-            return key;
-        }
-
-        @Override
-        public String getValue() {
-            return MDCLikeTraceeBackend.this.get(key);
-        }
-
-        @Override
-        public String setValue(String value) {
-            return MDCLikeTraceeBackend.this.put(key, value);
-        }
-    }
 }

@@ -34,7 +34,7 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
 		Utilities.generateRequestIdIfNecessary(backend);
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend, OutgoingRequest);
+			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			final String serializedTraceeContext = transportSerialization.render(filtered);
 			if (serializedTraceeContext == null) {
 				return;

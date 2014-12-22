@@ -39,7 +39,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 	public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, OutgoingRequest);
+			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
 			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}

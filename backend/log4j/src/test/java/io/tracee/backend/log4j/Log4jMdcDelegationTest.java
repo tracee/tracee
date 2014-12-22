@@ -1,26 +1,32 @@
-package io.tracee.backend.slf4j;
+package io.tracee.backend.log4j;
 
+import io.tracee.ThreadLocalHashSet;
+import org.apache.log4j.MDC;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.slf4j.MDC;
+
+import java.util.Hashtable;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MDC.class)
-public class Slf4jMdcAdapterTest {
+public class Log4jMdcDelegationTest {
 
-	private final Slf4jMdcAdapter unit = new Slf4jMdcAdapter();
+	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
+
+	private final Log4jTraceeBackend unit = new Log4jTraceeBackend(traceeKeys);
 
 	@Before
-	public void setupMocks() {
+	public void setup() {
+		traceeKeys.get().add("BB");
 		PowerMockito.mockStatic(MDC.class);
 	}
 
@@ -39,8 +45,8 @@ public class Slf4jMdcAdapterTest {
 
 	@Test
 	public void shouldReturnValueFromMDC() {
-			when(MDC.get("BB")).thenReturn("vBB");
-			assertThat(unit.get("BB"), equalTo("vBB"));
+		when(MDC.get("BB")).thenReturn("vBB");
+		assertThat(unit.get("BB"), equalTo("vBB"));
 	}
 
 	@Test
@@ -48,12 +54,5 @@ public class Slf4jMdcAdapterTest {
 		unit.remove("BB");
 		PowerMockito.verifyStatic();
 		MDC.remove("BB");
-	}
-
-	@Test
-	public void shouldCallCopyMethodOnSlf4JMDC() {
-		unit.getCopyOfContext();
-		PowerMockito.verifyStatic();
-		MDC.getCopyOfContextMap();
 	}
 }

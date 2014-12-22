@@ -76,7 +76,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 					header = env.addHeader();
 				}
 
-				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend, IncomingResponse);
+				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend.copyToMap(), IncomingResponse);
 				transportSerialization.renderSoapHeader(filteredContext, header);
 
 				msg.saveChanges();

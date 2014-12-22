@@ -1,5 +1,6 @@
 package io.tracee.backend.jbosslogging;
 
+import io.tracee.ThreadLocalHashSet;
 import org.jboss.logging.MDC;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +19,15 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MDC.class)
-public class JbossLoggingMdcLikeAdapterTest {
+public class JbossLoggingMdcDelegationTest {
 
-	private final JbossLoggingMdcLikeAdapter unit = new JbossLoggingMdcLikeAdapter();
+	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
+
+	private final JbossLoggingTraceeBackend unit = new JbossLoggingTraceeBackend(traceeKeys);
 
 	@Before
-	public void setupMocks() {
+	public void setup() {
+		traceeKeys.get().add("BB");
 		PowerMockito.mockStatic(MDC.class);
 	}
 
@@ -51,18 +55,5 @@ public class JbossLoggingMdcLikeAdapterTest {
 		unit.remove("BB");
 		PowerMockito.verifyStatic();
 		MDC.remove("BB");
-	}
-
-	@Test
-	public void shouldGetCopyOfMdc() {
-		final Map<String, Object> contextMap = new HashMap<String, Object>();
-		contextMap.put("A", "vA");
-		contextMap.put("B", "vB");
-		when(MDC.getMap()).thenReturn(contextMap);
-
-		final Map<String, String> copyOfContext = unit.getCopyOfContext();
-		assertThat(copyOfContext.size(), is(2));
-		assertThat(copyOfContext.keySet(), containsInAnyOrder("A", "B"));
-		assertThat(copyOfContext.values(), containsInAnyOrder((Object) "vA", "vB"));
 	}
 }

@@ -46,7 +46,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		if (shouldHandleMessage(message)) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
-                final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend, channel);
+                final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
 				LOGGER.debug("Interceptor handles message!");
                 if (message instanceof SoapMessage) {

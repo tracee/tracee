@@ -15,6 +15,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -44,6 +45,6 @@ public class TraceeContainerResponseFilterTest {
     public void testFilterCleansUpBackend() throws IOException {
         backend.put("random", "stuff");
         unit.filter(null, responseContext);
-        assertTrue("backend is empty", backend.isEmpty());
+		assertThat("backend has not been cleaned", backend.isEmpty(), is(true));
     }
 }

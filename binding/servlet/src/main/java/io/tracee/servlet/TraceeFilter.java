@@ -63,7 +63,7 @@ public class TraceeFilter implements Filter {
 
 	private void writeContextToResponse(HttpServletResponse response, TraceeFilterConfiguration configuration) {
 		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
-			final Map<String, String> filteredContext = backend.getConfiguration(profile).filterDeniedParams(backend, OutgoingResponse);
+			final Map<String, String> filteredContext = backend.getConfiguration(profile).filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(HTTP_HEADER_NAME, transportSerialization.render(filteredContext));
 		}
 	}

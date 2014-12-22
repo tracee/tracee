@@ -47,6 +47,6 @@ public class OutgoingSoapMessageTest {
 		final Header tpicHeader = soapMessage.getHeaders().get(0);
 		assertThat(tpicHeader.getName(), is(TraceeConstants.SOAP_HEADER_QNAME));
 		assertThat(tpicHeader.getObject(), instanceOf(TpicMap.class));
-		assertThat(((TpicMap) tpicHeader.getObject()), is(TpicMap.wrap(backend)));
+		assertThat(((TpicMap) tpicHeader.getObject()), is(TpicMap.wrap(backend.copyToMap())));
 	}
 }
