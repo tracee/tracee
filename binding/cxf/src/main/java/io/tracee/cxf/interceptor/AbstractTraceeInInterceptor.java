@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
-	private final TraceeBackend backend;
+
+	protected final TraceeBackend backend;
+
 	private final TraceeLogger LOGGER;
 
 	private final HttpHeaderTransport httpJsonSerializer;

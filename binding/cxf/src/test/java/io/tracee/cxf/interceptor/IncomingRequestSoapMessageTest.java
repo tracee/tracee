@@ -22,6 +22,8 @@ import javax.xml.soap.SOAPHeaderElement;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -40,9 +42,9 @@ public class IncomingRequestSoapMessageTest {
 	}
 
 	@Test
-	public void shouldHandleSoapMessageWithoutSoapHeader() {
+	public void handleSoapMessageWithoutSoapHeaderAndGenerateRequestId() {
 		inInterceptor.handleMessage(soapMessage);
-		assertThat(backend.isEmpty(), is(true));
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
 	}
 
 	@Test
@@ -52,7 +54,7 @@ public class IncomingRequestSoapMessageTest {
 		soapMessage.getHeaders().add(new Header(new QName(TraceeConstants.SOAP_HEADER_NAMESPACE, "SOME_OTHER"), contextMap, new JAXBDataBinding(HashMap.class)));
 
 		inInterceptor.handleMessage(soapMessage);
-		assertThat(backend.size(), is(0));
+		assertThat(backend.copyToMap(), not(hasKey("mySoapKey")));
 	}
 
 	@Test

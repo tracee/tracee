@@ -14,25 +14,26 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasKey;
+import static org.mockito.Mockito.spy;
 
 public class IncomingRequestMessageTest {
 
-	private AbstractTraceeInInterceptor inInterceptor;
+	private AbstractTraceeInInterceptor unit;
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private final MessageImpl message = new MessageImpl();
+	private final MessageImpl message = spy(new MessageImpl());
 
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		inInterceptor = new TraceeRequestInInterceptor(backend);
+		unit = new TraceeRequestInInterceptor(backend);
 	}
 
 	@Test
 	public void shouldHandleMessageWithoutHeader() {
-		inInterceptor.handleMessage(message);
+		unit.handleMessage(message);
 	}
 
 	@Test
@@ -41,7 +42,13 @@ public class IncomingRequestMessageTest {
 		final String context = "myContext";
 		headers.put(TraceeConstants.HTTP_HEADER_NAME, Arrays.asList(context));
 		message.put(Message.PROTOCOL_HEADERS, headers);
-		inInterceptor.handleMessage(message);
-		assertThat(backend.size(), is(0));
+		unit.handleMessage(message);
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+	}
+
+	@Test
+	public void generateRequestIdUponRequest() {
+		unit.handleMessage(message);
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
 	}
 }
