@@ -23,10 +23,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 		this(Tracee.getBackend(), new SoapHeaderTransport());
 	}
 
-	public TraceeServerHandler(TraceeBackend traceeBackend) {
-		this(traceeBackend, new SoapHeaderTransport());
-	}
-
 	TraceeServerHandler(TraceeBackend traceeBackend, SoapHeaderTransport soapHeaderTransport) {
 		super(traceeBackend);
 		this.transportSerialization = soapHeaderTransport;
@@ -34,37 +30,30 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 	}
 
 	protected final void handleIncoming(SOAPMessageContext context) {
-		final SOAPPart soapPart = context.getMessage().getSOAPPart();
+		final SOAPMessage soapMessage = context.getMessage();
 		try {
-			final SOAPHeader header = soapPart.getEnvelope().getHeader();
-
+			final SOAPHeader header = soapMessage.getSOAPHeader();
 
 			if (header != null && traceeBackend.getConfiguration().shouldProcessContext(IncomingRequest)) {
 				final Map<String, String> parsedContext = transportSerialization.parseSoapHeader(header);
 				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(parsedContext, IncomingRequest);
 				traceeBackend.putAll(filteredContext);
 			}
-
-			Utilities.generateRequestIdIfNecessary(traceeBackend);
-
-		} catch (final SOAPException e) {
-			traceeLogger.error("TraceeServerHandler - Error during precessing of inbound soap header");
-			traceeLogger.debug("TraceeServerHandler - Error during precessing of inbound soap header", e);
-		} catch (JAXBException e) {
+		} catch (final Exception e) {
 			traceeLogger.error("TraceeServerHandler - Error during precessing of inbound soap header");
 			traceeLogger.debug("TraceeServerHandler - Error during precessing of inbound soap header", e);
 		}
+
+		Utilities.generateRequestIdIfNecessary(traceeBackend);
 	}
 
 	protected final void handleOutgoing(SOAPMessageContext context) {
 		final SOAPMessage msg = context.getMessage();
 		try {
-			if (msg != null && traceeBackend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
-
-				final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
+			if (msg != null && !traceeBackend.isEmpty() && traceeBackend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
 
 				// get or create header
-				final SOAPHeader header = getOrCreateHeader(env);
+				final SOAPHeader header = getOrCreateHeader(msg);
 
 				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend.copyToMap(), OutgoingResponse);
 				transportSerialization.renderSoapHeader(filteredContext, header);
@@ -73,10 +62,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 				context.setMessage(msg);
 			}
 
-		} catch (final SOAPException e) {
-			traceeLogger.error("TraceeServerHandler : Exception occurred during processing of outbound message.");
-			traceeLogger.debug("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
-		} catch (JAXBException e) {
+		} catch (final Exception e) {
 			traceeLogger.error("TraceeServerHandler : Exception occurred during processing of outbound message.");
 			traceeLogger.debug("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
 		} finally {
@@ -85,13 +71,12 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 		}
 	}
 
-	SOAPHeader getOrCreateHeader(SOAPEnvelope soapEnvelope) throws SOAPException {
-		final SOAPHeader header = soapEnvelope.getHeader();
-		if (header != null) {
-			return header;
-		} else {
-			return soapEnvelope.addHeader();
+	SOAPHeader getOrCreateHeader(final SOAPMessage message) throws SOAPException {
+		SOAPHeader header = message.getSOAPHeader();
+		if (header == null) {
+			header =  message.getSOAPPart().getEnvelope().addHeader();
 		}
+		return header;
 	}
 
 	@Override

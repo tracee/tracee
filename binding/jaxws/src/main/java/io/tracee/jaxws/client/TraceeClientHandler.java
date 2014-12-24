@@ -6,9 +6,6 @@ import io.tracee.TraceeLogger;
 import io.tracee.jaxws.AbstractTraceeHandler;
 import io.tracee.transport.SoapHeaderTransport;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -43,51 +40,37 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 		if (msg != null && traceeBackend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 
 			try {
-				final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
-
-				// get soap header
-				final SOAPHeader header = env.getHeader();
+				final SOAPHeader header = msg.getSOAPHeader();
 
 				if (header != null) {
 					final Map<String, String> parsedContext = transportSerialization.parseSoapHeader(header);
 					traceeBackend.putAll(traceeBackend.getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest));
 				}
 
-			} catch (final SOAPException e) {
-				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
-			} catch (JAXBException e) {
+			} catch (final Exception e) {
 				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of inbound message.", e);
 			}
-
 		}
 	}
-
 
 	protected final void handleOutgoing(final SOAPMessageContext context) {
 
 		final SOAPMessage msg = context.getMessage();
-		if (msg != null && traceeBackend.getConfiguration().shouldProcessContext(IncomingResponse)) {
+		if (msg != null && !traceeBackend.isEmpty() && traceeBackend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 
 			try {
-				final SOAPEnvelope env = msg.getSOAPPart().getEnvelope();
-				// get or create header
-				SOAPHeader header = env.getHeader();
+				SOAPHeader header = msg.getSOAPHeader();
 				if (header == null) {
-					header = env.addHeader();
+					header = msg.getSOAPPart().getEnvelope().addHeader();
 				}
 
 				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend.copyToMap(), IncomingResponse);
 				transportSerialization.renderSoapHeader(filteredContext, header);
 
 				msg.saveChanges();
-
-			} catch (final SOAPException e) {
-				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of outbound message.", e);
-			} catch (JAXBException e) {
+			} catch (final Exception e) {
 				traceeLogger.error("TraceeClientHandler : Exception occurred during processing of outbound message.", e);
 			}
-
-			context.setMessage(msg);
 		}
 	}
 }
