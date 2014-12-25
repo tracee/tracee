@@ -5,7 +5,6 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
 
-
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
@@ -24,12 +23,12 @@ public class TraceeClientResponseFilter implements ClientResponseFilter {
 
 	@SuppressWarnings("unused")
 	public TraceeClientResponseFilter() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend());
 	}
 
-	TraceeClientResponseFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	TraceeClientResponseFilter(TraceeBackend backend) {
 		this.backend = backend;
-		this.transportSerialization =  transportSerialization;
+		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@Override

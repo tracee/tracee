@@ -67,7 +67,5 @@ public final class AllFilterIT {
         assertThat("response type",response.getStatusInfo().getFamily(), equalTo(Response.Status.Family.SUCCESSFUL));
         assertThat(Tracee.getBackend().get("beforeRequest"), equalTo("no"));
         assertThat(Tracee.getBackend().get("beforeResponse"), equalTo("yes"));
-
     }
-
 }

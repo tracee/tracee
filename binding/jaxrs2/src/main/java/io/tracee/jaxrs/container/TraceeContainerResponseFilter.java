@@ -5,7 +5,6 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
 
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
@@ -21,16 +20,15 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport transportSerialization;
 
-	TraceeContainerResponseFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	TraceeContainerResponseFilter(TraceeBackend backend) {
 		this.backend = backend;
-		this.transportSerialization = transportSerialization;
+		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
 
 	@SuppressWarnings("unused")
 	public TraceeContainerResponseFilter() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend());
 	}
-
 
 	@Override
 	public final void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
@@ -38,8 +36,7 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			final String serializedContext = transportSerialization.render(filtered);
-			if (serializedContext != null)
-				responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedContext);
+			responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedContext);
 		}
 
 		backend.clear();
