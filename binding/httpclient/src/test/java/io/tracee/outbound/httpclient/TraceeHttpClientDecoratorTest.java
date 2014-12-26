@@ -1,6 +1,7 @@
 package io.tracee.outbound.httpclient;
 
 
+import io.tracee.DelegationTestUtil;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
+import static io.tracee.DelegationTestUtil.assertDelegationToSpy;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
@@ -57,5 +59,13 @@ public class TraceeHttpClientDecoratorTest {
 
 		verify(transportSerializationMock).parse(eq(Arrays.asList("foo=bar")));
 		verify(backendMock).putAll(Mockito.anyMapOf(String.class, String.class));
+	}
+
+	@Test
+	public void shouldDelegateAllPublicMethods() {
+		final HttpClient client = mock(HttpClient.class);
+		final HttpClient wrappedClient = TraceeHttpClientDecorator.wrap(client);
+
+		assertDelegationToSpy(client).by(wrappedClient).ignore("executeMethod").verify();
 	}
 }
