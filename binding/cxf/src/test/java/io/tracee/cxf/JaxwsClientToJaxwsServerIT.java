@@ -1,9 +1,10 @@
 package io.tracee.cxf;
 
-import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import io.tracee.cxf.testSoapService.HelloWorldTestService;
 import io.tracee.jaxws.client.TraceeClientHandler;
+import io.tracee.jaxws.container.TraceeServerHandler;
+import io.tracee.transport.SoapHeaderTransport;
 import org.apache.cxf.bus.CXFBusFactory;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
@@ -24,14 +25,14 @@ public class JaxwsClientToJaxwsServerIT extends AbstractConnectionITHelper {
 	public void setup() {
 
 		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer();
-		jaxWsServer.getHandlers().add(new TraceeClientHandler());
+		jaxWsServer.getHandlers().add(new TraceeServerHandler(serverBackend, new SoapHeaderTransport()));
 		server = jaxWsServer.create();
 
 		JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
 
 		factoryBean.setServiceClass(HelloWorldTestService.class);
 		factoryBean.setAddress(endpointAddress);
-		factoryBean.getHandlers().add(new TraceeClientHandler());
+		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend));
 		factoryBean.setBus(CXFBusFactory.getDefaultBus());
 
 		helloWorldPort = factoryBean.create(HelloWorldTestService.class);
@@ -39,7 +40,7 @@ public class JaxwsClientToJaxwsServerIT extends AbstractConnectionITHelper {
 
 	@Test
 	public void transportTraceeVariablesFromClientToBackend() {
-		Tracee.getBackend().put(TraceeConstants.REQUEST_ID_KEY, "123");
+		clientBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
 		final String answer = helloWorldPort.sayHelloWorld("Michail");
 		assertThat(answer, allOf(containsString("Michail"), endsWith("requestId was 123")));
 	}
@@ -47,6 +48,6 @@ public class JaxwsClientToJaxwsServerIT extends AbstractConnectionITHelper {
 	@Test
 	public void transportTraceeVariablesFromBackendToTheClient() {
 		helloWorldPort.sayHelloWorld("Michail");
-		assertThat(Tracee.getBackend().get(HelloWorldTestService.TEST_KEY), is("accepted"));
+		assertThat(clientBackend.get(HelloWorldTestService.TEST_KEY), is("accepted"));
 	}
 }

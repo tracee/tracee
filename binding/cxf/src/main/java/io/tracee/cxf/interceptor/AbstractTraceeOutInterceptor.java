@@ -23,9 +23,9 @@ import java.util.Map;
 
 abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	private final TraceeLogger LOGGER;
+	private final TraceeLogger logger;
 
-	private final TraceeBackend backend;
+	protected final TraceeBackend backend;
 
 	private final HttpHeaderTransport httpSerializer;
 	private final TraceeFilterConfiguration.Channel channel;
@@ -36,7 +36,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
-		LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
+		logger = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
 		this.httpSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
@@ -48,7 +48,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
-				LOGGER.debug("Interceptor handles message!");
+				logger.debug("Interceptor handles message!");
                 if (message instanceof SoapMessage) {
                     final SoapMessage soapMessage = (SoapMessage) message;
 
@@ -73,8 +73,8 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 					new JAXBDataBinding(TpicMap.class));
 			soapMessage.getHeaders().add(tpicHeader);
 		} catch (JAXBException e) {
-			LOGGER.warn("Error occured during TracEE soap header creation: " + e.getMessage());
-			LOGGER.debug("Detailed exception", e);
+			logger.warn("Error occured during TracEE soap header creation: " + e.getMessage());
+			logger.debug("Detailed exception", e);
 		}
 
 	}

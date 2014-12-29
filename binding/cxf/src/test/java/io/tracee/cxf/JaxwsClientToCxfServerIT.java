@@ -1,6 +1,5 @@
 package io.tracee.cxf;
 
-import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import io.tracee.cxf.client.TraceeCxfFeature;
 import io.tracee.cxf.testSoapService.HelloWorldTestService;
@@ -29,15 +28,14 @@ public class JaxwsClientToCxfServerIT extends AbstractConnectionITHelper {
 
 		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer();
 		jaxWsServer.getFeatures().add(new LoggingFeature());
-		jaxWsServer.getFeatures().add(new TraceeCxfFeature());
-		jaxWsServer.getFeatures().add(new ResetBackendFeature());
+		jaxWsServer.getFeatures().add(new TraceeCxfFeature(serverBackend));
 		server = jaxWsServer.create();
 
 		JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
 
 		factoryBean.setServiceClass(HelloWorldTestService.class);
 		factoryBean.setAddress(endpointAddress);
-		factoryBean.getHandlers().add(new TraceeClientHandler());
+		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend));
 		factoryBean.setBus(bus);
 
 		helloWorldPort = factoryBean.create(HelloWorldTestService.class);
@@ -45,7 +43,7 @@ public class JaxwsClientToCxfServerIT extends AbstractConnectionITHelper {
 
 	@Test
 	public void transportTraceeVariablesFromClientToBackend() {
-		Tracee.getBackend().put(TraceeConstants.REQUEST_ID_KEY, "123");
+		clientBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
 		final String answer = helloWorldPort.sayHelloWorld("Michail");
 		assertThat(answer, allOf(containsString("Michail"), endsWith("requestId was 123")));
 	}
@@ -53,6 +51,6 @@ public class JaxwsClientToCxfServerIT extends AbstractConnectionITHelper {
 	@Test
 	public void transportTraceeVariablesFromBackendToTheClient() {
 		helloWorldPort.sayHelloWorld("Michail");
-		assertThat(Tracee.getBackend().get(HelloWorldTestService.TEST_KEY), is("accepted"));
+		assertThat(clientBackend.get(HelloWorldTestService.TEST_KEY), is("accepted"));
 	}
 }
