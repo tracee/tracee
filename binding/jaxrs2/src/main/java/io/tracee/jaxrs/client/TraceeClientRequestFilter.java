@@ -1,8 +1,9 @@
 package io.tracee.jaxrs.client;
 
-import io.tracee.*;
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
-
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -20,26 +21,20 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
 
 	@SuppressWarnings("unused")
 	public TraceeClientRequestFilter() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend());
 	}
 
-	TraceeClientRequestFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	TraceeClientRequestFilter(TraceeBackend backend) {
 		this.backend = backend;
-		this.transportSerialization =  transportSerialization;
+		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
 	}
 
-    @Override
-    public final void filter(ClientRequestContext requestContext) throws IOException {
-
-		Utilities.generateRequestIdIfNecessary(backend);
-
+	@Override
+	public final void filter(ClientRequestContext requestContext) throws IOException {
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			final String serializedTraceeContext = transportSerialization.render(filtered);
-			if (serializedTraceeContext == null) {
-				return;
-			}
 			requestContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedTraceeContext);
 		}
-    }
+	}
 }

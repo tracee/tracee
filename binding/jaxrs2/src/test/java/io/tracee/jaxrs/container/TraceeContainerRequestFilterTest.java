@@ -1,10 +1,8 @@
 package io.tracee.jaxrs.container;
 
-import io.tracee.NoopTraceeLoggerFactory;
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.transport.HttpHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -14,14 +12,16 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 public class TraceeContainerRequestFilterTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeContainerRequestFilter unit = new TraceeContainerRequestFilter(backend, new HttpHeaderTransport(new NoopTraceeLoggerFactory()));
+    private final TraceeContainerRequestFilter unit = new TraceeContainerRequestFilter(backend);
     private final ContainerRequestContext requestContext = Mockito.mock(ContainerRequestContext.class);
     private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<String, String>();
 
@@ -50,5 +50,4 @@ public class TraceeContainerRequestFilterTest {
         unit.filter(requestContext);
         assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
     }
-
 }
