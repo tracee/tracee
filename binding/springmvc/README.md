@@ -1,8 +1,8 @@
-> This document contains documentation for the tracee-springmvc module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the tracee-springmvc module. Click [here](/README.md) to get an overview what TracEE is about.
 
 # tracee-springmvc
 
-For requests to your Spring MVC controllers this tracee module reads the incoming TracEE context and generates requestIds if needed. It adds the TPIC header to your responses as well. - If you don't like to pollute your responses (fe they're send back to the customer), you should take an individual TracEE configuration.
+This tracee module reads the incoming TracEE context for requests to your Spring MVC controllers and generates requestIds if needed. It adds the TPIC header to your responses as well. - If you don't like to expose the TPIC in your responses (maybe you want to hide it from your users), you should take an individual TracEE configuration.
 This module requires Spring 3.1.0 or above.
 
 ## Installation
@@ -13,9 +13,9 @@ To your Spring dependencies add `tracee-springmvc`. That's all! - For example in
 <dependencies>
 ...
     <dependency>
-		<groupId>io.tracee.inbound</groupId>
-		<artifactId>tracee-springmvc</artifactId>
-        <version>RELEASE</version> <!-- You should specify a version instead -->
+	<groupId>io.tracee.inbound</groupId>
+	<artifactId>tracee-springmvc</artifactId>
+        <version>${tracee.version}</version> <!-- You should specify a version instead -->
     </dependency>
 ...
 </dependencies>
@@ -37,7 +37,7 @@ public class YourApplicationConfig extends WebMvcConfigurerAdapter {
 }
 ```
 
-In old-fashion xml configuration:
+With XML configuration:
 
 ```xml
 <mvc:interceptors>
