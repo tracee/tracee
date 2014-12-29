@@ -1,4 +1,4 @@
-> This document contains documentation for the tracee-core module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the `tracee-core` module.  Check the [TracEE main documentation](/README.md) to get started.
 
 This module contains implementation details and may be used by implementing features.
 

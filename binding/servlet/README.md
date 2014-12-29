@@ -1,4 +1,4 @@
-> This document contains documentation for the tracee-servlet module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the tracee-servlet module. Check the [TracEE main documentation](/README.md) to get started.
 
 # tracee-servlet
 

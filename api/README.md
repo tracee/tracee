@@ -1,4 +1,4 @@
-> This document contains documentation for the tracee-api module. Click [here](/README.md) to get an overview that TracEE is about.
+> This document contains documentation for the `tracee-api` module. Check the [TracEE main documentation](/README.md) to get started.
 
 # tracee-api
 

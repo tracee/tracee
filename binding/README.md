@@ -1,4 +1,4 @@
-> Click [here](/README.md) to get an overview that TracEE is about.
+> Check the [TracEE main documentation](/README.md) to get started.
 
 # The Bindings
 

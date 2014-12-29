@@ -1,4 +1,4 @@
-> This document contains documentation for the tracee-springmvc module. Click [here](/README.md) to get an overview what TracEE is about.
+> This document contains documentation for the `tracee-springmvc` module. Check the [TracEE main documentation](/README.md) to get started.
 
 # tracee-springmvc
 
