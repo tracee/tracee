@@ -23,5 +23,9 @@
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>nl.jqno.equalsverifier</groupId>
+			<artifactId>equalsverifier</artifactId>
+		</dependency>
     </dependencies>
 </project>

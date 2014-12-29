@@ -7,18 +7,18 @@ import java.util.*;
 
 @XmlRootElement(name = TraceeConstants.SOAP_HEADER_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-public class TpicMap {
+public final class TpicMap {
 
 	@XmlElement(name = "entry", nillable = false)
-	public List<Entry> entries;
-
-	@SuppressWarnings("UnusedDeclaration")
-	private TpicMap() { entries = null; }
-
+	public final List<Entry> entries;
 
 	public TpicMap(List<Entry> entries) {
 		this.entries = entries;
 	}
+
+	//For JaxB
+	@SuppressWarnings("UnusedDeclaration")
+	private TpicMap() { entries = null; }
 
 	public static TpicMap wrap(Map<String, String> map) {
 		final List<Entry> values = new ArrayList<Entry>();
@@ -46,17 +46,17 @@ public class TpicMap {
 
 		TpicMap tpicMap = (TpicMap) o;
 
-		if (!entries.equals(tpicMap.entries)) return false;
+		if (entries != null ? !entries.equals(tpicMap.entries) : tpicMap.entries != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return entries.hashCode();
+		return entries != null ? entries.hashCode() : 0;
 	}
 
-	public static class Entry {
+	public static final class Entry {
 
 		@XmlAttribute(name = "key", required = true)
 		public final String key;
@@ -68,7 +68,8 @@ public class TpicMap {
 			this.value = value;
 		}
 
-		@SuppressWarnings(value = "unused")
+		//For JaxB
+		@SuppressWarnings("UnusedDeclaration")
 		protected Entry() {
 			this.key = null;
 			this.value = null;
@@ -81,17 +82,25 @@ public class TpicMap {
 
 			Entry entry = (Entry) o;
 
-			if (!key.equals(entry.key)) return false;
-			if (!value.equals(entry.value)) return false;
+			if (key != null ? !key.equals(entry.key) : entry.key != null) return false;
+			if (value != null ? !value.equals(entry.value) : entry.value != null) return false;
 
 			return true;
 		}
 
 		@Override
 		public int hashCode() {
-			int result = key.hashCode();
-			result = 31 * result + value.hashCode();
+			int result = key != null ? key.hashCode() : 0;
+			result = 31 * result + (value != null ? value.hashCode() : 0);
 			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "Entry{" +
+					"key='" + key + '\'' +
+					", value='" + value + '\'' +
+					'}';
 		}
 	}
 }
