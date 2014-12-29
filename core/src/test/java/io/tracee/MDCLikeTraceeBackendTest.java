@@ -128,6 +128,21 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
+	public void isEmptyWhenKeySetIsEmpty() {
+		when(traceeKeysSet.isEmpty()).thenReturn(false);
+		assertThat(unit.isEmpty(), is(false));
+	}
+
+	@Test
+	public void copyToMapShouldCreateACopy() {
+		unit.contextMap.put("A","foo");
+		when(traceeKeysSet.iterator()).thenReturn(Collections.singleton("A").iterator());
+		final Map<String, String> copy = unit.copyToMap();
+		unit.remove("A");
+		assertThat(copy, hasEntry("A","foo"));
+	}
+
+	@Test
 	public void containsShouldreturnFalseIfNotInMDC() {
 		assertThat(unit.containsKey("A"), is(false));
 	}

@@ -3,8 +3,12 @@ package io.tracee.configuration;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration.*;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -69,6 +73,19 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 	public void testGeneratedSessionIdLength() {
 		when(propertyChain.getProperty((TRACEE_CONFIG_PREFIX + DEFAULT_PROFILE_PREFIX + GENERATE_SESSION_ID))).thenReturn("42");
 		assertThat(unit.generatedSessionIdLength(), equalTo(42));
+	}
+
+	@Test
+	public void testFilterDeniedParamsFiltersEverythingWithoutConfiguration() {
+		final Map<String, String> unfiltered = Collections.singletonMap("Foo", "Bar");
+		assertThat(unit.filterDeniedParams(unfiltered,Channel.IncomingRequest), equalTo(Collections.<String,String>emptyMap()));
+	}
+
+	@Test
+	public void testFilterDeniedParamsPassesWhitelisted() {
+		when(propertyChain.getProperty(TRACEE_CONFIG_PREFIX + DEFAULT_PROFILE_PREFIX + IncomingRequest.name())).thenReturn("Foo");
+		final Map<String, String> unfiltered = Collections.singletonMap("Foo", "Bar");
+		assertThat(unit.filterDeniedParams(unfiltered,Channel.IncomingRequest), equalTo(unfiltered));
 	}
 
 

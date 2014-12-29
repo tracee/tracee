@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -56,6 +57,16 @@ public class SoapHeaderTransportTest {
 
 		final Map<String, String> parse = unit.parseSoapHeader(soapMessage.getSOAPHeader());
 		assertThat(parse, hasEntry("FOooo", "Bar2"));
+	}
+
+	@Test
+	public void parseSoapHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
+		assertThat(unit.parseSoapHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String,String>emptyMap()));
+	}
+
+	@Test
+	public void parseTpicHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
+		assertThat(unit.parseTpicHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String,String>emptyMap()));
 	}
 
 	@Test
