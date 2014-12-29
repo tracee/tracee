@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 
-public final class TraceeMessageProducer implements MessageProducer {
+public class TraceeMessageProducer implements MessageProducer {
 
 
     private final MessageProducer delegate;
