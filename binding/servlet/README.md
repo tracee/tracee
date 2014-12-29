@@ -26,7 +26,7 @@ If you're use Maven for your dependency management simple add this to your pom:
 </dependencies>
 ```
 
-If you are on a servlet Servlet<3-Container, you need to register the following filters in your web.xml:
+If you are on a Servlet-Container with servlet-version < 3, you need to register the following filters in your web.xml:
 
 ```xml
 ...
