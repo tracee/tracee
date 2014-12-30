@@ -1,4 +1,4 @@
-# TracEE 0.6.0
+# TracEE 0.7.0
 
 [![Build Status](https://secure.travis-ci.org/tracee/tracee.png)](https://travis-ci.org/tracee/tracee)
 [![Coverage Status](https://coveralls.io/repos/tracee/tracee/badge.png?branch=master)](https://coveralls.io/r/tracee/tracee?branch=master)
