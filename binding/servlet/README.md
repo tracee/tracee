@@ -18,7 +18,7 @@ If you're use Maven for your dependency management simple add this to your pom:
 <dependencies>
 ...
     <dependency>
-        <groupId>io.tracee.inbound</groupId>
+        <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-servlet</artifactId>
         <version>RELEASE</version>
     </dependency>

@@ -13,9 +13,9 @@ To your Spring dependencies add `tracee-springmvc`. That's all! - For example in
 <dependencies>
 ...
     <dependency>
-	<groupId>io.tracee.inbound</groupId>
+	<groupId>io.tracee.binding</groupId>
 	<artifactId>tracee-springmvc</artifactId>
-        <version>RELEASE</version> <!-- You should specify a version instead -->
+    <version>RELEASE</version> <!-- You should specify a version instead -->
     </dependency>
 ...
 </dependencies>

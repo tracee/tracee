@@ -11,7 +11,7 @@ Please add the following dependencies to enable TracEE's JMS support. For exampl
 <dependencies>
     ...
     <dependency>
-        <groupId>io.tracee</groupId>
+        <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-jms</artifactId>
         <version>RELEASE</version>
     </dependency>

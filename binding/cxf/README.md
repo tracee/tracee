@@ -12,7 +12,7 @@ Add to your CXF dependency for REST or SOAP our additional TracEE part. For exam
 <dependencies>
 ...
     <dependency>
-        <groupId>io.tracee.inbound</groupId>
+        <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-cxf</artifactId>
         <version>RELEASE</version> <!-- You should specify a version instead -->
     </dependency>
