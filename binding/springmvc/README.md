@@ -31,7 +31,7 @@ public class YourApplicationConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new io.tracee.springmvc.TraceeInterceptor());
+        registry.addInterceptor(new io.tracee.binding.springmvc.TraceeInterceptor());
     }
 
 }
@@ -41,7 +41,7 @@ With XML configuration:
 
 ```xml
 <mvc:interceptors>
-	<bean id="traceeInterceptor" class="io.tracee.springmvc.TraceeInterceptor">
+	<bean id="traceeInterceptor" class="io.tracee.binding.springmvc.TraceeInterceptor">
 		<property name="profileName" value="default"/> <!-- The profile configuration is optional -->
 	</bean>
 </mvc:interceptors>

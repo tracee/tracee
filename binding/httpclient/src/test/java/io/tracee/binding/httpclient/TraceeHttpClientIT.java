@@ -1,10 +1,10 @@
-package io.tracee.binding.httpcomponents;
+package io.tracee.binding.httpclient;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -22,7 +22,7 @@ import java.net.InetSocketAddress;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class TraceeHttpInterceptorsIT {
+public class TraceeHttpClientIT {
 
 	private Server server;
 	private String serverEndpoint;
@@ -30,17 +30,14 @@ public class TraceeHttpInterceptorsIT {
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
+		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient());
 
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpClient.addRequestInterceptor(new TraceeHttpRequestInterceptor());
-		httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
+		GetMethod getMethod = new GetMethod(serverEndpoint);
+		Tracee.getBackend().put("beforeRequest", "yip");
+		unit.executeMethod(getMethod);
 
-		HttpGet getMethod = new HttpGet(serverEndpoint);
-		Tracee.getBackend().put("before Request", "yip");
-		final HttpResponse response = httpClient.execute(getMethod);
-
-		assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
-		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yes Sir"));
+		assertThat(getMethod.getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
+		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yesSir"));
 	}
 
 	@Before
@@ -56,9 +53,9 @@ public class TraceeHttpInterceptorsIT {
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
 			final String incomingTraceeHeader = request.getHeader(TraceeConstants.HTTP_HEADER_NAME);
 
-			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
+			assertThat(incomingTraceeHeader, equalTo("beforeRequest=yip"));
 
-			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "responseFromServer=yes+Sir");
+			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "responseFromServer=yesSir");
 			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			request.setHandled(true);
 		}
@@ -71,5 +68,4 @@ public class TraceeHttpInterceptorsIT {
 			server.join();
 		}
 	}
-
 }

@@ -32,17 +32,17 @@ If you are on a Servlet-Container with servlet-version < 3, you need to register
 ...
     <filter>
         <filter-name>traceeFilter</filter-name>
-        <filter-class>io.tracee.servlet.TraceeFilter</filter-class>
+        <filter-class>io.tracee.binding.servlet.TraceeFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>traceeFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 	<listener>
-		<listener-class>io.tracee.servlet.TraceeServletRequestListener</listener-class>
+		<listener-class>io.tracee.binding.servlet.TraceeServletRequestListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>io.tracee.servlet.TraceeSessionListener</listener-class>
+		<listener-class>io.tracee.binding.servlet.TraceeSessionListener</listener-class>
 	</listener>
 ...
 ```
