@@ -17,7 +17,7 @@ For maven you've to add following dependency to your `pom.xml`:
 ```xml
 ...
 <dependency>
-	<groupId>io.tracee.inbound</groupId>
+	<groupId>io.tracee.binding</groupId>
     <artifactId>tracee-springhttpclient</artifactId>
     <version>RELEASE</version> <!-- You should specify a version instead -->
 </dependency>

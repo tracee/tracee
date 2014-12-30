@@ -11,7 +11,7 @@ Add the `tracee-httpclient` module to your `pom.xml` dependencies:
 <dependencies>
 ...
     <dependency>
-        <groupId>io.tracee.inbound</groupId>
+        <groupId>io.tracee.binding</groupId>
    		<artifactId>tracee-httpclient</artifactId>
         <version>RELEASE</version>
     </dependency>
