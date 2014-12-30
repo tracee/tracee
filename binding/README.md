@@ -12,5 +12,6 @@
 | JAX-RS2                     | Configure [tracee-jaxrs2](jaxrs2/)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2/)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
 | JAX-WS                      | Use [tracee-jaxws](jaxws/)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws/)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |
 | JMS                         | Producer: Use [tracee-jms](jms/)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms/)'s `TraceeMessageListener` as EJB interceptor. |
-| ApacheHttpClient            | Use [tracee-httpclient](httpclient/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| ApacheHttpClient 3          | Use [tracee-httpclient](httpclient/)'s `TraceeHttpClientDecorator` | - |
+| ApacheHttpClient 4          | Use [tracee-components](httpcomponents/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
 | Apache CXF                  | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` |
