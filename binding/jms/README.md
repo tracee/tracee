@@ -103,8 +103,11 @@ public class MessageQueueListener implements MessageListener {
 ```
 
 ## Background
-To enable TracEE's context information in JMS, the MessageProducer must add TracEE's contextual information to the message before it gets persisted. Therefore TracEE offers the TraceeMessageWriter that wraps the MessageProducer.
-It adds the contextual informations to the Message before the Message is going to be persisted and scheduled to a queue or topic.
+To enable TracEE's invocation context propagation in JMS, the MessageProducer must add TracEE's contextual information 
+to the message before it is dispatched to the JMS implementation or sent over the wire.
+The `TraceeMessageWriter` can create a wrapper for the MessageProducer for this purpose.
+It adds the current PIC to the message before it is dispatched to a queue or topic.
 
-Thee MessageListeners need to extract those contextual information before the Message is going to be processed.
-This can be done easily done by using the TraceeMessageListener interceptor.
+The `TraceeMessageListener` extracts the invocation context from the message before it is processed.
+This can easily be done by adding the TraceeMessageListener interceptor to your MessageListener using 
+the `@Interceptors` annotation.
