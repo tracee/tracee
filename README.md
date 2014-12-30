@@ -30,6 +30,7 @@ Also supported are these common and widespread frameworks:
 * Spring MVC
 * Spring Web (RestClients)
 * Spring AMQP (RabbitMQ)
+* Spring Web Services (SpringWS)
 * Apache HttpClient 3 / 4
 * Apache CXF
 * Quartz Scheduler
@@ -150,6 +151,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
 | [tracee-springrabbitmq](binding/springrabbitmq)     | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
+| [tracee-springws](binding/springws)                 | `TraceeClientInterceptor` and `TraceeEndpointInterceptor` to handle SOAP with Spring Web Services.
 | [tracee-cxf](binding/cxf)                           | To transfer context information with CXF add the `TraceeCxfFeature` to your Client oder Server.
 | [tracee-quartz](binding/quartz)                     | To generate context information before a job starts use `TraceeJobListener`.
 | __backends__                                        | *These dependencies are needed due runtime.*         |

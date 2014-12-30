@@ -1,0 +1,29 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+	<context:component-scan base-package="io.tracee.binding.springws.itest"/>
+
+	<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				<value>io.tracee.binding.springws.itest.testservice.TraceeEntryMethod</value>
+				<value>io.tracee.binding.springws.itest.testservice.TraceeEntryResponse</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="io.tracee.binding.springws.itest.TraceeSpringWsClient">
+		<property name="marshaller" ref="jaxb2Marshaller"/>
+		<property name="unmarshaller" ref="jaxb2Marshaller"/>
+		<property name="interceptors">
+			<list>
+				<bean class="io.tracee.binding.springws.TraceeClientInterceptor"/>
+			</list>
+		</property>
+	</bean>
+</beans>

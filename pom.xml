@@ -34,6 +34,7 @@
 		<module>binding/cxf</module>
 		<module>binding/springrabbitmq</module>
 		<module>binding/quartz</module>
+		<module>binding/springws</module>
 	</modules>
 
 	<parent>
