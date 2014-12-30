@@ -20,28 +20,33 @@ Please add the following dependencies to enable TracEE JAX-WS support. For examp
 
 
 
-## Container : Implcit vs. Application config
-If you don't use an Application config and you have the tracee-jaxrs2 artifact to your dependencies, all filters will be applied implicitely to your JAX-RS services. 
+## Container: Implicit vs. application config
 
-In case if you want to use an Application config class, you will have to add TracEE's TraceeContainerRequestFilter and TraceeContainerResponseFilter classes to your Application config class.
+If you don't use an explicit application config and have the `tracee-jaxrs2` module on your classpath, 
+all filters will be automatically applied to your JAX-RS services.
+
+If you want to use an explicit `Application` class, you have to `TraceeContainerRequestFilter`
+and `TraceeContainerResponseFilter` as provider classes.
 
 ```java
 @ApplicationPath("/basepath")
 public class ApplicationConfig extends Application {
 
     public Set<Class<?>> getClasses() {
-        return new HashSet<Class<?>>(Arrays.asList(TraceeContainerRequestFilter.class,TraceeContainerResponseFilter.class,...);
+        return new HashSet<Class<?>>(Arrays.asList(io.tracee.jaxrs.container.TraceeContainerRequestFilter.class,
+        io.tracee.jaxrs.container.TraceeContainerResponseFilter.class, ...);
     }
 }
 ```
 
-## Using JAX-RS client
-You have to add register the TraceeClientResponseFilter and TraceeClientRequestFilter classes during the Client creation to enable TracEE support for JAX-RS clients. 
+## Using JAX-RS 2 client
+You have to register the `TraceeClientResponseFilter` and `TraceeClientRequestFilter` as provider classes during 
+client creation to enable TracEE support for JAX-RS2 clients. 
 
 ```java
 final Client client = ClientBuilder.newClient()
-    .register(TraceeClientRequestFilter.class)
-    .register(TraceeClientResponseFilter.class);
+    .register(io.tracee.jaxrs.client.TraceeClientRequestFilter.class)
+    .register(io.tracee.jaxrs.client.TraceeClientResponseFilter.class);
 final Response response = client.target(ENDPOINT_URL).request().get();
 ```
 
