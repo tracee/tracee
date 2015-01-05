@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
 # TracEE 0.7.0
 
 [![Build Status](https://secure.travis-ci.org/tracee/tracee.png)](https://travis-ci.org/tracee/tracee)
