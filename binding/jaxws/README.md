@@ -38,7 +38,7 @@ Therefore you have to add the referenced traceeHandlerChain.xml file to your cla
 <javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
     <javaee:handler-chain>
         <javaee:handler>
-            <javaee:handler-class>io.tracee.jaxws.container.TraceeServerHandler</javaee:handler-class>
+            <javaee:handler-class>io.tracee.binding.jaxws.container.TraceeServerHandler</javaee:handler-class>
         </javaee:handler>
     </javaee:handler-chain>
 </javaee:handler-chains>

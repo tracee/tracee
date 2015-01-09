@@ -1,10 +1,7 @@
-package io.tracee.binding.httpcomponents;
+package io.tracee.binding.springhttpclient;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -12,35 +9,35 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class TraceeHttpInterceptorsIT {
+public class TraceeClientHttpInterceptorIT {
 
 	private Server server;
 	private String serverEndpoint;
 
+	private static final class EmptyEntity {
+
+	}
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpClient.addRequestInterceptor(new TraceeHttpRequestInterceptor());
-		httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
-
-		HttpGet getMethod = new HttpGet(serverEndpoint);
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setInterceptors(Arrays.<ClientHttpRequestInterceptor>asList(new TraceeClientHttpRequestInterceptor("default")));
 		Tracee.getBackend().put("before Request", "yip");
-		final HttpResponse response = httpClient.execute(getMethod);
-
-		assertThat(response.getStatusLine().getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
-		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yes Sir"));
+		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
+		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));
 	}
 
 	@Before
@@ -55,10 +52,8 @@ public class TraceeHttpInterceptorsIT {
 		@Override
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
 			final String incomingTraceeHeader = request.getHeader(TraceeConstants.HTTP_HEADER_NAME);
-
 			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
-
-			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "responseFromServer=yes+Sir");
+			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "response+From+Server=yesSir");
 			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			request.setHandled(true);
 		}

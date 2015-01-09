@@ -1,4 +1,4 @@
-package io.tracee.outbound.httpcomponents;
+package io.tracee.binding.httpcomponents;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;

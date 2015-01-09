@@ -23,7 +23,7 @@ Please add the following dependencies to enable TracEE's JMS support. For exampl
 You can use the TracEE context propagation for JMS by wrapping the MessageProducer with TraceeMessageWriter.wrap(messageProdecer).
 
 ```java
-import io.tracee.jms.TraceeMessageWriter;
+import io.tracee.binding.jms.TraceeMessageWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +78,7 @@ public class MessageProducerImpl implements MessageProducer {
 You only have to add the TraceeMessageListener interceptor to your MesssageDriven bean:
 
 ```java
-import io.tracee.jms.TraceeMessageListener;
+import io.tracee.binding.jms.TraceeMessageListener;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
