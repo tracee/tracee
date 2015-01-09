@@ -1,7 +1,7 @@
 # TracEE 0.7.0
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
 [![Stories in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
-[![Build Status](https://secure.travis-ci.org/tracee/tracee.png)](https://travis-ci.org/tracee/tracee)
+[![Build Status](https://api.travis-ci.org/tracee/tracee.svg)](https://travis-ci.org/tracee/tracee)
 [![Coverage Status](https://img.shields.io/coveralls/tracee/tracee.svg)](https://coveralls.io/r/tracee/tracee?branch=master)
 
 TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
