@@ -25,6 +25,7 @@ Also supported are these common and widespread frameworks:
 
 * Spring MVC
 * Spring Web (RestClients)
+* Apache HttpClient 3 / 4
 * Apache CXF
 
 This project is still in an experimental stage and the api may change during further development.
