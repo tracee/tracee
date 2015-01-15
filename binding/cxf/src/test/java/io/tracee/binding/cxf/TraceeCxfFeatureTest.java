@@ -1,4 +1,4 @@
-package io.tracee.binding.cxf.client;
+package io.tracee.binding.cxf;
 
 import io.tracee.SimpleTraceeBackend;
 import org.apache.cxf.Bus;
