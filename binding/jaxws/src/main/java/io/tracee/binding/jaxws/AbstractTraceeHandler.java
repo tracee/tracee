@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
+abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
 	protected final TraceeBackend traceeBackend;
 

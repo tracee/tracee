@@ -31,6 +31,7 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 }
 ```
     
+
 Therefore you have to add the referenced traceeHandlerChain.xml file to your classpath (i.e. /src/main/resources). The file must have the following content:
 
 ```xml
@@ -38,7 +39,7 @@ Therefore you have to add the referenced traceeHandlerChain.xml file to your cla
 <javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
     <javaee:handler-chain>
         <javaee:handler>
-            <javaee:handler-class>io.tracee.binding.jaxws.container.TraceeServerHandler</javaee:handler-class>
+            <javaee:handler-class>io.tracee.binding.jaxws.TraceeServerHandler</javaee:handler-class>
         </javaee:handler>
     </javaee:handler-chain>
 </javaee:handler-chains>
