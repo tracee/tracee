@@ -1,4 +1,4 @@
-# TracEE 0.7.0
+# TracEE 0.8.0
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
 [![Stories in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
 [![Build Status](https://api.travis-ci.org/tracee/tracee.svg)](https://travis-ci.org/tracee/tracee)
