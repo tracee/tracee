@@ -1,9 +1,5 @@
 package io.tracee.binding.jms;
 
-import io.tracee.binding.jms.out.TraceeMessageProducer;
-import io.tracee.binding.jms.out.TraceeQueueSender;
-import io.tracee.binding.jms.out.TraceeTopicPublisher;
-
 import javax.jms.MessageProducer;
 import javax.jms.QueueSender;
 import javax.jms.TopicPublisher;

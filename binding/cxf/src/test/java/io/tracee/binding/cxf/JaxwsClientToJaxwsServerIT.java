@@ -2,8 +2,8 @@ package io.tracee.binding.cxf;
 
 import io.tracee.TraceeConstants;
 import io.tracee.binding.cxf.testSoapService.HelloWorldTestService;
-import io.tracee.binding.jaxws.client.TraceeClientHandler;
-import io.tracee.binding.jaxws.container.TraceeServerHandler;
+import io.tracee.binding.jaxws.TraceeClientHandler;
+import io.tracee.binding.jaxws.TraceeServerHandler;
 import io.tracee.transport.SoapHeaderTransport;
 import org.apache.cxf.bus.CXFBusFactory;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;

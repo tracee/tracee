@@ -2,7 +2,7 @@
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
     <handler-chain>
         <handler>
-            <handler-class>io.tracee.binding.jaxws.container.TraceeServerHandler</handler-class>
+            <handler-class>io.tracee.binding.jaxws.TraceeServerHandler</handler-class>
         </handler>
     </handler-chain>
 </handler-chains>

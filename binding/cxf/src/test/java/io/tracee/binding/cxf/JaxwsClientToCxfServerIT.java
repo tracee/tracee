@@ -2,7 +2,7 @@ package io.tracee.binding.cxf;
 
 import io.tracee.TraceeConstants;
 import io.tracee.binding.cxf.testSoapService.HelloWorldTestService;
-import io.tracee.binding.jaxws.client.TraceeClientHandler;
+import io.tracee.binding.jaxws.TraceeClientHandler;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusFactory;
 import org.apache.cxf.feature.LoggingFeature;
