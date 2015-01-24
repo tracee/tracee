@@ -32,6 +32,7 @@
 		<module>binding/jms</module>
 		<module>binding/springmvc</module>
 		<module>binding/cxf</module>
+		<module>binding/springrabbitmq</module>
 	</modules>
 
 	<parent>
