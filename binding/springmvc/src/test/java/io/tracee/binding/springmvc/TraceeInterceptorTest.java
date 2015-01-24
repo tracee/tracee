@@ -4,6 +4,10 @@ import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +20,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import static io.tracee.TraceeConstants.REQUEST_ID_KEY;
+import static io.tracee.TraceeConstants.SESSION_ID_KEY;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 public class TraceeInterceptorTest {
 
@@ -83,6 +95,45 @@ public class TraceeInterceptorTest {
 		mockedBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
 		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME), anyString());
+	}
+
+	@Test
+	public void testAcceptIncomingRequestAndSessionIdFromParameter() throws Exception {
+		when(mockedBackend.containsKey(eq(TraceeConstants.REQUEST_ID_KEY))).thenReturn(false);
+		when(httpServletRequest.getParameterMap()).thenReturn(
+				new HashMap<String, String[]>() {{
+					put(REQUEST_ID_KEY, new String[]{"124"});
+					put(SESSION_ID_KEY, new String[]{"987"});
+				}});
+
+		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
+
+		verify(mockedBackend, atLeastOnce()).putAll(Mockito.eq(new HashMap<String, String>() {{
+			put(REQUEST_ID_KEY, "124");
+			put(SESSION_ID_KEY, "987");
+		}}));
+	}
+
+	@Test
+	public void testHeaderRequestAndSessionIdOverwriteRequestAndSessionIdFromParameter() throws Exception {
+		when(mockedBackend.containsKey(eq(TraceeConstants.REQUEST_ID_KEY))).thenReturn(false);
+		when(httpServletRequest.getParameterMap()).thenReturn(
+				new HashMap<String, String[]>() {{
+					put(REQUEST_ID_KEY, new String[]{"124"});
+					put(SESSION_ID_KEY, new String[]{"16061981"});
+				}});
+		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(
+				Arrays.asList(REQUEST_ID_KEY + "=123", SESSION_ID_KEY + "=08081988")));
+
+		ArgumentCaptor<Map> argument = ArgumentCaptor.forClass(Map.class);
+
+		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
+
+		verify(mockedBackend, atLeastOnce()).putAll(argument.capture());
+		assertThat(argument.getAllValues(), hasItem(new HashMap<String, String>() {{
+			put(REQUEST_ID_KEY, "123");
+			put(SESSION_ID_KEY, "08081988");
+		}}));
 	}
 
 	@Test

@@ -6,6 +6,7 @@ import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
+import io.tracee.transport.HttpRequestParameterTransport;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 
 /**
  * Manages the TracEE lifecycle.
@@ -29,14 +31,16 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 	private final TraceeBackend backend;
 
 	private final HttpHeaderTransport transportSerialization;
+	private final HttpRequestParameterTransport httpRequestParameterTransport;
 
-	protected TraceeServletRequestListener(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	protected TraceeServletRequestListener(TraceeBackend backend, HttpHeaderTransport transportSerialization, HttpRequestParameterTransport httpRequestParameterTransport) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
+		this.httpRequestParameterTransport = httpRequestParameterTransport;
 	}
 
 	public TraceeServletRequestListener() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()), new HttpRequestParameterTransport(Tracee.getBackend().getLoggerFactory()));
 	}
 
 	@Override
@@ -56,6 +60,11 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
+			// process request parameter first
+			final Map<String, String> parameterParsedContext = httpRequestParameterTransport.parse((Map<String, String[]>)request.getParameterMap());
+			backend.putAll(configuration.filterDeniedParams(parameterParsedContext, IncomingResponse));
+
+			// overwrite values defined by request parameter with values from header
 			final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
 
 			if (headers != null && headers.hasMoreElements() && configuration.shouldProcessContext(IncomingRequest)) {
