@@ -67,7 +67,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.AsyncDispatch)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), TraceeFilterConfiguration.Channel.AsyncDispatch);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
-			source.getHeaders().put(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
+			source.getHeaders().put(TraceeConstants.JMS_HEADER_NAME, contextAsHeader);
 		}
 
 		return super.fromMessageProperties(source, charset);
