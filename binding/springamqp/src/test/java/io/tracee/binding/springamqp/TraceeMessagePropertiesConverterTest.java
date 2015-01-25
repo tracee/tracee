@@ -16,6 +16,9 @@ import java.util.HashMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class TraceeMessagePropertiesConverterTest {
@@ -35,16 +38,26 @@ public class TraceeMessagePropertiesConverterTest {
 		MessageProperties messageProperties = new MessageProperties();
 		final AMQP.BasicProperties basicProperties = unit.fromMessageProperties(messageProperties, CHARSET);
 
-		assertThat(basicProperties.getHeaders(), hasEntry(TraceeConstants.HTTP_HEADER_NAME, (Object) "inClientBeforeRequest=true"));
+		assertThat(basicProperties.getHeaders(), hasEntry(TraceeConstants.JMS_HEADER_NAME, (Object) "inClientBeforeRequest=true"));
 	}
 
 	@Test
 	public void testToMessageProperties() throws Exception {
 		AMQP.BasicProperties basicProperties = new AMQP.BasicProperties().builder().headers(new HashMap<String, Object>() {{
-			put(TraceeConstants.HTTP_HEADER_NAME, "fromResponse=true");
+			put(TraceeConstants.JMS_HEADER_NAME, "fromResponse=true");
 		}}).build();
 		unit.toMessageProperties(basicProperties, mock(Envelope.class), CHARSET);
 
-		assertThat(backend.get("fromResponse"), is("true"));
+		assertEquals("true", backend.get("fromResponse"));
+	}
+
+	@Test
+	public void testToMessagePropertiesWithoutTraceeHeader() throws Exception {
+		AMQP.BasicProperties basicProperties = new AMQP.BasicProperties().builder().headers(new HashMap<String, Object>() {{
+			put("someHeader", "fromResponse=true");
+		}}).build();
+		unit.toMessageProperties(basicProperties, mock(Envelope.class), CHARSET);
+
+		assertNull(backend.get("fromResponse"));
 	}
 }

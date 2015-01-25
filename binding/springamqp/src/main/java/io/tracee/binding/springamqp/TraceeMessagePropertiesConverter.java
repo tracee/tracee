@@ -13,8 +13,6 @@ import org.springframework.amqp.rabbit.support.DefaultMessagePropertiesConverter
 import java.util.Arrays;
 import java.util.Map;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
 public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesConverter {
 
@@ -30,7 +28,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()), profile);
 	}
 
-	protected TraceeMessagePropertiesConverter(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
+	TraceeMessagePropertiesConverter(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 		this.profile = profile;
@@ -43,13 +41,16 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 	public MessageProperties toMessageProperties(AMQP.BasicProperties source, Envelope envelope, String charset) {
 		final MessageProperties messageProperties = super.toMessageProperties(source, envelope, charset);
 
-		final String header = String.valueOf(messageProperties.getHeaders().get(TraceeConstants.HTTP_HEADER_NAME));
-		if (header != null && !header.isEmpty()) {
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+		final Object headerObject = messageProperties.getHeaders().get(TraceeConstants.JMS_HEADER_NAME);
+		if (headerObject != null) {
+			final String headerString = String.valueOf(headerObject);
+			if (!headerString.isEmpty()) {
+				final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
-			if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
-				final Map<String, String> parsedContext = transportSerialization.parse(Arrays.asList(header));
-				backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+				if (filterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.AsyncProcess)) {
+					final Map<String, String> parsedContext = transportSerialization.parse(Arrays.asList(headerString));
+					backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, TraceeFilterConfiguration.Channel.AsyncProcess));
+				}
 			}
 		}
 
@@ -63,8 +64,8 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 	public AMQP.BasicProperties fromMessageProperties(MessageProperties source, String charset) {
 
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
-		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.AsyncDispatch)) {
+			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), TraceeFilterConfiguration.Channel.AsyncDispatch);
 			final String contextAsHeader = transportSerialization.render(filteredParams);
 			source.getHeaders().put(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
 		}
