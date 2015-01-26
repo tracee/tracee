@@ -1,4 +1,6 @@
 # TracEE 0.8.0
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tracee/tracee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
 [![Tasks in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
 [![Tasks in Progress](https://badge.waffle.io/tracee/tracee.png?label=in+progress&title=In+Progress)](https://waffle.io/tracee/tracee)
