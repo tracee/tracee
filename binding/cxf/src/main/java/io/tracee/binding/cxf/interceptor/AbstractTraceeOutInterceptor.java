@@ -76,7 +76,6 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 			logger.warn("Error occured during TracEE soap header creation: " + e.getMessage());
 			logger.debug("Detailed exception", e);
 		}
-
 	}
 
 	protected abstract boolean shouldHandleMessage(Message message);

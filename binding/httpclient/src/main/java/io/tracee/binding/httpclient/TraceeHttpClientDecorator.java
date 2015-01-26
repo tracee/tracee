@@ -90,8 +90,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			final String contextAsHeader = transportSerialization.render(filteredParams);
-			httpMethod.setRequestHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
+			httpMethod.setRequestHeader(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
 		}
 	}
 
@@ -100,14 +99,13 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		if (!httpMethod.isRequestSent()) return;
 		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.HTTP_HEADER_NAME);
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
-		if (responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
+		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<String>();
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}
 
-			final Map<String, String> parsedContext = transportSerialization.parse(stringTraceeHeaders);
-			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+			backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(stringTraceeHeaders), IncomingResponse));
 		}
 	}
 
