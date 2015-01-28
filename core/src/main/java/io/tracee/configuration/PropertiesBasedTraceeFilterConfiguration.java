@@ -94,7 +94,8 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	private boolean patternMatchesParamName(String pattern, String paramName) {
-		return paramName.matches(pattern);
+		// .* matches the whole param and we could speed up this call with a simple equal
+		return ".*".equals(pattern) || paramName.matches(pattern);
 	}
 
 	private List<String> extractPatterns(String propertyValue) {
