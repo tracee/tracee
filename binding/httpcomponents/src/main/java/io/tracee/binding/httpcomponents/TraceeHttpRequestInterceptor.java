@@ -5,7 +5,6 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -18,9 +17,14 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 
+	private final TraceeBackend backend;
+	private final HttpHeaderTransport transportSerialization;
+	private final String profile;
+
 	public TraceeHttpRequestInterceptor() {
 		this(null);
 	}
+
 	public TraceeHttpRequestInterceptor(String profile) {
 		this(Tracee.getBackend(), profile);
 	}
@@ -31,17 +35,12 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 		this.profile = profile;
 	}
 
-	private final TraceeBackend backend;
-	private final HttpHeaderTransport transportSerialization;
-	private final String profile;
-
 	@Override
-	public final void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
+	public final void process(final HttpRequest httpRequest, final HttpContext httpContext) throws HttpException, IOException {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			final String contextAsHeader = transportSerialization.render(filteredParams);
-			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
+			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
 		}
 	}
 }

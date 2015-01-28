@@ -1,11 +1,17 @@
 package io.tracee.binding.servlet;
 
-import io.tracee.*;
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
-
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,7 +42,7 @@ public class TraceeFilter implements Filter {
     private final HttpHeaderTransport transportSerialization;
 
     @Override
-    public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+    public final void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain)
             throws IOException, ServletException {
         if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse) {
             doFilterHttp((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, filterChain);
@@ -45,7 +51,8 @@ public class TraceeFilter implements Filter {
         }
     }
 
-    final void doFilterHttp(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    final void doFilterHttp(final HttpServletRequest request, final HttpServletResponse response,
+							final FilterChain filterChain) throws IOException, ServletException {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 
@@ -61,20 +68,19 @@ public class TraceeFilter implements Filter {
         }
     }
 
-	private void writeContextToResponse(HttpServletResponse response, TraceeFilterConfiguration configuration) {
-		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+	private void writeContextToResponse(final HttpServletResponse response, final TraceeFilterConfiguration configuration) {
+		if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filteredContext = backend.getConfiguration(profile).filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(HTTP_HEADER_NAME, transportSerialization.render(filteredContext));
 		}
 	}
 
     @Override
-    public final void init(FilterConfig filterConfig) throws ServletException {
+    public final void init(final FilterConfig filterConfig) throws ServletException {
 		final String profileInitParameter = filterConfig.getInitParameter(PROFILE_INIT_PARAM);
 		if (profileInitParameter != null) {
 			profile = profileInitParameter;
 		}
-
 	}
 
     @Override

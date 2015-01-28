@@ -30,11 +30,10 @@ public class TraceeClientRequestFilter implements ClientRequestFilter {
 	}
 
 	@Override
-	public final void filter(ClientRequestContext requestContext) throws IOException {
+	public final void filter(final ClientRequestContext requestContext) throws IOException {
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			final String serializedTraceeContext = transportSerialization.render(filtered);
-			requestContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, serializedTraceeContext);
+			requestContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filtered));
 		}
 	}
 }
