@@ -13,9 +13,8 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
@@ -44,19 +43,19 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 	}
 
 	@Override
-	public void requestDestroyed(ServletRequestEvent sre) {
+	public void requestDestroyed(final ServletRequestEvent sre) {
 		backend.clear();
 	}
 
 	@Override
-	public void requestInitialized(ServletRequestEvent sre) {
+	public void requestInitialized(final ServletRequestEvent sre) {
 		final ServletRequest servletRequest = sre.getServletRequest();
 		if (servletRequest instanceof HttpServletRequest) {
 			httpRequestInitialized((HttpServletRequest) servletRequest);
 		}
 	}
 
-	private void httpRequestInitialized(HttpServletRequest request) {
+	private void httpRequestInitialized(final HttpServletRequest request) {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
@@ -65,14 +64,11 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 			backend.putAll(configuration.filterDeniedParams(parameterParsedContext, IncomingResponse));
 
 			// overwrite values defined by request parameter with values from header
+			@SuppressWarnings("unchecked")
 			final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
 
-			if (headers != null && headers.hasMoreElements() && configuration.shouldProcessContext(IncomingRequest)) {
-				final List<String> stringTraceeHeaders = new ArrayList<String>();
-				while (headers.hasMoreElements()) {
-					stringTraceeHeaders.add((String) headers.nextElement());
-				}
-				final Map<String, String> contextMap = transportSerialization.parse(stringTraceeHeaders);
+			if (headers != null && headers.hasMoreElements()) {
+				final Map<String, String> contextMap = transportSerialization.parse(Collections.list(headers));
 				backend.putAll(backend.getConfiguration().filterDeniedParams(contextMap, IncomingRequest));
 			}
 		}
@@ -85,5 +81,4 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 			Utilities.generateSessionIdIfNecessary(backend, session.getId());
 		}
 	}
-
 }

@@ -32,7 +32,7 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 	}
 
 	@Override
-	public final void filter(ContainerRequestContext containerRequestContext) throws IOException {
+	public final void filter(final ContainerRequestContext containerRequestContext) throws IOException {
 
 		if (backend.getConfiguration().shouldProcessContext(IncomingRequest)) {
 			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.HTTP_HEADER_NAME);

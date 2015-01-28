@@ -15,7 +15,6 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncPro
 
 /**
  * EJB interceptor that parses a TracEE context from message properties and cleans it after message processing.
- *
  */
 public final class TraceeMessageListener {
 
@@ -31,7 +30,7 @@ public final class TraceeMessageListener {
 	}
 
 	@AroundInvoke
-    public Object intercept(InvocationContext ctx) throws Exception {
+    public Object intercept(final InvocationContext ctx) throws Exception {
         final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
 		try {
             if (isMdbInvocation) {
@@ -46,14 +45,13 @@ public final class TraceeMessageListener {
     }
 
 	@SuppressWarnings("unchecked")
-    public void beforeProcessing(Message message) throws JMSException {
+    public void beforeProcessing(final Message message) throws JMSException {
 
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
 			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
 			if (encodedTraceeContext != null) {
 				final Map<String, String> contextFromMessage = (Map<String, String>) encodedTraceeContext;
-				final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess);
-				backend.putAll(filteredContext);
+				backend.putAll(backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess));
 			}
 		}
     }
@@ -64,16 +62,13 @@ public final class TraceeMessageListener {
 		}
     }
 
-
-    Message extractMessageParameter(Object[] parameters) {
+    Message extractMessageParameter(final Object[] parameters) {
 	    return (Message) parameters[0];
     }
 
-    boolean isMessageListenerOnMessageMethod(Method method) {
+    boolean isMessageListenerOnMessageMethod(final Method method) {
         return "onMessage".equals(method.getName())
                 && method.getParameterTypes().length == 1
                 && method.getParameterTypes()[0] == Message.class;
     }
-
-
 }
