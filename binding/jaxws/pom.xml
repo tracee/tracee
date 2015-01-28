@@ -32,19 +32,8 @@
         </dependency>
         <dependency>
             <groupId>io.tracee.backend</groupId>
-            <artifactId>tracee-log4j</artifactId>
+            <artifactId>tracee-threadlocal-store</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>openejb-cxf</artifactId>
-            <version>4.7.1</version>
             <scope>test</scope>
         </dependency>
 		<dependency>

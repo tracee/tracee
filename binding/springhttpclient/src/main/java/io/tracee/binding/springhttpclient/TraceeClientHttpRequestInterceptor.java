@@ -46,12 +46,11 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 		return response;
 	}
 
-	private void preRequest(HttpRequest request) {
+	private void preRequest(final HttpRequest request) {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			final String contextAsHeader = transportSerialization.render(filteredParams);
-			request.getHeaders().add(TraceeConstants.HTTP_HEADER_NAME, contextAsHeader);
+			request.getHeaders().add(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
 		}
 	}
 
@@ -61,8 +60,7 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
-				final Map<String, String> parsedContext = transportSerialization.parse(headers);
-				backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+				backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(headers), IncomingResponse));
 			}
 		}
 	}

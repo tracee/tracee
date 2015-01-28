@@ -1,6 +1,9 @@
 # TracEE 0.8.0
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tracee/tracee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
-[![Stories in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
+[![Tasks in Ready](https://badge.waffle.io/tracee/tracee.png?label=ready&title=Ready)](https://waffle.io/tracee/tracee)
+[![Tasks in Progress](https://badge.waffle.io/tracee/tracee.png?label=in+progress&title=In+Progress)](https://waffle.io/tracee/tracee)
 [![Build Status](https://api.travis-ci.org/tracee/tracee.svg)](https://travis-ci.org/tracee/tracee)
 [![Coverage Status](https://img.shields.io/coveralls/tracee/tracee.svg)](https://coveralls.io/r/tracee/tracee)
 [![Coverity Scan](https://scan.coverity.com/projects/3882/badge.svg)](https://scan.coverity.com/projects/3882)

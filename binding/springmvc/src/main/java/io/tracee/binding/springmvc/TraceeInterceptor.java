@@ -13,9 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
@@ -40,18 +39,15 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object o) throws Exception {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
-			final Enumeration headers = request.getHeaders(incomingHeaderName);
-			if (headers != null && headers.hasMoreElements() && configuration.shouldProcessContext(IncomingRequest)) {
-				final List<String> stringTraceeHeaders = new ArrayList<String>();
-				while (headers.hasMoreElements()) {
-					stringTraceeHeaders.add((String) headers.nextElement());
-				}
-				final Map<String, String> parsedContext = httpHeaderSerialization.parse(stringTraceeHeaders);
+			@SuppressWarnings("unchecked")
+			final Enumeration<String> headers = request.getHeaders(incomingHeaderName);
+			if (headers != null && headers.hasMoreElements()) {
+				final Map<String, String> parsedContext = httpHeaderSerialization.parse(Collections.list(headers));
 				backend.putAll(configuration.filterDeniedParams(parsedContext, IncomingResponse));
 			}
 		}
@@ -70,7 +66,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
-		if (configuration.shouldProcessContext(OutgoingResponse) && !backend.isEmpty()) {
+		if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
 		}

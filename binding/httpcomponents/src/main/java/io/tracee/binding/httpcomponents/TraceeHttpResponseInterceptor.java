@@ -5,7 +5,6 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-
 import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -15,29 +14,28 @@ import org.apache.http.protocol.HttpContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 
 
 public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
-
     private final TraceeBackend backend;
     private final HttpHeaderTransport transportSerialization;
 	private final String profile;
+
+	public TraceeHttpResponseInterceptor() {
+		this(null);
+	}
+
+	public TraceeHttpResponseInterceptor(String profile) {
+		this(Tracee.getBackend(), profile);
+	}
 
 	TraceeHttpResponseInterceptor(TraceeBackend backend, String profile) {
 		this.backend = backend;
 		this.profile = profile;
 		transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
-	}
-
-	public TraceeHttpResponseInterceptor() {
-		this(null);
-	}
-	public TraceeHttpResponseInterceptor(String profile) {
-		this(Tracee.getBackend(), profile);
 	}
 
 	@Override
@@ -49,8 +47,7 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}
-			final Map<String, String> parsedContext = transportSerialization.parse(stringTraceeHeaders);
-			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
+			backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(stringTraceeHeaders), IncomingResponse));
 		}
     }
 }

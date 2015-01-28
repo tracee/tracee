@@ -18,8 +18,6 @@ Please add the following dependency to enable TracEE JAX-RS 2.0 ([JSR 339](http:
 </dependencies>
 ```
 
-
-
 ## Container: Implicit vs. application config
 
 If you don't use an explicit application config and have the `tracee-jaxrs2` module on your classpath, 
