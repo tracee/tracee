@@ -65,7 +65,7 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 
 			// overwrite values defined by request parameter with values from header
 			@SuppressWarnings("unchecked")
-			final Enumeration headers = request.getHeaders(HTTP_HEADER_NAME);
+			final Enumeration<String> headers = request.getHeaders(HTTP_HEADER_NAME);
 
 			if (headers != null && headers.hasMoreElements()) {
 				final Map<String, String> contextMap = transportSerialization.parse(Collections.list(headers));
