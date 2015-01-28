@@ -24,6 +24,7 @@ public class TraceeRequestInInterceptor extends AbstractTraceeInInterceptor {
 		super.handleMessage(message);
 		if (shouldHandleMessage(message)) {
 			Utilities.generateRequestIdIfNecessary(backend);
+			Utilities.generateConversationIdIfNecessary(backend);
 		}
 	}
 

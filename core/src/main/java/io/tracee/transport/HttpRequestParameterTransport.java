@@ -33,6 +33,11 @@ public class HttpRequestParameterTransport {
 			contextMap.put(TraceeConstants.SESSION_ID_KEY, sessionIdValue[0]);
 		}
 
+		final String[] conversationIdValue = serializedElements.get(TraceeConstants.CONVERSATION_ID_KEY);
+		if (conversationIdValue != null && conversationIdValue.length > 0) {
+			contextMap.put(TraceeConstants.CONVERSATION_ID_KEY, conversationIdValue[0]);
+		}
+
 		return contextMap;
 	}
 

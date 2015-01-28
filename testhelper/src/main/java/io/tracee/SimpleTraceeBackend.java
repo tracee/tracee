@@ -97,4 +97,16 @@ public class SimpleTraceeBackend implements TraceeBackend {
 	public Map<String, String> getValuesBeforeLastClear() {
 		return valuesBeforeLastClear;
 	}
+
+	public String getRequestId() {
+		return get(TraceeConstants.REQUEST_ID_KEY);
+	}
+
+	public String getSessionId() {
+		return get(TraceeConstants.SESSION_ID_KEY);
+	}
+
+	public String getConversationId() {
+		return get(TraceeConstants.CONVERSATION_ID_KEY);
+	}
 }

@@ -1,7 +1,5 @@
 package io.tracee;
 
-import io.tracee.configuration.TraceeFilterConfiguration;
-
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
@@ -82,5 +80,17 @@ public final class Utilities {
 		if (backend != null && !backend.containsKey(TraceeConstants.SESSION_ID_KEY) && backend.getConfiguration().shouldGenerateSessionId()) {
 			backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(sessionId, backend.getConfiguration().generatedSessionIdLength()));
 		}
+	}
+
+	/**
+	 * Generate conversation id hash if it doesn't exist in TraceeBackend and configuration asks for one
+	 *
+	 * @param backend Currently used TraceeBackend
+	 */
+	public static String generateConversationIdIfNecessary(final TraceeBackend backend) {
+		if (backend != null && !backend.containsKey(TraceeConstants.CONVERSATION_ID_KEY) && backend.getConfiguration().shouldGenerateConversationId()) {
+			backend.put(TraceeConstants.CONVERSATION_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedConversationIdLength()));
+		}
+		return backend != null ? backend.get(TraceeConstants.CONVERSATION_ID_KEY) : null;
 	}
 }

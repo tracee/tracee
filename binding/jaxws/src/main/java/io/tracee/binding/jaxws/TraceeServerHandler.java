@@ -43,6 +43,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 		}
 
 		Utilities.generateRequestIdIfNecessary(traceeBackend);
+		Utilities.generateConversationIdIfNecessary(traceeBackend);
 	}
 
 	protected final void handleOutgoing(SOAPMessageContext context) {

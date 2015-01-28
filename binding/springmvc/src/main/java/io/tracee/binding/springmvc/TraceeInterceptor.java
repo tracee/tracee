@@ -65,6 +65,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 		}
 
 		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateConversationIdIfNecessary(backend);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {

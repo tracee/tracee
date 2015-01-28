@@ -13,6 +13,7 @@ public final class TraceeConstants {
 
     public static final String SESSION_ID_KEY = "traceeSessionId";
     public static final String REQUEST_ID_KEY = "traceeRequestId";
+	public static final String CONVERSATION_ID_KEY = "traceeConversationId";
 
 	public static final String SOAP_HEADER_NAME = "tpic";
 	public static final String SOAP_HEADER_NAMESPACE = "http://tracee.io/tpic/1.0";

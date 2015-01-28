@@ -42,6 +42,10 @@ public interface TraceeFilterConfiguration {
 
 	boolean shouldGenerateSessionId();
 
+	boolean shouldGenerateConversationId();
+
+	int generatedConversationIdLength();
+
 	/**
 	 * @return a desired non-negative length of the generated session identifiers. If it returns <code>0</code>, no session identifiers should be generated.
 	 */

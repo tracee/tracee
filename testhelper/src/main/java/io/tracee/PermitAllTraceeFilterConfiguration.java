@@ -42,4 +42,14 @@ public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfigura
 	public final int generatedSessionIdLength() {
 		return ARBITRARY_NUMBER;
 	}
+
+	@Override
+	public boolean shouldGenerateConversationId() {
+		return true;
+	}
+
+	@Override
+	public int generatedConversationIdLength() {
+		return ARBITRARY_NUMBER;
+	}
 }
