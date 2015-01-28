@@ -1,17 +1,16 @@
 package io.tracee;
 
-import io.tracee.configuration.TraceeFilterConfiguration;
-
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-
 public final class Utilities {
 
 	private static final char[] ALPHANUMERICS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+	public static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
 
 	private Utilities() {
 		// hide constructor
@@ -22,7 +21,7 @@ public final class Utilities {
 	}
 
 	/**
-	 * Creates a random Strings consisting of alphanumeric charaters with a length of 32.
+	 * Creates a random Strings consisting of alphanumeric characters with a length of 32.
 	 */
 	public static String createRandomAlphanumeric(final int length) {
 		final Random r = ThreadLocalRandom.current();
@@ -39,10 +38,10 @@ public final class Utilities {
 	public static String createAlphanumericHash(final String str, final int length) {
 		try {
 			final MessageDigest md = MessageDigest.getInstance("SHA-256");
-			final byte[] digest = md.digest(str.getBytes(Charset.forName("UTF-8")));
+			final byte[] digest = md.digest(str.getBytes(CHARSET_UTF8));
 			// To human
 			final StringBuilder sb = new StringBuilder();
-			for (byte b : digest) {
+			for (final byte b : digest) {
 				if (b < 16) sb.append("0");
 				sb.append(Integer.toHexString(b & 0xff));
 			}
