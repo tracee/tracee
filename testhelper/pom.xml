@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.tracee</groupId>
         <artifactId>tracee-parent</artifactId>
-        <version>0.9.0</version>
+        <version>0.10.0-SNAPSHOT</version>
     </parent>
 
     <name>tracee-testhelper</name>
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-api</artifactId>
-			<version>0.9.0</version>
+			<version>0.10.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
