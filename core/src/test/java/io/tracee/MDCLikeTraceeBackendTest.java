@@ -143,6 +143,28 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
+	public void requestIdShortcutShouldReturnTheRequestIdIfSet() {
+		unit.put(TraceeConstants.REQUEST_ID_KEY, "ourRequestId");
+		assertThat(unit.getRequestId(), is("ourRequestId"));
+	}
+
+	@Test
+	public void requestIdShortcutShouldReturnNullIfNoRequestIdIsSet() {
+		assertThat(unit.getRequestId(), is(nullValue()));
+	}
+
+	@Test
+	public void sessionIdShortcutShouldReturnTheSessionIdIfSet() {
+		unit.put(TraceeConstants.SESSION_ID_KEY, "ourSessionId");
+		assertThat(unit.getSessionId(), is("ourSessionId"));
+	}
+
+	@Test
+	public void sessionIdShortcutShouldReturnNullIfNoSessionIdIsSet() {
+		assertThat(unit.getSessionId(), is(nullValue()));
+	}
+
+	@Test
 	public void containsShouldreturnFalseIfNotInMDC() {
 		assertThat(unit.containsKey("A"), is(false));
 	}

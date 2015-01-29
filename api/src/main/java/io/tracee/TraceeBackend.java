@@ -74,4 +74,16 @@ public interface TraceeBackend {
      * @param key ignored if {@code null}
      */
     void remove(String key);
+
+	/**
+	 * Shortcut for {@code get(TraceeConstants.REQUEST_ID_KEY)}
+	 * @return The current value for the Key {@code TraceeConstants.REQUEST_ID_KEY} or {@code null} if no value is set.
+	 */
+	String getRequestId();
+
+	/**
+	 * Shortcut for {@code get(TraceeConstants.SESSION_ID_KEY)}
+	 * @return The current value for the Key {@code TraceeConstants.SESSION_ID_KEY} or {@code null} if no value is set.
+	 */
+	String getSessionId();
 }
