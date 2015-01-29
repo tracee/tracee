@@ -96,7 +96,17 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
         }
     }
 
-    /**
+	@Override
+	public String getRequestId() {
+		return get(TraceeConstants.REQUEST_ID_KEY);
+	}
+
+	@Override
+	public String getSessionId() {
+		return get(TraceeConstants.SESSION_ID_KEY);
+	}
+
+	/**
      * Removes all tracee values from the underlying MDC and removes the thread local traceeKeys set.
      */
     @Override

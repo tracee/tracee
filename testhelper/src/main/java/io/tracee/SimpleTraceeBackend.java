@@ -94,6 +94,16 @@ public class SimpleTraceeBackend implements TraceeBackend {
 		backendValues.remove(key);
 	}
 
+	@Override
+	public String getRequestId() {
+		return get(TraceeConstants.REQUEST_ID_KEY);
+	}
+
+	@Override
+	public String getSessionId() {
+		return get(TraceeConstants.SESSION_ID_KEY);
+	}
+
 	public Map<String, String> getValuesBeforeLastClear() {
 		return valuesBeforeLastClear;
 	}
