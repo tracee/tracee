@@ -139,4 +139,15 @@ public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
 	protected abstract void removeFromMdc(String key);
 
+	public String getRequestId() {
+		return get(TraceeConstants.REQUEST_ID_KEY);
+	}
+
+	public String getSessionId() {
+		return get(TraceeConstants.SESSION_ID_KEY);
+	}
+
+	public String getConversationId() {
+		return get(TraceeConstants.CONVERSATION_ID_KEY);
+	}
 }

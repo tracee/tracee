@@ -7,6 +7,7 @@ import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
+import io.tracee.transport.HttpRequestParameterTransport;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport httpHeaderSerialization;
+	private final HttpRequestParameterTransport httpRequestParameterTransport;
 	private String outgoingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
 	private String incomingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
 	private String profileName;
@@ -36,6 +38,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	protected TraceeInterceptor(TraceeBackend backend) {
 		this.backend = backend;
 		httpHeaderSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
+		httpRequestParameterTransport = new HttpRequestParameterTransport(backend.getLoggerFactory());
 	}
 
 	@Override
@@ -44,6 +47,11 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
+			// process request parameter first
+			final Map<String, String> parameterParsedContext = httpRequestParameterTransport.parse((Map<String, String[]>)request.getParameterMap());
+			backend.putAll(configuration.filterDeniedParams(parameterParsedContext, IncomingResponse));
+
+			// overwrite values defined by request parameter with values from header
 			@SuppressWarnings("unchecked")
 			final Enumeration<String> headers = request.getHeaders(incomingHeaderName);
 			if (headers != null && headers.hasMoreElements()) {
@@ -53,6 +61,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 		}
 
 		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateConversationIdIfNecessary(backend);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {

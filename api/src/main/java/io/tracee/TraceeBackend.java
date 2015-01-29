@@ -74,4 +74,8 @@ public interface TraceeBackend {
      * @param key ignored if {@code null}
      */
     void remove(String key);
+
+	String getRequestId();
+	String getSessionId();
+	String getConversationId();
 }

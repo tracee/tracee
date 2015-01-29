@@ -43,5 +43,6 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 		}
 
 		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateConversationIdIfNecessary(backend);
 	}
 }

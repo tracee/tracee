@@ -2,7 +2,12 @@ package io.tracee.configuration;
 
 import io.tracee.Utilities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
@@ -11,6 +16,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	static final String DEFAULT_PROFILE_PREFIX = DEFAULT_PROFILE + ".";
 	public static final String GENERATE_REQUEST_ID = "requestIdLength";
 	public static final String GENERATE_SESSION_ID = "sessionIdLength";
+	public static final String GENERATE_CONVERSATION_ID = "conversationIdLength";
 
 	private final PropertyChain propertyChain;
 	private final String profileName;
@@ -27,8 +33,9 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	private String getProfiledOrDefaultProperty(String propertyName) {
 		if (profileName != null) {
 			final String profiledProperty = propertyChain.getProperty(TRACEE_CONFIG_PREFIX + profileName + '.' + propertyName);
-			if (profiledProperty != null)
+			if (profiledProperty != null) {
 				return profiledProperty;
+			}
 		}
 		return propertyChain.getProperty(TRACEE_CONFIG_PREFIX + DEFAULT_PROFILE_PREFIX + propertyName);
 	}
@@ -62,6 +69,16 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	@Override
+	public boolean shouldGenerateConversationId() {
+		return generatedConversationIdLength() > 0;
+	}
+
+	@Override
+	public int generatedConversationIdLength() {
+		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_CONVERSATION_ID));
+	}
+
+	@Override
 	public int generatedSessionIdLength() {
 		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_SESSION_ID));
 	}
@@ -87,8 +104,9 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	private boolean anyPatternMatchesParamName(Iterable<String> patterns, String paramName) {
 		for (String pattern : patterns) {
-			if (patternMatchesParamName(pattern, paramName))
+			if (patternMatchesParamName(pattern, paramName)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -99,8 +117,9 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	private List<String> extractPatterns(String propertyValue) {
-		if (propertyValue == null)
+		if (propertyValue == null) {
 			return Collections.emptyList();
+		}
 
 		final List<String> trimmedPatterns = new ArrayList<String>();
 		final StringTokenizer tokenizer = new StringTokenizer(propertyValue, ",");

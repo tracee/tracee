@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
+import static io.tracee.TraceeConstants.CONVERSATION_ID_KEY;
 import static io.tracee.TraceeConstants.REQUEST_ID_KEY;
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -119,5 +120,26 @@ public class UtilitiesTest {
 		Utilities.generateSessionIdIfNecessary(backend, "123");
 		assertThat(backend.get(SESSION_ID_KEY), equalTo(Utilities.createAlphanumericHash("123",
 				PermitAllTraceeFilterConfiguration.ARBITRARY_NUMBER)));
+	}
+
+	@Test
+	public void ignoreConversationIdGenerationIfBackendIsNull() {
+		Utilities.generateConversationIdIfNecessary(null);
+		assertTrue("No exception occurred", true);
+	}
+
+	@Test
+	public void dontGenerateConversationIdIfPresentInBackend() {
+		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+		backend.put(CONVERSATION_ID_KEY, "ourTestId");
+		Utilities.generateConversationIdIfNecessary(backend);
+		assertThat(backend.get(CONVERSATION_ID_KEY), is("ourTestId"));
+	}
+
+	@Test
+	public void generateConversationIdIfNotPresentInBackend() {
+		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+		final String conversationId = Utilities.generateConversationIdIfNecessary(backend);
+		assertThat(backend.get(CONVERSATION_ID_KEY), equalTo(conversationId));
 	}
 }
