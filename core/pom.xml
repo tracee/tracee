@@ -27,5 +27,9 @@
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.carrotsearch</groupId>
+			<artifactId>junit-benchmarks</artifactId>
+		</dependency>
     </dependencies>
 </project>

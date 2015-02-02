@@ -3,39 +3,53 @@ package io.tracee;
 import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.PropertyChain;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.configuration.TraceePropertiesFileLoader;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static io.tracee.configuration.TraceeFilterConfiguration.*;
 
 
 public abstract class MDCLikeTraceeBackend implements TraceeBackend {
 
-
-
-	private PropertyChain lazyPropertyChain = null;
+	// Use #getPropertyChain to retrieve/get the chain
+	private PropertyChain _lazyPropertyChain = null;
 
 	private final TraceeLoggerFactory loggerFactory;
 
 	private final ThreadLocal<Set<String>> traceeKeys;
+
+	private Map<String, TraceeFilterConfiguration> configurationCache = new ConcurrentHashMap<String, TraceeFilterConfiguration>();
 
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.
 	 */
 	@Override
 	public final TraceeFilterConfiguration getConfiguration() {
-		if (lazyPropertyChain == null) {
-			lazyPropertyChain = PropertiesBasedTraceeFilterConfiguration.loadPropertyChain();
-		}
-		return new PropertiesBasedTraceeFilterConfiguration(lazyPropertyChain);
+		return getConfiguration(null);
 	}
 
 	@Override
 	public final TraceeFilterConfiguration getConfiguration(String profileName) {
-		if (lazyPropertyChain == null) {
-			lazyPropertyChain = PropertiesBasedTraceeFilterConfiguration.loadPropertyChain();
+		if (profileName == null) {
+			profileName = Profile.DEFAULT;
 		}
-		return new PropertiesBasedTraceeFilterConfiguration(lazyPropertyChain, profileName);
+		TraceeFilterConfiguration filterConfiguration = configurationCache.get(profileName);
+		if (filterConfiguration == null) {
+			filterConfiguration = new PropertiesBasedTraceeFilterConfiguration(loggerFactory, getPropertyChain(), profileName);
+			configurationCache.put(profileName, filterConfiguration);
+		}
+		return filterConfiguration;
+	}
+
+	private PropertyChain getPropertyChain() {
+		if (_lazyPropertyChain == null) {
+			_lazyPropertyChain = PropertiesBasedTraceeFilterConfiguration.loadPropertyChain();
+		}
+		return _lazyPropertyChain;
 	}
 
 	protected MDCLikeTraceeBackend(ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {

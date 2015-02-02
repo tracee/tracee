@@ -1,5 +1,6 @@
 package io.tracee;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Channel;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,21 +19,26 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_INB
 import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_OUTBOUND;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MDCLikeTraceeBackendTest {
 
 	@SuppressWarnings("unchecked")
-	private final ThreadLocal<Set<String>> traceeKeysMock = (ThreadLocal<Set<String>>) Mockito.mock(ThreadLocal.class);
+	private final ThreadLocal<Set<String>> traceeKeysMock = (ThreadLocal<Set<String>>) mock(ThreadLocal.class);
 
 	private final HashSet<String> traceeKeysSet = Mockito.spy(new HashSet<String>());
 
-	private final TestBackend unit = new TestBackend(traceeKeysMock, null);
+	private final TraceeLoggerFactory loggerFactory = mock(TraceeLoggerFactory.class);
+
+	private final TestBackend unit = new TestBackend(traceeKeysMock, loggerFactory);
 
 	@Before
 	public void setUpMocks() {
 		when(traceeKeysMock.get()).thenReturn(traceeKeysSet);
+		when(loggerFactory.getLogger(any(Class.class))).thenReturn(mock(TraceeLogger.class));
 	}
 
 	@Test
@@ -220,6 +226,28 @@ public class MDCLikeTraceeBackendTest {
 		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.IncomingResponse), equalTo(false));
 		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
 		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
+	}
+
+	@Test
+	public void testNullProfile() {
+		assertThat(unit.getConfiguration(null), is(not(nullValue())));
+	}
+
+	@Test
+	public void testProfileCacheForEmptyOrNullProfile() {
+		assertThat(unit.getConfiguration(), is(unit.getConfiguration(null)));
+	}
+
+	@Test
+	public void testProfileCacheForGivenProfile() {
+		final TraceeFilterConfiguration hideInboundConfiguration = unit.getConfiguration(HIDE_INBOUND);
+		assertThat(unit.getConfiguration(HIDE_INBOUND), is(sameInstance(hideInboundConfiguration)));
+	}
+
+	@Test
+	public void testProfileCacheForDifferenceProfiles() {
+		final TraceeFilterConfiguration hideInboundConfiguration = unit.getConfiguration(HIDE_OUTBOUND);
+		assertThat(unit.getConfiguration(HIDE_INBOUND), is(not(sameInstance(hideInboundConfiguration))));
 	}
 
 	class TestBackend extends MDCLikeTraceeBackend {
