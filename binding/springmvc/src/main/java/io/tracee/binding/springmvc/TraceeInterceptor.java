@@ -70,12 +70,11 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
 		}
-		backend.clear();
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-
+		backend.clear();
 	}
 
 	public void setOutgoingHeaderName(String outgoingHeaderName) {

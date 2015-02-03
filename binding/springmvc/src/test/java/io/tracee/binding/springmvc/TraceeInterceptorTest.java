@@ -127,7 +127,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldCleanupAfterProcessing() throws Exception {
-		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), null);
+		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(mockedBackend).clear();
 	}
 
