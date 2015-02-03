@@ -25,7 +25,7 @@ public class TraceeFilter implements Filter {
 
     private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
 
-	private String profile = TraceeFilterConfiguration.DEFAULT_PROFILE;
+	private String profile = TraceeFilterConfiguration.Profile.DEFAULT;
 
 	public TraceeFilter() {
 		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
