@@ -2,18 +2,42 @@ package io.tracee.configuration;
 
 import io.tracee.Utilities;
 
+import java.io.IOException;
 import java.util.*;
 
+/**
+ * A TraceeFilterConfiguration that is based on a {@link PropertyChain}.
+ * The default property chain may be obtained by the {@link #loadPropertyChain()} method.
+ */
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
-	public static final String TRACEE_CONFIG_PREFIX = "tracee.";
 
-	static final String DEFAULT_PROFILE_PREFIX = DEFAULT_PROFILE + ".";
-	public static final String GENERATE_REQUEST_ID = "requestIdLength";
-	public static final String GENERATE_SESSION_ID = "sessionIdLength";
+	static final String TRACEE_CONFIG_PREFIX = "tracee.";
+	static final String PROFILED_PREFIX = TRACEE_CONFIG_PREFIX + "profile.";
+	static final String DEFAULT_PROFILE_PREFIX = Profile.DEFAULT + ".";
+	static final String GENERATE_REQUEST_ID = "requestIdLength";
+	static final String GENERATE_SESSION_ID = "sessionIdLength";
 
 	private final PropertyChain propertyChain;
 	private final String profileName;
+
+	/**
+	 * Loads a layered property chain based on:
+	 * <ol>
+	 * <li>System properties</li>
+	 * <li>merged entries from all {@code /META-INF/tracee.properties} files on the classpath (loaded in undefined order)</li>
+	 * <li>merged entries from all {@code /META-INF/tracee.default.properties} files on the classpath (loaded in undefined order)</li>
+	 * </ol>
+	 */
+	public static PropertyChain loadPropertyChain() {
+		try {
+			final Properties traceeDefaultFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TraceePropertiesFileLoader.TRACEE_DEFAULT_PROPERTIES_FILE);
+			final Properties traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TraceePropertiesFileLoader.TRACEE_PROPERTIES_FILE);
+			return PropertyChain.build(System.getProperties(), traceeFileProperties, traceeDefaultFileProperties);
+		} catch (IOException ioe) {
+			throw new IllegalStateException("Could not load TraceeProperties: " + ioe.getMessage(), ioe);
+		}
+	}
 
 	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
 		this(propertyChain, null);
@@ -26,7 +50,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	private String getProfiledOrDefaultProperty(String propertyName) {
 		if (profileName != null) {
-			final String profiledProperty = propertyChain.getProperty(TRACEE_CONFIG_PREFIX + profileName + '.' + propertyName);
+			final String profiledProperty = propertyChain.getProperty(PROFILED_PREFIX + profileName + '.' + propertyName);
 			if (profiledProperty != null)
 				return profiledProperty;
 		}

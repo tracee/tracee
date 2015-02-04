@@ -1,15 +1,25 @@
 package io.tracee;
 
-import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Channel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.DISABLED;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.DISABLE_INBOUND;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.DISABLE_OUTBOUND;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_INBOUND;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_OUTBOUND;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MDCLikeTraceeBackendTest {
 
@@ -176,7 +186,40 @@ public class MDCLikeTraceeBackendTest {
 
 	@Test
 	public void testLoadUserDefinedProfileFromProperties() {
-		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", TraceeFilterConfiguration.Channel.IncomingRequest), equalTo(true));
+		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", Channel.IncomingRequest), equalTo(true));
+	}
+
+	@Test
+	public void testHideInboundProfile() {
+		assertThat(unit.getConfiguration(HIDE_INBOUND).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
+	}
+
+	@Test
+	public void testHideOutboundProfile() {
+		assertThat(unit.getConfiguration(HIDE_OUTBOUND).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
+	}
+
+	@Test
+	public void testDisableInboundProfile() {
+		assertThat(unit.getConfiguration(DISABLE_INBOUND).shouldProcessContext(Channel.IncomingRequest), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLE_INBOUND).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
+	}
+
+	@Test
+	public void testDisableOutboundProfile() {
+		assertThat(unit.getConfiguration(DISABLE_OUTBOUND).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLE_OUTBOUND).shouldProcessContext(Channel.IncomingResponse), equalTo(false));
+	}
+
+
+		@Test
+	public void testDisabledProfile() {
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.AsyncDispatch), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.AsyncProcess), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.IncomingRequest), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.IncomingResponse), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
+		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
 	}
 
 	class TestBackend extends MDCLikeTraceeBackend {
