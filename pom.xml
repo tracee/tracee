@@ -33,6 +33,7 @@
 		<module>binding/springmvc</module>
 		<module>binding/cxf</module>
 		<module>binding/springrabbitmq</module>
+		<module>binding/quartz</module>
 	</modules>
 
 	<parent>

@@ -15,3 +15,4 @@
 | ApacheHttpClient 3          | Use [tracee-httpclient](httpclient/)'s `TraceeHttpClientDecorator` | - |
 | ApacheHttpClient 4          | Use [tracee-components](httpcomponents/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
 | Apache CXF                  | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` |
+| Quartz Scheduler            | - | Use [tracee-quartz](quartz/)'s `TraceeJobListener` to generate context before the job starts |
