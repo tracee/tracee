@@ -1,9 +1,20 @@
 package io.tracee.configuration;
 
+import io.tracee.TraceeLogger;
+import io.tracee.TraceeLoggerFactory;
 import io.tracee.Utilities;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * A TraceeFilterConfiguration that is based on a {@link PropertyChain}.
@@ -11,15 +22,18 @@ import java.util.*;
  */
 public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
-
 	static final String TRACEE_CONFIG_PREFIX = "tracee.";
 	static final String PROFILED_PREFIX = TRACEE_CONFIG_PREFIX + "profile.";
-	static final String DEFAULT_PROFILE_PREFIX = Profile.DEFAULT + ".";
+	static final String TRACEE_DEFAULT_PROFILE_PREFIX = TRACEE_CONFIG_PREFIX + Profile.DEFAULT + ".";
 	static final String GENERATE_REQUEST_ID = "requestIdLength";
 	static final String GENERATE_SESSION_ID = "sessionIdLength";
 
 	private final PropertyChain propertyChain;
 	private final String profileName;
+
+	private final Map<String, List<Pattern>> patternCache = new ConcurrentHashMap<String, List<Pattern>>();
+
+	private final TraceeLogger logger;
 
 	/**
 	 * Loads a layered property chain based on:
@@ -39,33 +53,35 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		}
 	}
 
-	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
-		this(propertyChain, null);
+	public PropertiesBasedTraceeFilterConfiguration(TraceeLoggerFactory loggerFactory, PropertyChain propertyChain) {
+		this(loggerFactory, propertyChain, null);
 	}
 
-	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain, String profileName) {
+	public PropertiesBasedTraceeFilterConfiguration(TraceeLoggerFactory loggerFactory, PropertyChain propertyChain,
+													String profileName) {
+		logger = loggerFactory.getLogger(PropertiesBasedTraceeFilterConfiguration.class);
 		this.propertyChain = propertyChain;
 		this.profileName = profileName;
 	}
 
-	private String getProfiledOrDefaultProperty(String propertyName) {
-		if (profileName != null) {
+	private String getProfiledOrDefaultProperty(final String propertyName) {
+		if (profileName != null && !Profile.DEFAULT.equals(profileName)) {
 			final String profiledProperty = propertyChain.getProperty(PROFILED_PREFIX + profileName + '.' + propertyName);
 			if (profiledProperty != null)
 				return profiledProperty;
 		}
-		return propertyChain.getProperty(TRACEE_CONFIG_PREFIX + DEFAULT_PROFILE_PREFIX + propertyName);
+		return propertyChain.getProperty(TRACEE_DEFAULT_PROFILE_PREFIX + propertyName);
 	}
 
 	@Override
 	public boolean shouldProcessParam(String paramName, Channel channel) {
 		final String messageTypePropertyValue = getProfiledOrDefaultProperty(channel.name());
-		final List<String> patterns = extractPatterns(messageTypePropertyValue);
+		final List<Pattern> patterns = retrievePatternsForPropertyValue(messageTypePropertyValue);
 		return anyPatternMatchesParamName(patterns, paramName);
 	}
 
 	@Override
-	public boolean shouldProcessContext(Channel channel) {
+	public boolean shouldProcessContext(final Channel channel) {
 		final String messageTypePropertyValue = getProfiledOrDefaultProperty(channel.name());
 		return !Utilities.isNullOrEmptyString(messageTypePropertyValue);
 	}
@@ -91,7 +107,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	@Override
-	public Map<String, String> filterDeniedParams(Map<String, String> unfiltered, Channel channel) {
+	public Map<String, String> filterDeniedParams(final Map<String, String> unfiltered, final Channel channel) {
 		final Map<String, String> filtered = new HashMap<String, String>(unfiltered.size());
 		for (Map.Entry<String, String> entry : unfiltered.entrySet()) {
 			if (shouldProcessParam(entry.getKey(), channel)) {
@@ -109,29 +125,47 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		}
 	}
 
-	private boolean anyPatternMatchesParamName(Iterable<String> patterns, String paramName) {
-		for (String pattern : patterns) {
+	private boolean anyPatternMatchesParamName(Iterable<Pattern> patterns, String paramName) {
+		for (Pattern pattern : patterns) {
 			if (patternMatchesParamName(pattern, paramName))
 				return true;
 		}
 		return false;
 	}
 
-	private boolean patternMatchesParamName(String pattern, String paramName) {
-		// .* matches the whole param and we could speed up this call with a simple equal
-		return ".*".equals(pattern) || paramName.matches(pattern);
+	private boolean patternMatchesParamName(Pattern pattern, String paramName) {
+		return ".*".equals(pattern.pattern()) || pattern.matcher(paramName).matches();
 	}
 
-	private List<String> extractPatterns(String propertyValue) {
+	private List<Pattern> retrievePatternsForPropertyValue(final String propertyValue) {
+		if (propertyValue == null) {
+			return Collections.emptyList();
+		}
+		final List<Pattern> patterns = patternCache.get(propertyValue);
+		if (patterns != null) {
+			return patterns;
+		}
+
+		final List<Pattern> unmodPatterns = Collections.unmodifiableList(extractPatterns(propertyValue));
+		patternCache.put(propertyValue, unmodPatterns);
+		return unmodPatterns;
+	}
+
+	private List<Pattern> extractPatterns(final String propertyValue) {
 		if (propertyValue == null)
 			return Collections.emptyList();
 
-		final List<String> trimmedPatterns = new ArrayList<String>();
+		final List<Pattern> trimmedPatterns = new ArrayList<Pattern>();
 		final StringTokenizer tokenizer = new StringTokenizer(propertyValue, ",");
 		while (tokenizer.hasMoreTokens()) {
 			final String trimmedString = tokenizer.nextToken().trim();
 			if (!trimmedString.isEmpty()) {
-				trimmedPatterns.add(trimmedString);
+				try {
+					trimmedPatterns.add(Pattern.compile(trimmedString));
+				} catch (PatternSyntaxException e) {
+					logger.error("Can not compile pattern '" + trimmedString + "'. Message: " + e.getMessage() + " -- Ignore pattern");
+					logger.debug("Detailed Exception cause: " + e.getMessage(), e);
+				}
 			}
 		}
 		return trimmedPatterns;

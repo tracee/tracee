@@ -110,6 +110,7 @@
 		<mockito.version>1.10.8</mockito.version>
 		<powermock.version>1.6.1</powermock.version>
 		<equalsverifier.version>1.6</equalsverifier.version>
+		<junit-benchmarks.version>0.7.2</junit-benchmarks.version>
 
 		<!-- dependency versions -->
 		<slf4j.version>1.6.6</slf4j.version>
@@ -384,6 +385,13 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.carrotsearch</groupId>
+				<artifactId>junit-benchmarks</artifactId>
+				<version>${junit-benchmarks.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
