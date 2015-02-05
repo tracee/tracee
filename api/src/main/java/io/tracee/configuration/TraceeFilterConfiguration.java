@@ -70,12 +70,12 @@ public interface TraceeFilterConfiguration {
 	boolean shouldProcessContext(Channel channel);
 
 
-	boolean shouldGenerateRequestId();
+	boolean shouldGenerateInvocationId();
 
 	/**
 	 * @return a desired non-negative length of the generated request identifiers. If it returns <code>0</code>, no request identifiers should be generated.
 	 */
-	int generatedRequestIdLength();
+	int generatedInvocationIdLength();
 
 
 	boolean shouldGenerateSessionId();

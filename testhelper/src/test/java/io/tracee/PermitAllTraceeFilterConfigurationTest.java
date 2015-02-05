@@ -39,13 +39,13 @@ public class PermitAllTraceeFilterConfigurationTest {
 	}
 
 	@Test
-	public void testShouldAlwaysGenerateRequestId() {
-		assertThat(unit.shouldGenerateRequestId(), equalTo(true));
+	public void testShouldAlwaysGenerateInvocationId() {
+		assertThat(unit.shouldGenerateInvocationId(), equalTo(true));
 	}
 
 	@Test
-	public void testGeneratedRequestIdWithLength32() {
-		assertThat(unit.generatedRequestIdLength(), equalTo(32));
+	public void testGeneratedInvocationIdWithLength32() {
+		assertThat(unit.generatedInvocationIdLength(), equalTo(32));
 	}
 
 	@Test

@@ -42,7 +42,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			traceeLogger.debug("TraceeServerHandler - Error during precessing of inbound soap header", e);
 		}
 
-		Utilities.generateRequestIdIfNecessary(traceeBackend);
+		Utilities.generateInvocationIdIfNecessary(traceeBackend);
 	}
 
 	protected final void handleOutgoing(SOAPMessageContext context) {

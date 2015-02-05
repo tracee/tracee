@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 
-import static io.tracee.TraceeConstants.REQUEST_ID_KEY;
+import static io.tracee.TraceeConstants.INVOCATION_ID_KEY;
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 import static org.mockito.Matchers.*;
@@ -43,27 +43,27 @@ public class TraceeServletRequestListenerTest {
 	}
 
 	@Test
-	public void testGeneratesRequestId() throws Exception {
-		when(configuration.shouldGenerateRequestId()).thenReturn(true);
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
+	public void testGeneratesInvocationId() throws Exception {
+		when(configuration.shouldGenerateInvocationId()).thenReturn(true);
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(Arrays.asList()));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
-		verify(backend, atLeastOnce()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(backend, atLeastOnce()).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
 	}
 
 	@Test
-	public void testDoesNotGeneratesRequestId() throws Exception {
-		when(configuration.shouldGenerateRequestId()).thenReturn(false);
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(Arrays.asList()));
+	public void testDoesNotGeneratesInvocationId() throws Exception {
+		when(configuration.shouldGenerateInvocationId()).thenReturn(false);
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(Arrays.asList()));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
-		verify(backend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(backend, never()).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
 	}
 
 
 	@Test
-	public void testAcceptIncomingRequestId() throws Exception {
-		when(configuration.shouldGenerateRequestId()).thenReturn(false);
+	public void testAcceptIncomingInvocationId() throws Exception {
+		when(configuration.shouldGenerateInvocationId()).thenReturn(false);
 		when(configuration.shouldProcessContext(IncomingRequest)).thenReturn(true);
 		when(configuration.filterDeniedParams(anyMapOf(String.class, String.class), any(TraceeFilterConfiguration.Channel.class))).thenAnswer(new Answer<Object>() {
 			@Override
@@ -71,12 +71,12 @@ public class TraceeServletRequestListenerTest {
 				return invocation.getArguments()[0];
 			}
 		});
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(Collections.enumeration(
-				Arrays.asList(REQUEST_ID_KEY + "=123")));
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(
+				Arrays.asList(INVOCATION_ID_KEY + "=123")));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
 
-		verify(backend, atLeastOnce()).putAll(Mockito.eq(new HashMap<String, String>() {{ put(REQUEST_ID_KEY,"123"); }} ));
+		verify(backend, atLeastOnce()).putAll(Mockito.eq(new HashMap<String, String>() {{ put(INVOCATION_ID_KEY,"123"); }} ));
 	}
 
 	@Test

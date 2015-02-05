@@ -24,12 +24,12 @@ public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfigura
 	}
 
 	@Override
-	public final boolean shouldGenerateRequestId() {
+	public final boolean shouldGenerateInvocationId() {
 		return true;
 	}
 
 	@Override
-	public final int generatedRequestIdLength() {
+	public final int generatedInvocationIdLength() {
 		return ARBITRARY_NUMBER;
 	}
 

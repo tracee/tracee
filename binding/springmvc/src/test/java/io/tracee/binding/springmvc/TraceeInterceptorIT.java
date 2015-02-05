@@ -57,7 +57,7 @@ public class TraceeInterceptorIT {
 
 	@Test
 	public void testTheIntegration() throws IOException {
-		final Header traceeResponseHeader = get("in+Client=yes").getFirstHeader(TraceeConstants.HTTP_HEADER_NAME);
+		final Header traceeResponseHeader = get("in+Client=yes").getFirstHeader(TraceeConstants.TPIC_HEADER);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("inInterceptor=y+e+s"));
@@ -68,7 +68,7 @@ public class TraceeInterceptorIT {
 		final HttpClient client = new DefaultHttpClient();
 		final HttpGet httpGet = new HttpGet(ENDPOINT_URL);
 		if (traceeHeaderValue != null) {
-			httpGet.setHeader(TraceeConstants.HTTP_HEADER_NAME, traceeHeaderValue);
+			httpGet.setHeader(TraceeConstants.TPIC_HEADER, traceeHeaderValue);
 		}
 		return client.execute(httpGet);
 	}
@@ -79,8 +79,8 @@ public class TraceeInterceptorIT {
 		@RequestMapping("/*")
 		@ResponseStatus(HttpStatus.NO_CONTENT)
 		public void handleGet(HttpServletRequest request) {
-			if (request.getHeader(TraceeConstants.HTTP_HEADER_NAME) == null) {
-				throw new AssertionError("No expected Header " + TraceeConstants.HTTP_HEADER_NAME + " in request set");
+			if (request.getHeader(TraceeConstants.TPIC_HEADER) == null) {
+				throw new AssertionError("No expected Header " + TraceeConstants.TPIC_HEADER + " in request set");
 			}
 			Tracee.getBackend().put("inInterceptor", "y e s");
 		}

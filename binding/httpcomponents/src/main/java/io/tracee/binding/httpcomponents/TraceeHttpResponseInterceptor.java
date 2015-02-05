@@ -41,7 +41,7 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 	@Override
     public final void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
         final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
-		final Header[] responseHeaders = response.getHeaders(TraceeConstants.HTTP_HEADER_NAME);
+		final Header[] responseHeaders = response.getHeaders(TraceeConstants.TPIC_HEADER);
         if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<String>();
 			for (Header header : responseHeaders) {

@@ -61,7 +61,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
                     }
 
                     final String contextAsHeader = httpSerializer.render(filteredParams);
-                    responseHeaders.put(TraceeConstants.HTTP_HEADER_NAME, Arrays.asList(contextAsHeader));
+                    responseHeaders.put(TraceeConstants.TPIC_HEADER, Arrays.asList(contextAsHeader));
                 }
             }
 		}

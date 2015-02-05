@@ -67,7 +67,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 	private void handleHttpMessage(Message message, TraceeFilterConfiguration filterConfiguration) {
 		final Map<String, List<String>> requestHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
 		if (requestHeaders != null && !requestHeaders.isEmpty()) {
-            final List<String> traceeHeader = requestHeaders.get(TraceeConstants.HTTP_HEADER_NAME);
+            final List<String> traceeHeader = requestHeaders.get(TraceeConstants.TPIC_HEADER);
 
             if (traceeHeader != null && !traceeHeader.isEmpty()) {
                 final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader);

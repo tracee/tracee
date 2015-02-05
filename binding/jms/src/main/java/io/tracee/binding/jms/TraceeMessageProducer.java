@@ -36,7 +36,7 @@ public class TraceeMessageProducer implements MessageProducer {
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(AsyncDispatch)) {
 			final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), AsyncDispatch);
-			message.setObjectProperty(TraceeConstants.JMS_HEADER_NAME, filteredContext);
+			message.setObjectProperty(TraceeConstants.TPIC_HEADER, filteredContext);
 		}
     }
 

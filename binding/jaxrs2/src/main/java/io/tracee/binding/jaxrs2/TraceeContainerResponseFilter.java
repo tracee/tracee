@@ -36,7 +36,7 @@ public class TraceeContainerResponseFilter implements ContainerResponseFilter {
 
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingResponse);
-			responseContext.getHeaders().putSingle(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filtered));
+			responseContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
 		}
 
 		backend.clear();

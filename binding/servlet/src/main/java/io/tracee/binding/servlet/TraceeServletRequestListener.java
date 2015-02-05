@@ -23,7 +23,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Incoming
  */
 public final class TraceeServletRequestListener implements ServletRequestListener {
 
-	private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
+	private static final String HTTP_HEADER_NAME = TraceeConstants.TPIC_HEADER;
 
 	private final TraceeBackend backend;
 
@@ -64,7 +64,7 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 			}
 		}
 
-		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {

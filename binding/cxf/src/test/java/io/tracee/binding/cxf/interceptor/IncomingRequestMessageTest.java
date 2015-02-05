@@ -40,15 +40,15 @@ public class IncomingRequestMessageTest {
 	public void shouldHandleMessageWithoutTraceeHeader() {
 		final Map<String, List<String>> headers = new HashMap<String, List<String>>();
 		final String context = "myContext";
-		headers.put(TraceeConstants.HTTP_HEADER_NAME, Arrays.asList(context));
+		headers.put(TraceeConstants.TPIC_HEADER, Arrays.asList(context));
 		message.put(Message.PROTOCOL_HEADERS, headers);
 		unit.handleMessage(message);
-		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 	}
 
 	@Test
-	public void generateRequestIdUponRequest() {
+	public void generateInvocationIdUponRequest() {
 		unit.handleMessage(message);
-		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 	}
 }

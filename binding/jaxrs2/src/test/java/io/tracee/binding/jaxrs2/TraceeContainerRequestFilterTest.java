@@ -33,21 +33,21 @@ public class TraceeContainerRequestFilterTest {
 
     @Test
     public void testFilterParsesContextFromHeaderToBackend() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
+        headers.putSingle(TraceeConstants.TPIC_HEADER, "foo=bar");
         unit.filter(requestContext);
         assertThat(backend.get("foo"), equalTo("bar"));
     }
 
     @Test
-    public void testFilterParsesExistingRequestId() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, TraceeConstants.REQUEST_ID_KEY + "=foo");
+    public void testFilterParsesExistingInvocationId() throws IOException {
+        headers.putSingle(TraceeConstants.TPIC_HEADER, TraceeConstants.INVOCATION_ID_KEY + "=foo");
         unit.filter(requestContext);
-        assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
+        assertThat(backend.get(TraceeConstants.INVOCATION_ID_KEY), equalTo("foo"));
     }
 
     @Test
-    public void testFilterCreatesRequestIdIfNotInHeaders() throws IOException {
+    public void testFilterCreatesInvocationIdIfNotInHeaders() throws IOException {
         unit.filter(requestContext);
-        assertThat(backend.get(TraceeConstants.REQUEST_ID_KEY), not(isEmptyOrNullString()));
+        assertThat(backend.get(TraceeConstants.INVOCATION_ID_KEY), not(isEmptyOrNullString()));
     }
 }

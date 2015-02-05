@@ -76,7 +76,7 @@ public class ThreadLocalRandomTest {
 	 * Test against http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7051516
 	 */
 	@Test
-	public void differentThreadsShouldReturnDifferentRequestIds() throws InterruptedException {
+	public void differentThreadsShouldReturnDifferentInvocationIds() throws InterruptedException {
 		final Map<String, List<Integer>> threadValues = new ConcurrentHashMap<String, List<Integer>>();
 
 		final Runnable runnable = new Runnable() {

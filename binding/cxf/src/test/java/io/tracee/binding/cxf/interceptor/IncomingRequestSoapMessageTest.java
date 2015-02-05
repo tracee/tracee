@@ -42,9 +42,9 @@ public class IncomingRequestSoapMessageTest {
 	}
 
 	@Test
-	public void handleSoapMessageWithoutSoapHeaderAndGenerateRequestId() {
+	public void handleSoapMessageWithoutSoapHeaderAndGenerateInvocationId() {
 		inInterceptor.handleMessage(soapMessage);
-		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 	}
 
 	@Test

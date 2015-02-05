@@ -61,13 +61,13 @@ public final class Utilities {
 	}
 
 	/**
-	 * Generate request id if it doesn't exist in TraceeBackend and configuration asks for one
+	 * Generate invocation id if it doesn't exist in TraceeBackend and configuration asks for one
 	 *
 	 * @param backend Currently used TraceeBackend
 	 */
-	public static void generateRequestIdIfNecessary(final TraceeBackend backend) {
-		if (backend != null && !backend.containsKey(TraceeConstants.REQUEST_ID_KEY) && backend.getConfiguration().shouldGenerateRequestId()) {
-			backend.put(TraceeConstants.REQUEST_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedRequestIdLength()));
+	public static void generateInvocationIdIfNecessary(final TraceeBackend backend) {
+		if (backend != null && !backend.containsKey(TraceeConstants.INVOCATION_ID_KEY) && backend.getConfiguration().shouldGenerateInvocationId()) {
+			backend.put(TraceeConstants.INVOCATION_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedInvocationIdLength()));
 		}
 	}
 

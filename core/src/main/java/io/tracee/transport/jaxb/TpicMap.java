@@ -5,7 +5,7 @@ import io.tracee.TraceeConstants;
 import javax.xml.bind.annotation.*;
 import java.util.*;
 
-@XmlRootElement(name = TraceeConstants.SOAP_HEADER_NAME)
+@XmlRootElement(name = TraceeConstants.TPIC_HEADER)
 @XmlAccessorType(XmlAccessType.NONE)
 public final class TpicMap {
 

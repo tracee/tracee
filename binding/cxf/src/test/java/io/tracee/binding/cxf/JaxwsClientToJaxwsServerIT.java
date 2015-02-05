@@ -40,9 +40,9 @@ public class JaxwsClientToJaxwsServerIT extends AbstractConnectionITHelper {
 
 	@Test
 	public void transportTraceeVariablesFromClientToBackend() {
-		clientBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
+		clientBackend.put(TraceeConstants.INVOCATION_ID_KEY, "123");
 		final String answer = helloWorldPort.sayHelloWorld("Michail");
-		assertThat(answer, allOf(containsString("Michail"), endsWith("requestId was 123")));
+		assertThat(answer, allOf(containsString("Michail"), endsWith("invocationId was 123")));
 	}
 
 	@Test

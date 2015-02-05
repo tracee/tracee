@@ -60,15 +60,15 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 	}
 
 	@Test
-	public void testGeneratedRequestIdLength() {
-		when(propertyChain.getProperty(TRACEE_DEFAULT_PROFILE_PREFIX + GENERATE_REQUEST_ID)).thenReturn("1");
-		assertThat(unit.generatedRequestIdLength(), equalTo(1));
+	public void testGeneratedInvocationIdLength() {
+		when(propertyChain.getProperty(TRACEE_DEFAULT_PROFILE_PREFIX + GENERATE_INVOCATION_ID)).thenReturn("1");
+		assertThat(unit.generatedInvocationIdLength(), equalTo(1));
 	}
 
 	@Test
-	public void testGeneratedRequestIdNonNumericMeansZero() {
-		when(propertyChain.getProperty(TRACEE_DEFAULT_PROFILE_PREFIX + GENERATE_REQUEST_ID)).thenReturn("false");
-		assertThat(unit.generatedRequestIdLength(), equalTo(0));
+	public void testGeneratedInvocationIdNonNumericMeansZero() {
+		when(propertyChain.getProperty(TRACEE_DEFAULT_PROFILE_PREFIX + GENERATE_INVOCATION_ID)).thenReturn("false");
+		assertThat(unit.generatedInvocationIdLength(), equalTo(0));
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 	@Test
 	public void testFilterDeniedParamsFiltersEverythingWithoutConfiguration() {
 		final Map<String, String> unfiltered = Collections.singletonMap("Foo", "Bar");
-		assertThat(unit.filterDeniedParams(unfiltered,Channel.IncomingRequest), equalTo(Collections.<String,String>emptyMap()));
+		assertThat(unit.filterDeniedParams(unfiltered, Channel.IncomingRequest), equalTo(Collections.<String,String>emptyMap()));
 	}
 
 	@Test

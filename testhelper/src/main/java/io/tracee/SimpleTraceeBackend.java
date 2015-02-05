@@ -95,8 +95,8 @@ public class SimpleTraceeBackend implements TraceeBackend {
 	}
 
 	@Override
-	public String getRequestId() {
-		return get(TraceeConstants.REQUEST_ID_KEY);
+	public String getInvocationId() {
+		return get(TraceeConstants.INVOCATION_ID_KEY);
 	}
 
 	@Override

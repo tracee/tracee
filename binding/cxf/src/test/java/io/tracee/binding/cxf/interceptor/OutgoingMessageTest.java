@@ -44,7 +44,7 @@ public class OutgoingMessageTest {
 		backend.put("myContextKey", "contextValue2");
 		outInterceptor.handleMessage(message);
 		final Map<Object, List<String>> headers = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
-		final Map<String, String> traceeContext = httpSerializer.parse(headers.get(TraceeConstants.HTTP_HEADER_NAME));
+		final Map<String, String> traceeContext = httpSerializer.parse(headers.get(TraceeConstants.TPIC_HEADER));
 		assertThat(traceeContext.get("myContextKey"), is("contextValue2"));
 	}
 }

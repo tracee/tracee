@@ -18,6 +18,6 @@ public class HelloWorldTestServiceImpl implements HelloWorldTestService {
 	public String sayHelloWorld(String firstName) {
 		backend.put(TEST_KEY, "accepted");
 		LOGGER.info("sayHelloWorld called with firstname '{}'", firstName);
-		return "Hello " + firstName + " || requestId was " + backend.get(TraceeConstants.REQUEST_ID_KEY);
+		return "Hello " + firstName + " || invocationId was " + backend.get(TraceeConstants.INVOCATION_ID_KEY);
 	}
 }

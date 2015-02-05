@@ -159,14 +159,14 @@ public class MDCLikeTraceeBackendTest {
 	}
 
 	@Test
-	public void requestIdShortcutShouldReturnTheRequestIdIfSet() {
-		unit.put(TraceeConstants.REQUEST_ID_KEY, "ourRequestId");
-		assertThat(unit.getRequestId(), is("ourRequestId"));
+	public void invocationIdShortcutShouldReturnTheInvocationIdIfSet() {
+		unit.put(TraceeConstants.INVOCATION_ID_KEY, "ourInvocationId");
+		assertThat(unit.getInvocationId(), is("ourInvocationId"));
 	}
 
 	@Test
-	public void requestIdShortcutShouldReturnNullIfNoRequestIdIsSet() {
-		assertThat(unit.getRequestId(), is(nullValue()));
+	public void invocationIdShortcutShouldReturnNullIfNoInvocationIdIsSet() {
+		assertThat(unit.getInvocationId(), is(nullValue()));
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class MDCLikeTraceeBackendTest {
 
 	@Test
 	public void testLoadOverwrittenConfigurationValues() {
-		assertThat(unit.getConfiguration().generatedRequestIdLength(), equalTo(42));
+		assertThat(unit.getConfiguration().generatedInvocationIdLength(), equalTo(42));
 	}
 
 	@Test

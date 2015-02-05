@@ -35,21 +35,21 @@ public class TraceeQueueSenderTest {
 	@Test
 	public void sendQueueShouldAddContextAndDelegate() throws Exception {
 		unit.send(queue, message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(queueSender).send(queue, message);
 	}
 
 	@Test
 	public void sendQueueWithExtendParametersShouldAddContextAndDelegate() throws Exception {
 		unit.send(queue, message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(queueSender).send(queue, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
 	@Test
 	public void sendMessageShouldAddContextAndDelegate() throws Exception {
 		unit.send(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message);
 	}
 
@@ -57,14 +57,14 @@ public class TraceeQueueSenderTest {
 	public void sendMessageWithDestinationShouldAddContextAndDelegate() throws Exception {
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message);
 	}
 
 	@Test
 	public void sendMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		unit.send(message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
@@ -72,7 +72,7 @@ public class TraceeQueueSenderTest {
 	public void sendMessageWithDestinationAndDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 

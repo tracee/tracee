@@ -90,14 +90,14 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			httpMethod.setRequestHeader(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
+			httpMethod.setRequestHeader(TraceeConstants.TPIC_HEADER, transportSerialization.render(filteredParams));
 		}
 	}
 
 
 	private void postResponse(HttpMethod httpMethod) {
 		if (!httpMethod.isRequestSent()) return;
-		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.HTTP_HEADER_NAME);
+		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.TPIC_HEADER);
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<String>();

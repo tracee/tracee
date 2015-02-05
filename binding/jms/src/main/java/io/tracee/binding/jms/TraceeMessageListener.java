@@ -48,7 +48,7 @@ public final class TraceeMessageListener {
     public void beforeProcessing(final Message message) throws JMSException {
 
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
-			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
+			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.TPIC_HEADER);
 			if (encodedTraceeContext != null) {
 				final Map<String, String> contextFromMessage = (Map<String, String>) encodedTraceeContext;
 				backend.putAll(backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess));

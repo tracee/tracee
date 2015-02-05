@@ -35,13 +35,13 @@ public class TraceeContainerRequestFilter implements ContainerRequestFilter {
 	public final void filter(final ContainerRequestContext containerRequestContext) throws IOException {
 
 		if (backend.getConfiguration().shouldProcessContext(IncomingRequest)) {
-			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.HTTP_HEADER_NAME);
+			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
 			if (serializedTraceeHeaders != null && !serializedTraceeHeaders.isEmpty()) {
 				final Map<String, String> parsed = transportSerialization.parse(serializedTraceeHeaders);
 				backend.putAll(backend.getConfiguration().filterDeniedParams(parsed, IncomingRequest));
 			}
 		}
 
-		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend);
 	}
 }
