@@ -54,9 +54,10 @@ public interface TraceeBackend {
     boolean isEmpty();
 
     /**
-     * Puts a key into this backend.
-     * @param key   ignored if {@code null}
-     * @param value ignored if {@code null}
+     * Puts a key/value into this backend.
+     * @param key   the key of the tuple
+     * @param value the value of the tuple
+	 * @throws java.lang.NullPointerException if key or value is {@code null}
      */
     void put(String key, String value);
 
