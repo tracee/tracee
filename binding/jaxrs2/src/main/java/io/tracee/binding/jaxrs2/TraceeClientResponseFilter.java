@@ -33,7 +33,7 @@ public class TraceeClientResponseFilter implements ClientResponseFilter {
 
 	@Override
     public final void filter(final ClientRequestContext requestContext, final ClientResponseContext responseContext) throws IOException {
-        final List<String> serializedHeaders = responseContext.getHeaders().get(TraceeConstants.HTTP_HEADER_NAME);
+        final List<String> serializedHeaders = responseContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
         if (serializedHeaders != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 			final Map<String, String> parsed = transportSerialization.parse(serializedHeaders);
 			backend.putAll(backend.getConfiguration().filterDeniedParams(parsed, IncomingResponse));

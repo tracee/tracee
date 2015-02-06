@@ -63,7 +63,7 @@ public class TraceeMessageListenerAndProducerIT {
 
         assertThat("response within 1 second", response, notNullValue());
         assertThat(response.getText(), equalTo("foo"));
-        final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.JMS_HEADER_NAME);
+        final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.TPIC_HEADER);
         assertThat(traceeContext, Matchers.hasEntry("foo", "bar"));
 
         session.close();

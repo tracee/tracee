@@ -44,7 +44,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 			@Override
 			public ClientHttpResponse answer(InvocationOnMock invocation) throws Throwable {
 				final HttpHeaders headers = new HttpHeaders();
-				headers.add(TraceeConstants.HTTP_HEADER_NAME,"fromResponse=true");
+				headers.add(TraceeConstants.TPIC_HEADER,"fromResponse=true");
 				return new SimpleClientHttpResponse(HttpStatus.NO_CONTENT, "yawn", headers);
 			}
 		});
@@ -56,7 +56,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 		final HttpRequest request = new SimpleClientHttpRequestFactory().createRequest(URI.create("http://foo.bar"), HttpMethod.GET);
 		backend.put("inClientBeforeRequest", "true");
 		unit.intercept(request, payload, clientHttpRequestExecutionMock);
-		verify(clientHttpRequestExecutionMock).execute(argThat(headers(hasEntry(TraceeConstants.HTTP_HEADER_NAME, "inClientBeforeRequest=true"))), any(byte[].class));
+		verify(clientHttpRequestExecutionMock).execute(argThat(headers(hasEntry(TraceeConstants.TPIC_HEADER, "inClientBeforeRequest=true"))), any(byte[].class));
 	}
 
 	@Test

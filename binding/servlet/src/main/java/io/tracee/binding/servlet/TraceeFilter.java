@@ -23,7 +23,7 @@ public class TraceeFilter implements Filter {
 
 	public static final String PROFILE_INIT_PARAM = "profile";
 
-    private static final String HTTP_HEADER_NAME = TraceeConstants.HTTP_HEADER_NAME;
+    private static final String HTTP_HEADER_NAME = TraceeConstants.TPIC_HEADER;
 
 	private String profile = TraceeFilterConfiguration.Profile.DEFAULT;
 

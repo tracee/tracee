@@ -24,7 +24,7 @@ public class SoapHeaderTransport {
 	}
 
 	public Map<String, String> parseSoapHeader(Element soapHeader) throws JAXBException {
-		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.SOAP_HEADER_NAME);
+		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
 			return parseTpicHeader((Element) tpicHeaders.item(0));
 		}

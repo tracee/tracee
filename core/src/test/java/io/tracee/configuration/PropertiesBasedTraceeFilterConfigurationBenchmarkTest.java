@@ -51,7 +51,7 @@ public class PropertiesBasedTraceeFilterConfigurationBenchmarkTest {
 
 	private void generateTestPropertyMap() {
 		propertyMap = new HashMap<String, String>();
-		propertyMap.put(TraceeConstants.REQUEST_ID_KEY, "reqID");
+		propertyMap.put(TraceeConstants.INVOCATION_ID_KEY, "reqID");
 		propertyMap.put(TraceeConstants.SESSION_ID_KEY, "sessID");
 		propertyMap.put("aaa", "AAA");
 		propertyMap.put("bbb", "BBB");

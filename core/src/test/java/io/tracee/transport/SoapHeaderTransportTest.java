@@ -43,7 +43,7 @@ public class SoapHeaderTransportTest {
 		final Iterator soapHeaders = soapHeader.getChildElements(TraceeConstants.SOAP_HEADER_QNAME);
 
 		final Element tpicHeader = (Element) soapHeaders.next();
-		assertThat(tpicHeader.getLocalName(), is(TraceeConstants.SOAP_HEADER_NAME));
+		assertThat(tpicHeader.getLocalName(), is(TraceeConstants.TPIC_HEADER));
 		assertThat(tpicHeader.getNamespaceURI(), is(TraceeConstants.SOAP_HEADER_NAMESPACE));
 		assertThat(tpicHeader.getFirstChild().getLocalName(), is("entry"));
 		assertThat(tpicHeader.getFirstChild().getAttributes().getNamedItem("key").getNodeValue(), is("FOO"));
@@ -79,6 +79,6 @@ public class SoapHeaderTransportTest {
 		Element envelope = (Element) doc.getElementsByTagNameNS("http://schemas.xmlsoap.org/soap/envelope/", "Envelope").item(0);
 		Element header = (Element) envelope.getElementsByTagNameNS("http://schemas.xmlsoap.org/soap/envelope/", "Header").item(0);
 		Map<String, String> parsedContextParams = unit.parseSoapHeader(header);
-		assertThat(parsedContextParams, hasEntry(TraceeConstants.REQUEST_ID_KEY, "ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ"));
+		assertThat(parsedContextParams, hasEntry(TraceeConstants.INVOCATION_ID_KEY, "ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ"));
 	}
 }

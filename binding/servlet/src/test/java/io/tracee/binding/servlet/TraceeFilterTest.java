@@ -53,7 +53,7 @@ public class TraceeFilterTest {
 			fail("Expected RuntimeException");
 		} catch (RuntimeException e) { /*ignore*/ }
 
-		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME),
+		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.TPIC_HEADER),
 				contains("foobi=yes+sir"));
 	}
 

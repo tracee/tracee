@@ -37,7 +37,7 @@ public class TraceeMessageListenerTest {
 				return null;
 			}
 		});
-		when(message.getObjectProperty(TraceeConstants.JMS_HEADER_NAME)).thenReturn(encodedContext);
+		when(message.getObjectProperty(TraceeConstants.TPIC_HEADER)).thenReturn(encodedContext);
 	}
 
 	@Test

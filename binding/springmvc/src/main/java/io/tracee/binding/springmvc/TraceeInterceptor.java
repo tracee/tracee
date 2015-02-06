@@ -25,8 +25,8 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport httpHeaderSerialization;
-	private String outgoingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
-	private String incomingHeaderName = TraceeConstants.HTTP_HEADER_NAME;
+	private String outgoingHeaderName = TraceeConstants.TPIC_HEADER;
+	private String incomingHeaderName = TraceeConstants.TPIC_HEADER;
 	private String profileName;
 
 	public TraceeInterceptor() {
@@ -52,7 +52,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 			}
 		}
 
-		Utilities.generateRequestIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {

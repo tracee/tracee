@@ -29,7 +29,7 @@ Just create a file with the name `META-INF/tracee.properties` in your applicatio
 | .OutgoingResponse          | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be parsed from each incoming response to the current context. |
 | .AsyncDispatch             | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be passed along with asynchronous dispatched messages. |
 | .AsyncProcess              | Comma-separated list of regular expressions. Each parameter name matched by at least one of the expressions will be taken up while processing asynchronous messages. |
-| .requestIdLength           | The length of the generated request ids. To disable id request generation, set this value to `0`. |
+| .invocationIdLength        | The length of the generated invocation ids. To disable id generation for invocations, set this value to `0`. |
 | .sessionIdLength           | The length of the generated session ids. To disable id generation, set this value to `0`. |
 
 

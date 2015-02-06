@@ -33,7 +33,7 @@ public class TraceePropertiesFileLoaderTest {
 		assertThat("property tracee.default.IncomingResponse", properties.getProperty("tracee.default.IncomingResponse"), not(isEmptyOrNullString()));
 		assertThat("property tracee.default.AsyncDispatch", properties.getProperty("tracee.default.AsyncDispatch"), not(isEmptyOrNullString()));
 		assertThat("property tracee.default.AsyncProcess", properties.getProperty("tracee.default.AsyncProcess"), not(isEmptyOrNullString()));
-		assertThat("property tracee.default.requestIdLength", properties.getProperty("tracee.default.requestIdLength"), not(isEmptyOrNullString()));
+		assertThat("property tracee.default.invocationIdLength", properties.getProperty("tracee.default.invocationIdLength"), not(isEmptyOrNullString()));
 		assertThat("property tracee.default.sessionIdLength", properties.getProperty("tracee.default.sessionIdLength"), not(isEmptyOrNullString()));
 	}
 

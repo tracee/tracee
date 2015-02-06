@@ -2,7 +2,7 @@
 
 # tracee-springmvc
 
-This tracee module reads the incoming TracEE context for requests to your Spring MVC controllers and generates requestIds if needed. It adds the TPIC header to your responses as well. - If you don't like to expose the TPIC in your responses (maybe you want to hide it from your users), you should take an individual TracEE configuration.
+This tracee module reads the incoming TracEE context for requests to your Spring MVC controllers and generates invocationIds if needed. It adds the TPIC header to your responses as well. - If you don't like to expose the TPIC in your responses (maybe you want to hide it from your users), you should take an individual TracEE configuration.
 This module requires Spring 3.1.0 or above.
 
 ## Installation

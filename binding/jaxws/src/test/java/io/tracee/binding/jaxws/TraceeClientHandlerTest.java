@@ -97,7 +97,7 @@ public class TraceeClientHandlerTest {
 	public void renderBackendToSoapHeader() throws SOAPException {
 		backend.put("my header", "Wow!");
 		unit.handleOutgoing(messageContext);
-		final NodeList tpicElements = message.getSOAPHeader().getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.SOAP_HEADER_NAME);
+		final NodeList tpicElements = message.getSOAPHeader().getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
 		assertThat(tpicElements.getLength(), is(1));
 		final Node tpicEntry = tpicElements.item(0).getChildNodes().item(0);
 		assertThat(tpicEntry.getLocalName(), is("entry"));

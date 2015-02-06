@@ -34,7 +34,7 @@ public class TraceeContainerResponseFilterTest {
     public void testFilterWritesContextToResponse() throws IOException {
         backend.put("foo", "ba r");
         unit.filter(null, responseContext);
-        assertThat((String) responseContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+        assertThat((String) responseContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
                 equalTo("foo=ba+r"));
     }
 

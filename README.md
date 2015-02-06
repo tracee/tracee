@@ -119,9 +119,9 @@ in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Header>
-		<tpic xmlns="http://tracee.io/tpic/1.0">
-			<entry key="traceeRequestId">ABCDEFG</entry>
-		</tpic>
+		<TPIC xmlns="http://tracee.io/tpic/1.0">
+			<entry key="TPIC.invocationId">ABCDEFG</entry>
+		</TPIC>
 	</soap:Header>
 ...
 </soap:Envelope>

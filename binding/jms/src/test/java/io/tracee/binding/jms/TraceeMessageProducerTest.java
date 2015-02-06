@@ -30,7 +30,7 @@ public class TraceeMessageProducerTest {
 	public void testWriteTraceeContextToMessage() throws Exception {
 		backend.put("random", "entry");
 		unit.writeTraceeContextToMessage(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), eq(Collections.singletonMap("random", "entry")));
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), eq(Collections.singletonMap("random", "entry")));
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class TraceeMessageProducerTest {
 	public void sendMessageShouldAddContextAndDelegate() throws Exception {
 		backend.put("random", "entry");
 		unit.send(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message);
 	}
 
@@ -53,7 +53,7 @@ public class TraceeMessageProducerTest {
 		backend.put("random", "entry");
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message);
 	}
 
@@ -61,7 +61,7 @@ public class TraceeMessageProducerTest {
 	public void sendMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		backend.put("random", "entry");
 		unit.send(message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
@@ -70,7 +70,7 @@ public class TraceeMessageProducerTest {
 		backend.put("random", "entry");
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 

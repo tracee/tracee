@@ -36,24 +36,24 @@ public class TraceeClientRequestFilterTest {
     public void testFilterWritesBackendToRequestContextHeaders() throws IOException {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
-        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
                 containsString("foo=bar"));
     }
 
     @Test
-    public void doNotCreateRequestIdOnOutgoingRequest() throws IOException {
+    public void doNotCreateInvocationIdOnOutgoingRequest() throws IOException {
         unit.filter(clientRequestContext);
-        assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), isEmptyOrNullString());
-        assertThat(clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
+        assertThat(traceeBackend.get(TraceeConstants.INVOCATION_ID_KEY), isEmptyOrNullString());
+        assertThat(clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
                 is(nullValue()));
     }
 
     @Test
-    public void testFilterKeepsExistingRequestId() throws IOException {
-        traceeBackend.put(TraceeConstants.REQUEST_ID_KEY, "foo");
+    public void testFilterKeepsExistingInvocationId() throws IOException {
+        traceeBackend.put(TraceeConstants.INVOCATION_ID_KEY, "foo");
         unit.filter(clientRequestContext);
-        assertThat(traceeBackend.get(TraceeConstants.REQUEST_ID_KEY), equalTo("foo"));
-        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.HTTP_HEADER_NAME),
-                containsString(TraceeConstants.REQUEST_ID_KEY + "=foo"));
+        assertThat(traceeBackend.get(TraceeConstants.INVOCATION_ID_KEY), equalTo("foo"));
+        assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
+                containsString(TraceeConstants.INVOCATION_ID_KEY + "=foo"));
     }
 }

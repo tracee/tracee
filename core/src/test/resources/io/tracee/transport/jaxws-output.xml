@@ -2,9 +2,9 @@
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 			xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 	<SOAP-ENV:Header>
-		<tpic xmlns="http://tracee.io/tpic/1.0">
-			<entry key="traceeRequestId">ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ</entry>
-		</tpic>
+		<TPIC xmlns="http://tracee.io/tpic/1.0">
+			<entry key="TPIC.invocationId">ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ</entry>
+		</TPIC>
 	</SOAP-ENV:Header>
 	<S:Body>
 		<ns2:sumResponse xmlns:ns2="https://github.com/tracee/tracee/examples/jaxws/service/wsdl">

@@ -3,7 +3,6 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.SimpleTraceeBackend;
 import io.tracee.Tracee;
-import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -50,12 +49,12 @@ public class TraceeJaxWsTestServiceIT {
 		final List<String> result = remote.getCurrentTraceeContext();
 
 		// checking server context as response.
-		assertThat(result, 	hasItem(TraceeConstants.REQUEST_ID_KEY));
+		assertThat(result, 	hasItem(TraceeConstants.INVOCATION_ID_KEY));
 		assertThat(result, 	hasItem("inRequest"));
 		assertThat(result, 	hasItem("yes"));
 
-		// checking client context. We should receive the pair "called"->"yes" and the requestId from the server.
-		assertThat(clientBackend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+		// checking client context. We should receive the pair "called"->"yes" and the invocationId from the server.
+		assertThat(clientBackend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 		assertThat(clientBackend.copyToMap(), hasEntry("called", "yes"));
 	}
 }

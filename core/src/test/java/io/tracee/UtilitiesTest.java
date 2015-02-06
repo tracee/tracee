@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
-import static io.tracee.TraceeConstants.REQUEST_ID_KEY;
+import static io.tracee.TraceeConstants.INVOCATION_ID_KEY;
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
@@ -79,24 +79,24 @@ public class UtilitiesTest {
 	}
 
 	@Test
-	public void ignoreRequestIdGenerationIfBackendIsNull() {
-		Utilities.generateRequestIdIfNecessary(null);
+	public void ignoreInvocationIdGenerationIfBackendIsNull() {
+		Utilities.generateInvocationIdIfNecessary(null);
 		assertTrue("No exception occurred", true);
 	}
 
 	@Test
-	public void dontGenerateRequestIdIfPresentInBackend() {
+	public void dontGenerateInvocationIdIfPresentInBackend() {
 		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-		backend.put(REQUEST_ID_KEY, "ourTestId");
-		Utilities.generateRequestIdIfNecessary(backend);
-		assertThat(backend.get(REQUEST_ID_KEY), is("ourTestId"));
+		backend.put(INVOCATION_ID_KEY, "ourTestId");
+		Utilities.generateInvocationIdIfNecessary(backend);
+		assertThat(backend.get(INVOCATION_ID_KEY), is("ourTestId"));
 	}
 
 	@Test
-	public void generateRequestIdIfNotPresentInBackend() {
+	public void generateInvocationIdIfNotPresentInBackend() {
 		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-		Utilities.generateRequestIdIfNecessary(backend);
-		assertThat(backend.get(REQUEST_ID_KEY), not(isEmptyOrNullString()));
+		Utilities.generateInvocationIdIfNecessary(backend);
+		assertThat(backend.get(INVOCATION_ID_KEY), not(isEmptyOrNullString()));
 	}
 
 	@Test

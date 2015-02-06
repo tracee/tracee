@@ -51,11 +51,11 @@ public class TraceeHttpClientIT {
 	private final Handler requestHandler = new AbstractHandler() {
 		@Override
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
-			final String incomingTraceeHeader = request.getHeader(TraceeConstants.HTTP_HEADER_NAME);
+			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
 
 			assertThat(incomingTraceeHeader, equalTo("beforeRequest=yip"));
 
-			httpServletResponse.setHeader(TraceeConstants.HTTP_HEADER_NAME, "responseFromServer=yesSir");
+			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "responseFromServer=yesSir");
 			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			request.setHandled(true);
 		}

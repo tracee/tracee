@@ -50,12 +50,12 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			request.getHeaders().add(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
+			request.getHeaders().add(TraceeConstants.TPIC_HEADER, transportSerialization.render(filteredParams));
 		}
 	}
 
 	private void postResponse(ClientHttpResponse response) {
-		final List<String> headers = response.getHeaders().get(TraceeConstants.HTTP_HEADER_NAME);
+		final List<String> headers = response.getHeaders().get(TraceeConstants.TPIC_HEADER);
 		if (headers != null) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 

@@ -51,10 +51,10 @@ public class TraceeServerHandlerTest {
 	}
 
 	@Test
-	public void generateRequestIdEvenWhenIncomingMessageCouldntParsed() throws SOAPException {
+	public void generateInvocationIdEvenWhenIncomingMessageCouldntParsed() throws SOAPException {
 		when(message.getSOAPHeader()).thenThrow(SOAPException.class);
 		unit.handleIncoming(messageContext);
-		assertThat(backend.copyToMap(), hasKey(TraceeConstants.REQUEST_ID_KEY));
+		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 	}
 
 	@Test

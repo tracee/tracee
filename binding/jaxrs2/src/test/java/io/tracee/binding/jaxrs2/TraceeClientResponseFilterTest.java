@@ -31,7 +31,7 @@ public class TraceeClientResponseFilterTest {
 
     @Test
     public void testFilterParsesContextFromHeaderToBackend() throws IOException {
-        headers.putSingle(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
+        headers.putSingle(TraceeConstants.TPIC_HEADER, "foo=bar");
         unit.filter(null, clientResponseContext);
         assertThat(backend.get("foo"), equalTo("bar"));
     }

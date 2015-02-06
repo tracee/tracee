@@ -34,7 +34,7 @@ public class TraceeTopicPublisherTest {
 	@Test
 	public void publishMessageShouldAddContextAndDelegate() throws Exception {
 		unit.publish(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(topicPublisher).publish(message);
 	}
 
@@ -42,14 +42,14 @@ public class TraceeTopicPublisherTest {
 	public void publishMessageWithTopicShouldAddContextAndDelegate() throws Exception {
 		final Topic topic = mock(Topic.class);
 		unit.publish(topic, message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(topicPublisher).publish(topic, message);
 	}
 
 	@Test
 	public void publishMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		unit.publish(message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(topicPublisher).publish(message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
@@ -57,14 +57,14 @@ public class TraceeTopicPublisherTest {
 	public void publishMessageWithTopicAndDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		final Topic topic = mock(Topic.class);
 		unit.publish(topic, message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(topicPublisher).publish(topic, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
 	@Test
 	public void sendMessageShouldAddContextAndDelegate() throws Exception {
 		unit.send(message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message);
 	}
 
@@ -72,14 +72,14 @@ public class TraceeTopicPublisherTest {
 	public void sendMessageWithDestinationShouldAddContextAndDelegate() throws Exception {
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message);
 	}
 
 	@Test
 	public void sendMessageWithDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		unit.send(message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 
@@ -87,7 +87,7 @@ public class TraceeTopicPublisherTest {
 	public void sendMessageWithDestinationAndDeliveryModeAndPriorityAndTTLShouldAddContextAndDelegate() throws Exception {
 		final Destination destination = mock(Destination.class);
 		unit.send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
-		verify(message).setObjectProperty(eq(TraceeConstants.JMS_HEADER_NAME), anyString());
+		verify(message).setObjectProperty(eq(TraceeConstants.TPIC_HEADER), anyString());
 		verify(messageProducer).send(destination, message, DeliveryMode.PERSISTENT, 5, 100);
 	}
 

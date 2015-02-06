@@ -23,7 +23,7 @@ public class TraceeRequestInInterceptor extends AbstractTraceeInInterceptor {
 	public void handleMessage(Message message) throws Fault {
 		super.handleMessage(message);
 		if (shouldHandleMessage(message)) {
-			Utilities.generateRequestIdIfNecessary(backend);
+			Utilities.generateInvocationIdIfNecessary(backend);
 		}
 	}
 

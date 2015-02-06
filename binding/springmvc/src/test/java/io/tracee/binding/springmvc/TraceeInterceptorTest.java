@@ -36,13 +36,13 @@ public class TraceeInterceptorTest {
 	public void beforeTest() {
 		mockedBackend = mockedBackend(new PermitAllTraceeFilterConfiguration());
 		unit = new TraceeInterceptor(mockedBackend);
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(EmptyEnumeration.emptyEnumeration());
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(EmptyEnumeration.emptyEnumeration());
 	}
 
 	@Test
-	public void shouldSetRequestIdToBackend() throws Exception {
+	public void shouldSetInvocationIdToBackend() throws Exception {
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
-		verify(mockedBackend).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(mockedBackend).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
 	}
 
 	@Test
@@ -54,10 +54,10 @@ public class TraceeInterceptorTest {
 	}
 
 	@Test
-	public void shouldNotOverrideExistingRequestId() throws Exception {
-		when(mockedBackend.containsKey(eq(TraceeConstants.REQUEST_ID_KEY))).thenReturn(true);
+	public void shouldNotOverrideExistingInvocationId() throws Exception {
+		when(mockedBackend.containsKey(eq(TraceeConstants.INVOCATION_ID_KEY))).thenReturn(true);
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
-		verify(mockedBackend, never()).put(eq(TraceeConstants.REQUEST_ID_KEY), anyString());
+		verify(mockedBackend, never()).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
 	}
 
 	@Test
@@ -73,16 +73,16 @@ public class TraceeInterceptorTest {
 		when(customFilterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.OutgoingResponse)).thenReturn(false);
 		final TraceeBackend customBackend = mockedBackend(customFilterConfiguration);
 		final TraceeInterceptor customUnit = new TraceeInterceptor(customBackend);
-		mockedBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
+		mockedBackend.put(TraceeConstants.INVOCATION_ID_KEY, "123");
 		customUnit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
-		verify(httpServletResponse, never()).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME), anyString());
+		verify(httpServletResponse, never()).setHeader(eq(TraceeConstants.TPIC_HEADER), anyString());
 	}
 
 	@Test
 	public void shouldRenderContextInResponseIfConfigured() throws Exception {
-		mockedBackend.put(TraceeConstants.REQUEST_ID_KEY, "123");
+		mockedBackend.put(TraceeConstants.INVOCATION_ID_KEY, "123");
 		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
-		verify(httpServletResponse).setHeader(eq(TraceeConstants.HTTP_HEADER_NAME), anyString());
+		verify(httpServletResponse).setHeader(eq(TraceeConstants.TPIC_HEADER), anyString());
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class TraceeInterceptorTest {
 		expected.put("testkey", "testValue123");
 		final Vector<String> headers = new Vector<String>();
 		headers.add("testkey=testValue123");
-		when(httpServletRequest.getHeaders(TraceeConstants.HTTP_HEADER_NAME)).thenReturn(headers.elements());
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(headers.elements());
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend).putAll(eq(expected));
 	}

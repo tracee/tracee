@@ -25,7 +25,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	static final String TRACEE_CONFIG_PREFIX = "tracee.";
 	static final String PROFILED_PREFIX = TRACEE_CONFIG_PREFIX + "profile.";
 	static final String TRACEE_DEFAULT_PROFILE_PREFIX = TRACEE_CONFIG_PREFIX + Profile.DEFAULT + ".";
-	static final String GENERATE_REQUEST_ID = "requestIdLength";
+	static final String GENERATE_INVOCATION_ID = "invocationIdLength";
 	static final String GENERATE_SESSION_ID = "sessionIdLength";
 
 	private final PropertyChain propertyChain;
@@ -87,13 +87,13 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	@Override
-	public boolean shouldGenerateRequestId() {
-		return generatedRequestIdLength() > 0;
+	public boolean shouldGenerateInvocationId() {
+		return generatedInvocationIdLength() > 0;
 	}
 
 	@Override
-	public int generatedRequestIdLength() {
-		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_REQUEST_ID));
+	public int generatedInvocationIdLength() {
+		return parseIntOrZero(getProfiledOrDefaultProperty(GENERATE_INVOCATION_ID));
 	}
 
 	@Override

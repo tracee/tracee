@@ -40,7 +40,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
-			httpRequest.setHeader(TraceeConstants.HTTP_HEADER_NAME, transportSerialization.render(filteredParams));
+			httpRequest.setHeader(TraceeConstants.TPIC_HEADER, transportSerialization.render(filteredParams));
 		}
 	}
 }

@@ -43,14 +43,14 @@ public class TraceeHttpClientDecoratorTest {
 		backendMock.put("foo", "bar");
 		when(transportSerializationMock.render(anyMapOf(String.class, String.class))).thenReturn("foo=bar");
 		unit.executeMethod(null, httpMethodMock, null);
-		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.HTTP_HEADER_NAME), eq("foo=bar"));
+		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.TPIC_HEADER), eq("foo=bar"));
 	}
 
 	@Test
 	public void testContextParsedFromResponse() throws IOException {
-		final Header responseHeader = new Header(TraceeConstants.HTTP_HEADER_NAME, "foo=bar");
+		final Header responseHeader = new Header(TraceeConstants.TPIC_HEADER, "foo=bar");
 		final Header[] responseHeaders = new Header[] { responseHeader };
-		when(httpMethodMock.getResponseHeaders(eq(TraceeConstants.HTTP_HEADER_NAME))).thenReturn(responseHeaders);
+		when(httpMethodMock.getResponseHeaders(eq(TraceeConstants.TPIC_HEADER))).thenReturn(responseHeaders);
 		when(httpMethodMock.isRequestSent()).thenReturn(true);
 
 		unit.executeMethod(null, httpMethodMock, null);
