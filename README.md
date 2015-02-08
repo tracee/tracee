@@ -177,22 +177,22 @@ Tracee is released to maven central via Sonatype OSS Repository Hosting. Just ad
 ## Shipped context information
 TracEE creates the following context identfiers on the fly if not configured otherwise:
 
-    * it generates a pseudo-unique request id (configurable length)
-    * it generates a session hash based on the servlet session id. Since the servlet session id is a secure item that should not 
+    * it generates a pseudo-unique __invocation id__ if it does not exist yet.
+    * it generates a __session hash__ based on the servlet session id. Since the servlet session id is a secure item that should not 
     be passed around unnecessarily, we use a hash of it.
 
 ## Performance considerations
 
 TracEE is designed with performance in mind. It does not introduce global synchronization and cleans up the MDC after
-each invocation lifecycle. A real benchmark is pending...
+each invocation lifecycle. _A real benchmark is pending..._
 
-The automatically generated context ids (like request- and session-identifiers) are configurable in length and allow you
-to choose a tradeoff between the chance of _uniqueness_ in time and data overhead depending on your load scenario.
+The automatically generated context ids (like invocation- and session-identifiers) are configurable in length and allow you
+to choose a tradeoff between the chance of _uniqueness_ in time and data overhead depending on your usage scenario.
 
 ## Security considerations
 
 Since you may pass sensitive user information within your TracEE-Context, it is important to cancel the propagation at
-trust boundaries (like HTTP-Responses to users or third-party Web-Services). TracEE offers filter configuration mechanisms
+trust boundaries (like HTTP-Responses to users or third-party Web-Services). TracEE offers [filter configuration mechanisms](/core/README.md#filter-configuration))
 that allow you to selectively decide at which point in your application you want to pass around what contextual identifiers.
 
 ## Classloader considerations
@@ -208,7 +208,7 @@ accessed by all your applications.
 # Contributing to TracEE
 
 We welcome any kind of suggestions and pull requests. Please notice that TracEE is an integration framework and we will not support
-application specific features. We will rather try to enhance our api and empower you to tailor TracEE to your needs.
+application specific features. We will rather try find a generic solutions and enhance our api to empower you to tailor TracEE to your needs.
 
 ## Building and developing TracEE
 
@@ -217,9 +217,9 @@ A simple import of the pom in your IDE should get you up and running. To build T
 
 ## Requirements
 
-The likelihood of a pull request being used rises with the following properties:
+The likelihood of a pull request being accepted rises with the following properties:
 
-- You have used a feature branch.
+- You have used a feature branch, squashed to a single commit and rebased on the master branch.
 - You have included a test that demonstrates the functionality added or fixed.
 - You adhered to the [code conventions](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html).
 
