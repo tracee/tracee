@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>tracee-parent</artifactId>
+		<groupId>io.tracee</groupId>
+		<version>0.9.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>io.tracee.binding</groupId>
+	<artifactId>tracee-springamqp</artifactId>
+	<packaging>bundle</packaging>
+
+	<name>tracee-springamqp</name>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
+
+	<properties>
+		<spring-amqp.version>1.3.6.RELEASE</spring-amqp.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<artifactId>tracee-api</artifactId>
+			<groupId>io.tracee</groupId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+			<version>${spring-amqp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>${spring-amqp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee.backend</groupId>
+			<artifactId>tracee-threadlocal-store</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
