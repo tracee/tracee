@@ -29,6 +29,7 @@ Also supported are these common and widespread frameworks:
 
 * Spring MVC
 * Spring Web (RestClients)
+* Spring AMQP (RabbitMQ)
 * Apache HttpClient 3 / 4
 * Apache CXF
 
@@ -86,12 +87,13 @@ We may call these context boundaries MDC gaps. There are different kinds of thos
 * Remote calls
     * Remote EJB calls
     * Invoking and accepting arbitrary HTTP requests (Servlet, HttpClient)
-    * Invoking and accepting remote web-service calls (JAX-WS)
-    * Invoking and accepting remote rest-services calls (JAX-RS, RestClients / Spring MVC)
+    * Invoking and accepting remote web-service calls (JAX-WS, Apache CXF)
+    * Invoking and accepting remote rest-services calls (JAX-RS, RestClients / Spring MVC, Apache CXF)
 * Asynchronous dispatch
     * Async processing of a servlet request (Servlet3 Async)
     * Async EJB calls
     * JMS messaging
+    * Spring AMQP (RabbitMQ)
 
 TracEE acts as a gap closer for different types of MDC gaps and boosts the concept of the MDC by enabling you to carry your contextual information through
 your whole application and beyond. You may easily configure TracEE to map arbitrary third-party correlation and transaction ids to
@@ -146,7 +148,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-servlet](binding/servlet)        		      | Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
-| [tracee-springrabbitmq](binding/springrabbitmq)   | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
+| [tracee-springrabbitmq](binding/springrabbitmq)     | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
 | [tracee-cxf](binding/cxf)                           | To transfer context informations with CXF add the `TraceeCxfFeature` to your Client oder Server.
 | __backends__                                        | *These dependencies are needed due runtime.*         |
 | [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
