@@ -146,6 +146,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-servlet](binding/servlet)        		      | Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
+| [tracee-springrabbitmq](binding/springrabbitmq)   | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
 | [tracee-cxf](binding/cxf)                           | To transfer context informations with CXF add the `TraceeCxfFeature` to your Client oder Server.
 | __backends__                                        | *These dependencies are needed due runtime.*         |
 | [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
