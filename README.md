@@ -32,6 +32,7 @@ Also supported are these common and widespread frameworks:
 * Spring AMQP (RabbitMQ)
 * Apache HttpClient 3 / 4
 * Apache CXF
+* Quartz Scheduler
 
 This project is still in an experimental stage and the api may change during further development.
 
@@ -149,7 +150,8 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
 | [tracee-springrabbitmq](binding/springrabbitmq)     | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
-| [tracee-cxf](binding/cxf)                           | To transfer context informations with CXF add the `TraceeCxfFeature` to your Client oder Server.
+| [tracee-cxf](binding/cxf)                           | To transfer context information with CXF add the `TraceeCxfFeature` to your Client oder Server.
+| [tracee-quartz](binding/quartz)                     | To generate context information before a job starts use `TraceeJobListener`.
 | __backends__                                        | *These dependencies are needed due runtime.*         |
 | [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
 | [tracee-log4j](backend/log4j)                       | Backend implementation for containers using log4j for logging.
