@@ -27,6 +27,4 @@ public class TraceeHttpRequestInterceptorTest {
         assertThat("HttpRequest contains TracEE Context Header", httpRequest.containsHeader(TraceeConstants.TPIC_HEADER), equalTo(true));
         assertThat(httpRequest.getFirstHeader(TraceeConstants.TPIC_HEADER).getValue(), equalTo("foo=bar"));
     }
-
-
 }
