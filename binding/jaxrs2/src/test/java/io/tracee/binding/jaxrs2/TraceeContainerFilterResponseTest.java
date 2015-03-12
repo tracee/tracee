@@ -17,10 +17,10 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-public class TraceeContainerResponseFilterTest {
+public class TraceeContainerFilterResponseTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeContainerResponseFilter unit = new TraceeContainerResponseFilter(backend);
+    private final TraceeContainerFilter unit = new TraceeContainerFilter(backend);
     private final ContainerResponseContext responseContext = Mockito.mock(ContainerResponseContext.class);
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 

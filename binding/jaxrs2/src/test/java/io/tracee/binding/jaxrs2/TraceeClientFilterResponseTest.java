@@ -16,10 +16,10 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TraceeClientResponseFilterTest {
+public class TraceeClientFilterResponseTest {
 
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientResponseFilter unit = new TraceeClientResponseFilter(backend);
+    private final TraceeClientFilter unit = new TraceeClientFilter(backend);
     private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
     private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<String, String>();
 

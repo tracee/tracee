@@ -20,10 +20,10 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-public class TraceeClientRequestFilterTest {
+public class TraceeClientFilterRequestTest {
 
     private final TraceeBackend traceeBackend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientRequestFilter unit = new TraceeClientRequestFilter(traceeBackend);
+    private final TraceeClientFilter unit = new TraceeClientFilter(traceeBackend);
     private final ClientRequestContext clientRequestContext = Mockito.mock(ClientRequestContext.class);
 
     @Before

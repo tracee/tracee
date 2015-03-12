@@ -51,14 +51,13 @@ public final class AllFilterIT {
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Could not find traceeValue beforeRequest").build();
             }
-
         }
     }
 
     @Test
     public void testRoundtrip() {
 
-        final Client client = ClientBuilder.newClient().register(TraceeClientRequestFilter.class).register(TraceeClientResponseFilter.class);
+        final Client client = ClientBuilder.newClient().register(TraceeClientFilter.class);
 
         Tracee.getBackend().put("beforeRequest", "yes");
         final Response response = client.target(ENDPOINT_URL).request().get();
