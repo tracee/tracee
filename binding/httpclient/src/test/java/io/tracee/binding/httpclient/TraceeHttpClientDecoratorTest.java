@@ -8,6 +8,7 @@ import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -15,6 +16,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static io.tracee.DelegationTestUtil.assertDelegationToSpy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
@@ -34,7 +38,7 @@ public class TraceeHttpClientDecoratorTest {
 
 	@Test
 	public void doNotRenderTpicHeaderIfBackendIsEmpty() throws IOException {
-		unit.executeMethod(null, httpMethodMock, null);
+		unit.executeMethod(null, httpMethodMock);
 		verify(httpMethodMock, never()).setRequestHeader(anyString(), anyString());
 	}
 
@@ -42,7 +46,7 @@ public class TraceeHttpClientDecoratorTest {
 	public void testContextWrittenToRequest() throws IOException {
 		backendMock.put("foo", "bar");
 		when(transportSerializationMock.render(anyMapOf(String.class, String.class))).thenReturn("foo=bar");
-		unit.executeMethod(null, httpMethodMock, null);
+		unit.executeMethod(httpMethodMock);
 		verify(httpMethodMock).setRequestHeader(eq(TraceeConstants.TPIC_HEADER), eq("foo=bar"));
 	}
 
@@ -65,5 +69,12 @@ public class TraceeHttpClientDecoratorTest {
 		final HttpClient wrappedClient = TraceeHttpClientDecorator.wrap(client);
 
 		assertDelegationToSpy(client).by(wrappedClient).ignore("executeMethod").verify();
+	}
+
+	@Test
+	public void wrapOnlyWithTraceeHttpClientDecoratorIfInstanceIsNotOfThisType() {
+		final HttpClient httpClient = TraceeHttpClientDecorator.wrap(mock(HttpClient.class));
+		final HttpClient wrappedAgainHttpClient = TraceeHttpClientDecorator.wrap(httpClient);
+		assertThat(httpClient, is(sameInstance(wrappedAgainHttpClient)));
 	}
 }

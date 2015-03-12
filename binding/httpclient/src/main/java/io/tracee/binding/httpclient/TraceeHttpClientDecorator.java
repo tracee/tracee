@@ -33,7 +33,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	private final String profile;
 
 	public static HttpClient wrap(HttpClient httpClient) {
-		return TraceeHttpClientDecorator.wrap(httpClient, null);
+		return wrap(httpClient, null);
 	}
 
 	public static HttpClient wrap(HttpClient httpClient, String profile) {
