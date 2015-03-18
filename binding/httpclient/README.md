@@ -7,6 +7,7 @@ TODO Wrapper for [apache http client 3](http://hc.apache.org/httpclient-3.x/)
 ## Installation
 
 Add the `tracee-httpclient` module to your `pom.xml` dependencies:
+
 ```xml
 <dependencies>
 ...
@@ -20,10 +21,13 @@ Add the `tracee-httpclient` module to your `pom.xml` dependencies:
 ```
 
 Then simply replace the pure instantiation of the HttpClient in your code with:
+
 ```java
 final HttpClient client = new HttpClient();
 ```
+
 with the `TraceeHttpClientDecorator`:
+
 ```java
 final HttpClient client = TraceeHttpClientDecorator.wrap(new HttpClient());
 ```

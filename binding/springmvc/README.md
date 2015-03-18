@@ -7,7 +7,7 @@ This module requires Spring 3.1.0 or above.
 
 ## Installation
 
-To your Spring dependencies add `tracee-springmvc`. That's all! - For example in maven-style projects add to the `pom.xml`:
+Add `tracee-springmvc` to your application dependencies. That's all! - For example in maven-style projects add the following coordinates to the `pom.xml`:
 
 ```xml
 <dependencies>

@@ -2,7 +2,7 @@
 
 # tracee-springhttpclient
 
-This module contains all necessary classes to transmit the MDC within your Spring `RestTemplate`-Request and extract the MDC from server response.
+> This module contains all necessary classes to transmit the MDC within your Spring `RestTemplate`-Request and extract the MDC from server response.
 
 Requires Spring-Web in version 3.1 or above.
 

@@ -2,9 +2,9 @@
 
 # tracee-jaxws
 
-> This module can be used to add TracEE context propagation support to JAX-WS webservices and JAX-WS webservice clients.
+> This module can be used to add TracEE context propagation support to Java API for XML Web Services (JAX-WS) API for endpoints and webservice clients.
 
-Please add the following dependencies to enable TracEE JAX-WS support. For example in maven-style projects add to the pom.xml:
+Please add the following dependencies to enable TracEE JAX-WS support. For example in maven-style projects add to the `pom.xml`:
 
 ```xml
 <dependencies>
@@ -19,7 +19,7 @@ Please add the following dependencies to enable TracEE JAX-WS support. For examp
 ```
 
 ## Using server side handlers
-You can use the context logger by annotating your jax-ws webservice with the @HandlerChain annotation.
+You can use the context logger by annotating your jax-ws webservice with the `@HandlerChain` annotation.
 
 ```java
 @Stateless
@@ -32,7 +32,7 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 ```
     
 
-Therefore you have to add the referenced traceeHandlerChain.xml file to your classpath (i.e. /src/main/resources). The file must have the following content:
+Therefore you have to add the referenced `traceeHandlerChain.xml` file to your classpath (i.e. `/src/main/resources`). The file must have the following content:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>

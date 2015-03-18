@@ -2,7 +2,7 @@
 
 # tracee-jms
 
-> This module can be used to add TracEE context propagation support to JMS MessageProducer and MessageListener beans.
+> This module can be used to add TracEE context propagation support to Java Message Service (JMS) MessageProducer and MessageListener beans.
 
 
 Please add the following dependencies to enable TracEE's JMS support. For example in maven-style projects add to the pom.xml:

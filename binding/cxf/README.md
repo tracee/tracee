@@ -21,6 +21,7 @@ Add to your CXF dependency for REST or SOAP our additional TracEE part. For exam
 ```
 
 Then you're able to use our `TraceeCxfFeature`:
+
 ```java
 final ClientProxyFactoryBean factoryBean = new ClientProxyFactoryBean();
 factoryBean.getFeatures().add(new TraceeCxfFeature());
