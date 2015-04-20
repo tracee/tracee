@@ -31,8 +31,7 @@ public class TraceeJaxWsTestService implements TraceeJaxWsTestWS {
 }
 ```
     
-
-Therefore you have to add the referenced `traceeHandlerChain.xml` file to your classpath (i.e. `/src/main/resources`). The file must have the following content:
+**Therefore you have to add the referenced `traceeHandlerChain.xml` file to your classpath (i.e. `/src/main/resources`).** The file must have the following content:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
@@ -47,12 +46,12 @@ Therefore you have to add the referenced `traceeHandlerChain.xml` file to your c
 
 ## Using client side handlers
 First you have to create the client stub classes for the webservice wsdl. 
-Then you are able to bind the error context logger by using the services handler resolver mechanism:
+Then you are able to bind the `TraceeClientHandler` by using the  handler resolver:
 
 ```java
 final TraceeJaxWsTestService testWebservice = new TraceeJaxWsTestService(
     new URL("http://localhost:8080/yourTestService/webservices/YourTestService?wsdl"));
-testWebservice.setHandlerResolver(TraceeClientHandlerResolver.buildHandlerResolver().add(TraceeClientHandler.class).build());
+testWebservice.setHandlerResolver(new TraceeClientHandlerResolver());
 final YourTestWS ws = testWebservice.getPort(YourTestWS.class);    
 ```
 
