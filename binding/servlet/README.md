@@ -46,7 +46,7 @@ If you are on a Servlet-Container with servlet-version < 3, you need to register
 	</listener>
 ...
 ```
-You may change the filter-mapping:url-pattern according to your needs.
+You may change the `filter-mapping:url-pattern` according to your needs.
 
 ### Spring Boot
 

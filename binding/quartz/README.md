@@ -10,6 +10,7 @@ This module contains a [Quartz](http://quartz-scheduler.org/) `JobListener` to e
 ## Installation
 
 Use this module with Quartz 2.1 or above. Add this module as dependency. For Maven:
+
 ```xml
 <dependencies>
     ...
@@ -29,11 +30,13 @@ Add the `TraceeJobListener` like other job listeners:
 Quartz-Jobs are typically configured by configuration file. (See the [configuration documentation](http://quartz-scheduler.org/generated/2.2.1/html/qs-all/#page/Quartz_Scheduler_Documentation_Set%2Fco-ovr_about_quartz_configuration.html%23) for further instructions.).
 
 Add an additional job listener to your configuration:
+
 ```
 org.quartz.jobListener.TraceeJobListener.class = io.tracee.binding.quartz.TraceeJobListener
 ```
 
-### Dynamically with Java
+### Programmatic with Java
+
 ```java
 ...
 scheduler.getListenerManager().addJobListener(new TraceeJobListener());
