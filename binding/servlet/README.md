@@ -48,3 +48,21 @@ If you are on a Servlet-Container with servlet-version < 3, you need to register
 ```
 You may change the filter-mapping:url-pattern according to your needs.
 
+### Spring Boot
+
+If you're running in an embedded SpringBoot container you've to add the ServletListener and Filter to your application configuration:
+
+```java
+@Bean
+public FilterRegistrationBean traceeFilter() {
+    FilterRegistrationBean frb = new FilterRegistrationBean();
+    frb.setFilter(new TraceeFilter());
+    frb.addUrlPatterns("/*");
+    return frb;
+}
+
+@Bean
+public ServletListenerRegistrationBean traceeServletListener() {
+    return new ServletListenerRegistrationBean<TraceeServletRequestListener>(new TraceeServletRequestListener());
+}
+```
