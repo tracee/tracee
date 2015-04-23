@@ -2,6 +2,7 @@ package io.tracee.transport;
 
 import io.tracee.TraceeConstants;
 import io.tracee.transport.jaxb.TpicMap;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -14,11 +15,18 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
@@ -61,12 +69,12 @@ public class SoapHeaderTransportTest {
 
 	@Test
 	public void parseSoapHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
-		assertThat(unit.parseSoapHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String,String>emptyMap()));
+		assertThat(unit.parseSoapHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String, String>emptyMap()));
 	}
 
 	@Test
 	public void parseTpicHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
-		assertThat(unit.parseTpicHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String,String>emptyMap()));
+		assertThat(unit.parseTpicHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String, String>emptyMap()));
 	}
 
 	@Test
@@ -80,5 +88,43 @@ public class SoapHeaderTransportTest {
 		Element header = (Element) envelope.getElementsByTagNameNS("http://schemas.xmlsoap.org/soap/envelope/", "Header").item(0);
 		Map<String, String> parsedContextParams = unit.parseSoapHeader(header);
 		assertThat(parsedContextParams, hasEntry(TraceeConstants.INVOCATION_ID_KEY, "ANU0N88T6YASTEVHN9VK0HJ75SXB87ZQ"));
+	}
+
+	@Test
+	public void renderTpicContextToResult() throws JAXBException {
+		final Map<String, String> context = new HashMap<String, String>();
+		context.put("myKey", "myValue");
+		context.put("myKey2", "myValue2");
+
+		final StringWriter writer = new StringWriter();
+		unit.renderSoapHeaderToResult(context, new StreamResult(writer));
+		assertThat(writer.toString(), containsString("<entry key=\"myKey\">myValue</entry>"));
+		assertThat(writer.toString(), containsString("<entry key=\"myKey2\">myValue2</entry>"));
+	}
+
+	@Test
+	public void returnEmptyMapIfSourceIsNull() throws JAXBException {
+		final Map<String, String> stringStringMap = unit.parseTpicHeader((Source) null);
+		assertThat(stringStringMap.size(), is(0));
+	}
+
+	@Test
+	public void parseSourceIntoTpicMap() throws JAXBException {
+		final String header = "<tpic xmlns=\"http://tracee.io/tpic/1.0\"><entry key=\"myKey\">myValue</entry></tpic>";
+
+		final Map<String, String> contextMap = unit.parseTpicHeader(new StreamSource(new StringReader(header)));
+		assertThat(contextMap, hasEntry("myKey", "myValue"));
+		assertThat(contextMap.size(), is(1));
+	}
+
+	@Test
+	public void serializeDeserializerTestWithResultAndSource() throws JAXBException {
+		final Map<String, String> initContext = new HashMap<String, String>();
+		initContext.put("our key1", "our value1");
+		initContext.put("our key2", "our value2");
+		final StringWriter writer = new StringWriter();
+		unit.renderSoapHeaderToResult(initContext, new StreamResult(writer));
+		final Map<String, String> assertContext = unit.parseTpicHeader(new StreamSource(new StringReader(writer.toString())));
+		assertThat(assertContext, Matchers.is(initContext));
 	}
 }

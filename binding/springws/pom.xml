@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tracee-parent</artifactId>
+		<groupId>io.tracee</groupId>
+		<version>0.11.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.tracee.binding</groupId>
+	<artifactId>tracee-springws</artifactId>
+
+	<name>tracee-springws</name>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
+
+	<properties>
+		<spring-ws.version>2.0.5.RELEASE</spring-ws.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jvnet.jax-ws-commons</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>wsimport-test</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<xnocompile>true</xnocompile>
+					<target>2.0</target> <!-- be compatible with JDK6 -->
+					<wsdlDirectory>${project.basedir}/src/test/resources/wsdl/</wsdlDirectory>
+					<sourceDestDir>${project.build.directory}/generated-test-sources/test-wsimport</sourceDestDir>
+					<packageName>io.tracee.binding.springws.itest.testservicegen</packageName>
+					<!-- Workaround for JDK8 -->
+					<vmArgs>
+						<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+					</vmArgs>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-tools</artifactId>
+						<version>2.2.8</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-core</artifactId>
+			<version>${spring-ws.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-testhelper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee.binding</groupId>
+			<artifactId>tracee-jaxws</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee.backend</groupId>
+			<artifactId>tracee-threadlocal-store</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>7.3.0.v20110203</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.2.8</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

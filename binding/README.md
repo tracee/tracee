@@ -8,6 +8,7 @@
 | Servlet                     | - | Use [tracee-servlet](servlet/) as a servlet filter. |
 | Spring MVC                  | - | Use [tracee-springmvc](springmvc/)'s `TraceeInterceptor`. |
 | Spring Web (Rest-Clients)   | Use [tracee-springhttpclient](springhttpclient/)'s `TraceeClientHttpRequestInterceptor`. | - |
+| Spring Web Services         | Add [tracee-springws](springws/)'s `TraceeClientInterceptor`. | Add [tracee-springws](springws/)'s `TraceeEndpointInterceptor`. |
 | JAX-RS                      | Configure [tracee-httpclient](httpclient/) as Executor | Use [tracee-servlet](servlet/) as a servlet filter. |
 | JAX-RS2                     | Configure [tracee-jaxrs2](jaxrs2/)'s `TraceeClientRequestFilter` and `TraceeClientResponseFilter` | Use [tracee-jaxrs2](jaxrs2/)'s `TraceeContainerRequestFilter` and `TraceeContainerResponseFilter`. |
 | JAX-WS                      | Use [tracee-jaxws](jaxws/)'s `TraceeClientHandlerResolver` | Use [tracee-jaxws](jaxws/)'s `TraceeHandlerChain.xml` as `@HandlerChain`. |

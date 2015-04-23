@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+		   targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/">
+
+	<xs:element name="currentTraceeContext" type="tns:currentTraceeContext"/>
+
+	<xs:element name="currentTraceeContextResponse" type="tns:currentTraceeContextResponse"/>
+
+	<xs:complexType name="currentTraceeContext">
+		<xs:sequence/>
+	</xs:complexType>
+
+	<xs:complexType name="currentTraceeContextResponse">
+		<xs:sequence>
+			<xs:element name="remoteInvocationId" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

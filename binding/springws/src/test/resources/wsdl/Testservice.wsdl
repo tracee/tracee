@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+		xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+		xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
+		targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+		name="JaxwsTestserviceEndpointService">
+	<types>
+		<xsd:schema>
+			<xsd:import namespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+						schemaLocation="Testservice.xsd"/>
+		</xsd:schema>
+	</types>
+	<message name="currentTraceeContext">
+		<part name="parameters" element="tns:currentTraceeContext"/>
+	</message>
+	<message name="currentTraceeContextResponse">
+		<part name="parameters" element="tns:currentTraceeContextResponse"/>
+	</message>
+	<portType name="currentTraceeContext">
+		<operation name="currentTraceeContext">
+			<input wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextRequest"
+				   message="tns:currentTraceeContext"/>
+			<output wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextResponse"
+					message="tns:currentTraceeContextResponse"/>
+		</operation>
+	</portType>
+	<binding name="currentTraceeContextPortBinding" type="tns:currentTraceeContext">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="currentTraceeContext">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="JaxwsTestserviceEndpointService">
+		<port name="currentTraceeContextPort" binding="tns:currentTraceeContextPortBinding">
+			<soap:address location="http://127.0.0.1:4205/jaxws/TraceeJaxWsSpringWsEndpointImpl"/>
+		</port>
+	</service>
+</definitions>
