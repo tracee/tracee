@@ -7,6 +7,7 @@
 [![Build Status](https://api.travis-ci.org/tracee/tracee.svg)](https://travis-ci.org/tracee/tracee)
 [![Coverage Status](https://img.shields.io/coveralls/tracee/tracee.svg)](https://coveralls.io/r/tracee/tracee)
 [![Coverity Scan](https://scan.coverity.com/projects/3882/badge.svg)](https://scan.coverity.com/projects/3882)
+[![BSD 3-Clause License](http://img.shields.io/badge/license-BSD-brightgreen.svg)](https://raw.githubusercontent.com/tracee/tracee/master/LICENSE)
 
 TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
 
