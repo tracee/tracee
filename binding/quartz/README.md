@@ -2,7 +2,7 @@
 
 # tracee-quartz
 
-This module contains a [Quartz](http://quartz-scheduler.org/) `JobListener` to extract the TPIC and generate a TracEE invocation identifier before the job starts. This ID is send to other services if a entire binding is attached to the communication stack. 
+This module contains a [Quartz](http://quartz-scheduler.org/) `JobListener` to extract the TPIC and generate a TracEE invocation identifier before a quartz job starts. This ID is send to other services if a entire binding is attached to the communication stack. 
 
 * __TraceeJobListener__: Generates a invocation Id and clears the backend after the job has finished or aborted in an ungraceful way.
 * __TraceeContextInjector__: This class injects the current TPIC into the `JobDataMap` at the time when a dynamic generated job is scheduled.
