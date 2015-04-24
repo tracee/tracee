@@ -9,12 +9,10 @@ import io.tracee.transport.SoapHeaderTransport;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
-import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.w3c.dom.Element;
 
-import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,18 +43,14 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 	protected abstract boolean shouldHandleMessage(Message message);
 
 	@Override
-	public void handleMessage(Message message) throws Fault {
+	public void handleMessage(final Message message) {
 		if (shouldHandleMessage(message)) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			LOGGER.debug("Interceptor handles message!");
 			if (filterConfiguration.shouldProcessContext(channel)) {
 				if (message instanceof SoapMessage) {
-					try {
-						handleSoapMessage((SoapMessage) message, filterConfiguration);
-					} catch (JAXBException e) {
-						throw new Fault(e);
-					}
+					handleSoapMessage((SoapMessage) message, filterConfiguration);
 				} else {
 					handleHttpMessage(message, filterConfiguration);
 				}
@@ -64,7 +58,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 		}
 	}
 
-	private void handleHttpMessage(Message message, TraceeFilterConfiguration filterConfiguration) {
+	private void handleHttpMessage(final Message message, final TraceeFilterConfiguration filterConfiguration) {
 		final Map<String, List<String>> requestHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
 		if (requestHeaders != null && !requestHeaders.isEmpty()) {
             final List<String> traceeHeader = requestHeaders.get(TraceeConstants.TPIC_HEADER);
@@ -76,7 +70,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
         }
 	}
 
-	private void handleSoapMessage(SoapMessage message, TraceeFilterConfiguration filterConfiguration) throws JAXBException {
+	private void handleSoapMessage(final SoapMessage message, final TraceeFilterConfiguration filterConfiguration) {
 		final Header soapHeader = message.getHeader(TraceeConstants.SOAP_HEADER_QNAME);
 		if (soapHeader != null) {
 			final Map<String, String> parsedContext = httpSoapSerializer.parseTpicHeader((Element) soapHeader.getObject());

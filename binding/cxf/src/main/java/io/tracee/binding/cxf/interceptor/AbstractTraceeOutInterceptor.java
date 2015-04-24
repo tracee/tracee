@@ -5,18 +5,16 @@ import io.tracee.TraceeConstants;
 import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
-import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 
 import javax.xml.bind.JAXBException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 	}
 
 	@Override
-	public void handleMessage(Message message) throws Fault {
+	public void handleMessage(final Message message) {
 		if (shouldHandleMessage(message)) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
@@ -61,7 +59,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
                     }
 
                     final String contextAsHeader = httpSerializer.render(filteredParams);
-                    responseHeaders.put(TraceeConstants.TPIC_HEADER, Arrays.asList(contextAsHeader));
+                    responseHeaders.put(TraceeConstants.TPIC_HEADER, Collections.singletonList(contextAsHeader));
                 }
             }
 		}

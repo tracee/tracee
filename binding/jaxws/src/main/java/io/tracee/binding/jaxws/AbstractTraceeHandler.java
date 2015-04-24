@@ -4,6 +4,9 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -49,5 +52,13 @@ abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> 
 	@Override
 	public Set<QName> getHeaders() {
 		return HANDLED_HEADERS;
+	}
+
+	SOAPHeader getOrCreateHeader(final SOAPMessage message) throws SOAPException {
+		SOAPHeader header = message.getSOAPHeader();
+		if (header == null) {
+			header = message.getSOAPPart().getEnvelope().addHeader();
+		}
+		return header;
 	}
 }

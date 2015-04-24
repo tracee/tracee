@@ -1,6 +1,9 @@
 package io.tracee.transport;
 
+import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
+import io.tracee.TraceeLogger;
+import io.tracee.TraceeLoggerFactory;
 import io.tracee.transport.jaxb.TpicMap;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -10,7 +13,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -19,9 +21,19 @@ import java.util.Map;
 
 public class SoapHeaderTransport {
 
+	private static final SOAPHeaderMarshaller SOAP_HEADER_MARSHALLER = new SOAPHeaderMarshaller();
+	private static final ResultMarshaller RESULT_MARSHALLER = new ResultMarshaller();
+	private static final ElementUnmarshaller ELEMENT_UNMARSHALLER = new ElementUnmarshaller();
+	private static final SourceUnmarshaller SOURCE_UNMARSHALLER = new SourceUnmarshaller();
 	private final JAXBContext jaxbContext;
+	private final TraceeLogger logger;
 
 	public SoapHeaderTransport() {
+		this(Tracee.getBackend().getLoggerFactory());
+	}
+
+	public SoapHeaderTransport(TraceeLoggerFactory loggerFactory) {
+		this.logger = loggerFactory.getLogger(HttpHeaderTransport.class);
 		try {
 			jaxbContext = JAXBContext.newInstance(TpicMap.class);
 		} catch (JAXBException e) {
@@ -29,52 +41,112 @@ public class SoapHeaderTransport {
 		}
 	}
 
-	public Map<String, String> parseSoapHeader(final Element soapHeader) throws JAXBException {
+	/**
+	 * Retrieves the first TPIC header element out of the soap header and parse it
+	 *
+	 * @param soapHeader soap header of the message
+	 * @return TPIC context map
+	 */
+	public Map<String, String> parseSoapHeader(final Element soapHeader) {
 		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
 			return parseTpicHeader((Element) tpicHeaders.item(0));
 		}
+
 		return new HashMap<String, String>();
 	}
 
 	/**
-	 * Parses a context map from a given soap header.
+	 * Parses a context map from a given soap element.
 	 */
-	public Map<String, String> parseTpicHeader(final Element header) throws JAXBException {
-		if (header != null && header.hasChildNodes()) {
-			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			final JAXBElement<TpicMap> unmarshal = unmarshaller.unmarshal(header, TpicMap.class);
-			if (unmarshal != null) {
-				return unmarshal.getValue().unwrapValues();
+	public Map<String, String> parseTpicHeader(final Element element) {
+		return parseTpicHeader(ELEMENT_UNMARSHALLER, element);
+	}
+
+	public Map<String, String> parseTpicHeader(final Source source) {
+		return parseTpicHeader(SOURCE_UNMARSHALLER, source);
+	}
+
+	private <T> Map<String, String> parseTpicHeader(final Unmarshallable<T> unmarshallable, final T xmlContext) {
+		try {
+			if (xmlContext != null) {
+				final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+				final JAXBElement<TpicMap> unmarshal = unmarshallable.unmarshal(unmarshaller, xmlContext);
+				if (unmarshal != null) {
+					return unmarshal.getValue().unwrapValues();
+				}
+			}
+		} catch (JAXBException e) {
+			logger.warn("Unable to parse TPIC header: " + e.getMessage());
+			if (logger.isDebugEnabled()) {
+				logger.debug("WithStack: Unable to parse TPIC header: " + e.getMessage(), e);
 			}
 		}
 		return new HashMap<String, String>();
 	}
 
-	public Map<String, String> parseTpicHeader(final Source source) throws JAXBException {
-		if (source != null) {
-			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			final JAXBElement<TpicMap> unmarshal = unmarshaller.unmarshal(source, TpicMap.class);
-			if (unmarshal != null) {
-				return unmarshal.getValue().unwrapValues();
-			}
+	private interface Unmarshallable<T> {
+		JAXBElement<TpicMap> unmarshal(Unmarshaller unmarshaller, T xmlContext) throws JAXBException;
+	}
+
+	private static class SourceUnmarshaller implements Unmarshallable<Source> {
+		@Override
+		public JAXBElement<TpicMap> unmarshal(final Unmarshaller unmarshaller, final Source source) throws JAXBException {
+			return unmarshaller.unmarshal(source, TpicMap.class);
 		}
-		return new HashMap<String, String>();
+	}
+
+	private static class ElementUnmarshaller implements Unmarshallable<Element> {
+		@Override
+		public JAXBElement<TpicMap> unmarshal(final Unmarshaller unmarshaller, final Element element) throws JAXBException {
+			return unmarshaller.unmarshal(element, TpicMap.class);
+		}
 	}
 
 	/**
 	 * Renders a given context map into a given soapHeader.
 	 */
-	public void renderSoapHeader(final Map<String, String> context, final SOAPHeader soapHeader) throws SOAPException, JAXBException {
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.marshal(TpicMap.wrap(context), soapHeader);
+	public void renderSoapHeader(final Map<String, String> context, final SOAPHeader soapHeader) {
+		renderSoapHeader(SOAP_HEADER_MARSHALLER, context, soapHeader);
 	}
 
 	/**
 	 * Renders a given context map into a given result that should be the TPIC header node.
 	 */
-	public void renderSoapHeaderToResult(final Map<String, String> context, final Result result) throws JAXBException {
-		final Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.marshal(TpicMap.wrap(context), result);
+	public void renderSoapHeader(final Map<String, String> context, final Result result) {
+		renderSoapHeader(RESULT_MARSHALLER, context, result);
+	}
+
+	/**
+	 * Renders a given context map into a given result that should be the TPIC header node.
+	 */
+	private <T> void renderSoapHeader(final Marshallable<T> marshallable, final Map<String, String> context, T xmlContext) {
+		try {
+			final Marshaller marshaller = jaxbContext.createMarshaller();
+			marshallable.marshal(marshaller, TpicMap.wrap(context), xmlContext);
+		} catch (JAXBException e) {
+			logger.warn("Unable to render TPIC header: " + e.getMessage());
+			if (logger.isDebugEnabled()) {
+				logger.debug("WithStack: Unable to render TPIC header: " + e.getMessage(), e);
+			}
+		}
+	}
+
+	private interface Marshallable<T> {
+		void marshal(Marshaller marshaller, TpicMap tpic, T xmlContext) throws JAXBException;
+	}
+
+	private static class ResultMarshaller implements Marshallable<Result> {
+		@Override
+		public void marshal(final Marshaller marshaller, final TpicMap tpic, final Result result) throws JAXBException {
+			marshaller.marshal(tpic, result);
+		}
+	}
+
+	private static class SOAPHeaderMarshaller implements Marshallable<SOAPHeader> {
+		@Override
+		public void marshal(final Marshaller marshaller, final TpicMap tpic, final SOAPHeader soapHeader) throws JAXBException {
+			marshaller.marshal(tpic, soapHeader);
+		}
 	}
 }

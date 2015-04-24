@@ -44,7 +44,7 @@ public class TraceeServerHandlerTest {
 	}
 
 	@Test
-	public void testHandleIncoming() throws JAXBException, SOAPException {
+	public void testHandleIncoming() throws SOAPException {
 		when(soapHeaderTransport.parseSoapHeader(eq(message.getSOAPHeader()))).thenReturn(Collections.singletonMap("FOO", "BAR"));
 		unit.handleIncoming(messageContext);
 		verify(backend).putAll(Collections.singletonMap("FOO", "BAR"));
@@ -52,7 +52,7 @@ public class TraceeServerHandlerTest {
 
 	@Test
 	public void generateInvocationIdEvenWhenIncomingMessageCouldntParsed() throws SOAPException {
-		when(message.getSOAPHeader()).thenThrow(SOAPException.class);
+		when(message.getSOAPHeader()).thenThrow(new SOAPException());
 		unit.handleIncoming(messageContext);
 		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
 	}
@@ -82,7 +82,7 @@ public class TraceeServerHandlerTest {
 
 	@Test
 	public void catchExceptionIfOutgoingTpicHeaderIsNotRenderable() throws SOAPException {
-		when(message.getSOAPHeader()).thenThrow(SOAPException.class);
+		when(message.getSOAPHeader()).thenThrow(new SOAPException());
 		unit.handleOutgoing(messageContext);
 		assertThat(backend.isEmpty(), is(true));
 	}

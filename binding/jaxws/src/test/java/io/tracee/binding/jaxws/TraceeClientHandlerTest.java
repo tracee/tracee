@@ -6,6 +6,7 @@ import io.tracee.TraceeConstants;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -13,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -88,6 +90,7 @@ public class TraceeClientHandlerTest {
 		when(message.getSOAPPart()).thenReturn(mock(SOAPPart.class));
 		final SOAPEnvelope envelope = mock(SOAPEnvelope.class);
 		when(message.getSOAPPart().getEnvelope()).thenReturn(envelope);
+		when(message.getSOAPPart().getEnvelope().addHeader()).thenReturn(mock(SOAPHeader.class, Mockito.RETURNS_DEEP_STUBS));
 
 		unit.handleOutgoing(messageContext);
 		verify(envelope).addHeader();

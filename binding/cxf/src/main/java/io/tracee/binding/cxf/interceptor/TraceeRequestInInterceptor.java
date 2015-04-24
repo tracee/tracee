@@ -2,7 +2,6 @@ package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.Utilities;
-import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageUtils;
 import org.apache.cxf.phase.Phase;
@@ -20,7 +19,7 @@ public class TraceeRequestInInterceptor extends AbstractTraceeInInterceptor {
 	}
 
 	@Override
-	public void handleMessage(Message message) throws Fault {
+	public void handleMessage(Message message) {
 		super.handleMessage(message);
 		if (shouldHandleMessage(message)) {
 			Utilities.generateInvocationIdIfNecessary(backend);

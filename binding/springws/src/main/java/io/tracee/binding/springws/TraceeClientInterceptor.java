@@ -26,23 +26,19 @@ public final class TraceeClientInterceptor extends AbstractTraceeInterceptor imp
 	}
 
 	@Override
-	public boolean handleRequest(MessageContext messageContext) throws WebServiceClientException {
+	public boolean handleRequest(MessageContext messageContext) {
 		serializeContextToSoapHeader(messageContext.getRequest(), OutgoingRequest);
 		return true;
 	}
 
 	@Override
-	public boolean handleResponse(MessageContext messageContext) throws WebServiceClientException {
-		try {
-			parseContextFromSoapHeader(messageContext.getResponse(), IncomingResponse);
-		} catch (JAXBException e) {
-			throw new WebServiceClientException(e.getMessage(), e){};
-		}
+	public boolean handleResponse(MessageContext messageContext) {
+		parseContextFromSoapHeader(messageContext.getResponse(), IncomingResponse);
 		return true;
 	}
 
 	@Override
-	public boolean handleFault(MessageContext messageContext) throws WebServiceClientException {
+	public boolean handleFault(MessageContext messageContext) {
 		return handleResponse(messageContext);
 	}
 }

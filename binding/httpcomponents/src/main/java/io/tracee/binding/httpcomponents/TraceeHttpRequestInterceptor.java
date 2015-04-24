@@ -5,12 +5,10 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
@@ -36,7 +34,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 	}
 
 	@Override
-	public final void process(final HttpRequest httpRequest, final HttpContext httpContext) throws HttpException, IOException {
+	public final void process(final HttpRequest httpRequest, final HttpContext httpContext) {
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);

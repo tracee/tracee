@@ -82,7 +82,7 @@ public class TraceeEndpointInterceptorTest {
 		final Map<String, String> context = new HashMap<String, String>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
-		new SoapHeaderTransport().renderSoapHeaderToResult(context, result);
+		new SoapHeaderTransport().renderSoapHeader(context, result);
 		final Source source = new StringSource(result.toString());
 
 		final SoapHeader soapHeader = mock(SoapHeader.class);
