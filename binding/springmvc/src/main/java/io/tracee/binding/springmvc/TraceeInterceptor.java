@@ -39,7 +39,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object o) throws Exception {
+	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object o) {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
@@ -63,7 +63,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
 		if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
@@ -73,7 +73,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
 		backend.clear();
 	}
 

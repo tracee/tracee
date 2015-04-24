@@ -18,12 +18,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.tracee.TraceeConstants.SOAP_HEADER_QNAME;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -93,19 +96,12 @@ public class TraceeClientInterceptorTest {
 		assertThat(backend.size(), is(0));
 	}
 
-	@Test(expected = WebServiceClientException.class)
-	public void jaxbExceptionsShouldBeTranslated() throws Exception {
-		//noinspection unchecked
-		when(messageContext.getResponse()).thenThrow(JAXBException.class);
-		unit.handleResponse(messageContext);
-	}
-
 	@Test
 	public void parseTpicHeaderFromResponseToBackend() throws Exception {
 		final Map<String, String> context = new HashMap<String, String>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
-		new SoapHeaderTransport().renderSoapHeaderToResult(context, result);
+		new SoapHeaderTransport().renderSoapHeader(context, result);
 		final Source source = new StringSource(result.toString());
 
 		final SoapHeader soapHeader = mock(SoapHeader.class);
@@ -124,7 +120,7 @@ public class TraceeClientInterceptorTest {
 		final Map<String, String> context = new HashMap<String, String>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
-		new SoapHeaderTransport().renderSoapHeaderToResult(context, result);
+		new SoapHeaderTransport().renderSoapHeader(context, result);
 		final Source source = new StringSource(result.toString());
 
 		final SoapHeader soapHeader = mock(SoapHeader.class);

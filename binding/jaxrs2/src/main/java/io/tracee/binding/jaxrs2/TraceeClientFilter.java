@@ -10,7 +10,6 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 	 * This method handles the outgoing request
 	 */
 	@Override
-	public final void filter(final ClientRequestContext requestContext) throws IOException {
+	public final void filter(final ClientRequestContext requestContext) {
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			requestContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
@@ -48,7 +47,7 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 	 * This method handles the incoming response
 	 */
 	@Override
-	public void filter(final ClientRequestContext requestContext, final ClientResponseContext responseContext) throws IOException {
+	public void filter(final ClientRequestContext requestContext, final ClientResponseContext responseContext) {
 		final List<String> serializedHeaders = responseContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
 		if (serializedHeaders != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
 			final Map<String, String> parsed = transportSerialization.parse(serializedHeaders);

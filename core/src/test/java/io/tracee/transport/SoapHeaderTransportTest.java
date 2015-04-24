@@ -1,5 +1,7 @@
 package io.tracee.transport;
 
+import io.tracee.SimpleTraceeBackend;
+import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.jaxb.TpicMap;
 import org.hamcrest.Matchers;
@@ -7,10 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
@@ -18,6 +22,7 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -34,7 +39,8 @@ import static org.junit.Assert.assertThat;
 
 public class SoapHeaderTransportTest {
 
-	private final SoapHeaderTransport unit = new SoapHeaderTransport();
+	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final SoapHeaderTransport unit = new SoapHeaderTransport(backend.getLoggerFactory());
 	private SOAPMessage soapMessage;
 
 	@Before
@@ -43,7 +49,7 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
-	public void renderTpicHeaderToSoapMessage() throws SOAPException, JAXBException {
+	public void renderTpicHeaderToSoapMessage() throws SOAPException {
 		final Map<String, String> context = Collections.singletonMap("FOO", "BAR");
 		final SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
@@ -68,17 +74,17 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
-	public void parseSoapHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
+	public void parseSoapHeaderToEmptyMapIfNotParsable() throws SOAPException {
 		assertThat(unit.parseSoapHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String, String>emptyMap()));
 	}
 
 	@Test
-	public void parseTpicHeaderToEmptyMapIfNotParsable() throws SOAPException, JAXBException {
+	public void parseTpicHeaderToEmptyMapIfNotParsable() throws SOAPException {
 		assertThat(unit.parseTpicHeader(soapMessage.getSOAPHeader()), equalTo(Collections.<String, String>emptyMap()));
 	}
 
 	@Test
-	public void readRealXmlMessageAndParseHeader() throws Exception {
+	public void readRealXmlMessageAndParseHeader() throws ParserConfigurationException, IOException, SAXException {
 		final InputStream xmlDoc = ClassLoader.getSystemResourceAsStream("io/tracee/transport/jaxws-output.xml");
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -91,25 +97,25 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
-	public void renderTpicContextToResult() throws JAXBException {
+	public void renderTpicContextToResult() {
 		final Map<String, String> context = new HashMap<String, String>();
 		context.put("myKey", "myValue");
 		context.put("myKey2", "myValue2");
 
 		final StringWriter writer = new StringWriter();
-		unit.renderSoapHeaderToResult(context, new StreamResult(writer));
+		unit.renderSoapHeader(context, new StreamResult(writer));
 		assertThat(writer.toString(), containsString("<entry key=\"myKey\">myValue</entry>"));
 		assertThat(writer.toString(), containsString("<entry key=\"myKey2\">myValue2</entry>"));
 	}
 
 	@Test
-	public void returnEmptyMapIfSourceIsNull() throws JAXBException {
+	public void returnEmptyMapIfSourceIsNull() {
 		final Map<String, String> stringStringMap = unit.parseTpicHeader((Source) null);
 		assertThat(stringStringMap.size(), is(0));
 	}
 
 	@Test
-	public void parseSourceIntoTpicMap() throws JAXBException {
+	public void parseSourceIntoTpicMap() {
 		final String header = "<tpic xmlns=\"http://tracee.io/tpic/1.0\"><entry key=\"myKey\">myValue</entry></tpic>";
 
 		final Map<String, String> contextMap = unit.parseTpicHeader(new StreamSource(new StringReader(header)));
@@ -118,12 +124,12 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
-	public void serializeDeserializerTestWithResultAndSource() throws JAXBException {
+	public void serializeDeserializerTestWithResultAndSource() {
 		final Map<String, String> initContext = new HashMap<String, String>();
 		initContext.put("our key1", "our value1");
 		initContext.put("our key2", "our value2");
 		final StringWriter writer = new StringWriter();
-		unit.renderSoapHeaderToResult(initContext, new StreamResult(writer));
+		unit.renderSoapHeader(initContext, new StreamResult(writer));
 		final Map<String, String> assertContext = unit.parseTpicHeader(new StreamSource(new StringReader(writer.toString())));
 		assertThat(assertContext, Matchers.is(initContext));
 	}

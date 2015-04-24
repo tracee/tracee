@@ -24,7 +24,7 @@ public final class TraceeEndpointInterceptor extends AbstractTraceeInterceptor i
 	}
 
 	@Override
-	public boolean handleRequest(MessageContext messageContext, Object o) throws Exception {
+	public boolean handleRequest(MessageContext messageContext, Object o) {
 		parseContextFromSoapHeader(messageContext.getRequest(), IncomingRequest);
 
 		Utilities.generateInvocationIdIfNecessary(backend);
@@ -32,18 +32,18 @@ public final class TraceeEndpointInterceptor extends AbstractTraceeInterceptor i
 	}
 
 	@Override
-	public boolean handleResponse(MessageContext messageContext, Object o) throws Exception {
+	public boolean handleResponse(MessageContext messageContext, Object o) {
 		serializeContextToSoapHeader(messageContext.getResponse(), OutgoingResponse);
 		return true;
 	}
 
 	@Override
-	public boolean handleFault(MessageContext messageContext, Object o) throws Exception {
+	public boolean handleFault(MessageContext messageContext, Object o) {
 		return handleResponse(messageContext, o);
 	}
 
 	@Override
-	public void afterCompletion(MessageContext messageContext, Object o, Exception e) throws Exception {
+	public void afterCompletion(MessageContext messageContext, Object o, Exception e) {
 		backend.clear();
 	}
 }

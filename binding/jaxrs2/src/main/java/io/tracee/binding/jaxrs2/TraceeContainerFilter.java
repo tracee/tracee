@@ -38,7 +38,7 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 	 * This method handles the incoming request
 	 */
 	@Override
-	public final void filter(final ContainerRequestContext containerRequestContext) throws IOException {
+	public final void filter(final ContainerRequestContext containerRequestContext) {
 
 		if (backend.getConfiguration().shouldProcessContext(IncomingRequest)) {
 			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
@@ -55,7 +55,7 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 	 * This method handles the outgoing response
 	 */
 	@Override
-	public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext) throws IOException {
+	public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext) {
 		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			responseContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
