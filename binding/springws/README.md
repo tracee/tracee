@@ -20,7 +20,7 @@ Add the dependency to your classpath. If you're using Apache Maven, you could us
 </dependencies>
 ```
 
-### Client-Interceptor -- Add context information to outgoing requests
+### Client-Interceptor - Add context information to outgoing requests
 
 Use the class `org.springframework.ws.client.core.support.WebServiceGatewaySupport` to implement your Spring-WS client. 
 This helper template provides the ability to call client interceptors upon request.
@@ -52,7 +52,7 @@ public MyApplicationConfig {
 }
 ```
 
-### Server Interceptor -- Extract context information from incoming requests
+### Server Interceptor - Extract context information from incoming requests
 
 With a XML based configuration you add the `TraceeEndpointInterceptor` to all your soap services by attaching it to the `sws:interceptors` xml node. 
 (Namespace: `http://www.springframework.org/schema/web-services`)
