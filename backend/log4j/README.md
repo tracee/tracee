@@ -18,5 +18,5 @@ You need exactly one backend provider on your runtime classpath. Add following t
 		<scope>runtime</scope>
 	</dependency>
 ...
-<dependencies>
+</dependencies>
 ```
