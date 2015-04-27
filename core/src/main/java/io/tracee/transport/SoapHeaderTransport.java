@@ -49,11 +49,13 @@ public class SoapHeaderTransport {
 	 */
 	public Map<String, String> parseSoapHeader(final Element soapHeader) {
 		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
+		final HashMap<String, String> contextMap = new HashMap<String, String>();
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
-			return parseTpicHeader((Element) tpicHeaders.item(0));
+			for (int i = 0, items = tpicHeaders.getLength(); i < items; i++) {
+				contextMap.putAll(parseTpicHeader((Element) tpicHeaders.item(i)));
+			}
 		}
-
-		return new HashMap<String, String>();
+		return contextMap;
 	}
 
 	/**
