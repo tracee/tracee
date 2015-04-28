@@ -65,12 +65,24 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
-	public void testParse() throws SOAPException, JAXBException {
+	public void parseSoapHeaderWithOneTPICHeader() throws SOAPException, JAXBException {
 		final TpicMap tpicMap = TpicMap.wrap(Collections.singletonMap("FOooo", "Bar2"));
 		JAXBContext.newInstance(TpicMap.class).createMarshaller().marshal(tpicMap, soapMessage.getSOAPHeader());
 
 		final Map<String, String> parse = unit.parseSoapHeader(soapMessage.getSOAPHeader());
 		assertThat(parse, hasEntry("FOooo", "Bar2"));
+	}
+
+	@Test
+	public void parseSoapHeaderWithMultipleTPICHeader() throws SOAPException, JAXBException {
+		final TpicMap tpicMap = TpicMap.wrap(Collections.singletonMap("FOooo", "Bar2"));
+		final TpicMap tpicMap2 = TpicMap.wrap(Collections.singletonMap("FOooo2", "Bar3"));
+		JAXBContext.newInstance(TpicMap.class).createMarshaller().marshal(tpicMap, soapMessage.getSOAPHeader());
+		JAXBContext.newInstance(TpicMap.class).createMarshaller().marshal(tpicMap2, soapMessage.getSOAPHeader());
+
+		final Map<String, String> parse = unit.parseSoapHeader(soapMessage.getSOAPHeader());
+		assertThat(parse, hasEntry("FOooo", "Bar2"));
+		assertThat(parse, hasEntry("FOooo2", "Bar3"));
 	}
 
 	@Test
