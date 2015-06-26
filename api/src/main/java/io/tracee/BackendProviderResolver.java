@@ -23,12 +23,31 @@ class BackendProviderResolver {
 		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy = providersPerClassloader;
 
 		// Try to determine TraceeBackendProvider by context classloader. Fallback: use classloader of class.
-		Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy,
+		final Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy,
 				GetClassLoader.fromContext());
 		if (!providerFromContextClassLoader.isEmpty()) {
 			return providerFromContextClassLoader;
 		} else {
 			return getTraceeProviderFromClassloader(cacheCopy, GetClassLoader.fromClass(BackendProviderResolver.class));
+		}
+	}
+
+	/**
+	 * Loads the default implementation
+	 */
+	Set<TraceeBackendProvider> getDefaultTraceeBackendProvider() {
+		try {
+			final Class<?> slf4jTraceeBackendProviderClass = Class.forName("io.tracee.backend.slf4j.Slf4jTraceeBackendProvider", true, GetClassLoader.fromContext());
+			final TraceeBackendProvider instance = (TraceeBackendProvider)slf4jTraceeBackendProviderClass.newInstance();
+			return Collections.singleton(instance);
+		} catch (ClassNotFoundException cnfe) {
+			return Collections.emptySet();
+		} catch (InstantiationException e) {
+			return Collections.emptySet();
+		} catch (IllegalAccessException e) {
+			return Collections.emptySet();
+		} catch (ClassCastException e) {
+			return Collections.emptySet();
 		}
 	}
 
@@ -41,8 +60,7 @@ class BackendProviderResolver {
 	 * @return A BackendProviderSet if we found at least one provider. Otherwise we return an EmptyBackendProviderSet.
 	 */
 	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(
-			final Map<ClassLoader,
-			Set<TraceeBackendProvider>> cacheCopy,
+			final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
 			final ClassLoader classLoader) {
 		// use cache to get TraceeBackendProvider or empty results from old lookups
 		Set<TraceeBackendProvider> classLoaderProviders = cacheCopy.get(classLoader);

@@ -16,11 +16,16 @@
     <description>Please refer to https://github.com/tracee/tracee.</description>
 
     <dependencies>
-        <dependency>
-            <artifactId>tracee-core</artifactId>
-            <groupId>io.tracee</groupId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>

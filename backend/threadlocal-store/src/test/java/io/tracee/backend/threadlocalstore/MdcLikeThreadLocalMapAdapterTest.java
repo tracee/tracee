@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.*;
 public class MdcLikeThreadLocalMapAdapterTest {
 	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
 
-	private final ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend(traceeKeys);
+	private final ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend();
 
 	@Before
 	public void setup() {

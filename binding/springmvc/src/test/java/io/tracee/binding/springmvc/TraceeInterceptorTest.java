@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -119,7 +118,7 @@ public class TraceeInterceptorTest {
 		final Map<String, String> expected = new HashMap<String, String>();
 		expected.put("testkey", "testValue123");
 
-		final Enumeration<String> headers = Collections.enumeration(Arrays.asList("testkey=testValue123"));
+		final Enumeration<String> headers = Collections.enumeration(Collections.singletonList("testkey=testValue123"));
 		when(httpServletRequest.getHeaders(incomingHeader)).thenReturn(headers);
 		unit.preHandle(httpServletRequest, httpServletResponse, new Object());
 		verify(mockedBackend).putAll(eq(expected));
@@ -133,8 +132,6 @@ public class TraceeInterceptorTest {
 
 	private TraceeBackend mockedBackend(TraceeFilterConfiguration filterConfiguration) {
 		final TraceeBackend backend = mock(TraceeBackend.class);
-		final NoopTraceeLoggerFactory noopTraceeLoggerFactory = new NoopTraceeLoggerFactory();
-		when(backend.getLoggerFactory()).thenReturn(noopTraceeLoggerFactory);
 		when(backend.getConfiguration()).thenReturn(filterConfiguration);
 		when(backend.getConfiguration(anyString())).thenReturn(filterConfiguration);
 		return backend;

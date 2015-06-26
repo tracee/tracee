@@ -35,7 +35,7 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 	TraceeHttpResponseInterceptor(TraceeBackend backend, String profile) {
 		this.backend = backend;
 		this.profile = profile;
-		transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
+		transportSerialization = new HttpHeaderTransport();
 	}
 
 	@Override

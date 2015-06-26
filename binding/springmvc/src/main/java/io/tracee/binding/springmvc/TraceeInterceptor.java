@@ -35,7 +35,7 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	protected TraceeInterceptor(TraceeBackend backend) {
 		this.backend = backend;
-		httpHeaderSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
+		httpHeaderSerialization = new HttpHeaderTransport();
 	}
 
 	@Override

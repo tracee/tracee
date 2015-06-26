@@ -1,8 +1,8 @@
 package io.tracee.configuration;
 
-import io.tracee.TraceeLogger;
-import io.tracee.TraceeLoggerFactory;
 import io.tracee.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	private final Map<String, List<Pattern>> patternCache = new ConcurrentHashMap<String, List<Pattern>>();
 
-	private final TraceeLogger logger;
+	private static final Logger logger = LoggerFactory.getLogger(PropertiesBasedTraceeFilterConfiguration.class);
 
 	/**
 	 * Loads a layered property chain based on:
@@ -53,13 +53,12 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		}
 	}
 
-	public PropertiesBasedTraceeFilterConfiguration(TraceeLoggerFactory loggerFactory, PropertyChain propertyChain) {
-		this(loggerFactory, propertyChain, null);
+	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain) {
+		this(propertyChain, null);
 	}
 
-	public PropertiesBasedTraceeFilterConfiguration(TraceeLoggerFactory loggerFactory, PropertyChain propertyChain,
+	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain,
 													String profileName) {
-		logger = loggerFactory.getLogger(PropertiesBasedTraceeFilterConfiguration.class);
 		this.propertyChain = propertyChain;
 		this.profileName = profileName;
 	}

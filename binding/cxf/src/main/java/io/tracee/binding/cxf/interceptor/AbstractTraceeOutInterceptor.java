@@ -2,7 +2,6 @@ package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.jaxb.TpicMap;
@@ -12,6 +11,8 @@ import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.jaxb.JAXBDataBinding;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBException;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	private final TraceeLogger logger;
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeOutInterceptor.class);
 
 	protected final TraceeBackend backend;
 
@@ -34,9 +35,8 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
-		logger = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
-		this.httpSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
+		this.httpSerializer = new HttpHeaderTransport();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
-				logger.debug("Interceptor handles message!");
+				LOGGER.debug("Interceptor handles message!");
                 if (message instanceof SoapMessage) {
                     final SoapMessage soapMessage = (SoapMessage) message;
 
@@ -71,8 +71,8 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 					new JAXBDataBinding(TpicMap.class));
 			soapMessage.getHeaders().add(tpicHeader);
 		} catch (JAXBException e) {
-			logger.warn("Error occured during TracEE soap header creation: " + e.getMessage());
-			logger.debug("Detailed exception", e);
+			LOGGER.warn("Error occured during TracEE soap header creation: " + e.getMessage());
+			LOGGER.debug("Detailed exception", e);
 		}
 	}
 

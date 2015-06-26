@@ -12,10 +12,6 @@
 		<module>testhelper</module>
 
 		<!-- backends -->
-		<module>backend/slf4j</module>
-		<module>backend/log4j</module>
-		<module>backend/log4j2</module>
-		<module>backend/jboss-logging</module>
 		<module>backend/threadlocal-store</module>
 
 		<!-- incoming filters -->

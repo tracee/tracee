@@ -1,10 +1,11 @@
 package io.tracee.binding.springws;
 
 import io.tracee.TraceeBackend;
-import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Channel;
 import io.tracee.transport.SoapHeaderTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
@@ -22,13 +23,12 @@ abstract class AbstractTraceeInterceptor {
 	protected static final SoapHeaderTransport soapHeaderTransport = new SoapHeaderTransport();
 
 	protected final TraceeBackend backend;
-	protected final TraceeLogger traceeLogger;
+	protected static final Logger logger = LoggerFactory.getLogger(AbstractTraceeInterceptor.class);
 	protected String profile;
 
 	public AbstractTraceeInterceptor(final TraceeBackend backend, final String profile) {
 		this.backend = backend;
 		this.profile = profile;
-		this.traceeLogger = backend.getLoggerFactory().getLogger(this.getClass());
 	}
 
 	protected void parseContextFromSoapHeader(final WebServiceMessage message, final Channel channel) {
@@ -53,7 +53,7 @@ abstract class AbstractTraceeInterceptor {
 				}
 			}
 		} else {
-			traceeLogger.info("Message is obviously no soap message - Not instance of Spring-WS SoapMessage");
+			logger.info("Message is obviously no soap message - Not instance of Spring-WS SoapMessage");
 		}
 	}
 
@@ -72,7 +72,7 @@ abstract class AbstractTraceeInterceptor {
 				}
 			}
 		} else {
-			traceeLogger.info("Message is obviously no soap message - Not instance of Spring-WS SoapMessage");
+			logger.info("Message is obviously no soap message - Not instance of Spring-WS SoapMessage");
 		}
 	}
 }

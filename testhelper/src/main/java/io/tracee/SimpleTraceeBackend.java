@@ -17,17 +17,14 @@ public class SimpleTraceeBackend implements TraceeBackend {
 	private Map<String, String> backendValues = new HashMap<String, String>();
 
 	public static SimpleTraceeBackend createNonLoggingAllPermittingBackend() {
-		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration(), new NoopTraceeLoggerFactory());
+		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
 	}
 
-	public SimpleTraceeBackend(TraceeFilterConfiguration configuration, TraceeLoggerFactory loggerFactory) {
+	public SimpleTraceeBackend(TraceeFilterConfiguration configuration) {
 		this.configuration = configuration;
-		this.loggerFactory = loggerFactory;
 	}
 
 	private final TraceeFilterConfiguration configuration;
-
-	private final TraceeLoggerFactory loggerFactory;
 
 	/**
 	 * {@inheritDoc}
@@ -43,10 +40,6 @@ public class SimpleTraceeBackend implements TraceeBackend {
 		return configuration;
 	}
 
-	@Override
-	public TraceeLoggerFactory getLoggerFactory() {
-		return loggerFactory;
-	}
 
 	@Override
 	public boolean containsKey(String key) {

@@ -21,7 +21,7 @@ public class PropertiesBasedTraceeFilterConfigurationTest {
 
 	private PropertyChain propertyChain = Mockito.mock(PropertyChain.class);
 	private TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private PropertiesBasedTraceeFilterConfiguration unit = new PropertiesBasedTraceeFilterConfiguration(backend.getLoggerFactory(), propertyChain);
+	private PropertiesBasedTraceeFilterConfiguration unit = new PropertiesBasedTraceeFilterConfiguration(propertyChain);
 
 	@Test
 	public void testShouldPropagatePositive() {

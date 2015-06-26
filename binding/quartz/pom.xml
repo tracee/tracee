@@ -22,13 +22,13 @@
 
 	<dependencies>
 		<dependency>
-			<artifactId>tracee-api</artifactId>
 			<groupId>io.tracee</groupId>
+			<artifactId>tracee-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<artifactId>tracee-core</artifactId>
 			<groupId>io.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

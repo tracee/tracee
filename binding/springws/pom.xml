@@ -56,8 +56,17 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.tracee</groupId>
+			<artifactId>tracee-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
 			<artifactId>tracee-core</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ws</groupId>

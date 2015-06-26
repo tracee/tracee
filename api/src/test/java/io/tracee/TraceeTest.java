@@ -30,7 +30,7 @@ public class TraceeTest {
 			Tracee.getBackend();
 			fail();
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
+			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have tracee-core (for slf4j) or any other backend implementation on the classpath."));
 			throw e;
 		}
 	}
@@ -55,7 +55,7 @@ public class TraceeTest {
 			Tracee.getBackend(resolver);
 			fail();
 		} catch (TraceeException e) {
-			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath."));
+			assertThat(e.getMessage(), equalTo("Unable to find a TracEE backend provider. Make sure that you have tracee-core (for slf4j) or any other backend implementation on the classpath."));
 			throw e;
 		}
 	}

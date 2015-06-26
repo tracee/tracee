@@ -1,37 +1,62 @@
 package io.tracee.backend.threadlocalstore;
 
-import io.tracee.MDCLikeTraceeBackend;
-import io.tracee.ThreadLocalHashSet;
-import io.tracee.TraceeLogger;
-import io.tracee.TraceeLoggerFactory;
+import io.tracee.BackendBase;
 
-class ThreadLocalTraceeBackend extends MDCLikeTraceeBackend {
+import java.util.HashMap;
+import java.util.Map;
+
+class ThreadLocalTraceeBackend extends BackendBase {
 
 	private final ThreadLocalMap<String, String> threadLocalMap;
 
-	public ThreadLocalTraceeBackend(ThreadLocalHashSet<String> traceeKeys) {
-		super(traceeKeys, new TraceeLoggerFactory() {
-			@Override
-			public TraceeLogger getLogger(Class<?> clazz) {
-				return new ThreadLocalTraceeLogger(clazz);
-			}
-		});
+	public ThreadLocalTraceeBackend() {
 		this.threadLocalMap = new ThreadLocalMap<String, String>();
 	}
 
+
 	@Override
-	protected String getFromMdc(String key) {
+	public boolean containsKey(String key) {
+		return threadLocalMap.get().containsKey(key);
+	}
+
+	@Override
+	public int size() {
+		return threadLocalMap.get().size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return threadLocalMap.get().isEmpty();
+	}
+
+	@Override
+	public String get(String key) {
 		return threadLocalMap.get().get(key);
 	}
 
 	@Override
-	protected void putToMdc(String key, String value) {
+	public void put(String key, String value) {
 		threadLocalMap.get().put(key, value);
 	}
 
 	@Override
-	protected void removeFromMdc(String key) {
+	public void remove(String key) {
 		threadLocalMap.get().remove(key);
+	}
+
+	@Override
+	public void clear() {
+		threadLocalMap.get().clear();
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends String> entries) {
+		threadLocalMap.get().putAll(entries);
+	}
+
+	@Override
+	public Map<String, String> copyToMap() {
+		return new HashMap<String, String>(threadLocalMap.get());
 	}
 
 	ThreadLocalMap<String, String> getThreadLocalMap() {

@@ -23,12 +23,6 @@ public interface TraceeBackend {
 	TraceeFilterConfiguration getConfiguration();
 
     /**
-     * Gets a logger proxy that delegates to a concrete logging framework at runtime. Should only be used in tracee
-     * adapters.
-     */
-    TraceeLoggerFactory getLoggerFactory();
-
-    /**
      * @param key a non-null identifier.
      * @return {@code true} if this backend contains an entry for the given key. {@code false} otherwise.
      */

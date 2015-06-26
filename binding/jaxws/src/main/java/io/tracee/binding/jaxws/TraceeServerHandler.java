@@ -3,9 +3,10 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.TraceeLogger;
 import io.tracee.Utilities;
 import io.tracee.transport.SoapHeaderTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
@@ -18,7 +19,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 public class TraceeServerHandler extends AbstractTraceeHandler {
 
-	private final TraceeLogger traceeLogger;
+	private static final Logger logger = LoggerFactory.getLogger(TraceeServerHandler.class);
 
 	private final SoapHeaderTransport transportSerialization;
 
@@ -29,7 +30,6 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 	public TraceeServerHandler(TraceeBackend traceeBackend, SoapHeaderTransport soapHeaderTransport) {
 		super(traceeBackend);
 		this.transportSerialization = soapHeaderTransport;
-		traceeLogger = traceeBackend.getLoggerFactory().getLogger(TraceeServerHandler.class);
 	}
 
 	protected final void handleIncoming(SOAPMessageContext context) {
@@ -43,9 +43,9 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 				traceeBackend.putAll(filteredContext);
 			}
 		} catch (final SOAPException e) {
-			traceeLogger.warn("Error during precessing of inbound soap header: " + e.getMessage());
-			if (traceeLogger.isDebugEnabled()) {
-				traceeLogger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
+			logger.warn("Error during precessing of inbound soap header: " + e.getMessage());
+			if (logger.isDebugEnabled()) {
+				logger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
 			}
 		}
 
@@ -68,9 +68,9 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			}
 
 		} catch (final SOAPException e) {
-			traceeLogger.error("TraceeServerHandler : Exception occurred during processing of outbound message.");
-			if (traceeLogger.isDebugEnabled()) {
-				traceeLogger.debug("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
+			logger.error("TraceeServerHandler : Exception occurred during processing of outbound message.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
 			}
 		} finally {
 			// must reset tracee context

@@ -1,7 +1,5 @@
 package io.tracee.transport;
 
-import io.tracee.SimpleTraceeBackend;
-import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.jaxb.TpicMap;
 import org.hamcrest.Matchers;
@@ -39,8 +37,7 @@ import static org.junit.Assert.assertThat;
 
 public class SoapHeaderTransportTest {
 
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final SoapHeaderTransport unit = new SoapHeaderTransport(backend.getLoggerFactory());
+	private final SoapHeaderTransport unit = new SoapHeaderTransport();
 	private SOAPMessage soapMessage;
 
 	@Before

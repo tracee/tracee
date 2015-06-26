@@ -28,7 +28,7 @@ public class TraceeFilter implements Filter {
 	private String profile = TraceeFilterConfiguration.Profile.DEFAULT;
 
 	public TraceeFilter() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport());
 	}
 
 	// VisibleForTesting
