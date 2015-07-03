@@ -149,34 +149,5 @@ final class ThreadLocalRandom extends Random {
         return nextLong(bound - least) + least;
     }
 
-    /**
-     * Returns a pseudorandom, uniformly distributed {@code double} value between 0 (inclusive) and
-     * the specified value (exclusive).
-     *
-     * @param n the bound on the random number to be returned.  Must be positive.
-     * @return the next value
-     * @throws IllegalArgumentException if n is not positive
-     */
-    public double nextDouble(double n) {
-        if (n <= 0)
-            throw new IllegalArgumentException("n must be positive");
-        return nextDouble() * n;
-    }
-
-    /**
-     * Returns a pseudorandom, uniformly distributed value between the given least value (inclusive)
-     * and bound (exclusive).
-     *
-     * @param least the least value returned
-     * @param bound the upper bound (exclusive)
-     * @return the next value
-     * @throws IllegalArgumentException if least greater than or equal to bound
-     */
-    public double nextDouble(double least, double bound) {
-        if (least >= bound)
-            throw new IllegalArgumentException();
-        return nextDouble() * (bound - least) + least;
-    }
-
     private static final long serialVersionUID = -5851777807851030925L;
 }
