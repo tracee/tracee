@@ -110,9 +110,9 @@
 		<!-- versions of test dependencies -->
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
-		<mockito.version>1.10.8</mockito.version>
-		<powermock.version>1.6.1</powermock.version>
-		<equalsverifier.version>1.6</equalsverifier.version>
+		<mockito.version>1.10.19</mockito.version>
+		<powermock.version>1.6.2</powermock.version>
+		<equalsverifier.version>1.7.2</equalsverifier.version>
 		<junit-benchmarks.version>0.7.2</junit-benchmarks.version>
 
 		<!-- dependency versions -->
