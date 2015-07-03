@@ -31,7 +31,7 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 
 	TraceeContainerFilter(TraceeBackend backend) {
 		this.backend = backend;
-		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
+		this.transportSerialization = new HttpHeaderTransport();
 	}
 
 	/**

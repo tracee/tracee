@@ -19,26 +19,23 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_INB
 import static io.tracee.configuration.TraceeFilterConfiguration.Profile.HIDE_OUTBOUND;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MDCLikeTraceeBackendTest {
+public class BackendBaseTest {
 
 	@SuppressWarnings("unchecked")
 	private final ThreadLocal<Set<String>> traceeKeysMock = (ThreadLocal<Set<String>>) mock(ThreadLocal.class);
 
 	private final HashSet<String> traceeKeysSet = Mockito.spy(new HashSet<String>());
 
-	private final TraceeLoggerFactory loggerFactory = mock(TraceeLoggerFactory.class);
 
-	private final TestBackend unit = new TestBackend(traceeKeysMock, loggerFactory);
+	private final TestBackend unit = new TestBackend(traceeKeysMock);
 
 	@Before
 	public void setUpMocks() {
 		when(traceeKeysMock.get()).thenReturn(traceeKeysSet);
-		when(loggerFactory.getLogger(any(Class.class))).thenReturn(mock(TraceeLogger.class));
 	}
 
 	@Test
@@ -250,27 +247,87 @@ public class MDCLikeTraceeBackendTest {
 		assertThat(unit.getConfiguration(HIDE_INBOUND), is(not(sameInstance(hideInboundConfiguration))));
 	}
 
-	class TestBackend extends MDCLikeTraceeBackend {
+	class TestBackend extends BackendBase {
 
+		protected final ThreadLocal<Set<String>> traceeKeys;
 		public Map<String, String> contextMap = new HashMap<String, String>();
 
-		protected TestBackend(ThreadLocal<Set<String>> traceeKeys, TraceeLoggerFactory loggerFactory) {
-			super(traceeKeys, loggerFactory);
+		protected TestBackend(ThreadLocal<Set<String>> traceeKeys) {
+			this.traceeKeys = traceeKeys;
 		}
 
 		@Override
-		protected String getFromMdc(String key) {
-			return contextMap.get(key);
-		}
+        public boolean containsKey(String key) {
+			return key != null && traceeKeys.get().contains(key) && contextMap.get(key) != null;
+        }
 
 		@Override
-		protected void putToMdc(String key, String value) {
+        public int size() {
+            return traceeKeys.get().size();
+        }
+
+		@Override
+        public boolean isEmpty() {
+            return traceeKeys.get().isEmpty();
+        }
+
+		@Override
+        public String get(String key) {
+            if ((key != null) && traceeKeys.get().contains(key))
+				return contextMap.get(key);
+            else
+                return null;
+        }
+
+		@Override
+        public void put(String key, String value) {
+            if (key == null) throw new NullPointerException("null keys are not allowed.");
+            if (value == null) throw new NullPointerException("null values are not allowed.");
+            final Set<String> registeredKeys = traceeKeys.get();
+            if (!registeredKeys.contains(key)) {
+                registeredKeys.add(key);
+            }
 			contextMap.put(key, value);
 		}
 
 		@Override
-		protected void removeFromMdc(String key) {
-			contextMap.remove(key);
-		}
+        public void remove(String key) {
+            if (key == null) throw new NullPointerException("null keys are not allowed.");
+            if (traceeKeys.get().remove(key)) {
+				contextMap.remove(key);
+			}
+        }
+
+		/**
+         * Removes all tracee values from the underlying MDC and removes the thread local traceeKeys set.
+         */
+        @Override
+        public void clear() {
+            final Set<String> keys = new HashSet<String>(traceeKeys.get());
+            for (String key : keys) {
+                remove(key);
+            }
+            traceeKeys.remove();
+        }
+
+		@Override
+        public void putAll(Map<? extends String, ? extends String> entries) {
+            for (Map.Entry<? extends String, ? extends String> entry : entries.entrySet()) {
+                put(entry.getKey(), entry.getValue());
+            }
+        }
+
+		@Override
+        public Map<String, String> copyToMap() {
+            final Map<String, String> traceeMap = new HashMap<String, String>();
+            final Set<String> keys = traceeKeys.get();
+            for (String traceeKey : keys) {
+				final String value = contextMap.get(traceeKey);
+                if (value != null) {
+                    traceeMap.put(traceeKey, value);
+                }
+            }
+            return traceeMap;
+        }
 	}
 }

@@ -52,7 +52,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	}
 
 	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, String profile) {
-		this(delegate, backend, new HttpHeaderTransport(backend.getLoggerFactory()), profile);
+		this(delegate, backend, new HttpHeaderTransport(), profile);
 	}
 
 	public TraceeHttpClientDecorator(HttpClient delegate, String profile) {
@@ -121,36 +121,43 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public synchronized void setStrictMode(boolean strictMode) {
 		delegate.setStrictMode(strictMode);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public synchronized boolean isStrictMode() {
 		return delegate.isStrictMode();
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public synchronized void setTimeout(int newTimeoutInMilliseconds) {
 		delegate.setTimeout(newTimeoutInMilliseconds);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public synchronized void setHttpConnectionFactoryTimeout(long timeout) {
 		delegate.setHttpConnectionFactoryTimeout(timeout);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public synchronized void setConnectionTimeout(int newTimeoutInMilliseconds) {
 		delegate.setConnectionTimeout(newTimeoutInMilliseconds);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public String getHost() {
 		return delegate.getHost();
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getPort() {
 		return delegate.getPort();
 	}

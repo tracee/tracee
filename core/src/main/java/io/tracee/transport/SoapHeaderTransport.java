@@ -1,10 +1,9 @@
 package io.tracee.transport;
 
-import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
-import io.tracee.TraceeLogger;
-import io.tracee.TraceeLoggerFactory;
 import io.tracee.transport.jaxb.TpicMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -26,14 +25,10 @@ public class SoapHeaderTransport {
 	private static final ElementUnmarshaller ELEMENT_UNMARSHALLER = new ElementUnmarshaller();
 	private static final SourceUnmarshaller SOURCE_UNMARSHALLER = new SourceUnmarshaller();
 	private final JAXBContext jaxbContext;
-	private final TraceeLogger logger;
+	private final Logger logger = LoggerFactory.getLogger(SoapHeaderTransport.class);
+
 
 	public SoapHeaderTransport() {
-		this(Tracee.getBackend().getLoggerFactory());
-	}
-
-	public SoapHeaderTransport(TraceeLoggerFactory loggerFactory) {
-		this.logger = loggerFactory.getLogger(HttpHeaderTransport.class);
 		try {
 			jaxbContext = JAXBContext.newInstance(TpicMap.class);
 		} catch (JAXBException e) {

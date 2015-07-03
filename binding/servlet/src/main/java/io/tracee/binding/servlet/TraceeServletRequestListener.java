@@ -35,7 +35,7 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 	}
 
 	public TraceeServletRequestListener() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(Tracee.getBackend().getLoggerFactory()));
+		this(Tracee.getBackend(), new HttpHeaderTransport());
 	}
 
 	@Override

@@ -16,20 +16,24 @@
     <description>Please refer to https://github.com/tracee/tracee.</description>
 
     <dependencies>
-        <dependency>
-            <artifactId>tracee-api</artifactId>
-            <groupId>io.tracee</groupId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>tracee-core</artifactId>
-            <groupId>io.tracee</groupId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.tracee</groupId>
+			<artifactId>tracee-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
         <dependency>
             <groupId>javax.xml.ws</groupId>
             <artifactId>jaxws-api</artifactId>
         </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
         <dependency>
             <groupId>io.tracee.backend</groupId>
             <artifactId>tracee-threadlocal-store</artifactId>

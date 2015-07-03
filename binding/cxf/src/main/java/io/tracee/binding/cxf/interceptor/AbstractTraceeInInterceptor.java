@@ -2,7 +2,6 @@ package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.TraceeLogger;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 import io.tracee.transport.SoapHeaderTransport;
@@ -11,6 +10,8 @@ import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import java.util.List;
@@ -20,7 +21,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 
 	protected final TraceeBackend backend;
 
-	private final TraceeLogger LOGGER;
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeInInterceptor.class);
 
 	private final HttpHeaderTransport httpJsonSerializer;
 	private final SoapHeaderTransport httpSoapSerializer;
@@ -34,9 +35,8 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
-		this.LOGGER = backend.getLoggerFactory().getLogger(this.getClass());
 		this.profile = profile;
-		this.httpJsonSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
+		this.httpJsonSerializer = new HttpHeaderTransport();
 		this.httpSoapSerializer = new SoapHeaderTransport();
 	}
 

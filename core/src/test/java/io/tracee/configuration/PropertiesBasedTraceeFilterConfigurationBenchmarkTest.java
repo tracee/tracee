@@ -6,8 +6,6 @@ import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
-import io.tracee.SimpleTraceeBackend;
-import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -31,8 +29,6 @@ public class PropertiesBasedTraceeFilterConfigurationBenchmarkTest {
 	@Rule
 	public TestRule benchmarkRun = new BenchmarkRule();
 
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-
 	public static final TraceeFilterConfiguration.Channel CHANNEL = TraceeFilterConfiguration.Channel.IncomingRequest;
 	private PropertiesBasedTraceeFilterConfiguration unit;
 
@@ -44,7 +40,7 @@ public class PropertiesBasedTraceeFilterConfigurationBenchmarkTest {
 		final Properties traceeFileProperties = new TraceePropertiesFileLoader().loadTraceeProperties(TraceePropertiesFileLoader.TRACEE_PROPERTIES_FILE);
 		final PropertyChain propertyChain = PropertyChain.build(System.getProperties(), traceeFileProperties, traceeDefaultFileProperties);
 
-		unit = new PropertiesBasedTraceeFilterConfiguration(backend.getLoggerFactory(), propertyChain);
+		unit = new PropertiesBasedTraceeFilterConfiguration(propertyChain);
 		generateTestPropertyMap();
 		System.clearProperty(PropertiesBasedTraceeFilterConfiguration.TRACEE_DEFAULT_PROFILE_PREFIX + CHANNEL);
 	}

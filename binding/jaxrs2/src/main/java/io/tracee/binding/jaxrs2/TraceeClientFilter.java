@@ -29,7 +29,7 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 
 	TraceeClientFilter(TraceeBackend backend) {
 		this.backend = backend;
-		this.transportSerialization = new HttpHeaderTransport(backend.getLoggerFactory());
+		this.transportSerialization = new HttpHeaderTransport();
 	}
 
 	/**

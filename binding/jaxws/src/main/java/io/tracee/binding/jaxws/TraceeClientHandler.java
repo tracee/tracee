@@ -2,8 +2,9 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.TraceeLogger;
 import io.tracee.transport.SoapHeaderTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
@@ -16,7 +17,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 
 public class TraceeClientHandler extends AbstractTraceeHandler {
 
-	private final TraceeLogger traceeLogger;
+	private static final Logger logger = LoggerFactory.getLogger(TraceeClientHandler.class);
 
 	private final SoapHeaderTransport transportSerialization = new SoapHeaderTransport();
 
@@ -26,7 +27,6 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
 	public TraceeClientHandler(TraceeBackend traceeBackend) {
 		super(traceeBackend);
-		traceeLogger = traceeBackend.getLoggerFactory().getLogger(TraceeClientHandler.class);
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 					traceeBackend.putAll(traceeBackend.getConfiguration().filterDeniedParams(parsedContext, OutgoingRequest));
 				}
 			} catch (final SOAPException e) {
-				traceeLogger.warn("Error during precessing of inbound soap header: " + e.getMessage());
-				if (traceeLogger.isDebugEnabled()) {
-					traceeLogger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
+				logger.warn("Error during precessing of inbound soap header: " + e.getMessage());
+				if (logger.isDebugEnabled()) {
+					logger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
 				}
 			}
 		}
@@ -68,7 +68,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 
 				msg.saveChanges();
 			} catch (final SOAPException e) {
-				traceeLogger.warn("TraceeClientHandler : Exception occurred during processing of outbound message.", e);
+				logger.warn("TraceeClientHandler : Exception occurred during processing of outbound message.", e);
 			}
 		}
 	}

@@ -39,7 +39,12 @@ public final class Tracee {
 			throw new TraceeException("Unable to load available backend providers", e);
 		}
 		if (backendProviders.isEmpty()) {
-			throw new TraceeException("Unable to find a TracEE backend provider. Make sure that you have an implementation on the classpath.");
+			final Set<TraceeBackendProvider> defaultProvider = resolver.getDefaultTraceeBackendProvider();
+			if (defaultProvider.isEmpty()) {
+				throw new TraceeException("Unable to find a TracEE backend provider. Make sure that you have " +
+						"tracee-core (for slf4j) or any other backend implementation on the classpath.");
+			}
+			return defaultProvider.iterator().next().provideBackend();
 		}
 		if (backendProviders.size() > 1) {
 			final List<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());

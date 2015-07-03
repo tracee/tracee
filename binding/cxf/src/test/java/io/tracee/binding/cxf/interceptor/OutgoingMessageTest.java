@@ -31,7 +31,7 @@ public class OutgoingMessageTest {
 	public void onSetup() throws Exception {
 		backend.clear();
 		outInterceptor = new TraceeResponseOutInterceptor(backend);
-		httpSerializer = new HttpHeaderTransport(backend.getLoggerFactory());
+		httpSerializer = new HttpHeaderTransport();
 	}
 
 	@Test
