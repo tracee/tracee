@@ -48,12 +48,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.tracee.backend</groupId>
-			<artifactId>tracee-slf4j</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.tracee.binding</groupId>
 			<artifactId>tracee-jaxws</artifactId>
 			<version>${project.version}</version>
