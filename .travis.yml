@@ -5,6 +5,9 @@ cache:
   - $HOME/.m2
 jdk:
 - openjdk6
+- openjdk7
+- openjdk8
+
 #install: mvn install -DskipTests=true -q
 
 # Run build and push build to https://scan.coverity.com/
