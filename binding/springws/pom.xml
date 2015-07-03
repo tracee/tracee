@@ -10,6 +10,7 @@
 
 	<groupId>io.tracee.binding</groupId>
 	<artifactId>tracee-springws</artifactId>
+	<packaging>bundle</packaging>
 
 	<name>tracee-springws</name>
 	<description>Please refer to https://github.com/tracee/tracee.</description>
