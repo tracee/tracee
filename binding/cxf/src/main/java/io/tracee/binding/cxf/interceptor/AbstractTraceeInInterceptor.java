@@ -49,10 +49,14 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 
 			LOGGER.debug("Interceptor handles message!");
 			if (filterConfiguration.shouldProcessContext(channel)) {
-				if (message instanceof SoapMessage) {
-					handleSoapMessage((SoapMessage) message, filterConfiguration);
-				} else {
+				if (Boolean.TRUE == message.getExchange().get(Message.REST_MESSAGE)) {
 					handleHttpMessage(message, filterConfiguration);
+				} else {
+					try {
+						handleSoapMessage((SoapMessage) message, filterConfiguration);
+					} catch (NoClassDefFoundError e) {
+						LOGGER.error("Should handle SOAP-message but it seems that cxf soap dependency is not on the classpath. Unable to parse Tracee-Headers: {}", e.getMessage(), e);
+					}
 				}
 			}
 		}

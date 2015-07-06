@@ -6,6 +6,7 @@ import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
 
 import org.apache.cxf.helpers.CastUtils;
+import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
@@ -16,6 +17,10 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class OutgoingMessageTest {
 
@@ -23,7 +28,7 @@ public class OutgoingMessageTest {
 
 	private AbstractTraceeOutInterceptor outInterceptor;
 
-	private final MessageImpl message = new MessageImpl();
+	private final MessageImpl message = spy(new MessageImpl());
 
 	private HttpHeaderTransport httpSerializer;
 
@@ -32,6 +37,9 @@ public class OutgoingMessageTest {
 		backend.clear();
 		outInterceptor = new TraceeResponseOutInterceptor(backend);
 		httpSerializer = new HttpHeaderTransport();
+
+		when(message.getExchange()).thenReturn(mock(Exchange.class));
+		when(message.getExchange().get(eq(Message.REST_MESSAGE))).thenReturn(Boolean.TRUE);
 	}
 
 	@Test
