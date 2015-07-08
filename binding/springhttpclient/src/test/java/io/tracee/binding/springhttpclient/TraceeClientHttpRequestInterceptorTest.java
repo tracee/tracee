@@ -1,6 +1,8 @@
 package io.tracee.binding.springhttpclient;
 
 import io.tracee.*;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.HttpHeaderTransport;
 
 import org.hamcrest.*;

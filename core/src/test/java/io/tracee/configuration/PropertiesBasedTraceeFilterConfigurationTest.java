@@ -1,6 +1,6 @@
 package io.tracee.configuration;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import org.junit.Test;
 import org.mockito.Mockito;

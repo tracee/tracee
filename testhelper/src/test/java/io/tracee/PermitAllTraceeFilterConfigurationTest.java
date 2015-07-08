@@ -1,5 +1,6 @@
 package io.tracee;
 
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 

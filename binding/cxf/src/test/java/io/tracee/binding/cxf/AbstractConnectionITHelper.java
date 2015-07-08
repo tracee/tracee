@@ -1,7 +1,7 @@
 package io.tracee.binding.cxf;
 
-import io.tracee.PortUtil;
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.PortUtil;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.binding.cxf.testSoapService.HelloWorldTestServiceImpl;
 import org.apache.cxf.bus.CXFBusFactory;
 import org.apache.cxf.endpoint.Server;

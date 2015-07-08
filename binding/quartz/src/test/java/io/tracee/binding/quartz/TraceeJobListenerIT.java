@@ -1,6 +1,6 @@
 package io.tracee.binding.quartz;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.junit.After;

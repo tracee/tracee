@@ -1,12 +1,11 @@
 package io.tracee.binding.springws;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ws.WebServiceMessage;
-import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
@@ -14,19 +13,15 @@ import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.tracee.TraceeConstants.SOAP_HEADER_QNAME;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

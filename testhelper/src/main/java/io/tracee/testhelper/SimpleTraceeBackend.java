@@ -1,5 +1,7 @@
-package io.tracee;
+package io.tracee.testhelper;
 
+import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 
 import java.util.Collections;

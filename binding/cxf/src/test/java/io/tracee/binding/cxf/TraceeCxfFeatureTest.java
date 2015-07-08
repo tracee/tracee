@@ -1,6 +1,6 @@
 package io.tracee.binding.cxf;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.InterceptorProvider;
 import org.junit.Before;
