@@ -1,6 +1,6 @@
 package io.tracee.binding.springws.itest;
 
-import io.tracee.PortUtil;
+import io.tracee.testhelper.PortUtil;
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import io.tracee.binding.springws.itest.testservice.JaxwsTestserviceEndpoint;
@@ -14,8 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.Endpoint;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;

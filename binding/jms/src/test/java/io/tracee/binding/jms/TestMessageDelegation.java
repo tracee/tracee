@@ -1,6 +1,6 @@
 package io.tracee.binding.jms;
 
-import io.tracee.DelegationTestUtil;
+import io.tracee.testhelper.DelegationTestUtil;
 import org.junit.Test;
 
 import javax.jms.MessageProducer;

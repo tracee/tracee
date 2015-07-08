@@ -1,5 +1,7 @@
 package io.tracee;
 
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.Test;
 
 import java.util.regex.Pattern;

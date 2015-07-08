@@ -2,6 +2,8 @@ package io.tracee.binding.springmvc;
 
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.EmptyEnumeration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;

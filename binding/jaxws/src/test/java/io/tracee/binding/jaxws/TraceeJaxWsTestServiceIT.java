@@ -1,7 +1,7 @@
 package io.tracee.binding.jaxws;
 
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import org.junit.AfterClass;

@@ -1,6 +1,6 @@
 package io.tracee.binding.jms;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,21 +1,20 @@
 package io.tracee.binding.httpclient;
 
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import static io.tracee.DelegationTestUtil.assertDelegationToSpy;
+import static io.tracee.testhelper.DelegationTestUtil.assertDelegationToSpy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;

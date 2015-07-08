@@ -1,6 +1,6 @@
 package io.tracee.binding.httpcomponents;
 
-import io.tracee.SimpleTraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
