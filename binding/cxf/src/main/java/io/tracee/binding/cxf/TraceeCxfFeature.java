@@ -2,7 +2,11 @@ package io.tracee.binding.cxf;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.binding.cxf.interceptor.*;
+import io.tracee.binding.cxf.interceptor.TraceeRequestInInterceptor;
+import io.tracee.binding.cxf.interceptor.TraceeRequestOutInterceptor;
+import io.tracee.binding.cxf.interceptor.TraceeResponseInInterceptor;
+import io.tracee.binding.cxf.interceptor.TraceeResponseOutInterceptor;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.Bus;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.interceptor.InterceptorProvider;
@@ -13,15 +17,16 @@ public class TraceeCxfFeature extends AbstractFeature {
 	private TraceeBackend backend;
 
 	public TraceeCxfFeature() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), Profile.DEFAULT);
 	}
 
-	public TraceeCxfFeature(TraceeBackend backend) {
+	TraceeCxfFeature(TraceeBackend backend, String profile) {
 		this.backend = backend;
+		this.profile = profile;
 	}
 
 	public TraceeCxfFeature(String profile) {
-		this.profile = profile;
+		this(Tracee.getBackend(), profile);
 	}
 
 	@Override

@@ -43,10 +43,8 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 				traceeBackend.putAll(filteredContext);
 			}
 		} catch (final SOAPException e) {
-			logger.warn("Error during precessing of inbound soap header: " + e.getMessage());
-			if (logger.isDebugEnabled()) {
-				logger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
-			}
+			logger.warn("Error during precessing of inbound soap header: {}", e.getMessage());
+			logger.debug("Detailed: Error during precessing of inbound soap header: {}", e.getMessage(), e);
 		}
 
 		Utilities.generateInvocationIdIfNecessary(traceeBackend);
@@ -69,9 +67,7 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
 		} catch (final SOAPException e) {
 			logger.error("TraceeServerHandler : Exception occurred during processing of outbound message.");
-			if (logger.isDebugEnabled()) {
-				logger.debug("TraceeServerHandler : Exception occurred during processing of outbound message.", e);
-			}
+			logger.debug("Detailed: TraceeServerHandler : Exception occurred during processing of outbound message: {}", e.getMessage(), e);
 		} finally {
 			// must reset tracee context
 			traceeBackend.clear();

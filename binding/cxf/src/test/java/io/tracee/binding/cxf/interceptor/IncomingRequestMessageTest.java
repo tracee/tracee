@@ -1,5 +1,6 @@
 package io.tracee.binding.cxf.interceptor;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -25,16 +27,15 @@ import static org.mockito.Mockito.when;
 
 public class IncomingRequestMessageTest {
 
-	private AbstractTraceeInInterceptor unit;
-
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+
+	private TraceeRequestInInterceptor unit = new TraceeRequestInInterceptor(backend);;
 
 	private final MessageImpl message = spy(new MessageImpl());
 
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		unit = new TraceeRequestInInterceptor(backend);
 
 		when(message.getExchange()).thenReturn(mock(Exchange.class));
 		when(message.getExchange().get(eq(Message.REST_MESSAGE))).thenReturn(Boolean.TRUE);
@@ -59,5 +60,11 @@ public class IncomingRequestMessageTest {
 	public void generateInvocationIdUponRequest() {
 		unit.handleMessage(message);
 		assertThat(backend.copyToMap(), hasKey(TraceeConstants.INVOCATION_ID_KEY));
+	}
+
+	@Test
+	public void onIncomingRequestMessagesIamNotTheRequestor() {
+		when(message.get(eq(Message.REQUESTOR_ROLE))).thenReturn(Boolean.FALSE);
+		assertThat(unit.shouldHandleMessage(message), is(true));
 	}
 }

@@ -1,5 +1,7 @@
 package io.tracee.binding.quartz;
 
+import io.tracee.Tracee;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
@@ -57,5 +59,23 @@ public class TraceeContextInjectorTest {
 		unit.injectContext(jobDetail);
 		assertThat(jobDetail.getJobDataMap(), hasKey(TPIC_HEADER));
 		assertThat((Map<String, String>) jobDetail.getJobDataMap().get(TPIC_HEADER), hasEntry("testKey", "testValue"));
+	}
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeContextInjector injector = new TraceeContextInjector();
+		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is(Profile.DEFAULT));
+	}
+
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeContextInjector injector = new TraceeContextInjector();
+		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(injector, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeContextInjector injector = new TraceeContextInjector("testProf");
+		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is("testProf"));
 	}
 }

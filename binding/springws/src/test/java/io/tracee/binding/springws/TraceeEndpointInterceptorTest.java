@@ -1,15 +1,20 @@
 package io.tracee.binding.springws;
 
+import io.tracee.Tracee;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.SoapHeaderTransport;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
+import org.springframework.ws.soap.SoapHeaderException;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
@@ -98,6 +103,16 @@ public class TraceeEndpointInterceptorTest {
 	}
 
 	@Test
+	public void handleSoapHeaderExceptionGraceful() {
+		final SoapHeader soapHeader = mock(SoapHeader.class);
+		when(soapHeader.examineHeaderElements(eq(SOAP_HEADER_QNAME))).thenThrow(new SoapHeaderException("test exception"));
+		when(((SoapMessage) messageContext.getRequest()).getSoapHeader()).thenReturn(soapHeader);
+		unit.handleRequest(messageContext, new Object());
+		assertThat(backend.size(), is(1));
+		assertThat(backend.copyToMap(), hasKey(INVOCATION_ID_KEY));
+	}
+
+	@Test
 	public void doNotAddTpicHeaderToResponseIfBackendIsEmpty() throws Exception {
 		unit.handleRequest(messageContext, new Object());
 		verify(((SoapMessage) messageContext.getResponse()).getSoapHeader(), never()).addHeaderElement(eq(SOAP_HEADER_QNAME));
@@ -145,5 +160,23 @@ public class TraceeEndpointInterceptorTest {
 		when(messageContext.getResponse()).thenReturn(mock(WebServiceMessage.class));
 		unit.handleResponse(messageContext, new Object());
 		assertThat(backend.isEmpty(), is(true));
+	}
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor();
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+	}
+
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor("testProf");
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
 	}
 }

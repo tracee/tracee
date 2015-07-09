@@ -1,7 +1,12 @@
 package io.tracee.binding.jms;
 
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -59,5 +64,11 @@ public class TraceeMessageListenerTest {
 		public void onMessage(Message message) {
 			assertThat(backend.get("contextFromMessage"), is("yes"));
 		}
+	}
+
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeMessageListener listener = new TraceeMessageListener();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(listener, "backend"), is(Tracee.getBackend()));
 	}
 }

@@ -1,6 +1,8 @@
 package io.tracee.binding.springhttpclient;
 
 import io.tracee.*;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.HttpHeaderTransport;
@@ -50,7 +52,6 @@ public class TraceeClientHttpRequestInterceptorTest {
 				return new SimpleClientHttpResponse(HttpStatus.NO_CONTENT, "yawn", headers);
 			}
 		});
-
 	}
 
 	@Test
@@ -77,6 +78,22 @@ public class TraceeClientHttpRequestInterceptorTest {
 		};
 	}
 
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor();
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+	}
 
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor("testProf");
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
+	}
 
 }

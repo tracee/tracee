@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -20,7 +21,7 @@ public class TraceeHttpRequestInterceptor implements HttpRequestInterceptor {
 	private final String profile;
 
 	public TraceeHttpRequestInterceptor() {
-		this(null);
+		this(Profile.DEFAULT);
 	}
 
 	public TraceeHttpRequestInterceptor(String profile) {

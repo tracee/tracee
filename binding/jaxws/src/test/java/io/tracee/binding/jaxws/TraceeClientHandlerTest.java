@@ -66,7 +66,7 @@ public class TraceeClientHandlerTest {
 
 	@Test
 	public void catchExceptionOnReadTpicHeader() throws SOAPException {
-		when(message.getSOAPHeader()).thenThrow(SOAPException.class);
+		when(message.getSOAPHeader()).thenThrow(new SOAPException());
 		unit.handleIncoming(messageContext);
 		assertThat(backend.isEmpty(), is(true));
 	}

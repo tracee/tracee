@@ -3,9 +3,13 @@ package io.tracee.binding.springrabbitmq;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.LongString;
+import io.tracee.Tracee;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.springframework.amqp.core.MessageProperties;
 
@@ -79,6 +83,24 @@ public class TraceeMessagePropertiesConverterTest {
 		assertThat(backend.copyToMap(), hasEntry("inClientBeforeRequest", "true"));
 		assertThat(backend.copyToMap(), hasKey(INVOCATION_ID_KEY));
 		assertThat(backend.size(), is(2));
+	}
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter();
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(converter, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+	}
+
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(converter, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter("testProf");
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(converter, "profile"), is("testProf"));
 	}
 
 	private AMQP.BasicProperties createRabbitHeaderWith(final String key, final Object value) {

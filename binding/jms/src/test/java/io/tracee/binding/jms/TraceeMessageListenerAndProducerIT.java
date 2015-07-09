@@ -28,14 +28,13 @@ public class TraceeMessageListenerAndProducerIT {
     @Resource(name = "Response")
     private Queue responses;
 
+	private EJBContainer container;
 
     @Before
     public void initContainer() throws Exception {
         container = EJBContainer.createEJBContainer();
         container.getContext().bind("inject", this);
     }
-
-    private EJBContainer container;
 
     @After
     public void clearTraceeCtx() throws NamingException {
@@ -50,27 +49,28 @@ public class TraceeMessageListenerAndProducerIT {
         Tracee.getBackend().put("foo", "bar");
 
         final Connection connection = connectionFactory.createConnection();
-        connection.start();
-        final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        final MessageConsumer consumer = session.createConsumer(responses);
+		try {
+			connection.start();
+			final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);;
+			try {
+				final MessageConsumer consumer = session.createConsumer(responses);
 
-        final TextMessage textMessage = session.createTextMessage("foo");
-        final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(mdb));
-        producer.setDeliveryMode(DeliveryMode.PERSISTENT);
-        producer.send(textMessage);
+				final TextMessage textMessage = session.createTextMessage("foo");
+				final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(mdb));
+				producer.setDeliveryMode(DeliveryMode.PERSISTENT);
+				producer.send(textMessage);
 
-        final TextMessage response = (TextMessage) consumer.receive(1000);
+				final TextMessage response = (TextMessage) consumer.receive(1000);
 
-        assertThat("response within 1 second", response, notNullValue());
-        assertThat(response.getText(), equalTo("foo"));
-        final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.TPIC_HEADER);
-        assertThat(traceeContext, Matchers.hasEntry("foo", "bar"));
-
-        session.close();
-        connection.close();
-
-
+				assertThat("response within 1 second", response, notNullValue());
+				assertThat(response.getText(), equalTo("foo"));
+				final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.TPIC_HEADER);
+				assertThat(traceeContext, Matchers.hasEntry("foo", "bar"));
+			} finally {
+				session.close();
+			}
+		} finally {
+			connection.close();
+		}
     }
-
-
 }

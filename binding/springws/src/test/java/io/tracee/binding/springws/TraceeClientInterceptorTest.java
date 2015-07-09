@@ -1,8 +1,13 @@
 package io.tracee.binding.springws;
 
+import io.tracee.Tracee;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ws.WebServiceMessage;
@@ -141,5 +146,23 @@ public class TraceeClientInterceptorTest {
 		when(messageContext.getResponse()).thenReturn(mock(WebServiceMessage.class));
 		unit.handleResponse(messageContext);
 		assertThat(backend.isEmpty(), is(true));
+	}
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeClientInterceptor interceptor = new TraceeClientInterceptor();
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(Profile.DEFAULT));
+	}
+
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeClientInterceptor interceptor = new TraceeClientInterceptor();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeClientInterceptor interceptor = new TraceeClientInterceptor("testProf");
+		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
 	}
 }

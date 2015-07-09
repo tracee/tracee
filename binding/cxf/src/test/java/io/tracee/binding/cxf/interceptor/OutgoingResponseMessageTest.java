@@ -22,11 +22,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class OutgoingMessageTest {
+public class OutgoingResponseMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private AbstractTraceeOutInterceptor outInterceptor;
+	private TraceeResponseOutInterceptor outInterceptor;
 
 	private final MessageImpl message = spy(new MessageImpl());
 
