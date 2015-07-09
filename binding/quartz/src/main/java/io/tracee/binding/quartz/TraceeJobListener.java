@@ -44,6 +44,7 @@ public class TraceeJobListener extends JobListenerSupport {
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 
 		if (configuration.shouldProcessContext(AsyncProcess)) {
+			@SuppressWarnings("unchecked")
 			final Map<String, String> traceeContext = (Map<String, String>) context.getMergedJobDataMap().get(TraceeConstants.TPIC_HEADER);
 
 			if (traceeContext != null && !traceeContext.isEmpty()) {
