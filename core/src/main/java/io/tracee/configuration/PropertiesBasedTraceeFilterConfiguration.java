@@ -150,7 +150,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		return unmodPatterns;
 	}
 
-	private List<Pattern> extractPatterns(final String propertyValue) {
+	List<Pattern> extractPatterns(final String propertyValue) {
 		if (propertyValue == null)
 			return Collections.emptyList();
 
