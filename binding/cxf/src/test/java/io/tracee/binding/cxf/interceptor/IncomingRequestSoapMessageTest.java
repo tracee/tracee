@@ -8,6 +8,7 @@ import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.databinding.DataWriter;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.jaxb.JAXBDataBinding;
+import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,9 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class IncomingRequestSoapMessageTest {
 
@@ -33,12 +37,14 @@ public class IncomingRequestSoapMessageTest {
 
 	private AbstractTraceeInInterceptor inInterceptor;
 
-	private final SoapMessage soapMessage = new SoapMessage(new MessageImpl());
+	private final SoapMessage soapMessage = spy(new SoapMessage(new MessageImpl()));
 
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
 		inInterceptor = new TraceeRequestInInterceptor(backend);
+
+		when(soapMessage.getExchange()).thenReturn(mock(Exchange.class));
 	}
 
 	@Test
@@ -55,6 +61,8 @@ public class IncomingRequestSoapMessageTest {
 
 		inInterceptor.handleMessage(soapMessage);
 		assertThat(backend.copyToMap(), not(hasKey("mySoapKey")));
+
+		when(soapMessage.getExchange()).thenReturn(mock(Exchange.class));
 	}
 
 	@Test

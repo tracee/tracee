@@ -7,8 +7,10 @@ import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.interceptor.Interceptor;
+import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
@@ -21,13 +23,20 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class OutgoingSoapMessageTest {
 
 	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final Interceptor<Message> outInterceptor = new TraceeResponseOutInterceptor(backend);
-	private final SoapMessage soapMessage = new SoapMessage(new MessageImpl());
+	private final SoapMessage soapMessage = spy(new SoapMessage(new MessageImpl()));
 
+	@Before
+	public void before() {
+		when(soapMessage.getExchange()).thenReturn(mock(Exchange.class));
+	}
 
 	@Test
 	public void shouldHandleSoapMessageWithoutSoapHeader() {
@@ -53,5 +62,4 @@ public class OutgoingSoapMessageTest {
 		outInterceptor.handleMessage(soapMessage);
 		assertThat(backend.copyToMap(), equalTo(Collections.<String,String>emptyMap()));
 	}
-
 }

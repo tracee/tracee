@@ -47,20 +47,23 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
 				LOGGER.debug("Interceptor handles message!");
-                if (message instanceof SoapMessage) {
-                    final SoapMessage soapMessage = (SoapMessage) message;
+				if (Boolean.TRUE == message.getExchange().get(Message.REST_MESSAGE)) {
+					Map<String, List<String>> responseHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
+					if (responseHeaders == null) {
+						responseHeaders = new HashMap<String, List<String>>();
+						message.put(Message.PROTOCOL_HEADERS, responseHeaders);
+					}
 
-                    addSoapHeader(filteredParams, soapMessage);
-                } else {
-                    Map<String, List<String>> responseHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
-                    if (responseHeaders == null) {
-                        responseHeaders = new HashMap<String, List<String>>();
-                        message.put(Message.PROTOCOL_HEADERS, responseHeaders);
-                    }
-
-                    final String contextAsHeader = httpSerializer.render(filteredParams);
-                    responseHeaders.put(TraceeConstants.TPIC_HEADER, Collections.singletonList(contextAsHeader));
-                }
+					final String contextAsHeader = httpSerializer.render(filteredParams);
+					responseHeaders.put(TraceeConstants.TPIC_HEADER, Collections.singletonList(contextAsHeader));
+				} else {
+					try {
+						final SoapMessage soapMessage = (SoapMessage) message;
+						addSoapHeader(filteredParams, soapMessage);
+					} catch (NoClassDefFoundError e) {
+						LOGGER.error("Should handle SOAP-message but it seems that cxf soap dependency is not on the classpath. Unable to add Tracee-Headers: {}", e.getMessage(), e);
+					}
+				}
             }
 		}
 	}
