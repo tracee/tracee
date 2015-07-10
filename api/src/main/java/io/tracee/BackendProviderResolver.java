@@ -4,13 +4,21 @@ import io.tracee.spi.TraceeBackendProvider;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 class BackendProviderResolver {
 
 	// We should use weak references for our cache. otherwise we block class unloading.
-	private static volatile Map<ClassLoader, Set<TraceeBackendProvider>> providersPerClassloader =
-			new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
+	// This map is updated by the "copyOnWrite"-pattern. Don't update this map directly!
+	private static volatile Map<ClassLoader, Set<TraceeBackendProvider>> providersPerClassloader = new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
 
 	/**
 	 * Find correct backend provider for the current context classloader. If no context classloader is available, a
@@ -37,8 +45,10 @@ class BackendProviderResolver {
 	 */
 	Set<TraceeBackendProvider> getDefaultTraceeBackendProvider() {
 		try {
-			final Class<?> slf4jTraceeBackendProviderClass = Class.forName("io.tracee.backend.slf4j.Slf4jTraceeBackendProvider", true, GetClassLoader.fromContext());
-			final TraceeBackendProvider instance = (TraceeBackendProvider)slf4jTraceeBackendProviderClass.newInstance();
+			final ClassLoader classLoader = GetClassLoader.fromContext();
+			final Class<?> slf4jTraceeBackendProviderClass = Class.forName("io.tracee.backend.slf4j.Slf4jTraceeBackendProvider", true, classLoader);
+			final TraceeBackendProvider instance = (TraceeBackendProvider) slf4jTraceeBackendProviderClass.newInstance();
+			updatedCache(classLoader, Collections.singleton(instance));
 			return Collections.singleton(instance);
 		} catch (ClassNotFoundException cnfe) {
 			return Collections.emptySet();
@@ -85,8 +95,7 @@ class BackendProviderResolver {
 	 * Helper method to update the static class cache
 	 */
 	private void updatedCache(final ClassLoader classLoader, final Set<TraceeBackendProvider> provider) {
-		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap =
-				new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(providersPerClassloader);
+		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap = new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(providersPerClassloader);
 		if (!provider.isEmpty()) {
 			copyOnWriteMap.put(classLoader, new BackendProviderSet(provider));
 		} else {
