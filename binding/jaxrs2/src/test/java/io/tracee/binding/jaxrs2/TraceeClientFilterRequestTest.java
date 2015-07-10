@@ -1,8 +1,12 @@
 package io.tracee.binding.jaxrs2;
 
+import io.tracee.Tracee;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -37,7 +41,7 @@ public class TraceeClientFilterRequestTest {
         traceeBackend.put("foo", "bar");
         unit.filter(clientRequestContext);
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
-                containsString("foo=bar"));
+				containsString("foo=bar"));
     }
 
     @Test
@@ -56,4 +60,10 @@ public class TraceeClientFilterRequestTest {
         assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
                 containsString(TraceeConstants.INVOCATION_ID_KEY + "=foo"));
     }
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeClientFilter clientFilter = new TraceeClientFilter();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(clientFilter, "backend"), is(Tracee.getBackend()));
+	}
 }

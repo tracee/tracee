@@ -25,8 +25,8 @@ import static org.hamcrest.Matchers.equalTo;
 public class TraceeHttpInterceptorsIT {
 
 	private Server server;
-	private String serverEndpoint;
 
+	private String serverEndpoint;
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
@@ -48,7 +48,7 @@ public class TraceeHttpInterceptorsIT {
 		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		server.setHandler(requestHandler);
 		server.start();
-		serverEndpoint = "http://"+server.getConnectors()[0].getName();
+		serverEndpoint = "http://" + server.getConnectors()[0].getName();
 	}
 
 	private final Handler requestHandler = new AbstractHandler() {
@@ -71,5 +71,4 @@ public class TraceeHttpInterceptorsIT {
 			server.join();
 		}
 	}
-
 }

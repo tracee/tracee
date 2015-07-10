@@ -1,20 +1,18 @@
 package io.tracee.binding.cxf.interceptor;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
-import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Exchange;
-import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import javax.xml.bind.JAXBException;
-
 import java.util.Collections;
 import java.util.Map;
 
@@ -25,12 +23,14 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class OutgoingSoapMessageTest {
+public class OutgoingSoapResponseMessageTest {
 
 	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final Interceptor<Message> outInterceptor = new TraceeResponseOutInterceptor(backend);
+	private final TraceeResponseOutInterceptor outInterceptor = new TraceeResponseOutInterceptor(backend);
 	private final SoapMessage soapMessage = spy(new SoapMessage(new MessageImpl()));
 
 	@Before
@@ -60,6 +60,14 @@ public class OutgoingSoapMessageTest {
 	public void shouldClearTheBackendAfterHandleMessage() throws JAXBException {
 		backend.put("foo", "bar");
 		outInterceptor.handleMessage(soapMessage);
-		assertThat(backend.copyToMap(), equalTo(Collections.<String,String>emptyMap()));
+		assertThat(backend.copyToMap(), equalTo(Collections.<String, String>emptyMap()));
+	}
+
+	@Test
+	public void failWithoutExceptionIfSoapExtentionOfCxfIsNotOnClasspath() {
+		backend.put("test", "testVal");
+		when(soapMessage.getHeaders()).thenThrow(new NoClassDefFoundError());
+		outInterceptor.handleMessage(soapMessage);
+		verify(soapMessage, times(2)).getHeaders();
 	}
 }

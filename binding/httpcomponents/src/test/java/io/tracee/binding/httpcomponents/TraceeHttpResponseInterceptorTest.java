@@ -1,5 +1,9 @@
 package io.tracee.binding.httpcomponents;
 
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeConstants;
 import org.apache.http.HttpResponse;
@@ -11,6 +15,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 
 public class TraceeHttpResponseInterceptorTest {
@@ -26,5 +31,21 @@ public class TraceeHttpResponseInterceptorTest {
         assertThat(backend.get("foobi"), equalTo("bar"));
     }
 
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeHttpResponseInterceptor injector = new TraceeHttpResponseInterceptor();
+		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+	}
 
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeHttpResponseInterceptor injector = new TraceeHttpResponseInterceptor();
+		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(injector, "backend"), is(Tracee.getBackend()));
+	}
+
+	@Test
+	public void constructorStoresProfileNameInternal() {
+		final TraceeHttpResponseInterceptor injector = new TraceeHttpResponseInterceptor("testProf");
+		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is("testProf"));
+	}
 }

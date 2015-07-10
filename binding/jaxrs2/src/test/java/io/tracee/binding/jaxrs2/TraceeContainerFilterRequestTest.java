@@ -1,8 +1,12 @@
 package io.tracee.binding.jaxrs2;
 
+import io.tracee.Tracee;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -13,6 +17,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
@@ -50,4 +55,10 @@ public class TraceeContainerFilterRequestTest {
         unit.filter(requestContext);
         assertThat(backend.get(TraceeConstants.INVOCATION_ID_KEY), not(isEmptyOrNullString()));
     }
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeContainerFilter containerFilter = new TraceeContainerFilter();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(containerFilter, "backend"), is(Tracee.getBackend()));
+	}
 }

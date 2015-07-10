@@ -20,5 +20,4 @@ public final class TraceeMessageWriter {
     public static TopicPublisher wrap(TopicPublisher topicPublisher) {
         return new TraceeTopicPublisher(new TraceeMessageProducer(topicPublisher), topicPublisher);
     }
-
 }

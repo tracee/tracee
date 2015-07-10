@@ -13,16 +13,16 @@ public class TestMDB implements MessageListener {
     @Resource
     private ConnectionFactory connectionFactory;
 
-
     @Resource(name = "Response")
     private Queue responses;
 
     @Override
     public void onMessage(Message message) {
-        Connection connection = null;
-        Session session = null;
-        try {
-            final TextMessage incomingMessage = (TextMessage) message;
+		final TextMessage incomingMessage = (TextMessage) message;
+
+		Connection connection = null;
+		Session session = null;
+		try {
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

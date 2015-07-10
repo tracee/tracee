@@ -25,7 +25,6 @@ public class TraceeMessageProducerTest {
 	private final TraceeMessageProducer unit = new TraceeMessageProducer(messageProducer, backend);
 	private final Message message = mock(Message.class);
 
-
 	@Test
 	public void testWriteTraceeContextToMessage() throws Exception {
 		backend.put("random", "entry");

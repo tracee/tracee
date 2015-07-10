@@ -2,8 +2,11 @@ package io.tracee.binding.springmvc;
 
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.EmptyEnumeration;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -99,6 +104,7 @@ public class TraceeInterceptorTest {
 		unit.setProfileName("FOO");
 		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
 		verify(mockedBackend).getConfiguration("FOO");
+		assertThat(unit.getProfileName(), is("FOO"));
 	}
 
 	@Test
@@ -130,6 +136,12 @@ public class TraceeInterceptorTest {
 	public void shouldCleanupAfterProcessing() throws Exception {
 		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(mockedBackend).clear();
+	}
+
+	@Test
+	public void defaultConstructorUsesDefaultProfile() {
+		final TraceeInterceptor interceptor = new TraceeInterceptor();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
 	}
 
 	private TraceeBackend mockedBackend(TraceeFilterConfiguration filterConfiguration) {

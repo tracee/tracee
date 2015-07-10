@@ -15,14 +15,9 @@ import static org.mockito.Mockito.*;
 
 public class AbstractTraceeHandlerTest {
 
-	private TestTraceeHandler unit;
-
 	private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
 
-	@Before
-	public void setupMocks() {
-		unit = spy(new TestTraceeHandler(traceeBackend));
-	}
+	private TestTraceeHandler unit = spy(new TestTraceeHandler(traceeBackend));
 
 	@Test
 	public void shouldHandleOutgoingContextInOutgoingMethod() {
@@ -47,6 +42,13 @@ public class AbstractTraceeHandlerTest {
 		unit.handleMessage(messageContext);
 
 		verify(unit).handleIncoming(messageContext);
+	}
+
+	@Test
+	public void closeDoesNothing() {
+		final MessageContext context = mock(MessageContext.class);
+		unit.close(context);
+		verifyZeroInteractions(context, traceeBackend);
 	}
 
 	@Test

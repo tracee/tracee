@@ -48,9 +48,7 @@ public class TraceeClientHandler extends AbstractTraceeHandler {
 				}
 			} catch (final SOAPException e) {
 				logger.warn("Error during precessing of inbound soap header: " + e.getMessage());
-				if (logger.isDebugEnabled()) {
-					logger.debug("Error during precessing of inbound soap header: " + e.getMessage(), e);
-				}
+				logger.debug("Detailed: Error during precessing of inbound soap header: {}", e.getMessage(), e);
 			}
 		}
 	}

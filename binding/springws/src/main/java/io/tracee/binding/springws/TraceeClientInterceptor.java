@@ -2,6 +2,8 @@ package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
@@ -14,7 +16,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public final class TraceeClientInterceptor extends AbstractTraceeInterceptor implements ClientInterceptor{
 
 	public TraceeClientInterceptor() {
-		this(Tracee.getBackend(), null);
+		this(Tracee.getBackend(), Profile.DEFAULT);
 	}
 
 	public TraceeClientInterceptor(final String profile) {

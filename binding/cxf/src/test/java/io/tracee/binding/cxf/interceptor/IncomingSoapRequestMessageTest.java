@@ -1,8 +1,8 @@
 package io.tracee.binding.cxf.interceptor;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.databinding.DataWriter;
@@ -31,11 +31,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class IncomingRequestSoapMessageTest {
+public class IncomingSoapRequestMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private AbstractTraceeInInterceptor inInterceptor;
+	private TraceeRequestInInterceptor inInterceptor;
 
 	private final SoapMessage soapMessage = spy(new SoapMessage(new MessageImpl()));
 
@@ -78,13 +78,13 @@ public class IncomingRequestSoapMessageTest {
 	}
 
 	private Element render(Map<String, String> context) throws JAXBException, SOAPException {
-			final MessageFactory messageFactory = MessageFactory.newInstance();
+		final MessageFactory messageFactory = MessageFactory.newInstance();
 		final SOAPHeaderElement dummyContainerElement = messageFactory.createMessage().getSOAPHeader().addHeaderElement(new QName("http://test", "elem"));
 
 
 		DataWriter<Node> writer = new JAXBDataBinding(TpicMap.class).createWriter(Node.class);
-			writer.write(TpicMap.wrap(context), dummyContainerElement);
+		writer.write(TpicMap.wrap(context), dummyContainerElement);
 
-		return (Element)dummyContainerElement.getFirstChild();
+		return (Element) dummyContainerElement.getFirstChild();
 	}
 }

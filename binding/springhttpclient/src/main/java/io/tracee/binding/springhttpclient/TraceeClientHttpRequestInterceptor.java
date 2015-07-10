@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
 
 import org.springframework.http.HttpRequest;
@@ -25,7 +26,7 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 	private final String profile;
 
 	public TraceeClientHttpRequestInterceptor() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(), null);
+		this(Tracee.getBackend(), new HttpHeaderTransport(), Profile.DEFAULT);
 	}
 
 	public TraceeClientHttpRequestInterceptor(String profile) {

@@ -9,7 +9,7 @@ import javax.jms.TopicPublisher;
 
 import static org.mockito.Mockito.mock;
 
-public class TestMessageDelegation {
+public class MessageDelegationTest {
 
 	@Test
 	public void delegateTraceeMessageProducerToMessageProducer() {

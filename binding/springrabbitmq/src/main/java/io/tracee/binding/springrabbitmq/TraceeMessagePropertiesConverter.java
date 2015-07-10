@@ -6,6 +6,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.support.DefaultMessagePropertiesConverter;
 
@@ -22,7 +23,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 	private final String profile;
 
 	public TraceeMessagePropertiesConverter() {
-		this(Tracee.getBackend(), null);
+		this(Tracee.getBackend(), Profile.DEFAULT);
 	}
 
 	public TraceeMessagePropertiesConverter(String profile) {

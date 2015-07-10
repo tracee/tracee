@@ -74,7 +74,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 					new JAXBDataBinding(TpicMap.class));
 			soapMessage.getHeaders().add(tpicHeader);
 		} catch (JAXBException e) {
-			LOGGER.warn("Error occured during TracEE soap header creation: " + e.getMessage());
+			LOGGER.warn("Error occured during TracEE soap header creation: {}", e.getMessage());
 			LOGGER.debug("Detailed exception", e);
 		}
 	}

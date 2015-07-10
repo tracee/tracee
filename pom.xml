@@ -126,10 +126,16 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<configuration>
+					<instrumentation>
+						<ignoreTrivial>true</ignoreTrivial>
+					</instrumentation>
 					<formats>
 						<format>xml</format>
 						<format>html</format>
 					</formats>
+					<maxmem>256m</maxmem>
+					<!-- aggregated reports for multi-module projects -->
+					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -24,7 +24,7 @@ abstract class AbstractTraceeInterceptor {
 
 	protected final TraceeBackend backend;
 	protected static final Logger logger = LoggerFactory.getLogger(AbstractTraceeInterceptor.class);
-	protected String profile;
+	protected final String profile;
 
 	public AbstractTraceeInterceptor(final TraceeBackend backend, final String profile) {
 		this.backend = backend;
