@@ -93,6 +93,24 @@ public class SoapHeaderTransportTest {
 	}
 
 	@Test
+	public void skipRenderingIfContextIsNull() throws SOAPException {
+		final Map<String, String> context = null;
+		final SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+
+		unit.renderSoapHeader(context, soapHeader);
+		assertThat(soapHeader.getChildElements(TraceeConstants.SOAP_HEADER_QNAME).hasNext(), is(false));
+	}
+
+	@Test
+	public void parseTpicHeaderToEmptyMapIfNoTraceeHeaderIsPresent() throws SOAPException {
+		final Map<String, String> context = Collections.emptyMap();
+		final SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+
+		unit.renderSoapHeader(context, soapHeader);
+		assertThat(unit.parseTpicHeader(soapHeader), equalTo(Collections.<String, String>emptyMap()));
+	}
+
+	@Test
 	public void readRealXmlMessageAndParseHeader() throws ParserConfigurationException, IOException, SAXException {
 		final InputStream xmlDoc = ClassLoader.getSystemResourceAsStream("io/tracee/transport/jaxws-output.xml");
 
