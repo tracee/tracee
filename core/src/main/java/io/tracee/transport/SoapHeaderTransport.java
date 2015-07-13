@@ -74,10 +74,8 @@ public class SoapHeaderTransport {
 				}
 			}
 		} catch (JAXBException e) {
-			logger.warn("Unable to parse TPIC header: " + e.getMessage());
-			if (logger.isDebugEnabled()) {
-				logger.debug("WithStack: Unable to parse TPIC header: " + e.getMessage(), e);
-			}
+			logger.warn("Unable to parse TPIC header: {}", e.getMessage());
+			logger.debug("WithStack: Unable to parse TPIC header: {}", e.getMessage(), e);
 		}
 		return new HashMap<String, String>();
 	}
@@ -122,10 +120,8 @@ public class SoapHeaderTransport {
 			final Marshaller marshaller = jaxbContext.createMarshaller();
 			marshallable.marshal(marshaller, TpicMap.wrap(context), xmlContext);
 		} catch (JAXBException e) {
-			logger.warn("Unable to render TPIC header: " + e.getMessage());
-			if (logger.isDebugEnabled()) {
-				logger.debug("WithStack: Unable to render TPIC header: " + e.getMessage(), e);
-			}
+			logger.warn("Unable to render TPIC header: {}", e.getMessage());
+			logger.debug("WithStack: Unable to render TPIC header: {}", e.getMessage(), e);
 		}
 	}
 
