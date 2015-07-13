@@ -1,7 +1,10 @@
 package io.tracee.binding.servlet;
 
+import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.FieldAccessUtil;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -24,7 +28,6 @@ public class TraceeSessionListenerTest {
 	@Before
 	public void setUpMocks() {
 		when(backend.getConfiguration()).thenReturn(configuration);
-
 		when(session.getId()).thenReturn("A_SESSION_ID");
 	}
 
@@ -48,4 +51,9 @@ public class TraceeSessionListenerTest {
 		verify(backend).remove(SESSION_ID_KEY);
 	}
 
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeSessionListener listener = new TraceeSessionListener();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(listener, "backend"), is(Tracee.getBackend()));
+	}
 }

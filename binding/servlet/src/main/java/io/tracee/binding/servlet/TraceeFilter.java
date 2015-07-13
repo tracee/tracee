@@ -27,6 +27,10 @@ public class TraceeFilter implements Filter {
 
 	private String profile = TraceeFilterConfiguration.Profile.DEFAULT;
 
+	private final TraceeBackend backend;
+
+    private final HttpHeaderTransport transportSerialization;
+
 	public TraceeFilter() {
 		this(Tracee.getBackend(), new HttpHeaderTransport());
 	}
@@ -36,10 +40,6 @@ public class TraceeFilter implements Filter {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 	}
-
-	private final TraceeBackend backend;
-
-    private final HttpHeaderTransport transportSerialization;
 
     @Override
     public final void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain)

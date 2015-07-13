@@ -2,7 +2,6 @@ package io.tracee.binding.springmvc;
 
 import io.tracee.*;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.EmptyEnumeration;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
@@ -139,7 +138,7 @@ public class TraceeInterceptorTest {
 	}
 
 	@Test
-	public void defaultConstructorUsesDefaultProfile() {
+	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeInterceptor interceptor = new TraceeInterceptor();
 		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
 	}
