@@ -31,6 +31,9 @@
 		<module>binding/springrabbitmq</module>
 		<module>binding/quartz</module>
 		<module>binding/springws</module>
+
+		<!-- BOM (Bill Of Materials) -->
+		<module>bom</module>
 	</modules>
 
 	<parent>
@@ -191,12 +194,11 @@
 								<bannedDependencies>
 									<searchTransitive>false</searchTransitive>
 									<excludes>
-										<exclude>*</exclude>
+										<exclude>io.tracee:tracee-bom:*</exclude>
 									</excludes>
 									<includes>
 										<include>*:*:*:*:test:*</include>
 										<include>*:*:*:*:provided:*</include>
-										<include>io.tracee:*</include>
 									</includes>
 								</bannedDependencies>
 							</rules>

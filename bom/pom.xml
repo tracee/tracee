@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>tracee-parent</artifactId>
+        <groupId>io.tracee</groupId>
+        <version>1.0.0-rc2-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>tracee-bom</artifactId>
+    <packaging>pom</packaging>
+    <name>tracee-bom</name>
+    <description>Please refer to https://github.com/tracee/tracee.</description>
+    <url>https://github.com/tracee/tracee</url>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- main packages -->
+            <dependency>
+                <groupId>io.tracee</groupId>
+                <artifactId>tracee-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee</groupId>
+                <artifactId>tracee-core</artifactId>
+                <version>${project.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- additional backends -->
+            <dependency>
+                <groupId>io.tracee.backend</groupId>
+                <artifactId>tracee-threadlocal-store</artifactId>
+                <version>${project.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- binding modules -->
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-cxf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-httpcomponents</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-jaxrs2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-jaxws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-jms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-quartz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-servlet</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-springhttpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-springmvc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-springrabbitmq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.tracee.binding</groupId>
+                <artifactId>tracee-springws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- test utils -->
+            <dependency>
+                <groupId>io.tracee</groupId>
+                <artifactId>tracee-testhelper</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
