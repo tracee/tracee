@@ -3,7 +3,7 @@
 
 	<groupId>io.tracee</groupId>
 	<artifactId>tracee-parent</artifactId>
-	<version>1.0.0-rc2-SNAPSHOT</version>
+	<version>1.0.0-rc2</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -98,7 +98,7 @@
 		<connection>scm:git:git@github.com:tracee/tracee.git</connection>
 		<developerConnection>scm:git:git@github.com:tracee/tracee.git</developerConnection>
 		<url>git@github.com:holisticon/tracee.git</url>
-		<tag>HEAD</tag>
+		<tag>tracee-parent-1.0.0-rc2</tag>
 	</scm>
 
 	<properties>
