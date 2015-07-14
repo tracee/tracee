@@ -1,10 +1,13 @@
 package io.tracee.binding.servlet;
 
+import io.tracee.Tracee;
+import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.transport.HttpHeaderTransport;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -49,7 +53,7 @@ public class TraceeFilterTest {
 		try {
 			unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 			fail("Expected RuntimeException");
-		} catch (RuntimeException e) { /*ignore*/ }
+		} catch (RuntimeException ignored) { /*ignore*/ }
 
 		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.TPIC_HEADER),
 				contains("foobi=yes+sir"));
@@ -63,7 +67,7 @@ public class TraceeFilterTest {
 		try {
 			unit.doFilter(httpServletRequest, httpServletResponse, filterChain);
 			fail("Expected RuntimeException");
-		} catch (RuntimeException e) { /*ignore*/ }
+		} catch (RuntimeException ignored) { /*ignore*/ }
 
 		verify(httpServletResponse, never()).setHeader(anyString(), anyString());
 	}
@@ -82,4 +86,9 @@ public class TraceeFilterTest {
 		verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
 	}
 
+	@Test
+	public void defaultConstructorUsesTraceeBackend() {
+		final TraceeFilter filter = new TraceeFilter();
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(filter, "backend"), is(Tracee.getBackend()));
+	}
 }
