@@ -49,7 +49,7 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 
 			LOGGER.debug("Interceptor handles message!");
 			if (filterConfiguration.shouldProcessContext(channel)) {
-				if (Boolean.TRUE == message.getExchange().get(Message.REST_MESSAGE)) {
+				if (Boolean.TRUE.equals(message.getExchange().get(Message.REST_MESSAGE))) {
 					handleHttpMessage(message, filterConfiguration);
 				} else {
 					try {

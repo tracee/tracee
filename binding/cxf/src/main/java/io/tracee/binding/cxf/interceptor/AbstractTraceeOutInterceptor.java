@@ -47,7 +47,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
 				LOGGER.debug("Interceptor handles message!");
-				if (Boolean.TRUE == message.getExchange().get(Message.REST_MESSAGE)) {
+				if (Boolean.TRUE.equals(message.getExchange().get(Message.REST_MESSAGE))) {
 					Map<String, List<String>> responseHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
 					if (responseHeaders == null) {
 						responseHeaders = new HashMap<String, List<String>>();
