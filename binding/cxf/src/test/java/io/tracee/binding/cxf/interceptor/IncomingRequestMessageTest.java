@@ -1,17 +1,14 @@
 package io.tracee.binding.cxf.interceptor;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import org.apache.cxf.message.Exchange;
-import org.apache.cxf.message.ExchangeImpl;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +26,7 @@ public class IncomingRequestMessageTest {
 
 	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 
-	private TraceeRequestInInterceptor unit = new TraceeRequestInInterceptor(backend);;
+	private TraceeRequestInInterceptor unit = new TraceeRequestInInterceptor(backend);
 
 	private final MessageImpl message = spy(new MessageImpl());
 
