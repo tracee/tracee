@@ -39,7 +39,7 @@ public class TraceeTest {
 	public void backendRetrievalShouldWrapRuntimeExceptionIfItOccurs() {
 		try {
 			final BackendProviderResolver testBackendProvider = Mockito.mock(BackendProviderResolver.class);
-			when(testBackendProvider.getBackendProviders()).thenThrow(RuntimeException.class);
+			when(testBackendProvider.getBackendProviders()).thenThrow(new RuntimeException());
 			Tracee.getBackend(testBackendProvider);
 			fail();
 		} catch (RuntimeException e) {
