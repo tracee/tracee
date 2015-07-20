@@ -11,9 +11,7 @@
 
 TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
 
-> __TracEE makes it easy to track the invocation context throughout your distributed JavaEE-Application logs. It does not force
-> you to manually pass around collaboration-ids but instead uses side-channels on the underlying protocols and therefore
-> encapsulates the aspect of invocation context propagation.__
+> __TracEE makes it easy to track the invocation context throughout your distributed JavaEE and Spring applications logs. It does not force you to manually pass around collaboration-ids but instead uses side-channels on the underlying protocols and therefore encapsulates the aspect of invocation context propagation.__
 
 You may already aggregate all your application logs at a single place (using graylog, logstash+kibana or others) but it is still
 complicated to gather relevant log entries that belong to a certain interaction with your system.
@@ -141,7 +139,8 @@ The following table describes all available TracEE-modules and their usage scena
 |----------------------------------------------------:|:-----:|
 | __core modules__                                    |       |
 | [tracee-api](api/)                                  | API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
-| [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. *You won't need this module as a direct dependency.*
+| [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. *You won't need this module as a direct dependency.* |
+| [tracee-bom](bom/) | *BOM - Bill of Material* for maven projects | 
 | __connector / binding modules__                     | *These dependencies are needed due compile time* |
 | [tracee-httpcomponents](binding/httpcomponents/)    | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-httpclient](binding/httpclient/)            | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
@@ -179,6 +178,8 @@ Tracee is released to maven central via Sonatype OSS Repository Hosting. Just ad
     </repository>
 </repositories>
 ```
+
+When you use several TracEE modules you should consider using the [BOM](bom/) in your maven project to ease dependency management.
 
 # More
 
@@ -239,7 +240,7 @@ The likelihood of a pull request being accepted rises with the following propert
 
 ## Sponsoring
 
-This project is sponsored and supported by [holisticon AG](http://www.holisticon.de/)
+This project is sponsored and supported by [Holisticon AG](https://www.holisticon.de/)
 
 # License
 
