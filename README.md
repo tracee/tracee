@@ -9,7 +9,7 @@
 [![Coverity Scan](https://scan.coverity.com/projects/3882/badge.svg)](https://scan.coverity.com/projects/3882)
 [![BSD 3-Clause License](http://img.shields.io/badge/license-BSD-brightgreen.svg)](https://raw.githubusercontent.com/tracee/tracee/master/LICENSE)
 
-TL;DR, watch our [5 minutes slide deck](http://www.tracee.io/docs/slides/#/)
+__There is now a comprehensive documentation site at [http://tracee.io](http://tracee.io)!__
 
 > __TracEE makes it easy to track the invocation context throughout your distributed JavaEE and Spring applications logs. It does not force you to manually pass around collaboration-ids but instead uses side-channels on the underlying protocols and therefore encapsulates the aspect of invocation context propagation.__
 
@@ -141,7 +141,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-api](api/)                                  | API to interact with the TracEE context from within your business code. Use it to write contextual information from your application into the TracEE context.
 | [tracee-core](core/)                                | Common utility classes, configuration system and transport serialization mechanisms. *You won't need this module as a direct dependency.* |
 | [tracee-bom](bom/) | *BOM - Bill of Material* for maven projects | 
-| __connector / binding modules__                     | *These dependencies are needed due compile time* |
+| __binding modules__                     | *These dependencies are needed due compile time* |
 | [tracee-httpcomponents](binding/httpcomponents/)    | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-httpclient](binding/httpclient/)            | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-jaxrs2](binding/jaxrs2)                     | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
@@ -154,12 +154,6 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-springws](binding/springws)                 | `TraceeClientInterceptor` and `TraceeEndpointInterceptor` to handle SOAP with Spring Web Services.
 | [tracee-cxf](binding/cxf)                           | To transfer context information with CXF add the `TraceeCxfFeature` to your Client oder Server.
 | [tracee-quartz](binding/quartz)                     | To generate context information before a job starts use `TraceeJobListener`.
-| __backends__                                        | *These dependencies are needed due runtime.*         |
-| [tracee-slf4j](backend/slf4j)                       | Backend implementation for containers using slf4j. You may use this for Logback-Backend or on top of a java util logging containers like tomcat6 together with slf4j-jcl.
-| [tracee-log4j](backend/log4j)                       | Backend implementation for containers using log4j for logging.
-| [tracee-log4j2](backend/log4j2)                     | Backend implementation for containers using log4j2 for logging.
-| [tracee-jboss-logging](backend/jboss-logging)       | Backend implementation for containers using jboss-logging like used in JBoss EAP5/AS6.
-| [threadlocal-store](backend/threadlocal-store)      | Backend implementation for containers that use no common logging framework. Use it in scenarios where you have a component that does not use a supported logging framework but that you still want to to propagate the invocation context.
 
 Look into our [Bindings](binding/)-Page to get a more detailed binding overview.
 
