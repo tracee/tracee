@@ -14,7 +14,7 @@ This is where TracEE configuration kicks in. It allows you to configure each con
 and passing-policy. These policies are called __profiles__. TracEE ships with a small set of standard profiles. They
 are encoded within java property files.
 
-The preconfigured profiles are shipped with the `tracee-core` module under [META-INF/tracee.default.properties](META-INF/tracee.default.properties).
+The preconfigured profiles are shipped with the `tracee-core` module defined in [tracee.default.properties](src/main/resources/META-INF/tracee.default.properties).
 
 You may create new profiles within your application or overwrite values from the tracee.default.properties file.
 Just create a file with the name `META-INF/tracee.properties` in your application resource directory.
