@@ -26,7 +26,9 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class TraceeInterceptorTest {
@@ -86,7 +88,7 @@ public class TraceeInterceptorTest {
 	@Test
 	public void shouldRenderContextInResponseIfConfigured() throws Exception {
 		mockedBackend.put(TraceeConstants.INVOCATION_ID_KEY, "123");
-		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
+		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(httpServletResponse).setHeader(eq(TraceeConstants.TPIC_HEADER), anyString());
 	}
 
@@ -94,14 +96,14 @@ public class TraceeInterceptorTest {
 	public void shouldUseCustomHeaderInResponse() throws Exception {
 		final String testHeader = "testHeader";
 		unit.setOutgoingHeaderName(testHeader);
-		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
+		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(httpServletResponse).setHeader(eq(testHeader), anyString());
 	}
 
 	@Test
 	public void shouldUseConfiguredProfile() throws Exception {
 		unit.setProfileName("FOO");
-		unit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
+		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(mockedBackend).getConfiguration("FOO");
 		assertThat(unit.getProfileName(), is("FOO"));
 	}
