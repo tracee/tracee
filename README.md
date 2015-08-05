@@ -9,7 +9,7 @@
 [![Coverity Scan](https://scan.coverity.com/projects/3882/badge.svg)](https://scan.coverity.com/projects/3882)
 [![BSD 3-Clause License](http://img.shields.io/badge/license-BSD-brightgreen.svg)](https://raw.githubusercontent.com/tracee/tracee/master/LICENSE)
 
-__There is now a comprehensive documentation site at [http://tracee.io](http://tracee.io)!__
+__There is now a comprehensive documentation site at [http://www.tracee.io](http://www.tracee.io)!__
 
 > __TracEE makes it easy to track the invocation context throughout your distributed JavaEE and Spring applications logs. It does not force you to manually pass around collaboration-ids but instead uses side-channels on the underlying protocols and therefore encapsulates the aspect of invocation context propagation.__
 
