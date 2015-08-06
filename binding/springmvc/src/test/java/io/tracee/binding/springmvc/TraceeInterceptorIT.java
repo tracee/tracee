@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,7 +30,6 @@ import static org.junit.Assert.assertThat;
 
 public class TraceeInterceptorIT {
 
-
 	private Server server;
 	private String ENDPOINT_URL;
 
@@ -37,14 +37,14 @@ public class TraceeInterceptorIT {
 	public void startJetty() throws Exception {
 		Tracee.getBackend().clear();
 
-		server = new Server(new InetSocketAddress("127.0.0.1",0));
+		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		ServletContextHandler context = new ServletContextHandler(null, "/", ServletContextHandler.NO_SECURITY);
 		final DispatcherServlet dispatcherServlet = new DispatcherServlet();
 		dispatcherServlet.setContextConfigLocation("classpath:/spring-itest-configuration.xml");
 		context.addServlet(new ServletHolder(dispatcherServlet), "/");
 		server.setHandler(context);
 		server.start();
-		ENDPOINT_URL = "http://"+server.getConnectors()[0].getName()+"/";
+		ENDPOINT_URL = "http://" + server.getConnectors()[0].getName() + "/";
 	}
 
 	@After
@@ -56,19 +56,29 @@ public class TraceeInterceptorIT {
 	}
 
 	@Test
-	public void testTheIntegration() throws IOException {
-		final Header traceeResponseHeader = get("in+Client=yes").getFirstHeader(TraceeConstants.TPIC_HEADER);
+	public void shouldDelegateContextToServerAndBack() throws IOException {
+		final Header traceeResponseHeader = get("addToTpic", "in+Client=yes").getFirstHeader(TraceeConstants.TPIC_HEADER);
 
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("inInterceptor=y+e+s"));
 		assertThat(traceeResponseHeader.getValue(), containsString("in+Client=yes"));
 	}
 
-	private HttpResponse get(String traceeHeaderValue) throws IOException {
+	@Test
+	public void shouldDelegateContextToServerAndReceiveItInCaseOfException() throws IOException {
+		final Header traceeResponseHeader = get("throwException", "in+Client=yes").getFirstHeader(TraceeConstants.TPIC_HEADER);
+
+		assertThat(traceeResponseHeader, notNullValue());
+		assertThat(traceeResponseHeader.getValue(), containsString("inInterceptor=y+e+s"));
+		assertThat(traceeResponseHeader.getValue(), containsString("in+Client=yes"));
+	}
+
+	private HttpResponse get(String remoteRessource, String traceeHeaderValue) throws IOException {
 		final HttpClient client = new DefaultHttpClient();
-		final HttpGet httpGet = new HttpGet(ENDPOINT_URL);
+		final HttpGet httpGet = new HttpGet(ENDPOINT_URL + remoteRessource);
 		if (traceeHeaderValue != null) {
 			httpGet.setHeader(TraceeConstants.TPIC_HEADER, traceeHeaderValue);
+			httpGet.setHeader("Accept", MediaType.APPLICATION_JSON_VALUE);
 		}
 		return client.execute(httpGet);
 	}
@@ -76,13 +86,20 @@ public class TraceeInterceptorIT {
 	@Controller
 	public static class SillyController {
 
-		@RequestMapping("/*")
+		@RequestMapping("/addToTpic")
 		@ResponseStatus(HttpStatus.NO_CONTENT)
 		public void handleGet(HttpServletRequest request) {
 			if (request.getHeader(TraceeConstants.TPIC_HEADER) == null) {
 				throw new AssertionError("No expected Header " + TraceeConstants.TPIC_HEADER + " in request set");
 			}
 			Tracee.getBackend().put("inInterceptor", "y e s");
+		}
+
+		@RequestMapping("/throwException")
+		@ResponseStatus(HttpStatus.BAD_REQUEST)
+		public void throwException(HttpServletRequest request) {
+			handleGet(request);
+			throw new RuntimeException("Mööp!");
 		}
 	}
 }

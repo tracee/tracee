@@ -64,17 +64,21 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) {
-		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
-
-		if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
-			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
-			response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
-		}
+		// This method is not called in case of exceptions. So we've to add the response headers in #afterCompletion
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
-		backend.clear();
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
+		try {
+			final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
+
+			if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
+				final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
+				response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
+			}
+		} finally {
+			backend.clear();
+		}
 	}
 
 	public void setOutgoingHeaderName(String outgoingHeaderName) {
