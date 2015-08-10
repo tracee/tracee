@@ -34,8 +34,6 @@ Also supported are these common and widespread frameworks:
 * Apache CXF
 * Quartz Scheduler
 
-This project is still in an experimental stage and the api may change during further development.
-
 # Getting started
 
 ## The Invocation Context
@@ -72,7 +70,7 @@ Even without errors, the invocation context information empowers you to measure 
 of your application at the level of every single service call.
 
 So how do you implement this in an JavaEE-Application? An obvious way would be to pass an invocation context identifier
-around as a parameter of every of your business interfaces (EBJ, SOAP, REST, whatsoever) and write it explicitly into each
+around as a parameter of every of your business interfaces (EJB, SOAP, REST, whatever) and write it explicitly into each
 log statement. It should also be obvious that this is a dumb idea because it pollutes all of our business interfaces with
 unnecessary artificial parameters just for the benefit of making the invocation context explicit. But we can do better!
 
