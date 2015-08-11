@@ -1,6 +1,8 @@
 package io.tracee.binding.springmvc;
 
-import io.tracee.*;
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.EmptyEnumeration;
 import io.tracee.testhelper.FieldAccessUtil;
@@ -26,9 +28,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class TraceeInterceptorTest {
