@@ -93,6 +93,7 @@ We may call these context boundaries MDC gaps. There are different kinds of thos
     * Async EJB calls
     * JMS messaging
     * Spring AMQP (RabbitMQ)
+    * Spring Framework asynchronous methods
 
 TracEE acts as a gap closer for different types of MDC gaps and boosts the concept of the MDC by enabling you to carry your contextual information through
 your whole application and beyond. You may easily configure TracEE to map arbitrary third-party correlation and transaction ids to
@@ -119,11 +120,11 @@ In the SOAP-world the invocation context is, regardless of the underlying transp
 in the SOAP-Request-Envelope and SOAP-Response-Envelope.
 ```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Header>
-		<TPIC xmlns="http://tracee.io/tpic/1.0">
-			<entry key="TPIC.invocationId">ABCDEFG</entry>
-		</TPIC>
-	</soap:Header>
+  <soap:Header>
+    <TPIC xmlns="http://tracee.io/tpic/1.0">
+      <entry key="TPIC.invocationId">ABCDEFG</entry>
+    </TPIC>
+  </soap:Header>
 ...
 </soap:Envelope>
 ```
@@ -163,11 +164,11 @@ Tracee is released to maven central via Sonatype OSS Repository Hosting. Just ad
 
 ```xml
 <repositories>
-    <repository>
-        <id>sonatype-nexus-snapshots</id>
-        <name>Sonatype Nexus Snapshots</name>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
+  <repository>
+    <id>sonatype-nexus-snapshots</id>
+    <name>Sonatype Nexus Snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  </repository>
 </repositories>
 ```
 
