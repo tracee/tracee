@@ -8,8 +8,13 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.junit.rules.ErrorCollector;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
@@ -17,28 +22,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class TraceeClientHttpInterceptorIT {
+/**
+ * Spring configuration test.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:/test-context.xml")
+public class TraceeClientHttpInterceptorSpringContextIT {
+
+
+	private static final class EmptyEntity {}
 
 	private Server server;
 	private String serverEndpoint;
 
-	private static final class EmptyEntity {
+	@Autowired
+	private RestTemplate restTemplate;
 
-	}
+	@Rule
+	public ErrorCollector collector= new ErrorCollector();
+
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-		final RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setInterceptors(Arrays.<ClientHttpRequestInterceptor>asList(new TraceeClientHttpRequestInterceptor("default")));
 		Tracee.getBackend().put("before Request", "yip");
 		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
 		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));
 	}
+
+	private final Handler requestHandler = new AbstractHandler() {
+		@Override
+		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException,
+				ServletException {
+			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
+			collector.checkThat(incomingTraceeHeader, equalTo("before+Request=yip"));
+			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "response+From+Server=yesSir");
+			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			request.setHandled(true);
+		}
+	};
 
 	@Before
 	public void startJetty() throws Exception {
@@ -48,17 +73,6 @@ public class TraceeClientHttpInterceptorIT {
 		serverEndpoint = "http://"+server.getConnectors()[0].getName();
 	}
 
-	private final Handler requestHandler = new AbstractHandler() {
-		@Override
-		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
-			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
-			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
-			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "response+From+Server=yesSir");
-			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-			request.setHandled(true);
-		}
-	};
-
 	@After
 	public void stopJetty() throws Exception {
 		if (server != null) {
@@ -67,5 +81,6 @@ public class TraceeClientHttpInterceptorIT {
 		}
 		Tracee.getBackend().clear();
 	}
+
 
 }

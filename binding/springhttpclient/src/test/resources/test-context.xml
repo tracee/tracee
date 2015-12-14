@@ -1,0 +1,16 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="traceeHttpClientInterceptor" class="io.tracee.binding.springhttpclient.TraceeClientHttpRequestInterceptor"/>
+
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="interceptors">
+			<list>
+				<ref bean="traceeHttpClientInterceptor"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>

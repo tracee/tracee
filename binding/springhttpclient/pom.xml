@@ -35,6 +35,12 @@
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
