@@ -14,7 +14,7 @@
 	</parent>
 
 	<name>tracee-quartz</name>
-	<description>Please refer to https://github.com/holisticon/tracee.</description>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<properties>
 		<quartz.version>2.1.7</quartz.version>

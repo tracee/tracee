@@ -14,7 +14,7 @@
 	</parent>
 
 	<name>tracee-cxf</name>
-	<description>Please refer to https://github.com/holisticon/tracee.</description>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<properties>
 		<cxf.version>2.7.13</cxf.version>
