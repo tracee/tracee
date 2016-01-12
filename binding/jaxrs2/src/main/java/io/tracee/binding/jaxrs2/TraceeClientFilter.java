@@ -36,7 +36,7 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 	 * This method handles the outgoing request
 	 */
 	@Override
-	public final void filter(final ClientRequestContext requestContext) {
+	public void filter(final ClientRequestContext requestContext) {
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			requestContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
