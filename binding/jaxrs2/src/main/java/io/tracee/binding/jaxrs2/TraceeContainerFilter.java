@@ -38,7 +38,7 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 	 * This method handles the incoming request
 	 */
 	@Override
-	public final void filter(final ContainerRequestContext containerRequestContext) {
+	public void filter(final ContainerRequestContext containerRequestContext) {
 
 		if (backend.getConfiguration().shouldProcessContext(IncomingRequest)) {
 			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
