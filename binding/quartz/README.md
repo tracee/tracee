@@ -17,7 +17,7 @@ Use this module with Quartz 2.1 or above. Add this module as dependency. For Mav
     <dependency>
         <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-quartz</artifactId>
-        <version>RELEASE</version>
+        <version>${tracee.version}</version>
     </dependency>
     ...
 </dependencies>

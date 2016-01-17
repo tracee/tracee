@@ -17,7 +17,7 @@ This module contains two interceptors:
     <dependency>
         <groupId>io.tracee.binding</groupId>
    		<artifactId>tracee-httpcomponents</artifactId>
-        <version>RELEASE</version>
+        <version>${tracee.version}</version>
     </dependency>
 ...
 </dependencies>

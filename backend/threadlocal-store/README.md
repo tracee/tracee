@@ -14,7 +14,7 @@ You need exactly one backend provider on your runtime classpath. Add following t
 	<dependency>
 		<groupId>io.tracee.backend</groupId>
 		<artifactId>tracee-threadlocal-store</artifactId>
-		<version>RELEASE</version> <!-- You should specify a version instead -->
+		<version>${tracee.version}</version>
 		<scope>runtime</scope>
 	</dependency>
 ...

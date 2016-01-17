@@ -158,9 +158,23 @@ Look into our [Bindings](binding/)-Page to get a more detailed binding overview.
 
 All TracEE modules are (hopefully) OSGI compliant.
 
-## Maven artifacts
+## Artifacts
 
-Tracee is released to maven central via Sonatype OSS Repository Hosting. Just add a maven/gradle/sbt dependency as usual. If you are a crazy one, you could use the very latest SNAPSHOT as well by adding the sonatype snapshot repository:
+In the same application TracEE modules should be compatible along the same minor version. Between independent applications the TPIC header should be handled without any adjustments along the same major version of TracEE. When using several TracEE modules you should consider using the [BOM](bom/) and create a property `tracee.version` in your maven project to ease dependency management. 
+
+### Repository
+
+Tracee is released to maven central via Sonatype OSS Repository Hosting. Maven users are able to use TracEE modules without any configuration simply by adding the dependency. Users of Gradle should add the maven central:
+
+```
+repositories {
+    mavenCentral()
+}
+```
+
+### Snapshot builds
+
+If you are a crazy one, you could use the very latest SNAPSHOT as well by adding the sonatype snapshot repository. For maven simple add:
 
 ```xml
 <repositories>
@@ -172,7 +186,23 @@ Tracee is released to maven central via Sonatype OSS Repository Hosting. Just ad
 </repositories>
 ```
 
-When you use several TracEE modules you should consider using the [BOM](bom/) in your maven project to ease dependency management.
+For gradle add it manually:
+
+```
+repositories {
+    maven {
+    	url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+```
+
+If you don't get the latest version you've to reduce the caching time of artifacts:
+
+```
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+```
 
 # More
 

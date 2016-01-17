@@ -12,7 +12,7 @@ Please add the following dependencies to enable TracEE JAX-WS support. For examp
     <dependency>
         <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-jaxws</artifactId>
-        <version>RELEASE</version>
+        <version>${tracee.version}</version>
     </dependency>
     ...
 </dependencies>

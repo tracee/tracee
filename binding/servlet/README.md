@@ -20,7 +20,7 @@ If you're use Maven for your dependency management simple add this to your pom:
     <dependency>
         <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-servlet</artifactId>
-        <version>RELEASE</version>
+        <version>${tracee.version}</version>
     </dependency>
 ...
 </dependencies>
