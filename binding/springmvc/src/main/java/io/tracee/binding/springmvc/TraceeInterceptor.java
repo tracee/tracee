@@ -6,7 +6,6 @@ import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
-
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -59,6 +58,10 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 			Utilities.generateSessionIdIfNecessary(backend, session.getId());
 		}
 
+		// We add the current TPIC to the response. If the response is commited before we can replace the values with the current state
+		// the current state is on the wire. -- better than nothing :-) (See #96)
+		writeHeaderIfUncommitted(response);
+
 		return true;
 	}
 
@@ -70,14 +73,20 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
 		try {
+			writeHeaderIfUncommitted(response);
+		} finally {
+			backend.clear();
+		}
+	}
+
+	private void writeHeaderIfUncommitted(HttpServletResponse response) {
+		if (!response.isCommitted() && !backend.isEmpty()) {
 			final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
-			if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
+			if (configuration.shouldProcessContext(OutgoingResponse)) {
 				final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 				response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
 			}
-		} finally {
-			backend.clear();
 		}
 	}
 
