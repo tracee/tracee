@@ -19,7 +19,7 @@ For maven you've to add following dependency to your `pom.xml`:
 <dependency>
 	<groupId>io.tracee.binding</groupId>
     <artifactId>tracee-springhttpclient</artifactId>
-    <version>RELEASE</version> <!-- You should specify a version instead -->
+    <version>${tracee.version}</version>
 </dependency>
 ...
 ```

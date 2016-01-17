@@ -12,7 +12,7 @@ Add this BOM to your parent `pom.xml`:
         <dependency>
             <groupId>io.tracee</groupId>
             <artifactId>tracee-bom</artifactId>
-            <version>RELEASE</version> <!-- You should specify a version instead -->
+            <version>${tracee.version}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

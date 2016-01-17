@@ -12,7 +12,7 @@ Please add the following dependency to enable TracEE JAX-RS 2.x ([JSR 339](http:
     <dependency>
         <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-jaxrs2</artifactId>
-        <version>RELEASE</version> <!-- You should specify a version instead -->
+        <version>${tracee.version}</version>
     </dependency>
     ...
 </dependencies>

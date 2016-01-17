@@ -16,7 +16,7 @@ If you're use Maven for your dependency management simple add this to your pom:
     <dependency>
         <groupId>io.tracee.binding</groupId>
         <artifactId>tracee-springrabbitmq</artifactId>
-        <version>RELEASE</version> <!-- You should specify a version instead -->
+        <version>${tracee.version}</version>
     </dependency>
 ...
 </dependencies>

@@ -15,7 +15,7 @@ Add `tracee-springmvc` to your application dependencies. That's all! - For examp
     <dependency>
 	<groupId>io.tracee.binding</groupId>
 	<artifactId>tracee-springmvc</artifactId>
-    <version>RELEASE</version> <!-- You should specify a version instead -->
+    <version>${tracee.version}</version>
     </dependency>
 ...
 </dependencies>

@@ -14,7 +14,7 @@ Add the dependency to your classpath. If you're using Apache Maven, you could us
 	<dependency>
 		<groupId>io.tracee.binding</groupId>
 		<artifactId>tracee-springws</artifactId>
-		<version>RELEASE</version> <!-- You should specify a version instead -->
+		<version>${tracee.version}</version>
 	</dependency>
 ...
 </dependencies>
