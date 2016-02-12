@@ -3,6 +3,7 @@ package io.tracee.binding.jms;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.Utilities;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -54,6 +55,8 @@ public final class TraceeMessageListener {
 				backend.putAll(backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess));
 			}
 		}
+
+		Utilities.generateInvocationIdIfNecessary(backend);
     }
 
     void cleanUp() {
