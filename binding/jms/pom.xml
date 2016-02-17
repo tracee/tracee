@@ -25,7 +25,6 @@
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-core</artifactId>
 			<version>${project.version}</version>
-			<scope>runtime</scope>
 		</dependency>
         <dependency>
             <groupId>javax.ejb</groupId>
