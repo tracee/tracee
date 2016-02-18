@@ -13,6 +13,10 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * @deprecated The ThreadLocalRandom will be removed in TracEE 2.0 and replaced with the implementation of Java 7
+ */
+@Deprecated
 public class ThreadLocalRandomTest {
 
 	private static final ThreadLocalRandom random = new ThreadLocalRandom();

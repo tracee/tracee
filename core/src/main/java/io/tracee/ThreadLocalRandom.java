@@ -27,7 +27,9 @@ import java.util.Random;
  *
  * @since 1.7
  * @author Doug Lea
+ * @deprecated will be removed in TracEE 2.0 and replaced with the implementation of Java 7
  */
+@Deprecated
 final class ThreadLocalRandom extends Random {
     // same constants as Random, but must be redeclared because private
     private static final long multiplier = 0x5DEECE66DL;
