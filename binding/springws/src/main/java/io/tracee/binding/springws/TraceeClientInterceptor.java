@@ -3,6 +3,7 @@ package io.tracee.binding.springws;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
+import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
 
@@ -38,5 +39,10 @@ public final class TraceeClientInterceptor extends AbstractTraceeInterceptor imp
 	@Override
 	public boolean handleFault(MessageContext messageContext) {
 		return handleResponse(messageContext);
+	}
+
+	@Override
+	public void afterCompletion(MessageContext messageContext, Exception ex) throws WebServiceClientException {
+
 	}
 }

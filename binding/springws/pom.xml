@@ -16,7 +16,7 @@
 	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<properties>
-		<spring-ws.version>2.0.5.RELEASE</spring-ws.version>
+		<spring-ws.version>2.2.4.RELEASE</spring-ws.version>
 	</properties>
 
 	<build>
@@ -34,20 +34,15 @@
 				</executions>
 				<configuration>
 					<xnocompile>true</xnocompile>
-					<target>2.0</target> <!-- be compatible with JDK6 -->
 					<wsdlDirectory>${project.basedir}/src/test/resources/wsdl/</wsdlDirectory>
 					<sourceDestDir>${project.build.directory}/generated-test-sources/test-wsimport</sourceDestDir>
 					<packageName>io.tracee.binding.springws.itest.testservicegen</packageName>
-					<!-- Workaround for JDK8 -->
-					<vmArgs>
-						<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-					</vmArgs>
 				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>com.sun.xml.ws</groupId>
 						<artifactId>jaxws-tools</artifactId>
-						<version>2.2.8</version>
+						<version>2.2.10</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -81,6 +76,13 @@
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
 		</dependency>
+		<!-- Overwrite the spring-core version definition of spring-ws. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>io.tracee.binding</groupId>
 			<artifactId>tracee-jaxws</artifactId>
@@ -94,38 +96,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.tracee.backend</groupId>
 			<artifactId>tracee-threadlocal-store</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom2</artifactId>
-			<version>2.0.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>1.1.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>jaxws-rt</artifactId>
-			<version>2.2.8</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
