@@ -47,7 +47,7 @@ public final class Tracee {
 			return defaultProvider.iterator().next().provideBackend();
 		}
 		if (backendProviders.size() > 1) {
-			final List<Class<?>> providerClasses = new ArrayList<Class<?>>(backendProviders.size());
+			final List<Class<?>> providerClasses = new ArrayList<>(backendProviders.size());
 			for (TraceeBackendProvider backendProvider : backendProviders) {
 				providerClasses.add(backendProvider.getClass());
 			}

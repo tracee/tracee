@@ -57,7 +57,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 	}
 
 	private Map<String, String> transformToTraceeContextMap(final Map<String, ?> tpicMessageHeader) {
-		final Map<String, String> traceeContext = new HashMap<String, String>();
+		final Map<String, String> traceeContext = new HashMap<>();
 		if (tpicMessageHeader != null) {
 			for (Map.Entry<String, ?> stringObjectEntry : tpicMessageHeader.entrySet()) {
 				traceeContext.put(stringObjectEntry.getKey(), String.valueOf(stringObjectEntry.getValue()));

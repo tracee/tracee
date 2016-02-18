@@ -9,8 +9,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
 
-import java.util.Map;
-
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 
 public class TraceeContextInjector {

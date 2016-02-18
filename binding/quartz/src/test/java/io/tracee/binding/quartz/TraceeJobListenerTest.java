@@ -41,7 +41,7 @@ public class TraceeJobListenerTest {
 
 	@Test
 	public void addContextToTraceeBackend() {
-		final Map<String, String> traceeContext = new HashMap<String, String>();
+		final Map<String, String> traceeContext = new HashMap<>();
 		final JobExecutionContext executionContext = mock(JobExecutionContext.class);
 		final JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.put(TraceeConstants.TPIC_HEADER, traceeContext);

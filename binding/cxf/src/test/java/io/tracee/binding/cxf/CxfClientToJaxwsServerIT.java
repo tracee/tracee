@@ -3,7 +3,6 @@ package io.tracee.binding.cxf;
 import io.tracee.*;
 import io.tracee.binding.cxf.testSoapService.HelloWorldTestService;
 import io.tracee.binding.jaxws.TraceeClientHandler;
-import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;

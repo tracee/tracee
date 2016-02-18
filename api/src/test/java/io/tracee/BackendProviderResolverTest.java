@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.api.mockito.internal.PowerMockitoCore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -16,7 +15,9 @@ import java.util.Set;
 
 import static io.tracee.BackendProviderResolver.EmptyBackendProviderSet;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
@@ -26,7 +27,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 public class BackendProviderResolverTest {
 
 	private BackendProviderResolver out;
-	
+
 	@Before
 	public void before() {
 		out = new BackendProviderResolver();
@@ -65,7 +66,7 @@ public class BackendProviderResolverTest {
 
 	@Test
 	public void shouldReturnClassloaderFromContext() throws Exception {
-		final Set<TraceeBackendProvider> contextClassloader = new HashSet<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> contextClassloader = new HashSet<>();
 		contextClassloader.add(mock(TraceeBackendProvider.class));
 
 		BackendProviderResolver resolver = PowerMockito.spy(new BackendProviderResolver());

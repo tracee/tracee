@@ -2,10 +2,7 @@ package io.tracee;
 
 import io.tracee.configuration.TraceeFilterConfiguration;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A backend is expected to be thread-safe (reads and writes are delegated to thread local state).

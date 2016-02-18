@@ -50,7 +50,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 				if (Boolean.TRUE.equals(message.getExchange().get(Message.REST_MESSAGE))) {
 					Map<String, List<String>> responseHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
 					if (responseHeaders == null) {
-						responseHeaders = new HashMap<String, List<String>>();
+						responseHeaders = new HashMap<>();
 						message.put(Message.PROTOCOL_HEADERS, responseHeaders);
 					}
 

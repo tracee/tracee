@@ -10,7 +10,6 @@ import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.xml.bind.JAXBException;
 import java.util.Collections;

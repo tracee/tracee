@@ -25,7 +25,7 @@ public class HttpHeaderTransportTest {
 
 	@Test
 	public void renderKeyValueWithEqualSignAndConcatWithComma() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("key1", "value1");
 		context.put("key2", "value2");
 		assertThat(UNIT.render(context), anyOf(is("key1=value1,key2=value2"), is("key2=value2,key1=value1")));
@@ -33,7 +33,7 @@ public class HttpHeaderTransportTest {
 
 	@Test
 	public void trimValuesBeforeConcat() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put(" key1 ", " value1 ");
 		context.put(" key2 ", " value2 ");
 		System.out.println(UNIT.render(context));
@@ -47,7 +47,7 @@ public class HttpHeaderTransportTest {
 
 	@Test
 	public void specialCharsShouldGetEscapedToNonUnsafeCharacters() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("!\"§$%&@/( )=?", "^°+*'#-.,;:_<> ´´``");
 		context.put("ö üäß", "Ö ÜÄß€");
 		final String headerString = UNIT.render(context);
@@ -56,7 +56,7 @@ public class HttpHeaderTransportTest {
 
 	@Test
 	public void specialCharsShouldGetEscapedToNotUsedSeperatorCharacters() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("!\"§$%&@/()=? ", "^°+*'# .,;:_<>´´``");
 		context.put("öü äß", "ÖÜ Äß€");
 		final String headerString = UNIT.render(context);
@@ -72,7 +72,7 @@ public class HttpHeaderTransportTest {
 
 	@Test
 	public void specialCharsShouldGetEscapedAndUseOnlyCommaAndEqualsSignForConcat() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("!\"§$%&@/()=? ", "^°+*'# .,;:_<>´´``");
 		context.put("öü äß", "ÖÜ Äß€");
 		final String headerString = UNIT.render(context);

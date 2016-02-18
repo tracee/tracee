@@ -1,7 +1,6 @@
 package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
-import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
@@ -98,7 +97,7 @@ public class TraceeClientInterceptorTest {
 
 	@Test
 	public void parseTpicHeaderFromResponseToBackend() throws Exception {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
 		new SoapHeaderTransport().renderSoapHeader(context, result);
@@ -117,7 +116,7 @@ public class TraceeClientInterceptorTest {
 
 	@Test
 	public void parseTpicHeaderFromFaultResponseToBackend() throws Exception {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
 		new SoapHeaderTransport().renderSoapHeader(context, result);

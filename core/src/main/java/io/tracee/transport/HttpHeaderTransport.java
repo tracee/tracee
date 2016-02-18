@@ -22,7 +22,7 @@ public class HttpHeaderTransport {
 
 	Map<String, String> parse(String serialized) {
 		final StringTokenizer pairTokenizer = new StringTokenizer(serialized.trim(), ",");
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		while(pairTokenizer.hasMoreTokens()) {
 			final String pairStr = pairTokenizer.nextToken();
 			final String[] keyValuePair = pairStr.split("=");
@@ -42,7 +42,7 @@ public class HttpHeaderTransport {
 	}
 
 	public Map<String, String> parse(List<String> serializedElements) {
-		final Map<String, String> contextMap = new HashMap<String, String>();
+		final Map<String, String> contextMap = new HashMap<>();
 		for (String serializedElement : serializedElements) {
 			contextMap.putAll(parse(serializedElement));
 		}

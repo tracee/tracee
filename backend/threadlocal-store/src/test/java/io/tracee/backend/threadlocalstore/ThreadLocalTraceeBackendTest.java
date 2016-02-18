@@ -67,7 +67,7 @@ public class ThreadLocalTraceeBackendTest {
 
     @Test
     public void putAllMethodAddsAllElementsOfGivenMap() {
-        final Map<String, String> givenMap = new HashMap<String, String>();
+        final Map<String, String> givenMap = new HashMap<>();
         givenMap.put("key1", "value1");
         givenMap.put("key2", "value2");
         unit.putAll(givenMap);

@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSessionEvent;
 
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 

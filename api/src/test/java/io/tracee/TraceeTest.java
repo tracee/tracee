@@ -62,7 +62,7 @@ public class TraceeTest {
 
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowExceptionWithMoreThenOneProvider() {
-		final Set<TraceeBackendProvider> backendProvider = new HashSet<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> backendProvider = new HashSet<>();
 		backendProvider.add(new TestBackendProvider());
 		backendProvider.add(new TestBackendProvider());
 
@@ -78,7 +78,7 @@ public class TraceeTest {
 
 	@Test
 	public void backendRetrievalShouldReturnBackendWithOneGivenProvider() {
-		final Set<TraceeBackendProvider> backendProvider = new HashSet<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> backendProvider = new HashSet<>();
 		backendProvider.add(new TestBackendProvider());
 
 		final TraceeBackend resolvedBackend = Tracee.getBackend(createTestBackendResolverWith(backendProvider));

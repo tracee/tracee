@@ -79,7 +79,7 @@ class Slf4jTraceeBackend extends BackendBase {
 
 	@Override
 	public Map<String, String> copyToMap() {
-		final Map<String, String> traceeMap = new HashMap<String, String>();
+		final Map<String, String> traceeMap = new HashMap<>();
 		final Set<String> keys = traceeKeys.get();
 		for (String traceeKey : keys) {
 			final String value = MDC.get(traceeKey);

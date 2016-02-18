@@ -64,7 +64,7 @@ public class PostTpicAsyncBeanPostProcessorTest {
 	public void shouldRestoreTpicFromMetadataWhenSet() throws Throwable {
 		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
-		final Map<String, String> tpic = new HashMap<String, String>();
+		final Map<String, String> tpic = new HashMap<>();
 		tpic.put("myInvoc", "storeThisToAsync");
 		when(mockedInvocation.getUserAttribute(TraceeConstants.TPIC_HEADER)).thenReturn(tpic);
 

@@ -17,7 +17,7 @@ public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
     @Override
     public List<String> getCurrentTraceeContext() {
 
-        final List<String> entries = new ArrayList<String>();
+        final List<String> entries = new ArrayList<>();
         for (Map.Entry<String, String> entry : Tracee.getBackend().copyToMap().entrySet()) {
             entries.add(entry.getKey());
             entries.add(entry.getValue());

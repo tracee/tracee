@@ -12,13 +12,12 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static io.tracee.testhelper.DelegationTestUtil.assertDelegationToSpy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -58,7 +57,7 @@ public class TraceeHttpClientDecoratorTest {
 
 		unit.executeMethod(null, httpMethodMock, null);
 
-		verify(transportSerializationMock).parse(eq(Arrays.asList("foo=bar")));
+		verify(transportSerializationMock).parse(eq(Collections.singletonList("foo=bar")));
 		verify(backendMock).putAll(Mockito.anyMapOf(String.class, String.class));
 	}
 

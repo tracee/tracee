@@ -8,7 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class MdcLikeThreadLocalMapAdapterTest {
-	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
+	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<>();
 
 	private final ThreadLocalTraceeBackend unit = new ThreadLocalTraceeBackend();
 

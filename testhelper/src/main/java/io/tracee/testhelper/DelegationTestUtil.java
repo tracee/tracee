@@ -17,18 +17,18 @@ import static org.mockito.Mockito.mock;
 
 public final class DelegationTestUtil {
 
-	private static final Set<String> BLACKLIST_METHOD = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+	private static final Set<String> BLACKLIST_METHOD = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
 			"class$", "finalize", "equals", "hashCode", "toString", "clone", "newInstance"
 	)));
 
 	public static <I, W> Delegation<I, W> assertDelegationToSpy(I innerObj) {
-		return new Delegation<I, W>(innerObj);
+		return new Delegation<>(innerObj);
 	}
 
 	public static class Delegation<I, W> {
 		private final I innerObj;
 		private W wrapperObj;
-		private final Set<String> ignoreMethods = new HashSet<String>();
+		private final Set<String> ignoreMethods = new HashSet<>();
 
 		Delegation(I innerObj) {
 			this.innerObj = innerObj;
@@ -55,7 +55,7 @@ public final class DelegationTestUtil {
 			String errorMsg = "";
 			try {
 				final Method[] wrapperMethods = wrapperObj.getClass().getDeclaredMethods();
-				final Map<String, Method> innerMethods = new HashMap<String, Method>();
+				final Map<String, Method> innerMethods = new HashMap<>();
 				for (Method innerMethod : innerObj.getClass().getDeclaredMethods()) {
 					if (Modifier.isPublic(innerMethod.getModifiers())) {
 						innerMethods.put(innerMethod.getName() + " :: " + paramsToStr(innerMethod.getParameterTypes()), innerMethod);
@@ -82,7 +82,7 @@ public final class DelegationTestUtil {
 
 	private static Object[] generateMockedParams(Method wrapperMethod) {
 		final Class<?>[] parameterTypes = wrapperMethod.getParameterTypes();
-		final List<Object> arguments = new ArrayList<Object>();
+		final List<Object> arguments = new ArrayList<>();
 		for (Class<?> parameterType : parameterTypes) {
 			if ("boolean".equals(parameterType.getName())) {
 				arguments.add(Boolean.FALSE);

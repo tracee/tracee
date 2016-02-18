@@ -31,7 +31,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(MDC.class)
 public class Slf4jMdcDelegationTest {
 
-	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
+	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<>();
 
 	private final Slf4jTraceeBackend unit = new Slf4jTraceeBackend(traceeKeys);
 
@@ -56,7 +56,7 @@ public class Slf4jMdcDelegationTest {
 
 	@Test
 	public void putAllWritesEntriesToMdcLike() {
-		final Map<String, String> putMap = new HashMap<String, String>();
+		final Map<String, String> putMap = new HashMap<>();
 		putMap.put("Foo", "bar");
 		putMap.put("Ping", "Pong");
 		unit.putAll(putMap);
@@ -69,7 +69,7 @@ public class Slf4jMdcDelegationTest {
 
 	@Test
 	public void putAllWritesEntriesToKeysSet() {
-		final Map<String, String> putMap = new HashMap<String, String>();
+		final Map<String, String> putMap = new HashMap<>();
 		putMap.put("Foo", "bar");
 		putMap.put("Ping", "Pong");
 		unit.putAll(putMap);

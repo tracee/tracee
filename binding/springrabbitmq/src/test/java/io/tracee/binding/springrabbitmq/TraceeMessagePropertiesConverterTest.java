@@ -54,7 +54,7 @@ public class TraceeMessagePropertiesConverterTest {
 
 	@Test
 	public void parseMessageHeaderIntoBackend() throws Exception {
-		final Map<String, LongString> rabbitTraceeHeader = new HashMap<String, LongString>();
+		final Map<String, LongString> rabbitTraceeHeader = new HashMap<>();
 		rabbitTraceeHeader.put(INVOCATION_ID_KEY, new TestLongString("Crazy ID"));
 
 		unit.toMessageProperties(createRabbitHeaderWith(TPIC_HEADER, rabbitTraceeHeader), mock(Envelope.class), CHARSET_UTF8);

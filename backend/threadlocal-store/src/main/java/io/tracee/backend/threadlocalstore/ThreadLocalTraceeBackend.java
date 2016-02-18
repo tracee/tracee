@@ -10,7 +10,7 @@ class ThreadLocalTraceeBackend extends BackendBase {
 	private final ThreadLocalMap<String, String> threadLocalMap;
 
 	public ThreadLocalTraceeBackend() {
-		this.threadLocalMap = new ThreadLocalMap<String, String>();
+		this.threadLocalMap = new ThreadLocalMap<>();
 	}
 
 
@@ -56,7 +56,7 @@ class ThreadLocalTraceeBackend extends BackendBase {
 
 	@Override
 	public Map<String, String> copyToMap() {
-		return new HashMap<String, String>(threadLocalMap.get());
+		return new HashMap<>(threadLocalMap.get());
 	}
 
 	ThreadLocalMap<String, String> getThreadLocalMap() {

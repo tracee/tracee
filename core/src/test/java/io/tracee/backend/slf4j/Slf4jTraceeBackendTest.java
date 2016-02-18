@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 
 public class Slf4jTraceeBackendTest {
 
-	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<String>();
+	private final ThreadLocalHashSet<String> traceeKeys = new ThreadLocalHashSet<>();
 
 	private final Slf4jTraceeBackend OUT = new Slf4jTraceeBackend(traceeKeys);
 
@@ -68,7 +68,7 @@ public class Slf4jTraceeBackendTest {
 
 	@Test
 	public void putAllAddsAllTupleToMdcAndTraceeKeys() {
-		final Map<String, String> testMap = new HashMap<String, String>();
+		final Map<String, String> testMap = new HashMap<>();
 		testMap.put("a", "ab");
 		testMap.put("b", "bc");
 		OUT.putAll(testMap);

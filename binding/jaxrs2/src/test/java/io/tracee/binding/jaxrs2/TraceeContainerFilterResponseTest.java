@@ -22,7 +22,7 @@ public class TraceeContainerFilterResponseTest {
     private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
     private final TraceeContainerFilter unit = new TraceeContainerFilter(backend);
     private final ContainerResponseContext responseContext = Mockito.mock(ContainerResponseContext.class);
-    private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
+    private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
     @Before
     public void setUp() {

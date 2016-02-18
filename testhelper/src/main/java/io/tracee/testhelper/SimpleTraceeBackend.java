@@ -16,7 +16,7 @@ public class SimpleTraceeBackend implements TraceeBackend {
 
 	private Map<String, String> valuesBeforeLastClear = Collections.emptyMap();
 
-	private Map<String, String> backendValues = new HashMap<String, String>();
+	private Map<String, String> backendValues = new HashMap<>();
 
 	public static SimpleTraceeBackend createNonLoggingAllPermittingBackend() {
 		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
@@ -60,7 +60,7 @@ public class SimpleTraceeBackend implements TraceeBackend {
 
 	@Override
 	public void clear() {
-		this.valuesBeforeLastClear = new HashMap<String, String>(this.copyToMap());
+		this.valuesBeforeLastClear = new HashMap<>(this.copyToMap());
 		backendValues.clear();
 	}
 
@@ -81,7 +81,7 @@ public class SimpleTraceeBackend implements TraceeBackend {
 
 	@Override
 	public Map<String, String> copyToMap() {
-		return new HashMap<String, String>(backendValues);
+		return new HashMap<>(backendValues);
 	}
 
 	@Override

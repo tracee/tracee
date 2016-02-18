@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TraceeClientHandlerResolver implements HandlerResolver {
 
-    private final List<Handler> handlerList = new ArrayList<Handler>();
+    private final List<Handler> handlerList = new ArrayList<>();
 
     public TraceeClientHandlerResolver() {
         handlerList.add(new TraceeClientHandler());

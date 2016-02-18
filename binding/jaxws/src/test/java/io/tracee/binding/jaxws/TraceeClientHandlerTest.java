@@ -73,7 +73,7 @@ public class TraceeClientHandlerTest {
 
 	@Test
 	public void readSoapHeaderIntoToBackend() throws SOAPException, JAXBException {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("abc", "123");
 
 		new SoapHeaderTransport().renderSoapHeader(context, message.getSOAPHeader());

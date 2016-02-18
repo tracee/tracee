@@ -29,13 +29,13 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 	private boolean valid = true;
 
 	BackendProviderSet(Set<TraceeBackendProvider> elements) {
-		this.values = new HashSet<SoftReference<TraceeBackendProvider>>();
+		this.values = new HashSet<>();
 		addAllInternal(elements);
 	}
 
 	private void addAllInternal(final Collection<TraceeBackendProvider> elements) {
 		for (TraceeBackendProvider element : elements) {
-			values.add(new SoftReference<TraceeBackendProvider>(element));
+			values.add(new SoftReference<>(element));
 		}
 	}
 
@@ -71,7 +71,7 @@ class BackendProviderSet extends AbstractSet<TraceeBackendProvider> {
 	}
 
 	private Collection<TraceeBackendProvider> createStrongView(Collection<SoftReference<TraceeBackendProvider>> providerReferences) {
-		final List<TraceeBackendProvider> strongRefs = new ArrayList<TraceeBackendProvider>(providerReferences.size());
+		final List<TraceeBackendProvider> strongRefs = new ArrayList<>(providerReferences.size());
 		for (SoftReference<TraceeBackendProvider> providerSoftReference : providerReferences) {
 			strongRefs.add(providerSoftReference.get());
 		}

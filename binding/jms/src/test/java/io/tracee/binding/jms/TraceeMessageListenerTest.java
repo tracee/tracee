@@ -28,7 +28,7 @@ public class TraceeMessageListenerTest {
 	private final TraceeMessageListener unit = new TraceeMessageListener(backend);
 	private final InvocationContext invocationContext = mock(InvocationContext.class);
 	private final Message message = mock(Message.class);
-	private final Map<String, String> encodedContext = new HashMap<String, String>();
+	private final Map<String, String> encodedContext = new HashMap<>();
 	private final MdbLike mdbLike = spy(new MdbLike());
 
 	@Before

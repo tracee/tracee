@@ -5,6 +5,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class Utilities {
 
@@ -51,11 +52,8 @@ public final class Utilities {
 			}
 			// truncation and return
 			return sb.delete(length, sb.length()).toString();
-		} catch (NoSuchAlgorithmException e) {
-			// Preferred hash algorithm is not available. We generate random string.
-			return createRandomAlphanumeric(length);
-		} catch (UnsupportedCharsetException e) {
-			// We should handle such error like the NoSuchAlgorithmException
+		} catch (NoSuchAlgorithmException | UnsupportedCharsetException e) {
+			// Hashalgo. and charset is mandatory for all kinds of JDK, so this should happend. But even when, we generate a random string.
 			return createRandomAlphanumeric(length);
 		}
 	}

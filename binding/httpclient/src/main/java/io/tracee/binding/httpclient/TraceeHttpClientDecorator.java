@@ -101,7 +101,7 @@ public class TraceeHttpClientDecorator extends HttpClient {
 		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.TPIC_HEADER);
 		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
-			final List<String> stringTraceeHeaders = new ArrayList<String>();
+			final List<String> stringTraceeHeaders = new ArrayList<>();
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}
