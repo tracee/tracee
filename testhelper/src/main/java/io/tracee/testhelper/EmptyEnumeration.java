@@ -5,7 +5,7 @@ import java.util.Enumeration;
 public final class EmptyEnumeration<T> implements Enumeration<T> {
 
 	public static <T> EmptyEnumeration<T> emptyEnumeration() {
-		return new EmptyEnumeration<T>();
+		return new EmptyEnumeration<>();
 	}
 
 	@Override

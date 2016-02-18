@@ -1,7 +1,6 @@
 package io.tracee.binding.jaxrs2;
 
 import io.tracee.Tracee;
-import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
@@ -32,7 +31,7 @@ public class TraceeClientFilterRequestTest {
 
     @Before
     public void setUp() {
-        final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
+        final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         when(clientRequestContext.getHeaders()).thenReturn(headers);
     }
 

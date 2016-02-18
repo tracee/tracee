@@ -44,7 +44,7 @@ public class SoapHeaderTransport {
 	 */
 	public Map<String, String> parseSoapHeader(final Element soapHeader) {
 		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
-		final HashMap<String, String> contextMap = new HashMap<String, String>();
+		final HashMap<String, String> contextMap = new HashMap<>();
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
 			for (int i = 0, items = tpicHeaders.getLength(); i < items; i++) {
 				contextMap.putAll(parseTpicHeader((Element) tpicHeaders.item(i)));
@@ -77,7 +77,7 @@ public class SoapHeaderTransport {
 			logger.warn("Unable to parse TPIC header: {}", e.getMessage());
 			logger.debug("WithStack: Unable to parse TPIC header: {}", e.getMessage(), e);
 		}
-		return new HashMap<String, String>();
+		return new HashMap<>();
 	}
 
 	private interface Unmarshallable<T> {

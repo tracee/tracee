@@ -51,7 +51,7 @@ public class TraceeMessageListenerAndProducerIT {
         final Connection connection = connectionFactory.createConnection();
 		try {
 			connection.start();
-			final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);;
+			final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			try {
 				final MessageConsumer consumer = session.createConsumer(responses);
 

@@ -7,12 +7,10 @@ import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.http.Header;
-import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
         final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		final Header[] responseHeaders = response.getHeaders(TraceeConstants.TPIC_HEADER);
         if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
-			final List<String> stringTraceeHeaders = new ArrayList<String>();
+			final List<String> stringTraceeHeaders = new ArrayList<>();
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}

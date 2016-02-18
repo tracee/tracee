@@ -84,7 +84,7 @@ public class TraceeEndpointInterceptorTest {
 
 	@Test
 	public void parseTpicHeaderFromRequestToTraceeBackend() throws Exception {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("our key", "is our value");
 		final StringResult result = new StringResult();
 		new SoapHeaderTransport().renderSoapHeader(context, result);

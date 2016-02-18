@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 
 public class ThreadLocalHashSetTest {
 
-	private final ThreadLocalHashSet<String> unit = new ThreadLocalHashSet<String>();
+	private final ThreadLocalHashSet<String> unit = new ThreadLocalHashSet<>();
 
 	@Test
 	public void testGetInitialValue() {

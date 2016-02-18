@@ -18,15 +18,8 @@ public final class TraceePropertiesFileLoader {
 
 		while (traceePropertyFiles.hasMoreElements()) {
 			final URL url = traceePropertyFiles.nextElement();
-			InputStream stream = null;
-			try {
-				stream = url.openStream();
+			try (InputStream stream = url.openStream()) {
 				propertiesFromFile.load(stream);
-			} finally {
-				try {
-					if (stream != null)
-						stream.close();
-				} catch (IOException ignored) { }
 			}
 		}
 

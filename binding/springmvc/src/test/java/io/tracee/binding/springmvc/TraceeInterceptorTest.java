@@ -82,7 +82,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldWriteInitTpicToResponse() {
-		final HashMap<String, String> parsedInitValues = new HashMap<String, String>();
+		final HashMap<String, String> parsedInitValues = new HashMap<>();
 		parsedInitValues.put(INVOCATION_ID_KEY, "myGreatId321");
 		when(mockedBackend.copyToMap()).thenReturn(parsedInitValues);
 
@@ -93,7 +93,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void doNotWriteHeadersToResponseIfResponseIsCommited() {
-		final HashMap<String, String> parsedInitValues = new HashMap<String, String>();
+		final HashMap<String, String> parsedInitValues = new HashMap<>();
 		parsedInitValues.put(INVOCATION_ID_KEY, "myGreatId321");
 		when(mockedBackend.copyToMap()).thenReturn(parsedInitValues);
 
@@ -104,7 +104,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void initialTpicHeaderShouldBeReplacedAtTheEndIfResponseIsNotCommited() {
-		final HashMap<String, String> parsedInitValues = new HashMap<String, String>();
+		final HashMap<String, String> parsedInitValues = new HashMap<>();
 		parsedInitValues.put(INVOCATION_ID_KEY, "myGreatId321");
 		when(mockedBackend.copyToMap()).thenReturn(parsedInitValues);
 		when(httpServletResponse.isCommitted()).thenReturn(false);
@@ -153,7 +153,7 @@ public class TraceeInterceptorTest {
 
 	@Test
 	public void shouldMergeIncomingContextIfConfigured() throws Exception {
-		final Map<String, String> expected = new HashMap<String, String>();
+		final Map<String, String> expected = new HashMap<>();
 		expected.put("testkey", "testValue123");
 		final Enumeration<String> header = createHeader("testkey", "testValue123");
 		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(header);
@@ -166,7 +166,7 @@ public class TraceeInterceptorTest {
 		final String incomingHeader = "myHeader";
 		unit.setIncomingHeaderName(incomingHeader);
 
-		final Map<String, String> expected = new HashMap<String, String>();
+		final Map<String, String> expected = new HashMap<>();
 		expected.put("testkey", "testValue123");
 
 		final Enumeration<String> headers = Collections.enumeration(singletonList("testkey=testValue123"));
@@ -188,10 +188,10 @@ public class TraceeInterceptorTest {
 	}
 
 	private Enumeration<String> createHeader(String key, String value) {
-		final Map<String, String> map = new HashMap<String, String>();
+		final Map<String, String> map = new HashMap<>();
 		map.put(key, value);
 		final String httpHeaderValue = new HttpHeaderTransport().render(map);
-		return new Vector<String>(Collections.singletonList(httpHeaderValue)).elements();
+		return new Vector<>(Collections.singletonList(httpHeaderValue)).elements();
 	}
 
 	private TraceeBackend mockedBackend(TraceeFilterConfiguration filterConfiguration) {

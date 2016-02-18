@@ -18,7 +18,7 @@ class BackendProviderResolver {
 
 	// We should use weak references for our cache. otherwise we block class unloading.
 	// This map is updated by the "copyOnWrite"-pattern. Don't update this map directly!
-	private static volatile Map<ClassLoader, Set<TraceeBackendProvider>> providersPerClassloader = new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>();
+	private static volatile Map<ClassLoader, Set<TraceeBackendProvider>> providersPerClassloader = new WeakHashMap<>();
 
 	/**
 	 * Find correct backend provider for the current context classloader. If no context classloader is available, a
@@ -50,13 +50,7 @@ class BackendProviderResolver {
 			final TraceeBackendProvider instance = (TraceeBackendProvider) slf4jTraceeBackendProviderClass.newInstance();
 			updatedCache(classLoader, Collections.singleton(instance));
 			return Collections.singleton(instance);
-		} catch (ClassNotFoundException cnfe) {
-			return Collections.emptySet();
-		} catch (InstantiationException e) {
-			return Collections.emptySet();
-		} catch (IllegalAccessException e) {
-			return Collections.emptySet();
-		} catch (ClassCastException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException e) {
 			return Collections.emptySet();
 		}
 	}
@@ -95,7 +89,7 @@ class BackendProviderResolver {
 	 * Helper method to update the static class cache
 	 */
 	private void updatedCache(final ClassLoader classLoader, final Set<TraceeBackendProvider> provider) {
-		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap = new WeakHashMap<ClassLoader, Set<TraceeBackendProvider>>(providersPerClassloader);
+		final Map<ClassLoader, Set<TraceeBackendProvider>> copyOnWriteMap = new WeakHashMap<>(providersPerClassloader);
 		if (!provider.isEmpty()) {
 			copyOnWriteMap.put(classLoader, new BackendProviderSet(provider));
 		} else {
@@ -124,11 +118,11 @@ class BackendProviderResolver {
 	private Set<TraceeBackendProvider> loadProviders(ClassLoader classloader) {
 		final ServiceLoader<TraceeBackendProvider> loader = ServiceLoader.load(TraceeBackendProvider.class, classloader);
 		final Iterator<TraceeBackendProvider> providerIterator = loader.iterator();
-		final Set<TraceeBackendProvider> traceeProvider = new HashSet<TraceeBackendProvider>();
+		final Set<TraceeBackendProvider> traceeProvider = new HashSet<>();
 		while (providerIterator.hasNext()) {
 			try {
 				traceeProvider.add(providerIterator.next());
-			} catch (ServiceConfigurationError e) {
+			} catch (ServiceConfigurationError ignored) {
 				// ignore, because it can happen when multiple providers are present and some of
 				// them are not class loader compatible with our API.
 			}

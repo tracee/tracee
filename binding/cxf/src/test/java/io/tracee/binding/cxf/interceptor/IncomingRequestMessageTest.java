@@ -45,7 +45,7 @@ public class IncomingRequestMessageTest {
 
 	@Test
 	public void shouldHandleMessageWithoutTraceeHeader() {
-		final Map<String, List<String>> headers = new HashMap<String, List<String>>();
+		final Map<String, List<String>> headers = new HashMap<>();
 		final String context = "myContext";
 		headers.put(TraceeConstants.TPIC_HEADER, Collections.singletonList(context));
 		message.put(Message.PROTOCOL_HEADERS, headers);

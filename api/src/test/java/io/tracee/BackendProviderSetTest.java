@@ -22,12 +22,12 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(BackendProviderSet.class)
 public class BackendProviderSetTest {
-	
+
 	@Test
 	public void shouldReturnSize() {
 		final Set<TraceeBackendProvider> providers = Sets.newSet(mock(TraceeBackendProvider.class), mock(TraceeBackendProvider.class));
 		final BackendProviderSet out = new BackendProviderSet(providers);
-		
+
 		assertThat(out.size(), equalTo(2));
 	}
 
@@ -40,7 +40,7 @@ public class BackendProviderSetTest {
 
 		assertThat(out, containsInAnyOrder(mockedBackend1, mockedBackend2));
 	}
-	
+
 	@Test
 	public void shouldHandleEmptySet() {
 		final Set<TraceeBackendProvider> providers = Sets.newSet();
@@ -48,7 +48,7 @@ public class BackendProviderSetTest {
 
 		assertThat(out.size(), equalTo(0));
 	}
-	
+
 	@Test
 	public void shouldReturnEmptySetIfOneElementWasDetached() throws Exception {
 		final BackendProviderSet traceeBackendProviders = buildProviderSetWithOneDetachedProvider();
@@ -80,8 +80,8 @@ public class BackendProviderSetTest {
 		final TraceeBackendProvider mockedBackend2 = mock(TraceeBackendProvider.class);
 
 		// Simulate a SoftReference with an empty value. (The powermock-method withArgument(..) don't work here!)
-		final SoftReference backendRef1 = new SoftReference<TraceeBackendProvider>(mockedBackend1);
-		final SoftReference backendRef2 = new SoftReference<TraceeBackendProvider>(null);
+		final SoftReference backendRef1 = new SoftReference<>(mockedBackend1);
+		final SoftReference backendRef2 = new SoftReference<>(null);
 		whenNew(SoftReference.class).withAnyArguments().thenReturn(backendRef1, backendRef2);
 
 		// Setup Set and ask for size - then we extract the 'valid' field to check that the set is marked as invalid

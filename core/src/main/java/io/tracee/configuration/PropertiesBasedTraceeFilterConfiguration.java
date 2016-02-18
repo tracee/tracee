@@ -31,7 +31,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	private final PropertyChain propertyChain;
 	private final String profileName;
 
-	private final Map<String, List<Pattern>> patternCache = new ConcurrentHashMap<String, List<Pattern>>();
+	private final Map<String, List<Pattern>> patternCache = new ConcurrentHashMap<>();
 
 	private static final Logger logger = LoggerFactory.getLogger(PropertiesBasedTraceeFilterConfiguration.class);
 
@@ -107,7 +107,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 
 	@Override
 	public Map<String, String> filterDeniedParams(final Map<String, String> unfiltered, final Channel channel) {
-		final Map<String, String> filtered = new HashMap<String, String>(unfiltered.size());
+		final Map<String, String> filtered = new HashMap<>(unfiltered.size());
 		for (Map.Entry<String, String> entry : unfiltered.entrySet()) {
 			if (shouldProcessParam(entry.getKey(), channel)) {
 				filtered.put(entry.getKey(), entry.getValue());
@@ -154,7 +154,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 		if (propertyValue == null)
 			return Collections.emptyList();
 
-		final List<Pattern> trimmedPatterns = new ArrayList<Pattern>();
+		final List<Pattern> trimmedPatterns = new ArrayList<>();
 		final StringTokenizer tokenizer = new StringTokenizer(propertyValue, ",");
 		while (tokenizer.hasMoreTokens()) {
 			final String trimmedString = tokenizer.nextToken().trim();

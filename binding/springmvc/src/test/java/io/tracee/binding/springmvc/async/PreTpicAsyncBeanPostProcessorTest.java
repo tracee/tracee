@@ -58,7 +58,7 @@ public class PreTpicAsyncBeanPostProcessorTest {
 	public void shouldStoreTpicToInvocationMetadata() throws Throwable {
 		final DelegateTpicToAsyncInterceptor interceptor = new DelegateTpicToAsyncInterceptor(mock(Executor.class));
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
-		final Map<String, String> tpic = new HashMap<String, String>();
+		final Map<String, String> tpic = new HashMap<>();
 		tpic.put("myInvoc", "storeThisToAsync");
 		Tracee.getBackend().putAll(tpic);
 		interceptor.invoke(mockedInvocation);

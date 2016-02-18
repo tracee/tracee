@@ -23,7 +23,7 @@ public class PermitAllTraceeFilterConfigurationTest {
 
 	@Test
 	public void testFilterDeniedParamsFiltersNothing() {
-		final Map<String,String> arbitraryContext = new HashMap<String,String>();
+		final Map<String,String> arbitraryContext = new HashMap<>();
 		arbitraryContext.put("foo", "bar");
 		arbitraryContext.put("anything", "else");
 		MatcherAssert.assertThat(unit.filterDeniedParams(arbitraryContext, IncomingRequest), equalTo(arbitraryContext));

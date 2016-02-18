@@ -41,7 +41,7 @@ public class TpicHeaderValueAdapterTest {
 
 	@Test
 	public void marshallRequestAndSessionId() throws JAXBException {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put(TraceeConstants.SESSION_ID_KEY, "ABCDEFGHIJ");
 		context.put(TraceeConstants.INVOCATION_ID_KEY, "1234567890");
 
@@ -66,7 +66,7 @@ public class TpicHeaderValueAdapterTest {
 
 	@Test
 	public void shouldTransferSpecialCharactersDueMarshallUnmarshall() throws JAXBException {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("ugly&<not>Xml-Fröndly", "H€@D-H|t$_K€Yb0\"<r>ß¿");
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		final StringWriter writer = new StringWriter();

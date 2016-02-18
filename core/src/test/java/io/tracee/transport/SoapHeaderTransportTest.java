@@ -116,7 +116,7 @@ public class SoapHeaderTransportTest {
 
 	@Test
 	public void renderTpicContextToResult() {
-		final Map<String, String> context = new HashMap<String, String>();
+		final Map<String, String> context = new HashMap<>();
 		context.put("myKey", "myValue");
 		context.put("myKey2", "myValue2");
 
@@ -143,7 +143,7 @@ public class SoapHeaderTransportTest {
 
 	@Test
 	public void serializeDeserializerTestWithResultAndSource() {
-		final Map<String, String> initContext = new HashMap<String, String>();
+		final Map<String, String> initContext = new HashMap<>();
 		initContext.put("our key1", "our value1");
 		initContext.put("our key2", "our value2");
 		final StringWriter writer = new StringWriter();

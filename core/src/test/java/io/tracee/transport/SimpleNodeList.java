@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SimpleNodeList implements NodeList, Iterable<Node> {
 
-	private final List<Node> backedList = new ArrayList<Node>();
+	private final List<Node> backedList = new ArrayList<>();
 
 	public SimpleNodeList() {}
 

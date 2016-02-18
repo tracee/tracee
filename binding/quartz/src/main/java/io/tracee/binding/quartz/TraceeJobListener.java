@@ -12,7 +12,6 @@ import org.quartz.listeners.JobListenerSupport;
 
 import java.util.Map;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
 
 public class TraceeJobListener extends JobListenerSupport {

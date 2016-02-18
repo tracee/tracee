@@ -21,7 +21,7 @@ public final class TpicMap {
 	private TpicMap() { entries = null; }
 
 	public static TpicMap wrap(Map<String, String> map) {
-		final List<Entry> values = new ArrayList<Entry>();
+		final List<Entry> values = new ArrayList<>();
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			values.add(new Entry(entry.getKey(), entry.getValue()));
 		}
@@ -32,7 +32,7 @@ public final class TpicMap {
 		if (entries == null) {
 			return Collections.emptyMap();
 		}
-		final Map<String, String> map = new HashMap<String,String>();
+		final Map<String, String> map = new HashMap<>();
 		for (Entry value : this.entries) {
 			map.put(value.key, value.value);
 		}

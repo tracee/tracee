@@ -15,7 +15,7 @@ public abstract class BackendBase implements TraceeBackend {
 	// Use #getPropertyChain to retrieve/get the chain
 	private PropertyChain _lazyPropertyChain = null;
 
-	private Map<String, TraceeFilterConfiguration> configurationCache = new ConcurrentHashMap<String, TraceeFilterConfiguration>();
+	private Map<String, TraceeFilterConfiguration> configurationCache = new ConcurrentHashMap<>();
 
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.

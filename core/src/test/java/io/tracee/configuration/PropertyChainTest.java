@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
@@ -35,7 +36,7 @@ public class PropertyChainTest {
 
 	@Test
 	public void testShouldWrapSingleProperties() throws Exception {
-		final PropertyChain unit = new PropertyChain(Arrays.asList(p1));
+		final PropertyChain unit = new PropertyChain(singletonList(p1));
 		assertThat(unit.getProperty("ONLY_IN_P1"), equalTo("FROM_P1"));
 	}
 

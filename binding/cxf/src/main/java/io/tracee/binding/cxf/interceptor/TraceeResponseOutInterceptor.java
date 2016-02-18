@@ -1,7 +1,6 @@
 package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
-import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;

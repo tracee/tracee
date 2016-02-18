@@ -2,7 +2,6 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.ws.handler.MessageContext;

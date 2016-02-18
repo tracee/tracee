@@ -19,7 +19,7 @@ abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> 
 	protected final TraceeBackend traceeBackend;
 
 	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
-			new HashSet<QName>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
+			new HashSet<>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
 
 	public AbstractTraceeHandler(TraceeBackend traceeBackend) {
 		this.traceeBackend = traceeBackend;

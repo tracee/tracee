@@ -8,11 +8,11 @@ import javax.jws.WebService;
 		serviceName = "HelloWorldService")
 public interface HelloWorldTestService {
 
-	public static final String NAMESPACE = "https://github.com/tracee/tracee";
+	String NAMESPACE = "https://github.com/tracee/tracee";
 
-	public static final String TEST_KEY = "serverKey";
+	String TEST_KEY = "serverKey";
 
 	@WebResult(partName = "greeting")
-	public String sayHelloWorld(
+	String sayHelloWorld(
 			@WebParam(partName = "firstName") String firstName);
 }

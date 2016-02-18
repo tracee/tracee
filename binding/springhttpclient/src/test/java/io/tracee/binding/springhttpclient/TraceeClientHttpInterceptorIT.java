@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -34,7 +34,7 @@ public class TraceeClientHttpInterceptorIT {
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
 		final RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setInterceptors(Arrays.<ClientHttpRequestInterceptor>asList(new TraceeClientHttpRequestInterceptor("default")));
+		restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new TraceeClientHttpRequestInterceptor("default")));
 		Tracee.getBackend().put("before Request", "yip");
 		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
 		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));

@@ -55,7 +55,7 @@ public class IncomingSoapRequestMessageTest {
 
 	@Test
 	public void shouldHandleMessageWithoutTraceeHeader() throws JAXBException {
-		final Map<String, String> contextMap = new HashMap<String, String>();
+		final Map<String, String> contextMap = new HashMap<>();
 		contextMap.put("mySoapKey", "mySoapContextValue");
 		soapMessage.getHeaders().add(new Header(new QName(TraceeConstants.SOAP_HEADER_NAMESPACE, "SOME_OTHER"), contextMap, new JAXBDataBinding(HashMap.class)));
 
@@ -67,7 +67,7 @@ public class IncomingSoapRequestMessageTest {
 
 	@Test
 	public void shouldHandleMessageWithTraceeHeader() throws SOAPException, JAXBException {
-		final Map<String, String> contextMap = new HashMap<String, String>();
+		final Map<String, String> contextMap = new HashMap<>();
 		contextMap.put("mySoapKey", "mySoapContextValue");
 		final Element element = render(contextMap);
 		final Header e = new Header(TraceeConstants.SOAP_HEADER_QNAME, element);

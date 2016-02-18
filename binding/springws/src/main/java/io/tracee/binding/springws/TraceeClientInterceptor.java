@@ -2,13 +2,9 @@ package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
-import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
-
-import javax.xml.bind.JAXBException;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;

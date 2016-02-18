@@ -24,7 +24,7 @@ public class ThreadLocalMapTest {
 
 	@Test
 	public void shouldCreateChildWithCopyOfHashMap() {
-		final Map<String, String> map = new HashMap<String, String>();
+		final Map<String, String> map = new HashMap<>();
 		map.put("A", "vA");
 		final Map<String, String> childValueMap = new ThreadLocalMap<String, String>().childValue(map);
 		assertThat(childValueMap, equalTo(map));

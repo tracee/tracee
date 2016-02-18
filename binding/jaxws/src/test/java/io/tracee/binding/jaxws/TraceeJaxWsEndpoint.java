@@ -7,7 +7,7 @@ import java.util.List;
 public interface TraceeJaxWsEndpoint {
 
 	interface Descriptor {
-		public static final String SERVICE_NAME = "TraceeJaxWsEndpoint";
+		String SERVICE_NAME = "TraceeJaxWsEndpoint";
 		String TNS = "https://github.com/tracee/tracee/examples/jaxws/service/wsdl";
 	}
 

@@ -16,7 +16,7 @@ public interface TraceeFilterConfiguration {
 	/**
 	 * Tracee ships with a set of builtin profiles.
 	 */
-	public static final class Profile {
+	final class Profile {
 
 		private Profile() {
 		}
