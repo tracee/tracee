@@ -49,7 +49,7 @@ public class TraceeInterceptorTest {
 	public void beforeTest() {
 		mockedBackend = mockedBackend(new PermitAllTraceeFilterConfiguration());
 		unit = new TraceeInterceptor(mockedBackend);
-		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(EmptyEnumeration.emptyEnumeration());
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(EmptyEnumeration.<String>emptyEnumeration());
 	}
 
 	@Test

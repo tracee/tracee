@@ -26,10 +26,10 @@
 			<artifactId>tracee-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-        </dependency>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
@@ -49,8 +49,6 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
-			<version>7.3.0.v20110203</version>
-			<scope>test</scope>
 		</dependency>
     </dependencies>
 </project>
