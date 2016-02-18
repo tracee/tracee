@@ -113,6 +113,7 @@
 		<powermock.version>1.6.2</powermock.version>
 		<equalsverifier.version>1.7.5</equalsverifier.version>
 		<junit-benchmarks.version>0.7.2</junit-benchmarks.version>
+		<jetty.version>8.1.18.v20150929</jetty.version>
 
         <!-- dependency versions -->
         <slf4j.version>1.7.16</slf4j.version>
@@ -305,7 +306,7 @@
                 <plugin>
                     <groupId>org.mortbay.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
-                    <version>8.1.15.v20140411</version>
+                    <version>${jetty.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -427,10 +428,10 @@
                 <version>${slf4j.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>2.5</version>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -524,6 +525,12 @@
                 <version>${log4j2.version}</version>
                 <scope>test</scope>
             </dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlet</artifactId>
+				<version>${jetty.version}</version>
+				<scope>test</scope>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 </project>

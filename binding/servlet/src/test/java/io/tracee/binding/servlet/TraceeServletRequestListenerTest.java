@@ -18,6 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -25,6 +26,7 @@ import static io.tracee.TraceeConstants.INVOCATION_ID_KEY;
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.enumeration;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
@@ -53,7 +55,8 @@ public class TraceeServletRequestListenerTest {
 	@Test
 	public void testGeneratesInvocationId() throws Exception {
 		when(configuration.shouldGenerateInvocationId()).thenReturn(true);
-		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(emptyList()));
+		final Collection<String> emptyList = Collections.emptyList();
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(enumeration(emptyList));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, atLeastOnce()).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
@@ -62,7 +65,8 @@ public class TraceeServletRequestListenerTest {
 	@Test
 	public void testDoesNotGeneratesInvocationId() throws Exception {
 		when(configuration.shouldGenerateInvocationId()).thenReturn(false);
-		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(emptyList()));
+		final Collection<String> emptyList = Collections.emptyList();
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(enumeration(emptyList));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
 		verify(backend, never()).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
@@ -79,7 +83,7 @@ public class TraceeServletRequestListenerTest {
 				return invocation.getArguments()[0];
 			}
 		});
-		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(Collections.enumeration(
+		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(enumeration(
 				singletonList(INVOCATION_ID_KEY + "=123")));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
