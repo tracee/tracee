@@ -11,6 +11,9 @@ import org.quartz.Trigger;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
 
+/**
+ * This class injects the current TPIC into the `JobDataMap` at the time when a dynamic generated job is scheduled.
+ */
 public class TraceeContextInjector {
 
 	private final TraceeBackend backend;

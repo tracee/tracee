@@ -14,6 +14,11 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
 
+/**
+ * Generates a invocation Id and clears the backend after the job has finished or aborted in an ungraceful way.
+ * <p/>
+ * This class is thread-safe.
+ */
 public class TraceeJobListener extends JobListenerSupport {
 
 	private final TraceeBackend backend;
