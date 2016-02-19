@@ -52,3 +52,7 @@ It could be the case that you use quartz to continue your invocation processing 
 new TraceeContextInjector().injectContext(trigger);
 ...
 ```
+
+(You could think "Why doesn't TracEE use the `SchedulerListener` to add the TPIC to new created jobs?" In general you're right, we're able to change
+the `JobDataMap` to store the TPIC to the job. Unfortunately the job isn't saved again after the modification. Due this restriction we've to
+add the TPIC before, otherwise the TPIC isn't saved.)

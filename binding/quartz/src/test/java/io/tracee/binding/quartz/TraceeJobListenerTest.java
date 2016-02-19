@@ -1,11 +1,11 @@
 package io.tracee.binding.quartz;
 
 import io.tracee.Tracee;
-import io.tracee.testhelper.FieldAccessUtil;
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
+import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.quartz.JobDataMap;
@@ -85,6 +85,4 @@ public class TraceeJobListenerTest {
 	public void returnTheNameOfTheListener() {
 		assertThat(unit.getName(), is("TracEE job listener"));
 	}
-
-
 }
