@@ -1,31 +1,42 @@
 package io.tracee.binding.servlet;
 
 import io.tracee.Tracee;
-import io.tracee.testhelper.FieldAccessUtil;
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.HttpHeaderTransport;
-
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.contains;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 public class TraceeFilterTest {
 
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final HttpHeaderTransport transport =  new HttpHeaderTransport();
+	private final HttpHeaderTransport transport = new HttpHeaderTransport();
 	private final TraceeFilter unit = new TraceeFilter(backend, transport);
 	private final FilterChain filterChain = Mockito.mock(FilterChain.class);
 	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);

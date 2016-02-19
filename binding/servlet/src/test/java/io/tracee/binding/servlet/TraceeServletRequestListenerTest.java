@@ -25,7 +25,6 @@ import java.util.HashMap;
 import static io.tracee.TraceeConstants.INVOCATION_ID_KEY;
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.enumeration;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;

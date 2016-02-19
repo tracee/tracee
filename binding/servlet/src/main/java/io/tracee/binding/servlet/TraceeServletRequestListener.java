@@ -10,6 +10,7 @@ import io.tracee.transport.HttpHeaderTransport;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Incoming
 /**
  * Manages the TracEE lifecycle.
  */
+@WebListener("TraceeServletRequestListener to read incoming TPICs into Tracee backend")
 public final class TraceeServletRequestListener implements ServletRequestListener {
 
 	private static final String HTTP_HEADER_NAME = TraceeConstants.TPIC_HEADER;
@@ -55,7 +57,6 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 		final TraceeFilterConfiguration configuration = backend.getConfiguration();
 
 		if (configuration.shouldProcessContext(IncomingRequest)) {
-			@SuppressWarnings("unchecked")
 			final Enumeration<String> headers = request.getHeaders(HTTP_HEADER_NAME);
 
 			if (headers != null && headers.hasMoreElements()) {

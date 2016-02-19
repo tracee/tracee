@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-fragment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xmlns="http://java.sun.com/xml/ns/javaee"
+			  xmlns="http://java.sun.com/xml/ns/javaee"
 			  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
 			  id="TRACEE_SERVLET_FILTER" version="3.0">
 
