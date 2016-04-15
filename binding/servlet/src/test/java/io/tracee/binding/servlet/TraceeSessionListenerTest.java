@@ -13,7 +13,12 @@ import javax.servlet.http.HttpSessionEvent;
 
 import static io.tracee.TraceeConstants.SESSION_ID_KEY;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.atLeastOnce;
 
 public class TraceeSessionListenerTest {

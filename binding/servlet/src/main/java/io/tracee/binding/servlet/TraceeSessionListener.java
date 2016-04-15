@@ -5,6 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
 
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSessionListener;
  * <li>Tomcat</li>
  * </ul>
  */
+@WebListener("TraceeSessionListener to create sessionIds on session creation and remove it instead from the TracEE backend on session termination.")
 public class TraceeSessionListener implements HttpSessionListener {
 
 	private final TraceeBackend backend;

@@ -2,7 +2,7 @@
 
 # tracee-servlet
 
-tracee-servlet contains Servlet-Listeners and -Filters that allows you to use TracEE Context Propagation with Servlets.
+tracee-servlet contains Servlet-listeners and -filters that allows you to use TracEE Context Propagation with servlets (Servlet API 3.0 and above).
 
  * __TraceeServletRequestListener__: Parses a TracEE-Context from a ServletHttpRequest-Header before a request is processed by a servlet. It also cleans the TraceeBackend when the request processing is finished by the container.
  * __TraceeFilter__: Writes a TracEE-Context back to a ServletHttpResponse-Header.
@@ -26,7 +26,22 @@ If you're use Maven for your dependency management simple add this to your pom:
 </dependencies>
 ```
 
-If you are on a Servlet-Container with servlet-version < 3, you need to register the following filters in your web.xml:
+### Manual installation
+
+If you've disabled web-fragment scanning you can configure this module by Java configuration by implementing `ServletContainerInitializer`:
+
+```java
+@Override
+public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
+	ctx.addFilter("traceeFilter", TraceeFilter.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
+	ctx.addListener(TraceeServletRequestListener.class);
+	ctx.addListener(TraceeSessionListener.class);
+		
+	...
+}
+```
+
+or if you prefer the old-fashioned way by using the `web.xml` file, you've to add following:
 
 ```xml
 ...
@@ -48,7 +63,7 @@ If you are on a Servlet-Container with servlet-version < 3, you need to register
 ```
 You may change the `filter-mapping:url-pattern` according to your needs.
 
-### Spring Boot
+## Spring Boot
 
 If you're running in an embedded SpringBoot container you've to add the ServletListener and Filter to your application configuration:
 
@@ -62,7 +77,12 @@ public FilterRegistrationBean traceeFilter() {
 }
 
 @Bean
-public ServletListenerRegistrationBean traceeServletListener() {
-    return new ServletListenerRegistrationBean<TraceeServletRequestListener>(new TraceeServletRequestListener());
+public ServletRequestListener traceeServletListener() {
+    return new TraceeServletRequestListener();
+}
+
+@Bean
+public HttpSessionListener traceeSessionListener() {
+    return new TraceeSessionListener();
 }
 ```
