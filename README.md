@@ -1,4 +1,4 @@
-# TracEE 1.1.1
+# TracEE 2.0.0
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tracee/tracee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
@@ -19,7 +19,7 @@ complicated to gather relevant log entries that belong to a certain interaction 
 *TracEE* is an integration framework that eases this kind of interaction monitoring of JavaEE applications by passing contextual information
 through your whole system and makes them visible in your logs. Therefore it contains adapters or interceptors for the most popular JavaEE technologies:
 
-* servlet 2.5+
+* servlet 3.0+
 * jax-ws
 * jax-rs2
 * jms
