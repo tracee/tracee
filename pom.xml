@@ -110,16 +110,16 @@
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<mockito.version>1.10.19</mockito.version>
-		<powermock.version>1.6.4</powermock.version>
-		<equalsverifier.version>1.7.7</equalsverifier.version>
+		<powermock.version>1.6.5</powermock.version>
+		<equalsverifier.version>2.1.2</equalsverifier.version>
 		<junit-benchmarks.version>0.7.2</junit-benchmarks.version>
 		<jetty.version>8.1.18.v20150929</jetty.version>
 
         <!-- dependency versions -->
-        <slf4j.version>1.7.16</slf4j.version>
+        <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <log4j2.version>2.5</log4j2.version>
-        <logback.version>1.1.5</logback.version>
+        <log4j2.version>2.6.2</log4j2.version>
+        <logback.version>1.1.7</logback.version>
         <spring.version>4.2.7.RELEASE</spring.version>
     </properties>
 
