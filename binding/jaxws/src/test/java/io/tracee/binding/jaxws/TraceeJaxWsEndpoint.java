@@ -4,7 +4,7 @@ import javax.jws.WebService;
 import java.util.List;
 
 @WebService(targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS)
-public interface TraceeJaxWsEndpoint {
+interface TraceeJaxWsEndpoint {
 
 	interface Descriptor {
 		String SERVICE_NAME = "TraceeJaxWsEndpoint";

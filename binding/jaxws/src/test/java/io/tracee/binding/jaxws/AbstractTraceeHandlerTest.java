@@ -63,7 +63,7 @@ public class AbstractTraceeHandlerTest {
 
 	private static class TestTraceeHandler extends AbstractTraceeHandler {
 
-		public TestTraceeHandler(TraceeBackend traceeBackend) {
+		TestTraceeHandler(TraceeBackend traceeBackend) {
 			super(traceeBackend);
 		}
 
