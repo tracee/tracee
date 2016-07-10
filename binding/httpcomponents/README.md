@@ -26,7 +26,8 @@ This module contains two interceptors:
 Then add simply two interceptors to your HttpClient of the httpcomponents module:
 
 ```java
-DefaultHttpClient httpClient = new DefaultHttpClient();
-httpClient.addRequestInterceptor(new TraceeHttpRequestInterceptor());
-httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
+HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+httpClientBuilder.addInterceptorLast(new TraceeHttpRequestInterceptor());
+httpClientBuilder.addInterceptorFirst(new TraceeHttpResponseInterceptor());
+CloseableHttpClient httpClient = httpClientBuilder.build();
 ```

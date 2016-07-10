@@ -4,7 +4,8 @@ import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -31,9 +32,10 @@ public class TraceeHttpInterceptorsIT {
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
 
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpClient.addRequestInterceptor(new TraceeHttpRequestInterceptor());
-		httpClient.addResponseInterceptor(new TraceeHttpResponseInterceptor());
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+		httpClientBuilder.addInterceptorLast(new TraceeHttpRequestInterceptor());
+		httpClientBuilder.addInterceptorFirst(new TraceeHttpResponseInterceptor());
+		CloseableHttpClient httpClient = httpClientBuilder.build();
 
 		HttpGet getMethod = new HttpGet(serverEndpoint);
 		Tracee.getBackend().put("before Request", "yip");
