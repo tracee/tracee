@@ -2,7 +2,7 @@
 
 # tracee-cxf
 
-This module is used for CXF implementations on client and/or on server side. It's tested with CXF 2.7.13 and should work with all versions above.
+This module is used for CXF implementations on client and/or on server side. It's tested with CXF 2.7.18mvn and should work with all versions above.
 
 ## Installation
 
