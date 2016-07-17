@@ -17,13 +17,14 @@ public class HttpHeaderTransport {
 	public static final String ENCODING_CHARSET = "UTF-8";
 	private static final Logger LOGGER = LoggerFactory.getLogger(HttpHeaderTransport.class);
 
-	public HttpHeaderTransport() {}
+	public HttpHeaderTransport() {
+	}
 
 
 	Map<String, String> parse(String serialized) {
 		final StringTokenizer pairTokenizer = new StringTokenizer(serialized.trim(), ",");
 		final Map<String, String> context = new HashMap<>();
-		while(pairTokenizer.hasMoreTokens()) {
+		while (pairTokenizer.hasMoreTokens()) {
 			final String pairStr = pairTokenizer.nextToken();
 			final String[] keyValuePair = pairStr.split("=");
 			if (keyValuePair.length != 2) {

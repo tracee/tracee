@@ -7,7 +7,7 @@ import io.tracee.configuration.TraceeFilterConfiguration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.*;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile;
 
 
 public abstract class BackendBase implements TraceeBackend {

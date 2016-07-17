@@ -2,8 +2,17 @@ package io.tracee.transport.jaxb;
 
 import io.tracee.TraceeConstants;
 
-import javax.xml.bind.annotation.*;
-import java.util.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @XmlRootElement(name = TraceeConstants.TPIC_HEADER)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -18,7 +27,9 @@ public final class TpicMap {
 
 	//For JaxB
 	@SuppressWarnings("UnusedDeclaration")
-	private TpicMap() { entries = null; }
+	private TpicMap() {
+		entries = null;
+	}
 
 	public static TpicMap wrap(Map<String, String> map) {
 		final List<Entry> values = new ArrayList<>();

@@ -72,7 +72,7 @@ public final class Utilities {
 	/**
 	 * Generate session id hash if it doesn't exist in TraceeBackend and configuration asks for one
 	 *
-	 * @param backend Currently used TraceeBackend
+	 * @param backend   Currently used TraceeBackend
 	 * @param sessionId Current http sessionId
 	 */
 	public static void generateSessionIdIfNecessary(final TraceeBackend backend, final String sessionId) {

@@ -21,61 +21,61 @@ class Slf4jTraceeBackend extends BackendBase {
 	}
 
 	@Override
-    public boolean containsKey(String key) {
+	public boolean containsKey(String key) {
 		return key != null && traceeKeys.get().contains(key) && MDC.get(key) != null;
-    }
+	}
 
 	@Override
-    public int size() {
-        return traceeKeys.get().size();
-    }
+	public int size() {
+		return traceeKeys.get().size();
+	}
 
 	@Override
-    public boolean isEmpty() {
-        return traceeKeys.get().isEmpty();
-    }
+	public boolean isEmpty() {
+		return traceeKeys.get().isEmpty();
+	}
 
 	@Override
-    public String get(String key) {
-        if ((key != null) && traceeKeys.get().contains(key))
+	public String get(String key) {
+		if ((key != null) && traceeKeys.get().contains(key))
 			return MDC.get(key);
-        else
-            return null;
-    }
+		else
+			return null;
+	}
 
 	@Override
-    public void put(String key, String value) {
-        if (key == null) throw new NullPointerException("null keys are not allowed.");
-        if (value == null) throw new NullPointerException("null values are not allowed.");
-        final Set<String> registeredKeys = traceeKeys.get();
-        if (!registeredKeys.contains(key)) {
-            registeredKeys.add(key);
-        }
+	public void put(String key, String value) {
+		if (key == null) throw new NullPointerException("null keys are not allowed.");
+		if (value == null) throw new NullPointerException("null values are not allowed.");
+		final Set<String> registeredKeys = traceeKeys.get();
+		if (!registeredKeys.contains(key)) {
+			registeredKeys.add(key);
+		}
 		MDC.put(key, value);
 	}
 
 	@Override
-    public void remove(String key) {
-        if (key == null) throw new NullPointerException("null keys are not allowed.");
-        if (traceeKeys.get().remove(key)) {
+	public void remove(String key) {
+		if (key == null) throw new NullPointerException("null keys are not allowed.");
+		if (traceeKeys.get().remove(key)) {
 			MDC.remove(key);
 		}
-    }
-
-    @Override
-    public void clear() {
-        for (String key : traceeKeys.get()) {
-			MDC.remove(key);
-        }
-        traceeKeys.remove();
-    }
+	}
 
 	@Override
-    public void putAll(Map<? extends String, ? extends String> entries) {
-        for (Map.Entry<? extends String, ? extends String> entry : entries.entrySet()) {
-            put(entry.getKey(), entry.getValue());
-        }
-    }
+	public void clear() {
+		for (String key : traceeKeys.get()) {
+			MDC.remove(key);
+		}
+		traceeKeys.remove();
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends String> entries) {
+		for (Map.Entry<? extends String, ? extends String> entry : entries.entrySet()) {
+			put(entry.getKey(), entry.getValue());
+		}
+	}
 
 	@Override
 	public Map<String, String> copyToMap() {
