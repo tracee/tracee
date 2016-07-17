@@ -96,6 +96,11 @@
                 <artifactId>tracee-springws</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			<dependency>
+				<groupId>io.tracee.binding</groupId>
+				<artifactId>tracee-springjms</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
             <!-- test utils -->
             <dependency>

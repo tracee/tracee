@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:amq="http://activemq.apache.org/schema/core"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd http://activemq.apache.org/schema/core
+                           http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+	<amq:broker id="broker" useJmx="false" persistent="false">
+		<amq:transportConnectors>
+			<amq:transportConnector uri="tcp://localhost:0"/>
+		</amq:transportConnectors>
+	</amq:broker>
+
+	<amq:queue id="destination" physicalName="myTestQueue"/>
+
+	<!-- JMS ConnectionFactory to use, configuring the embedded broker using XML -->
+	<amq:connectionFactory id="jmsFactory" brokerURL="vm://localhost"/>
+
+	<bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="jmsFactory"/>
+		<property name="reconnectOnException" value="true" />
+	</bean>
+
+	<bean id="jmsContainer" class="org.springframework.jms.listener.SimpleMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="destination" ref="destination" />
+	</bean>
+
+	<bean id="traceeMessageConverter" class="io.tracee.binding.springjms.TraceeMessageConverter"/>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="messageConverter" ref="traceeMessageConverter" />
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+</beans>
