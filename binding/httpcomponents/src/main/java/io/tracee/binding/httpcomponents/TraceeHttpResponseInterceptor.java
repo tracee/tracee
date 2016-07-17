@@ -7,12 +7,10 @@ import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.http.Header;
-import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +19,8 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Incoming
 
 public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
-    private final TraceeBackend backend;
-    private final HttpHeaderTransport transportSerialization;
+	private final TraceeBackend backend;
+	private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	public TraceeHttpResponseInterceptor() {
@@ -40,15 +38,15 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 	}
 
 	@Override
-    public final void process(HttpResponse response, HttpContext context) {
-        final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+	public final void process(HttpResponse response, HttpContext context) {
+		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		final Header[] responseHeaders = response.getHeaders(TraceeConstants.TPIC_HEADER);
-        if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
+		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<String>();
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}
 			backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(stringTraceeHeaders), IncomingResponse));
 		}
-    }
+	}
 }
