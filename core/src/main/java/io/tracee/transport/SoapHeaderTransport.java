@@ -46,7 +46,8 @@ public class SoapHeaderTransport {
 		final NodeList tpicHeaders = soapHeader.getElementsByTagNameNS(TraceeConstants.SOAP_HEADER_NAMESPACE, TraceeConstants.TPIC_HEADER);
 		final HashMap<String, String> contextMap = new HashMap<>();
 		if (tpicHeaders != null && tpicHeaders.getLength() > 0) {
-			for (int i = 0, items = tpicHeaders.getLength(); i < items; i++) {
+			final int items = tpicHeaders.getLength();
+			for (int i = 0; i < items; i++) {
 				contextMap.putAll(parseTpicHeader((Element) tpicHeaders.item(i)));
 			}
 		}

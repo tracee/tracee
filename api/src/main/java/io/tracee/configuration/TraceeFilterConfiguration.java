@@ -18,14 +18,12 @@ public interface TraceeFilterConfiguration {
 	 */
 	final class Profile {
 
-		private Profile() {
-		}
-
 		/**
 		 * Default Profile.
 		 * Permits Tracee headers to flow into all directions.
 		 */
 		public static final String DEFAULT = "default";
+
 		/**
 		 * HideInbound Profile.
 		 * Prevents responding with a Tracee-Header in OutgoingResponses.
@@ -51,6 +49,9 @@ public interface TraceeFilterConfiguration {
 		 * Completely disables tracee context processing on all channels.
 		 */
 		public static final String DISABLED = "Disabled";
+
+		private Profile() {
+		}
 	}
 
 	/**
