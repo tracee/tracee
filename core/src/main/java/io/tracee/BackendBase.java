@@ -27,13 +27,12 @@ public abstract class BackendBase implements TraceeBackend {
 
 	@Override
 	public final TraceeFilterConfiguration getConfiguration(String profileName) {
-		if (profileName == null) {
-			profileName = Profile.DEFAULT;
-		}
-		TraceeFilterConfiguration filterConfiguration = configurationCache.get(profileName);
+		final String lookupProfile = profileName == null ? Profile.DEFAULT : profileName;
+
+		TraceeFilterConfiguration filterConfiguration = configurationCache.get(lookupProfile);
 		if (filterConfiguration == null) {
-			filterConfiguration = new PropertiesBasedTraceeFilterConfiguration(getPropertyChain(), profileName);
-			configurationCache.put(profileName, filterConfiguration);
+			filterConfiguration = new PropertiesBasedTraceeFilterConfiguration(getPropertyChain(), lookupProfile);
+			configurationCache.put(lookupProfile, filterConfiguration);
 		}
 		return filterConfiguration;
 	}
