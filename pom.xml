@@ -20,6 +20,7 @@
         <!-- outgoing filters -->
         <module>binding/httpclient</module>
         <module>binding/httpcomponents</module>
+        <module>binding/httpcomponents5</module>
         <module>binding/springhttpclient</module>
 
         <!-- bidi filters -->
