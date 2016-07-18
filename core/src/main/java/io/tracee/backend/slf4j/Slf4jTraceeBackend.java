@@ -44,9 +44,9 @@ class Slf4jTraceeBackend extends BackendBase {
 	}
 
 	@Override
-	public void put(String key, String value) {
-		if (key == null) throw new NullPointerException("null keys are not allowed.");
-		if (value == null) throw new NullPointerException("null values are not allowed.");
+	public void put(String key, String value) throws IllegalArgumentException {
+		if (key == null) throw new IllegalArgumentException("null keys are not allowed.");
+		if (value == null) throw new IllegalArgumentException("null values are not allowed.");
 		final Set<String> registeredKeys = traceeKeys.get();
 		if (!registeredKeys.contains(key)) {
 			registeredKeys.add(key);
@@ -55,8 +55,8 @@ class Slf4jTraceeBackend extends BackendBase {
 	}
 
 	@Override
-	public void remove(String key) {
-		if (key == null) throw new NullPointerException("null keys are not allowed.");
+	public void remove(String key) throws IllegalArgumentException {
+		if (key == null) throw new IllegalArgumentException("null keys are not allowed.");
 		if (traceeKeys.get().remove(key)) {
 			MDC.remove(key);
 		}
