@@ -15,5 +15,6 @@
 | JMS                         | Producer: Use [tracee-jms](jms/)'s `TraceeMessageWriter.wrap` on your `MessageWriter` | MDB: Use [trace-jms](jms/)'s `TraceeMessageListener` as EJB interceptor. |
 | ApacheHttpClient 3          | Use [tracee-httpclient](httpclient/)'s `TraceeHttpClientDecorator` | - |
 | ApacheHttpClient 4          | Use [tracee-components](httpcomponents/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
+| ApacheHttpClient 5          | Use [tracee-components5](httpcomponents5/)'s `TraceeHttpRequestInterceptor` and `TraceeHttpResponseInterceptor` | - |
 | Apache CXF                  | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` | Use [tracee-cxf](cxf/)'s `TraceeCxfFeature` |
 | Quartz Scheduler            | - | Use [tracee-quartz](quartz/)'s `TraceeJobListener` to generate context before the job starts |
