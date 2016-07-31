@@ -24,12 +24,29 @@ For maven you've to add following dependency to your `pom.xml`:
 ...
 ```
 
-After that you've to add the `TraceeClientHttpRequestInterceptor` to your `RestTemplate`:
+### Inject your RestTemplate
+
+Go to your Spring Java configuration file and add:
+
+```java
+@Bean
+public RestTemplate restTemplate() {
+    final RestTemplate restTemplate = new RestTemplate();
+    restTemplate.setInterceptors(Collections.singletonList(traceeClientHttpRequestInterceptor()));
+    return restTemplate;
+}
+```
+
+Now you can inject the RestTemplate with the Tracee interceptor to all necessary spring components.
+
+### Manual usage
+
+If you're creating a new version of the `RestTemplate` in your code, simple add the `TraceeClientHttpRequestInterceptor` by adding it as interceptor:
 
 ```java
 ...
 final RestTemplate restTemplate = new RestTemplate();
-restTemplate.setInterceptors(Arrays.<ClientHttpRequestInterceptor>asList(new TraceeClientHttpRequestInterceptor()));
+restTemplate.setInterceptors(Collections.singletonList(traceeClientHttpRequestInterceptor()));
 restTemplate.getForObject(serverEndpoint, ...);
 ...
 ```

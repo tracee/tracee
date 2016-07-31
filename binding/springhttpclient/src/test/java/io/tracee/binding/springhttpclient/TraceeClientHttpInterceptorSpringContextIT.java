@@ -30,29 +30,12 @@ import static org.hamcrest.Matchers.equalTo;
  * Spring configuration test.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/test-context.xml")
+@ContextConfiguration(classes = SpringHttpClientTestJavaConfig.class)
 public class TraceeClientHttpInterceptorSpringContextIT {
 
 
-	private static final class EmptyEntity {}
-
-	private Server server;
-	private String serverEndpoint;
-
-	@Autowired
-	private RestTemplate restTemplate;
-
 	@Rule
-	public ErrorCollector collector= new ErrorCollector();
-
-
-	@Test
-	public void testWritesToServerAndParsesResponse() throws IOException {
-		Tracee.getBackend().put("before Request", "yip");
-		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
-		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));
-	}
-
+	public ErrorCollector collector = new ErrorCollector();
 	private final Handler requestHandler = new AbstractHandler() {
 		@Override
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException,
@@ -64,13 +47,24 @@ public class TraceeClientHttpInterceptorSpringContextIT {
 			request.setHandled(true);
 		}
 	};
+	private Server server;
+	private String serverEndpoint;
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Test
+	public void testWritesToServerAndParsesResponse() throws IOException {
+		Tracee.getBackend().put("before Request", "yip");
+		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
+		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));
+	}
 
 	@Before
 	public void startJetty() throws Exception {
 		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		server.setHandler(requestHandler);
 		server.start();
-		serverEndpoint = "http://"+server.getConnectors()[0].getName();
+		serverEndpoint = "http://" + server.getConnectors()[0].getName();
 	}
 
 	@After
@@ -80,6 +74,9 @@ public class TraceeClientHttpInterceptorSpringContextIT {
 			server.join();
 		}
 		Tracee.getBackend().clear();
+	}
+
+	private static final class EmptyEntity {
 	}
 
 

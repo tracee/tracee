@@ -6,7 +6,6 @@ import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

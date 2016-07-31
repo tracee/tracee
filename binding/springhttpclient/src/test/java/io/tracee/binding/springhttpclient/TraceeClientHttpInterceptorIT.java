@@ -24,12 +24,18 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class TraceeClientHttpInterceptorIT {
 
+	private final Handler requestHandler = new AbstractHandler() {
+		@Override
+		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
+			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
+			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
+			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "response+From+Server=yesSir");
+			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			request.setHandled(true);
+		}
+	};
 	private Server server;
 	private String serverEndpoint;
-
-	private static final class EmptyEntity {
-
-	}
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
@@ -45,19 +51,8 @@ public class TraceeClientHttpInterceptorIT {
 		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		server.setHandler(requestHandler);
 		server.start();
-		serverEndpoint = "http://"+server.getConnectors()[0].getName();
+		serverEndpoint = "http://" + server.getConnectors()[0].getName();
 	}
-
-	private final Handler requestHandler = new AbstractHandler() {
-		@Override
-		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
-			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
-			assertThat(incomingTraceeHeader, equalTo("before+Request=yip"));
-			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "response+From+Server=yesSir");
-			httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-			request.setHandled(true);
-		}
-	};
 
 	@After
 	public void stopJetty() throws Exception {
@@ -66,6 +61,10 @@ public class TraceeClientHttpInterceptorIT {
 			server.join();
 		}
 		Tracee.getBackend().clear();
+	}
+
+	private static final class EmptyEntity {
+
 	}
 
 }
