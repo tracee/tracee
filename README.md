@@ -30,7 +30,7 @@ Also supported are these common and widespread frameworks:
 * Spring Web (RestClients)
 * Spring AMQP (RabbitMQ)
 * Spring Web Services (SpringWS)
-* Apache HttpClient 3 / 4
+* Apache HttpClient 3 / 4 / 5
 * Apache CXF
 * Quartz Scheduler
 
@@ -142,6 +142,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-bom](bom/) | *BOM - Bill of Material* for maven projects | 
 | __binding modules__                     | *These dependencies are needed due compile time* |
 | [tracee-httpcomponents](binding/httpcomponents/)    | Adapter for `org.apache.httpcomponents:httpclient`-library (also known as HttpClient 4.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
+| [tracee-httpcomponents5](binding/httpcomponents5/)  | Adapter for the new `org.apache.httpcomponents.client5:httpclient5`-library. Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-httpclient](binding/httpclient/)            | Adapter for `commons-httpclient`-library (also known as HttpClient 3.x). Use it to make your JAX-RS or raw http clients propagate and receive invocation contexts.
 | [tracee-jaxrs2](binding/jaxrs2)                     | Interceptors for JAX-RS2. Use it to traceefy your JAX-RS2 endpoints and clients.
 | [tracee-jaxws](binding/jaxws)                       | HandlerChains for JAX-WS endpoints and clients.
