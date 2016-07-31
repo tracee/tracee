@@ -51,6 +51,11 @@
                 <artifactId>tracee-httpcomponents</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			<dependency>
+				<groupId>io.tracee.binding</groupId>
+				<artifactId>tracee-httpcomponents5</artifactId>
+				<version>${project.version}</version>
+			</dependency>
             <dependency>
                 <groupId>io.tracee.binding</groupId>
                 <artifactId>tracee-jaxrs2</artifactId>
