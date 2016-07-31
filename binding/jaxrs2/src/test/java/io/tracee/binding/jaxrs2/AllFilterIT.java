@@ -23,46 +23,46 @@ import static org.hamcrest.Matchers.equalTo;
 
 public final class AllFilterIT {
 
-    private static final String ENDPOINT_URL = "http://127.0.0.1:4204/jaxrs2/";
-    private HttpServer server;
+	private static final String ENDPOINT_URL = "http://127.0.0.1:4204/jaxrs2/";
+	private HttpServer server;
 
-    @Before
-    public void setUp() throws Exception {
-        Tracee.getBackend().clear();
-        final ResourceConfig rc = new ResourceConfig().packages("io.tracee.binding.jaxrs2");
-        server = GrizzlyHttpServerFactory.createHttpServer(URI.create(ENDPOINT_URL), rc);
-    }
+	@Before
+	public void setUp() throws Exception {
+		Tracee.getBackend().clear();
+		final ResourceConfig rc = new ResourceConfig().packages("io.tracee.binding.jaxrs2");
+		server = GrizzlyHttpServerFactory.createHttpServer(URI.create(ENDPOINT_URL), rc);
+	}
 
-    @After
-    public void tearDown() throws ExecutionException, InterruptedException {
-        server.shutdown().get();
-    }
+	@After
+	public void tearDown() throws ExecutionException, InterruptedException {
+		server.shutdown().get();
+	}
 
-    @Path("/")
-    @Produces(MediaType.TEXT_PLAIN)
-    public static class DummyResource {
-        @GET
-        public Response resource() {
+	@Test
+	public void testRoundtrip() {
 
-            if ("yes".equals(Tracee.getBackend().get("beforeRequest"))) {
-                Tracee.getBackend().put("beforeRequest", "no");
-                Tracee.getBackend().put("beforeResponse", "yes");
-                return Response.ok().entity("all good").build();
-            } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Could not find traceeValue beforeRequest").build();
-            }
-        }
-    }
+		final Client client = ClientBuilder.newClient().register(TraceeClientFilter.class);
 
-    @Test
-    public void testRoundtrip() {
+		Tracee.getBackend().put("beforeRequest", "yes");
+		final Response response = client.target(ENDPOINT_URL).request().get();
+		assertThat("response type", response.getStatusInfo().getFamily(), equalTo(Response.Status.Family.SUCCESSFUL));
+		assertThat(Tracee.getBackend().get("beforeRequest"), equalTo("no"));
+		assertThat(Tracee.getBackend().get("beforeResponse"), equalTo("yes"));
+	}
 
-        final Client client = ClientBuilder.newClient().register(TraceeClientFilter.class);
+	@Path("/")
+	@Produces(MediaType.TEXT_PLAIN)
+	public static class DummyResource {
+		@GET
+		public Response resource() {
 
-        Tracee.getBackend().put("beforeRequest", "yes");
-        final Response response = client.target(ENDPOINT_URL).request().get();
-        assertThat("response type",response.getStatusInfo().getFamily(), equalTo(Response.Status.Family.SUCCESSFUL));
-        assertThat(Tracee.getBackend().get("beforeRequest"), equalTo("no"));
-        assertThat(Tracee.getBackend().get("beforeResponse"), equalTo("yes"));
-    }
+			if ("yes".equals(Tracee.getBackend().get("beforeRequest"))) {
+				Tracee.getBackend().put("beforeRequest", "no");
+				Tracee.getBackend().put("beforeResponse", "yes");
+				return Response.ok().entity("all good").build();
+			} else {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Could not find traceeValue beforeRequest").build();
+			}
+		}
+	}
 }

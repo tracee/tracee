@@ -1,24 +1,25 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.tracee.binding</groupId>
-    <artifactId>tracee-jaxrs2</artifactId>
-    <packaging>bundle</packaging>
+	<artifactId>tracee-jaxrs2</artifactId>
+	<packaging>bundle</packaging>
 	<properties>
 		<jersey.version>2.23.1</jersey.version>
 	</properties>
 
 	<parent>
-        <groupId>io.tracee</groupId>
-        <artifactId>tracee-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+		<groupId>io.tracee</groupId>
+		<artifactId>tracee-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
-    </parent>
+	</parent>
 
-    <name>tracee-jaxrs2</name>
-    <description>Please refer to https://github.com/tracee/tracee.</description>
+	<name>tracee-jaxrs2</name>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-api</artifactId>
@@ -29,38 +30,38 @@
 			<artifactId>tracee-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-testhelper</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>io.tracee.backend</groupId>
-            <artifactId>tracee-threadlocal-store</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>io.tracee.backend</groupId>
+			<artifactId>tracee-threadlocal-store</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>${jersey.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-grizzly2-http</artifactId>
-            <version>${jersey.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<version>${jersey.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

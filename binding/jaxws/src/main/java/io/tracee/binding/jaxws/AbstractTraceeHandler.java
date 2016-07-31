@@ -16,36 +16,37 @@ import java.util.Set;
 
 abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
-	protected final TraceeBackend traceeBackend;
-
 	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
 			new HashSet<>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
+
+	protected final TraceeBackend traceeBackend;
 
 	public AbstractTraceeHandler(TraceeBackend traceeBackend) {
 		this.traceeBackend = traceeBackend;
 	}
 
-    @Override
-    public final boolean handleMessage(final SOAPMessageContext context) {
-        if (this.isOutgoing(context)) {
+	@Override
+	public final boolean handleMessage(final SOAPMessageContext context) {
+		if (this.isOutgoing(context)) {
 			this.handleOutgoing(context);
-        } else {
+		} else {
 			this.handleIncoming(context);
-        }
-        return true;
-    }
+		}
+		return true;
+	}
 
-    private boolean isOutgoing(MessageContext messageContext) {
+	private boolean isOutgoing(MessageContext messageContext) {
 		Object outboundBoolean = messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 		return outboundBoolean != null && (Boolean) outboundBoolean;
-    }
+	}
 
-    @Override
-    public void close(MessageContext context) {}
+	@Override
+	public void close(MessageContext context) {
+	}
 
-    protected abstract void handleIncoming(SOAPMessageContext context);
+	protected abstract void handleIncoming(SOAPMessageContext context);
 
-    protected abstract void handleOutgoing(SOAPMessageContext context);
+	protected abstract void handleOutgoing(SOAPMessageContext context);
 
 	@Override
 	public Set<QName> getHeaders() {

@@ -1,8 +1,8 @@
 package io.tracee.binding.jaxws;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
 import org.junit.Test;

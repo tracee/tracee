@@ -10,18 +10,18 @@ import java.util.List;
 
 public class TraceeClientHandlerResolver implements HandlerResolver {
 
-    private final List<Handler> handlerList = new ArrayList<>();
+	private final List<Handler> handlerList = new ArrayList<>();
 
-    public TraceeClientHandlerResolver() {
-        handlerList.add(new TraceeClientHandler());
-    }
+	public TraceeClientHandlerResolver() {
+		handlerList.add(new TraceeClientHandler());
+	}
 
 	TraceeClientHandlerResolver(TraceeBackend backend) {
 		handlerList.add(new TraceeClientHandler(backend));
 	}
 
-    @Override
-    public final List<Handler> getHandlerChain(PortInfo portInfo) {
-        return handlerList;
-    }
+	@Override
+	public final List<Handler> getHandlerChain(PortInfo portInfo) {
+		return handlerList;
+	}
 }

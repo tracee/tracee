@@ -1,8 +1,8 @@
 package io.tracee.binding.jaxrs2;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,21 +18,21 @@ import static org.mockito.Mockito.when;
 
 public class TraceeClientFilterResponseTest {
 
-    private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-    private final TraceeClientFilter unit = new TraceeClientFilter(backend);
-    private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
-    private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
+	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final TraceeClientFilter unit = new TraceeClientFilter(backend);
+	private final ClientResponseContext clientResponseContext = mock(ClientResponseContext.class);
+	private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
 
-    @Before
-    public void setUp() {
-        when(clientResponseContext.getHeaders()).thenReturn(headers);
-        backend.clear();
-    }
+	@Before
+	public void setUp() {
+		when(clientResponseContext.getHeaders()).thenReturn(headers);
+		backend.clear();
+	}
 
-    @Test
-    public void testFilterParsesContextFromHeaderToBackend() throws IOException {
-        headers.putSingle(TraceeConstants.TPIC_HEADER, "foo=bar");
-        unit.filter(null, clientResponseContext);
-        assertThat(backend.get("foo"), equalTo("bar"));
-    }
+	@Test
+	public void testFilterParsesContextFromHeaderToBackend() throws IOException {
+		headers.putSingle(TraceeConstants.TPIC_HEADER, "foo=bar");
+		unit.filter(null, clientResponseContext);
+		assertThat(backend.get("foo"), equalTo("bar"));
+	}
 }
