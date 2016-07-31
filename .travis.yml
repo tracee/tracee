@@ -8,20 +8,7 @@ jdk:
 - openjdk7
 - oraclejdk8
 
-#install: mvn install -DskipTests=true -q
-
-# Run build and push build to https://scan.coverity.com/
-addons:
-  coverity_scan:
-    project:
-      name: "tracee/tracee"
-      description: "Build submitted via Travis CI"
-    notification_email: sven.bunge@nnga.de
-    build_command_prepend: "mvn clean"
-    build_command:   "mvn install -DskipTests=true -q"
-    branch_pattern: coverity_scan
-
-# Run unit and integration tests
+install: mvn install -DskipTests=true -q
 script: mvn verify -B -q
 
 after_success: ! '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_REPO_SLUG == "tracee/tracee"
