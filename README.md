@@ -7,7 +7,8 @@
 [![Build Status](https://api.travis-ci.org/tracee/tracee.svg)](https://travis-ci.org/tracee/tracee)
 [![Coverage Status](https://img.shields.io/coveralls/tracee/tracee.svg)](https://coveralls.io/r/tracee/tracee)
 [![Coverity Scan](https://scan.coverity.com/projects/3882/badge.svg)](https://scan.coverity.com/projects/3882)
-[![BSD 3-Clause License](http://img.shields.io/badge/license-BSD-brightgreen.svg)](https://raw.githubusercontent.com/tracee/tracee/master/LICENSE)
+[![Codacy](https://api.codacy.com/project/badge/Grade/6fe57fd7d48840c39e0b36d08ff494a9)](https://www.codacy.com/app/tracee/tracee?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tracee/tracee&amp;utm_campaign=Badge_Grade)
+[![BSD 3-Clause License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://raw.githubusercontent.com/tracee/tracee/master/LICENSE)
 
 __There is now a comprehensive documentation site at [http://www.tracee.io](http://www.tracee.io)!__
 
