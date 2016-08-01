@@ -28,6 +28,7 @@ Also supported are these common and widespread frameworks:
 
 * Spring MVC
 * Spring Web (RestClients)
+* Spring JMS
 * Spring AMQP (RabbitMQ)
 * Spring Web Services (SpringWS)
 * Apache HttpClient 3 / 4 / 5
@@ -150,6 +151,7 @@ The following table describes all available TracEE-modules and their usage scena
 | [tracee-servlet](binding/servlet)        		      | Listeners and filters for the servlet spec. Use it to traceefy JAX-RS, Vaadin, JSP or any other servlet based web application.
 | [tracee-springmvc](binding/springmvc)               | Provides a HandlerInterceptor for Spring MVC. Use it to traceefy Spring MVC or Spring WebFlow applications.
 | [tracee-springhttpclient](binding/springhttpclient) | ClientHttpRequestInterceptor for Springs `RestTemplate`. Simply add an `TraceeClientHttpRequestInterceptor` to traceefy your requests.
+| [tracee-springjms](binding/springjms)               | Simple use `TraceeMessageConverter` or wrap your own `MessageConverter` with it to add TracEE informations to your messages.
 | [tracee-springrabbitmq](binding/springrabbitmq)     | Provides a `MessagePropertiesConverter` implementation for  Springs `RabbitTemplate`.
 | [tracee-springws](binding/springws)                 | `TraceeClientInterceptor` and `TraceeEndpointInterceptor` to handle SOAP with Spring Web Services.
 | [tracee-cxf](binding/cxf)                           | To transfer context information with CXF add the `TraceeCxfFeature` to your Client oder Server.

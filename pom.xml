@@ -32,6 +32,7 @@
         <module>binding/springrabbitmq</module>
         <module>binding/quartz</module>
         <module>binding/springws</module>
+		<module>binding/springjms</module>
 
         <!-- BOM (Bill Of Materials) -->
         <module>bom</module>
@@ -497,6 +498,12 @@
                 <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>test</scope>
+			</dependency>
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-api-mockito</artifactId>
