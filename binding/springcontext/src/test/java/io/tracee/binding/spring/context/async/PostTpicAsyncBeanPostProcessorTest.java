@@ -1,4 +1,4 @@
-package io.tracee.binding.springmvc.async;
+package io.tracee.binding.spring.context.async;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -25,7 +26,6 @@ import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest({Tracee.class, TraceeBackendProvider.class})
 public class PostTpicAsyncBeanPostProcessorTest {
 
-	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeBackend backend = Mockito.spy(new SimpleTraceeBackend());
 
 	@Before
 	public void before() {
@@ -49,20 +49,20 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void ensureThatThePriorityIsNotHighestToRunInAsyncMode() {
-		final PostTpicAsyncBeanPostProcessor postProcessor = new PostTpicAsyncBeanPostProcessor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor postProcessor = new PostTpicAsyncBeanPostProcessor(mock(Executor.class), backend);
 
 		assertThat(postProcessor.getOrder(), is(0));
 	}
 
 	@Test
 	public void advisorShouldReturnInterceptor() {
-		final PostTpicAsyncBeanPostProcessor.TpicPostAdvisor advisor = new PostTpicAsyncBeanPostProcessor.TpicPostAdvisor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.TpicPostAdvisor advisor = new PostTpicAsyncBeanPostProcessor.TpicPostAdvisor(mock(Executor.class), backend);
 		assertThat(advisor.getAdvice(), instanceOf(PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor.class));
 	}
 
 	@Test
 	public void shouldRestoreTpicFromMetadataWhenSet() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		final Map<String, String> tpic = new HashMap<>();
 		tpic.put("myInvoc", "storeThisToAsync");
@@ -75,7 +75,7 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void shouldSkipTpicRestoreFromMetadataWhenMetadataIsNull() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		when(mockedInvocation.getUserAttribute(TraceeConstants.TPIC_HEADER)).thenReturn(null);
 
@@ -86,7 +86,7 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void shouldClearTpicAfterInvocation() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		when(mockedInvocation.getUserAttribute(TraceeConstants.TPIC_HEADER)).thenReturn(null);
 

@@ -45,39 +45,45 @@ public class BackendBaseTest {
 		assertThat(unit.getSessionId(), is(nullValue()));
 	}
 
+	@Deprecated
 	@Test
 	public void testLoadOverwrittenConfigurationValues() {
 		assertThat(unit.getConfiguration().generatedInvocationIdLength(), equalTo(42));
 	}
 
+	@Deprecated
 	@Test
 	public void testLoadUserDefinedProfileFromProperties() {
 		assertThat(unit.getConfiguration("FOO").shouldProcessParam("ANY", Channel.IncomingRequest), equalTo(true));
 	}
 
+	@Deprecated
 	@Test
 	public void testHideInboundProfile() {
 		assertThat(unit.getConfiguration(HIDE_INBOUND).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
 	}
 
+	@Deprecated
 	@Test
 	public void testHideOutboundProfile() {
 		assertThat(unit.getConfiguration(HIDE_OUTBOUND).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
 	}
 
+	@Deprecated
 	@Test
 	public void testDisableInboundProfile() {
 		assertThat(unit.getConfiguration(DISABLE_INBOUND).shouldProcessContext(Channel.IncomingRequest), equalTo(false));
 		assertThat(unit.getConfiguration(DISABLE_INBOUND).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
 	}
 
+	@Deprecated
 	@Test
 	public void testDisableOutboundProfile() {
 		assertThat(unit.getConfiguration(DISABLE_OUTBOUND).shouldProcessContext(Channel.OutgoingRequest), equalTo(false));
 		assertThat(unit.getConfiguration(DISABLE_OUTBOUND).shouldProcessContext(Channel.IncomingResponse), equalTo(false));
 	}
 
-
+	@Deprecated
 	@Test
 	public void testDisabledProfile() {
 		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.AsyncDispatch), equalTo(false));
@@ -88,22 +94,26 @@ public class BackendBaseTest {
 		assertThat(unit.getConfiguration(DISABLED).shouldProcessContext(Channel.OutgoingResponse), equalTo(false));
 	}
 
+	@Deprecated
 	@Test
 	public void testNullProfile() {
 		assertThat(unit.getConfiguration(null), is(not(nullValue())));
 	}
 
+	@Deprecated
 	@Test
 	public void testProfileCacheForEmptyOrNullProfile() {
 		assertThat(unit.getConfiguration(), is(unit.getConfiguration(null)));
 	}
 
+	@Deprecated
 	@Test
 	public void testProfileCacheForGivenProfile() {
 		final TraceeFilterConfiguration hideInboundConfiguration = unit.getConfiguration(HIDE_INBOUND);
 		assertThat(unit.getConfiguration(HIDE_INBOUND), is(sameInstance(hideInboundConfiguration)));
 	}
 
+	@Deprecated
 	@Test
 	public void testProfileCacheForDifferenceProfiles() {
 		final TraceeFilterConfiguration hideInboundConfiguration = unit.getConfiguration(HIDE_OUTBOUND);

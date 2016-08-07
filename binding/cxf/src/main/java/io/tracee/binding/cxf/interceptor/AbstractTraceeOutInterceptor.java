@@ -29,20 +29,19 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 	private final HttpHeaderTransport httpSerializer;
 	private final TraceeFilterConfiguration.Channel channel;
 
-	private String profile;
+	private final TraceeFilterConfiguration filterConfiguration;
 
-	public AbstractTraceeOutInterceptor(String phase, TraceeFilterConfiguration.Channel channel, TraceeBackend backend, String profile) {
+	public AbstractTraceeOutInterceptor(String phase, TraceeFilterConfiguration.Channel channel, TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 		this.httpSerializer = new HttpHeaderTransport();
 	}
 
 	@Override
 	public void handleMessage(final Message message) {
 		if (shouldHandleMessage(message)) {
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
                 final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 

@@ -1,8 +1,10 @@
 package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -29,10 +31,7 @@ import java.util.Map;
 import static io.tracee.TraceeConstants.INVOCATION_ID_KEY;
 import static io.tracee.TraceeConstants.SOAP_HEADER_QNAME;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -43,9 +42,9 @@ import static org.mockito.Mockito.when;
 
 public class TraceeEndpointInterceptorTest {
 
-	private TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private TraceeBackend backend = spy(new SimpleTraceeBackend());
 
-	private TraceeEndpointInterceptor unit = new TraceeEndpointInterceptor(backend, null);
+	private TraceeEndpointInterceptor unit = new TraceeEndpointInterceptor(backend, PermitAllTraceeFilterConfiguration.INSTANCE);
 	private MessageContext messageContext;
 
 	@Before
@@ -165,18 +164,21 @@ public class TraceeEndpointInterceptorTest {
 	@Test
 	public void defaultConstructorUsesDefaultProfile() {
 		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor();
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(interceptor, "filterConfiguration"),
+			sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 	}
 
 	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor();
-		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"),
+			sameInstance(Tracee.getBackend()));
 	}
 
 	@Test
 	public void constructorStoresProfileNameInternal() {
 		final TraceeEndpointInterceptor interceptor = new TraceeEndpointInterceptor("testProf");
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(interceptor, "filterConfiguration"),
+			sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("testProf")));
 	}
 }

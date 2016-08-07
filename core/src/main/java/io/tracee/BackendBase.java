@@ -12,36 +12,33 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Profile;
 
 public abstract class BackendBase implements TraceeBackend {
 
-	// Use #getPropertyChain to retrieve/get the chain
-	private PropertyChain _lazyPropertyChain = null;
-
 	private Map<String, TraceeFilterConfiguration> configurationCache = new ConcurrentHashMap<>();
 
 	/**
 	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.
+	 * @deprecated Create your own TraceeFilterConfiguration PropertiesBasedTraceeFilterConfiguration#instance() from core.
 	 */
+	@Deprecated
 	@Override
 	public final TraceeFilterConfiguration getConfiguration() {
 		return getConfiguration(null);
 	}
 
+	/**
+	 * Lazily initializes the configuration for this MDCLikeTraceeBackend.
+	 * @deprecated Create your own TraceeFilterConfiguration PropertiesBasedTraceeFilterConfiguration#instance() from core.
+	 */
+	@Deprecated
 	@Override
 	public final TraceeFilterConfiguration getConfiguration(String profileName) {
 		final String lookupProfile = profileName == null ? Profile.DEFAULT : profileName;
 
 		TraceeFilterConfiguration filterConfiguration = configurationCache.get(lookupProfile);
 		if (filterConfiguration == null) {
-			filterConfiguration = new PropertiesBasedTraceeFilterConfiguration(getPropertyChain(), lookupProfile);
+			filterConfiguration = PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profileName);
 			configurationCache.put(lookupProfile, filterConfiguration);
 		}
 		return filterConfiguration;
-	}
-
-	private PropertyChain getPropertyChain() {
-		if (_lazyPropertyChain == null) {
-			_lazyPropertyChain = PropertiesBasedTraceeFilterConfiguration.loadPropertyChain();
-		}
-		return _lazyPropertyChain;
 	}
 
 	@Override

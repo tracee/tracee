@@ -1,8 +1,5 @@
 package io.tracee.transport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -15,7 +12,6 @@ import java.util.StringTokenizer;
 public class HttpHeaderTransport {
 
 	public static final String ENCODING_CHARSET = "UTF-8";
-	private static final Logger LOGGER = LoggerFactory.getLogger(HttpHeaderTransport.class);
 
 	Map<String, String> parse(String serialized) {
 		final StringTokenizer pairTokenizer = new StringTokenizer(serialized.trim(), ",");
@@ -31,7 +27,7 @@ public class HttpHeaderTransport {
 				final String value = URLDecoder.decode(keyValuePair[1], ENCODING_CHARSET);
 				context.put(key, value);
 			} catch (UnsupportedEncodingException e) {
-				LOGGER.error("Charset not found", e);
+				throw new Error("Mandatory charset "+ENCODING_CHARSET+ " not available.");
 			}
 		}
 
@@ -59,7 +55,7 @@ public class HttpHeaderTransport {
 					sb.append(',');
 				}
 			} catch (UnsupportedEncodingException e) {
-				LOGGER.error("Charset not found", e);
+				throw new Error("Mandatory charset "+ENCODING_CHARSET+ " not available.");
 			}
 		}
 		return sb.toString();

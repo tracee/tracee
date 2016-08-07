@@ -4,8 +4,10 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.LongString;
 import io.tracee.Tracee;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -25,15 +27,16 @@ import static io.tracee.TraceeConstants.TPIC_HEADER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.mockito.Mockito.mock;
 
 public class TraceeMessagePropertiesConverterTest {
-	private static final String USED_PROFILE = "A_PROFILE";
 	private static final String CHARSET_UTF8 = "UTF-8";
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
-	private final TraceeMessagePropertiesConverter unit = new TraceeMessagePropertiesConverter(backend, USED_PROFILE);
+	private final TraceeMessagePropertiesConverter unit = new TraceeMessagePropertiesConverter(backend, filterConfiguration);
 
 	@Test
 	public void shouldAddTraceeContexttoMessageHeaders() throws Exception {
@@ -85,22 +88,25 @@ public class TraceeMessagePropertiesConverterTest {
 		assertThat(backend.size(), is(2));
 	}
 
+	@Deprecated
 	@Test
-	public void defaultConstructorUsesDefaultProfile() {
+	public void defaultConstructorUsesDefaultFilterConfiguration() {
 		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter();
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(converter, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(converter, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 	}
 
+	@Deprecated
 	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter();
 		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(converter, "backend"), is(Tracee.getBackend()));
 	}
 
+	@Deprecated
 	@Test
 	public void constructorStoresProfileNameInternal() {
 		final TraceeMessagePropertiesConverter converter = new TraceeMessagePropertiesConverter("testProf");
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(converter, "profile"), is("testProf"));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(converter, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("testProf")));
 	}
 
 	private AMQP.BasicProperties createRabbitHeaderWith(final String key, final Object value) {

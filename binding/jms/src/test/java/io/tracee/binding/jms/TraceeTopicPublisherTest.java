@@ -1,5 +1,7 @@
 package io.tracee.binding.jms;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -22,8 +24,9 @@ public class TraceeTopicPublisherTest {
 
 	private final MessageProducer messageProducer = mock(MessageProducer.class);
 	private final TopicPublisher topicPublisher = mock(TopicPublisher.class);
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final TraceeTopicPublisher unit = new TraceeTopicPublisher(new TraceeMessageProducer(messageProducer, backend), topicPublisher);
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
+	private final TraceeTopicPublisher unit = new TraceeTopicPublisher(new TraceeMessageProducer(messageProducer, backend, filterConfiguration), topicPublisher);
 	private final Message message = mock(Message.class);
 
 	@Before

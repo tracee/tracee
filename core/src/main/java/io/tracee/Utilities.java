@@ -1,5 +1,7 @@
 package io.tracee;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
@@ -63,9 +65,9 @@ public final class Utilities {
 	 *
 	 * @param backend Currently used TraceeBackend
 	 */
-	public static void generateInvocationIdIfNecessary(final TraceeBackend backend) {
-		if (backend != null && !backend.containsKey(TraceeConstants.INVOCATION_ID_KEY) && backend.getConfiguration().shouldGenerateInvocationId()) {
-			backend.put(TraceeConstants.INVOCATION_ID_KEY, Utilities.createRandomAlphanumeric(backend.getConfiguration().generatedInvocationIdLength()));
+	public static void generateInvocationIdIfNecessary(final TraceeBackend backend, final TraceeFilterConfiguration filterConfiguration) {
+		if (backend != null && !backend.containsKey(TraceeConstants.INVOCATION_ID_KEY) && filterConfiguration.shouldGenerateInvocationId()) {
+			backend.put(TraceeConstants.INVOCATION_ID_KEY, Utilities.createRandomAlphanumeric(filterConfiguration.generatedInvocationIdLength()));
 		}
 	}
 
@@ -75,9 +77,9 @@ public final class Utilities {
 	 * @param backend   Currently used TraceeBackend
 	 * @param sessionId Current http sessionId
 	 */
-	public static void generateSessionIdIfNecessary(final TraceeBackend backend, final String sessionId) {
-		if (backend != null && !backend.containsKey(TraceeConstants.SESSION_ID_KEY) && backend.getConfiguration().shouldGenerateSessionId()) {
-			backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(sessionId, backend.getConfiguration().generatedSessionIdLength()));
+	public static void generateSessionIdIfNecessary(final TraceeBackend backend, final TraceeFilterConfiguration filterConfiguration, final String sessionId) {
+		if (backend != null && !backend.containsKey(TraceeConstants.SESSION_ID_KEY) && filterConfiguration.shouldGenerateSessionId()) {
+			backend.put(TraceeConstants.SESSION_ID_KEY, Utilities.createAlphanumericHash(sessionId, filterConfiguration.generatedSessionIdLength()));
 		}
 	}
 }

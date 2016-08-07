@@ -3,6 +3,8 @@ package io.tracee.binding.jaxrs2;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
 import javax.ws.rs.client.ClientRequestContext;
@@ -21,14 +23,19 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport transportSerialization;
+	private final TraceeFilterConfiguration filterConfiguration;
 
-	@SuppressWarnings("unused")
+	/**
+	 * @deprecated use full ctor
+	 */
+	@Deprecated
 	public TraceeClientFilter() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	TraceeClientFilter(TraceeBackend backend) {
+	TraceeClientFilter(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 		this.transportSerialization = new HttpHeaderTransport();
 	}
 
@@ -37,8 +44,8 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 	 */
 	@Override
 	public void filter(final ClientRequestContext requestContext) {
-		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(OutgoingRequest)) {
-			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingRequest);
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
+			final Map<String, String> filtered = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			requestContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
 		}
 	}
@@ -49,9 +56,9 @@ public class TraceeClientFilter implements ClientRequestFilter, ClientResponseFi
 	@Override
 	public void filter(final ClientRequestContext requestContext, final ClientResponseContext responseContext) {
 		final List<String> serializedHeaders = responseContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
-		if (serializedHeaders != null && backend.getConfiguration().shouldProcessContext(IncomingResponse)) {
+		if (serializedHeaders != null && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final Map<String, String> parsed = transportSerialization.parse(serializedHeaders);
-			backend.putAll(backend.getConfiguration().filterDeniedParams(parsed, IncomingResponse));
+			backend.putAll(filterConfiguration.filterDeniedParams(parsed, IncomingResponse));
 		}
 	}
 }

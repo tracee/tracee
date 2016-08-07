@@ -2,6 +2,7 @@ package io.tracee.binding.springhttpclient;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -40,7 +41,7 @@ public class TraceeClientHttpInterceptorIT {
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
 		final RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new TraceeClientHttpRequestInterceptor("default")));
+		restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new TraceeClientHttpRequestInterceptor(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT)));
 		Tracee.getBackend().put("before Request", "yip");
 		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
 		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));

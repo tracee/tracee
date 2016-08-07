@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
@@ -28,16 +29,21 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 	private static final String HTTP_HEADER_NAME = TraceeConstants.TPIC_HEADER;
 
 	private final TraceeBackend backend;
-
+	private final TraceeFilterConfiguration filterConfiguration;
 	private final HttpHeaderTransport transportSerialization;
 
-	protected TraceeServletRequestListener(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	public TraceeServletRequestListener(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration, HttpHeaderTransport transportSerialization) {
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 		this.transportSerialization = transportSerialization;
 	}
 
+	/**
+	 * @deprecated Use full constructor
+	 */
+	@Deprecated
 	public TraceeServletRequestListener() {
-		this(Tracee.getBackend(), new HttpHeaderTransport());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT, new HttpHeaderTransport());
 	}
 
 	@Override
@@ -65,11 +71,11 @@ public final class TraceeServletRequestListener implements ServletRequestListene
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {
-			Utilities.generateSessionIdIfNecessary(backend, session.getId());
+			Utilities.generateSessionIdIfNecessary(backend, filterConfiguration, session.getId());
 		}
 	}
 }

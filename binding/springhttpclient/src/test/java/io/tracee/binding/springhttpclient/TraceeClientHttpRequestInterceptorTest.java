@@ -37,11 +37,11 @@ import static org.mockito.Mockito.when;
 
 public class TraceeClientHttpRequestInterceptorTest {
 
-	private static final String USED_PROFILE = "A_PROFILE";
 	private final HttpHeaderTransport transportSerializationMock = new HttpHeaderTransport();
-	private final TraceeBackend backend = new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = new PermitAllTraceeFilterConfiguration();
 	private final TraceeClientHttpRequestInterceptor unit =
-			new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, USED_PROFILE);
+			new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, filterConfiguration);
 	private final byte[] payload = new byte[]{};
 	private final ClientHttpRequestExecution clientHttpRequestExecutionMock = mock(ClientHttpRequestExecution.class);
 
@@ -82,21 +82,9 @@ public class TraceeClientHttpRequestInterceptorTest {
 	}
 
 	@Test
-	public void defaultConstructorUsesDefaultProfile() {
-		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor();
-		assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(TraceeFilterConfiguration.Profile.DEFAULT));
-	}
-
-	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor();
 		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(interceptor, "backend"), is(Tracee.getBackend()));
-	}
-
-	@Test
-	public void constructorStoresProfileNameInternal() {
-		final TraceeClientHttpRequestInterceptor interceptor = new TraceeClientHttpRequestInterceptor("testProf");
-		assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
 	}
 
 }

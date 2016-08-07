@@ -2,15 +2,13 @@ package io.tracee.configuration;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import com.carrotsearch.junitbenchmarks.Clock;
 import com.carrotsearch.junitbenchmarks.annotation.AxisRange;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkHistoryChart;
 import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 import io.tracee.TraceeConstants;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestRule;
 
 import java.io.IOException;
@@ -20,6 +18,7 @@ import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 
 @AxisRange(min = 0, max = 5)
 @BenchmarkMethodChart(filePrefix = "benchmark-lists")
@@ -59,8 +58,18 @@ public class PropertiesBasedTraceeFilterConfigurationBenchmarkTest {
 	public void shouldPermitAll() {
 
 		for (int i = 0; i < 2000000; i++) {
-			final Map<String, String> filteredProperties = unit.filterDeniedParams(propertyMap, CHANNEL);
+			final Map<String, String> filteredProperties = unit.DEFAULT.filterDeniedParams(propertyMap, CHANNEL);
 			assertThat(filteredProperties.size(), is(4));
+		}
+	}
+
+	@BenchmarkOptions(benchmarkRounds = 10, warmupRounds = 1, clock = Clock.CPU_TIME )
+	@Test
+	@Ignore
+	public void shouldProcessParam() {
+
+		for (int i = 0; i < 2000000; i++) {
+			assertTrue(unit.DEFAULT.shouldProcessParam("foo", CHANNEL));
 		}
 	}
 
@@ -71,7 +80,7 @@ public class PropertiesBasedTraceeFilterConfigurationBenchmarkTest {
 		System.setProperty(PropertiesBasedTraceeFilterConfiguration.TRACEE_DEFAULT_PROFILE_PREFIX + CHANNEL, "tracee.*");
 
 		for (int i = 0; i < 2000000; i++) {
-			final Map<String, String> filteredProperties = unit.filterDeniedParams(propertyMap, CHANNEL);
+			final Map<String, String> filteredProperties = unit.DEFAULT.filterDeniedParams(propertyMap, CHANNEL);
 			assertThat(filteredProperties.size(), is(2));
 		}
 	}

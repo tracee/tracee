@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 public class OutgoingSoapResponseMessageTest {
 
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final TraceeBackend backend = new SimpleTraceeBackend();
 	private final TraceeResponseOutInterceptor outInterceptor = new TraceeResponseOutInterceptor(backend);
 	private final SoapMessage soapMessage = spy(new SoapMessage(new MessageImpl()));
 

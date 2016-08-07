@@ -1,6 +1,8 @@
 package io.tracee.binding.httpclient;
 
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -29,10 +31,11 @@ import static org.mockito.Mockito.when;
 
 public class TraceeHttpClientDecoratorTest {
 
-	private final TraceeBackend backendMock = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeBackend backendMock = spy(new SimpleTraceeBackend());
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 	private final HttpMethod httpMethodMock = mock(HttpMethod.class);
 	private final HttpHeaderTransport transportSerializationMock = mock(HttpHeaderTransport.class);
-	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(mock(HttpClient.class), backendMock, transportSerializationMock, null);
+	private final TraceeHttpClientDecorator unit = new TraceeHttpClientDecorator(mock(HttpClient.class), backendMock, filterConfiguration, transportSerializationMock);
 
 	@Test
 	public void doNotRenderTpicHeaderIfBackendIsEmpty() throws IOException {

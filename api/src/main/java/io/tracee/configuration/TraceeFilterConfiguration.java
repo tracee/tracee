@@ -5,11 +5,29 @@ import java.util.Map;
 public interface TraceeFilterConfiguration {
 
 	enum Channel {
+		/**
+		 * Accepting context from incoming requests.
+		 */
 		IncomingRequest,
+		/**
+		 * Propagate context on outgoing responses.
+		 */
 		OutgoingResponse,
+		/**
+		 * Propagate context on outgoing requests.
+		 */
 		OutgoingRequest,
+		/**
+		 * Accept context from incoming responses.
+		 */
 		IncomingResponse,
+		/**
+		 * Propagate context over asynchronous boundaries.
+		 */
 		AsyncDispatch,
+		/**
+		 * Accept context when starting over after an asynchronous boundary.
+		 */
 		AsyncProcess
 	}
 

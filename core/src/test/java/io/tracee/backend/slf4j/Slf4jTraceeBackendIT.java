@@ -11,11 +11,13 @@ import static org.hamcrest.Matchers.sameInstance;
 
 public class Slf4jTraceeBackendIT {
 
+	@Deprecated
 	@Test
 	public void traceeShouldReturnSlf4JBackendByDefault() {
 		assertThat(Tracee.getBackend(), is(instanceOf(TraceeBackend.class)));
 	}
 
+	@Deprecated
 	@Test
 	public void shouldReturnAlwaystheSameDefaultBackend() {
 		final TraceeBackend backend = Tracee.getBackend();

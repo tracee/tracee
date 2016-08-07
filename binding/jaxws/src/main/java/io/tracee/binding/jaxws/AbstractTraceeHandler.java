@@ -2,6 +2,7 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
@@ -20,9 +21,11 @@ abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> 
 			new HashSet<>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
 
 	protected final TraceeBackend traceeBackend;
+	protected final TraceeFilterConfiguration filterConfiguration;
 
-	public AbstractTraceeHandler(TraceeBackend traceeBackend) {
+	public AbstractTraceeHandler(TraceeBackend traceeBackend, TraceeFilterConfiguration filterConfiguration) {
 		this.traceeBackend = traceeBackend;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	@Override

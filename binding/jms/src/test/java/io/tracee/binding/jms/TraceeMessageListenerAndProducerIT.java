@@ -2,6 +2,7 @@ package io.tracee.binding.jms;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -56,11 +57,11 @@ public class TraceeMessageListenerAndProducerIT {
 				final MessageConsumer consumer = session.createConsumer(responses);
 
 				final TextMessage textMessage = session.createTextMessage("foo");
-				final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(mdb));
+				final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(mdb), Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 				producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 				producer.send(textMessage);
 
-				final TextMessage response = (TextMessage) consumer.receive(1000);
+				final TextMessage response = (TextMessage) consumer.receive(1000000);
 
 				assertThat("response within 1 second", response, notNullValue());
 				assertThat(response.getText(), equalTo("foo"));

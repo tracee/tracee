@@ -4,6 +4,8 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -20,14 +22,19 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncPro
 public final class TraceeMessageListener {
 
 	private final TraceeBackend backend;
+	private final TraceeFilterConfiguration filterConfiguration;
 
-	TraceeMessageListener(TraceeBackend backend) {
+	protected TraceeMessageListener(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * @deprecated Use full constructor
+	 */
+	@Deprecated
 	public TraceeMessageListener() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
 	@AroundInvoke
@@ -48,19 +55,19 @@ public final class TraceeMessageListener {
 	@SuppressWarnings("unchecked")
     public void beforeProcessing(final Message message) throws JMSException {
 
-		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
+		if (filterConfiguration.shouldProcessContext(AsyncProcess)) {
 			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.TPIC_HEADER);
 			if (encodedTraceeContext != null) {
 				final Map<String, String> contextFromMessage = (Map<String, String>) encodedTraceeContext;
-				backend.putAll(backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess));
+				backend.putAll(filterConfiguration.filterDeniedParams(contextFromMessage, AsyncProcess));
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
     }
 
     void cleanUp() {
-		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
+		if (filterConfiguration.shouldProcessContext(AsyncProcess)) {
 			backend.clear();
 		}
     }

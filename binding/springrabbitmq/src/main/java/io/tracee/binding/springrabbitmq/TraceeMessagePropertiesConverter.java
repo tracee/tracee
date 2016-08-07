@@ -5,6 +5,7 @@ import com.rabbitmq.client.Envelope;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.springframework.amqp.core.MessageProperties;
@@ -20,29 +21,37 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncPro
 public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesConverter {
 
 	private final TraceeBackend backend;
-	private final String profile;
+	private final TraceeFilterConfiguration filterConfiguration;
 
+	/**
+	 * @deprecated use full ctor
+	 */
+	@Deprecated
 	public TraceeMessagePropertiesConverter() {
-		this(Tracee.getBackend(), Profile.DEFAULT);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
+	/**
+	 * @deprecated use full ctor
+	 */
+	@Deprecated
 	public TraceeMessagePropertiesConverter(String profile) {
-		this(Tracee.getBackend(), profile);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profile));
 	}
 
-	TraceeMessagePropertiesConverter(TraceeBackend backend, String profile) {
+	public TraceeMessagePropertiesConverter(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	/**
 	 * Incoming messages
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public MessageProperties toMessageProperties(AMQP.BasicProperties source, Envelope envelope, String charset) {
 		final MessageProperties messageProperties = super.toMessageProperties(source, envelope, charset);
 
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (filterConfiguration.shouldProcessContext(AsyncProcess)) {
 			// Values are stored as type of LongStringHelper.ByteArrayLongString - but it's private
 			final Map<String, String> traceeContextMap = transformToTraceeContextMap(
@@ -52,7 +61,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
 		return messageProperties;
 	}
 
@@ -72,7 +81,6 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 	@Override
 	public AMQP.BasicProperties fromMessageProperties(MessageProperties source, String charset) {
 
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(AsyncDispatch)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), AsyncDispatch);
 			source.getHeaders().put(TPIC_HEADER, filteredParams);

@@ -2,6 +2,8 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import org.junit.Test;
 
 import javax.xml.ws.handler.MessageContext;
@@ -19,8 +21,9 @@ import static org.mockito.Mockito.when;
 public class AbstractTraceeHandlerTest {
 
 	private final TraceeBackend traceeBackend = mock(TraceeBackend.class);
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
-	private TestTraceeHandler unit = spy(new TestTraceeHandler(traceeBackend));
+	private TestTraceeHandler unit = spy(new TestTraceeHandler(traceeBackend, filterConfiguration));
 
 	@Test
 	public void shouldHandleOutgoingContextInOutgoingMethod() {
@@ -67,8 +70,8 @@ public class AbstractTraceeHandlerTest {
 
 	private static class TestTraceeHandler extends AbstractTraceeHandler {
 
-		TestTraceeHandler(TraceeBackend traceeBackend) {
-			super(traceeBackend);
+		TestTraceeHandler(TraceeBackend traceeBackend, TraceeFilterConfiguration filterConfiguration) {
+			super(traceeBackend, filterConfiguration);
 		}
 
 		@Override

@@ -3,6 +3,8 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,7 +28,8 @@ public class TraceeJaxWsTestServiceIT {
 	private static String ENDPOINT_URL = "http://127.0.0.1:4204/jaxws/TraceeJaxWsEndpointImpl";
 	private static Endpoint endpoint;
 
-	private SimpleTraceeBackend clientBackend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private SimpleTraceeBackend clientBackend = new SimpleTraceeBackend();
+	private TraceeFilterConfiguration clientFilterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -44,7 +47,7 @@ public class TraceeJaxWsTestServiceIT {
 		clientBackend.put("inRequest", "yes");
 
 		Service calculatorService = Service.create(new URL(ENDPOINT_URL + "?wsdl"), ENDPOINT_QNAME);
-		calculatorService.setHandlerResolver(new TraceeClientHandlerResolver(clientBackend));
+		calculatorService.setHandlerResolver(new TraceeClientHandlerResolver(clientBackend, clientFilterConfiguration));
 
 		final TraceeJaxWsEndpoint remote = calculatorService.getPort(TraceeJaxWsEndpoint.class);
 		final List<String> result = remote.getCurrentTraceeContext();

@@ -3,6 +3,7 @@ package io.tracee.binding.cxf;
 import io.tracee.TraceeConstants;
 import io.tracee.binding.cxf.testSoapService.HelloWorldTestService;
 import io.tracee.binding.jaxws.TraceeClientHandler;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusFactory;
@@ -28,14 +29,14 @@ public class JaxwsClientToCxfServerIT extends AbstractConnectionITHelper {
 
 		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer();
 		jaxWsServer.getFeatures().add(new LoggingFeature());
-		jaxWsServer.getFeatures().add(new TraceeCxfFeature(serverBackend, Profile.DEFAULT));
+		jaxWsServer.getFeatures().add(new TraceeCxfFeature(serverBackend, PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 		server = jaxWsServer.create();
 
 		JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
 
 		factoryBean.setServiceClass(HelloWorldTestService.class);
 		factoryBean.setAddress(endpointAddress);
-		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend));
+		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend, PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 		factoryBean.setBus(bus);
 
 		helloWorldPort = factoryBean.create(HelloWorldTestService.class);

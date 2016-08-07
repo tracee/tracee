@@ -43,12 +43,12 @@ public class TraceeInterceptorTest {
 	private final HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
 	private final HttpSession httpServletSession = mock(HttpSession.class);
 	private TraceeInterceptor unit;
-	private TraceeBackend mockedBackend;
+	private TraceeBackend mockedBackend = mock(TraceeBackend.class);
+	private final TraceeFilterConfiguration filterConfiguration = new PermitAllTraceeFilterConfiguration();
 
 	@Before
 	public void beforeTest() {
-		mockedBackend = mockedBackend(new PermitAllTraceeFilterConfiguration());
-		unit = new TraceeInterceptor(mockedBackend);
+		unit = new TraceeInterceptor(mockedBackend, filterConfiguration);
 		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(EmptyEnumeration.<String>emptyEnumeration());
 	}
 
@@ -121,8 +121,7 @@ public class TraceeInterceptorTest {
 	public void shouldNotRenderContextInResponseIfConfigurationDeniesIt() throws Exception {
 		final TraceeFilterConfiguration customFilterConfiguration = mock(TraceeFilterConfiguration.class);
 		when(customFilterConfiguration.shouldProcessContext(TraceeFilterConfiguration.Channel.OutgoingResponse)).thenReturn(false);
-		final TraceeBackend customBackend = mockedBackend(customFilterConfiguration);
-		final TraceeInterceptor customUnit = new TraceeInterceptor(customBackend);
+		final TraceeInterceptor customUnit = new TraceeInterceptor(mockedBackend, customFilterConfiguration);
 		mockedBackend.put(INVOCATION_ID_KEY, "123");
 		customUnit.postHandle(httpServletRequest, httpServletResponse, new Object(), new ModelAndView());
 		verify(httpServletResponse, never()).setHeader(eq(TraceeConstants.TPIC_HEADER), anyString());
@@ -141,14 +140,6 @@ public class TraceeInterceptorTest {
 		unit.setOutgoingHeaderName(testHeader);
 		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
 		verify(httpServletResponse).setHeader(eq(testHeader), anyString());
-	}
-
-	@Test
-	public void shouldUseConfiguredProfile() throws Exception {
-		unit.setProfileName("FOO");
-		unit.afterCompletion(httpServletRequest, httpServletResponse, new Object(), null);
-		verify(mockedBackend).getConfiguration("FOO");
-		assertThat(unit.getProfileName(), is("FOO"));
 	}
 
 	@Test
@@ -194,10 +185,5 @@ public class TraceeInterceptorTest {
 		return new Vector<>(Collections.singletonList(httpHeaderValue)).elements();
 	}
 
-	private TraceeBackend mockedBackend(TraceeFilterConfiguration filterConfiguration) {
-		final TraceeBackend backend = mock(TraceeBackend.class);
-		when(backend.getConfiguration()).thenReturn(filterConfiguration);
-		when(backend.getConfiguration(anyString())).thenReturn(filterConfiguration);
-		return backend;
-	}
+
 }

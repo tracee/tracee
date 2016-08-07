@@ -1,5 +1,7 @@
 package io.tracee.binding.jms;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -20,9 +22,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class TraceeMessageProducerTest {
 
-	private final TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeBackend backend = spy(new SimpleTraceeBackend());
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 	private final MessageProducer messageProducer = mock(MessageProducer.class);
-	private final TraceeMessageProducer unit = new TraceeMessageProducer(messageProducer, backend);
+	private final TraceeMessageProducer unit = new TraceeMessageProducer(messageProducer, backend, filterConfiguration);
 	private final Message message = mock(Message.class);
 
 	@Test

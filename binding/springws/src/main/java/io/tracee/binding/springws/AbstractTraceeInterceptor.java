@@ -23,19 +23,17 @@ abstract class AbstractTraceeInterceptor {
 	protected static final SoapHeaderTransport soapHeaderTransport = new SoapHeaderTransport();
 
 	protected final TraceeBackend backend;
+	protected final TraceeFilterConfiguration filterConfiguration;
 	protected static final Logger logger = LoggerFactory.getLogger(AbstractTraceeInterceptor.class);
-	protected final String profile;
 
-	public AbstractTraceeInterceptor(final TraceeBackend backend, final String profile) {
+	public AbstractTraceeInterceptor(final TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	protected void parseContextFromSoapHeader(final WebServiceMessage message, final Channel channel) {
 		if (message instanceof SoapMessage) {
 			final SoapMessage soapMessage = (SoapMessage) message;
-
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			if (filterConfiguration.shouldProcessContext(channel)) {
 				final SoapHeader soapHeader = soapMessage.getSoapHeader();
@@ -60,8 +58,6 @@ abstract class AbstractTraceeInterceptor {
 	protected void serializeContextToSoapHeader(final WebServiceMessage message, final Channel channel) {
 		if (message instanceof SoapMessage) {
 			final SoapMessage soapMessage = (SoapMessage) message;
-
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
 				final SoapHeader soapHeader = soapMessage.getSoapHeader();

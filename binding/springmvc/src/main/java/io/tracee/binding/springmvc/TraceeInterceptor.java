@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,38 +25,42 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport httpHeaderSerialization;
+	private final TraceeFilterConfiguration filterConfiguration;
 	private String outgoingHeaderName = TraceeConstants.TPIC_HEADER;
 	private String incomingHeaderName = TraceeConstants.TPIC_HEADER;
-	private String profileName;
 
+	/**
+	 * @deprecated Prefer using a managed TraceeBackend and use another constructor.
+	 */
+	@Deprecated
 	public TraceeInterceptor() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	protected TraceeInterceptor(TraceeBackend backend) {
+	public TraceeInterceptor(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 		httpHeaderSerialization = new HttpHeaderTransport();
 	}
 
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object o) {
 
-		final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
-		if (configuration.shouldProcessContext(IncomingRequest)) {
+		if (filterConfiguration.shouldProcessContext(IncomingRequest)) {
 			@SuppressWarnings("unchecked")
 			final Enumeration<String> headers = request.getHeaders(incomingHeaderName);
 			if (headers != null && headers.hasMoreElements()) {
 				final Map<String, String> parsedContext = httpHeaderSerialization.parse(Collections.list(headers));
-				backend.putAll(configuration.filterDeniedParams(parsedContext, IncomingResponse));
+				backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, IncomingResponse));
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
 
 		final HttpSession session = request.getSession(false);
 		if (session != null) {
-			Utilities.generateSessionIdIfNecessary(backend, session.getId());
+			Utilities.generateSessionIdIfNecessary(backend, filterConfiguration, session.getId());
 		}
 
 		// We add the current TPIC to the response. If the response is commited before we can replace the values with the current state
@@ -81,10 +86,9 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 
 	private void writeHeaderIfUncommitted(HttpServletResponse response) {
 		if (!response.isCommitted() && !backend.isEmpty()) {
-			final TraceeFilterConfiguration configuration = backend.getConfiguration(profileName);
 
-			if (configuration.shouldProcessContext(OutgoingResponse)) {
-				final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
+			if (filterConfiguration.shouldProcessContext(OutgoingResponse)) {
+				final Map<String, String> filteredContext = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 				response.setHeader(outgoingHeaderName, httpHeaderSerialization.render(filteredContext));
 			}
 		}
@@ -98,11 +102,5 @@ public final class TraceeInterceptor implements HandlerInterceptor {
 		this.incomingHeaderName = incomingHeaderName;
 	}
 
-	public String getProfileName() {
-		return profileName;
-	}
 
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
 }

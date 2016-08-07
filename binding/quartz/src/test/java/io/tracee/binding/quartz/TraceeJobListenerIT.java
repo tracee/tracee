@@ -1,7 +1,9 @@
 package io.tracee.binding.quartz;
 
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.After;
 import org.junit.Before;
@@ -33,14 +35,16 @@ public class TraceeJobListenerIT {
 
 	private SimpleTraceeBackend schedulerBackend;
 
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
+
 	private Scheduler scheduler;
 
 	@Before
 	public void before() throws SchedulerException {
-		jobBackend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
-		schedulerBackend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+		jobBackend = spy(new SimpleTraceeBackend());
+		schedulerBackend = spy(new SimpleTraceeBackend());
 		scheduler = new StdSchedulerFactory().getScheduler();
-		scheduler.getListenerManager().addJobListener(new TraceeJobListener(jobBackend, Profile.DEFAULT));
+		scheduler.getListenerManager().addJobListener(new TraceeJobListener(jobBackend, PermitAllTraceeFilterConfiguration.INSTANCE));
 		scheduler.start();
 	}
 
@@ -64,7 +68,7 @@ public class TraceeJobListenerIT {
 		schedulerBackend.put("testKey", "testValue");
 		final JobDetail jobDetail = JobBuilder.newJob(TestJob.class).build();
 		final Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail).startNow().build();
-		new TraceeContextInjector(schedulerBackend, Profile.DEFAULT).injectContext(trigger);
+		new TraceeContextInjector(schedulerBackend, filterConfiguration).injectContext(trigger);
 		scheduler.scheduleJob(jobDetail, trigger);
 		verify(jobBackend, timeout(1000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), any(String.class));
 		assertThat(jobBackend.getValuesBeforeLastClear(), hasEntry("testKey", "testValue"));

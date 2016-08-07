@@ -3,8 +3,11 @@ package io.tracee.binding.quartz;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -26,9 +30,10 @@ import static org.mockito.Mockito.when;
 
 public class TraceeJobListenerTest {
 
-	private TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private final TraceeBackend backend = spy(new SimpleTraceeBackend());
+	private final TraceeFilterConfiguration filterConfiguration = new PermitAllTraceeFilterConfiguration();
 
-	private final TraceeJobListener unit = new TraceeJobListener(backend, Profile.DEFAULT);
+	private final TraceeJobListener unit = new TraceeJobListener(backend, filterConfiguration);
 
 	@Test
 	public void generateRequestIdWhenJobStarts() {
@@ -54,19 +59,19 @@ public class TraceeJobListenerTest {
 	@Test
 	public void defaultConstructorUsesDefaultProfile() {
 		final TraceeJobListener listener = new TraceeJobListener();
-		assertThat((String) FieldAccessUtil.getFieldVal(listener, "profile"), is(Profile.DEFAULT));
+		assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(listener, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 	}
 
 	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeJobListener listener = new TraceeJobListener();
-		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(listener, "backend"), is(Tracee.getBackend()));
+		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(listener, "backend"), sameInstance(Tracee.getBackend()));
 	}
 
 	@Test
 	public void constructorStoresProfileNameInternal() {
 		final TraceeJobListener listener = new TraceeJobListener("testProf");
-		assertThat((String) FieldAccessUtil.getFieldVal(listener, "profile"), is("testProf"));
+		assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(listener, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("testProf")));
 	}
 
 	@Test

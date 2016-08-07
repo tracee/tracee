@@ -11,7 +11,7 @@ public class FieldAccessUtilTest {
 
 	@Test
 	public void shouldAccessFields() {
-		final SimpleTraceeBackend backend = new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
+		final SimpleTraceeBackend backend = new SimpleTraceeBackend();
 		backend.put("test", "testVal");
 		@SuppressWarnings("unchecked")
 		final Map<String, String> value = FieldAccessUtil.getFieldVal(backend, "backendValues");

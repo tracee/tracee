@@ -4,6 +4,8 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -21,15 +23,29 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public class TraceeContainerFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
 	private final TraceeBackend backend;
+	private final TraceeFilterConfiguration filterConfiguration;
 	private final HttpHeaderTransport transportSerialization;
 
-	@SuppressWarnings("unused")
+
+	/**
+	 * @deprecated  use full ctor
+	 */
+	@Deprecated
 	public TraceeContainerFilter() {
-		this(Tracee.getBackend());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	TraceeContainerFilter(TraceeBackend backend) {
+	/**
+	 * @deprecated  use full ctor
+	 */
+	@Deprecated
+	public TraceeContainerFilter(String profile) {
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profile));
+	}
+
+	public TraceeContainerFilter(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 		this.transportSerialization = new HttpHeaderTransport();
 	}
 
@@ -39,15 +55,15 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 	@Override
 	public void filter(final ContainerRequestContext containerRequestContext) {
 
-		if (backend.getConfiguration().shouldProcessContext(IncomingRequest)) {
+		if (filterConfiguration.shouldProcessContext(IncomingRequest)) {
 			final List<String> serializedTraceeHeaders = containerRequestContext.getHeaders().get(TraceeConstants.TPIC_HEADER);
 			if (serializedTraceeHeaders != null && !serializedTraceeHeaders.isEmpty()) {
 				final Map<String, String> parsed = transportSerialization.parse(serializedTraceeHeaders);
-				backend.putAll(backend.getConfiguration().filterDeniedParams(parsed, IncomingRequest));
+				backend.putAll(filterConfiguration.filterDeniedParams(parsed, IncomingRequest));
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
 	}
 
 	/**
@@ -55,8 +71,8 @@ public class TraceeContainerFilter implements ContainerRequestFilter, ContainerR
 	 */
 	@Override
 	public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext) {
-		if (backend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
-			final Map<String, String> filtered = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), OutgoingResponse);
+		if (filterConfiguration.shouldProcessContext(OutgoingResponse)) {
+			final Map<String, String> filtered = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			responseContext.getHeaders().putSingle(TraceeConstants.TPIC_HEADER, transportSerialization.render(filtered));
 		}
 

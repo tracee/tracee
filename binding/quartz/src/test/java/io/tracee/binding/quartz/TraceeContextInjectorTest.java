@@ -2,8 +2,10 @@ package io.tracee.binding.quartz;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
-import io.tracee.configuration.TraceeFilterConfiguration.Profile;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.Test;
 import org.quartz.Job;
@@ -19,16 +21,15 @@ import java.util.Map;
 
 import static io.tracee.TraceeConstants.TPIC_HEADER;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("unchecked")
 public class TraceeContextInjectorTest {
 
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
-	private TraceeContextInjector unit = new TraceeContextInjector(backend, Profile.DEFAULT);
+	private TraceeContextInjector unit = new TraceeContextInjector(backend, filterConfiguration);
 
 	@Test
 	public void skipTpicProcessingIfBackendIsEmpty() {
@@ -67,19 +68,19 @@ public class TraceeContextInjectorTest {
 	@Test
 	public void defaultConstructorUsesDefaultProfile() {
 		final TraceeContextInjector injector = new TraceeContextInjector();
-		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is(Profile.DEFAULT));
+		assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(injector, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 	}
 
 	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeContextInjector injector = new TraceeContextInjector();
-		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(injector, "backend"), is(Tracee.getBackend()));
+		assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(injector, "backend"), sameInstance(Tracee.getBackend()));
 	}
 
 	@Test
 	public void constructorStoresProfileNameInternal() {
 		final TraceeContextInjector injector = new TraceeContextInjector("testProf");
-		assertThat((String) FieldAccessUtil.getFieldVal(injector, "profile"), is("testProf"));
+		assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(injector, "filterConfiguration"), sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("testProf")));
 	}
 
 	static class NoopJob implements Job {

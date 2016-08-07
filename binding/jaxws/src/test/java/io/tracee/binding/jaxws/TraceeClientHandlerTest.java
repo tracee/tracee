@@ -2,6 +2,8 @@ package io.tracee.binding.jaxws;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.junit.Before;
@@ -32,10 +34,10 @@ import static org.mockito.Mockito.when;
 
 public class TraceeClientHandlerTest {
 
-	private TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
-
-	private final TraceeClientHandler unit = new TraceeClientHandler(backend);
-	private SOAPMessageContext messageContext = mock(SOAPMessageContext.class);
+	private final TraceeBackend backend = spy(new SimpleTraceeBackend());
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
+	private final TraceeClientHandler unit = new TraceeClientHandler(backend, filterConfiguration);
+	private final SOAPMessageContext messageContext = mock(SOAPMessageContext.class);
 
 	private SOAPMessage message;
 

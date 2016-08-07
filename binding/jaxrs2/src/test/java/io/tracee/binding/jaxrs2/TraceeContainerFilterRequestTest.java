@@ -3,7 +3,9 @@ package io.tracee.binding.jaxrs2;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
@@ -24,8 +26,9 @@ import static org.mockito.Mockito.when;
 
 public class TraceeContainerFilterRequestTest {
 
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final TraceeContainerFilter unit = new TraceeContainerFilter(backend);
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
+	private final TraceeContainerFilter unit = new TraceeContainerFilter(backend, filterConfiguration);
 	private final ContainerRequestContext requestContext = Mockito.mock(ContainerRequestContext.class);
 	private final MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
 

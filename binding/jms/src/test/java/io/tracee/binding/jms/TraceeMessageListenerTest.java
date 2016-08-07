@@ -3,7 +3,9 @@ package io.tracee.binding.jms;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
@@ -24,8 +26,9 @@ import static org.mockito.Mockito.*;
 
 public class TraceeMessageListenerTest {
 
-	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-	private final TraceeMessageListener unit = new TraceeMessageListener(backend);
+	private final SimpleTraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
+	private final TraceeMessageListener unit = new TraceeMessageListener(backend, filterConfiguration);
 	private final InvocationContext invocationContext = mock(InvocationContext.class);
 	private final Message message = mock(Message.class);
 	private final Map<String, String> encodedContext = new HashMap<>();

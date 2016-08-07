@@ -4,6 +4,8 @@ package io.tracee.binding.jaxws;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.SoapHeaderTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +25,16 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 
 	private final SoapHeaderTransport transportSerialization;
 
+	/**
+	 * @deprecated Use full constructor.
+	 */
+	@Deprecated
 	public TraceeServerHandler() {
-		this(Tracee.getBackend(), new SoapHeaderTransport());
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT, new SoapHeaderTransport());
 	}
 
-	public TraceeServerHandler(TraceeBackend traceeBackend, SoapHeaderTransport soapHeaderTransport) {
-		super(traceeBackend);
+	public TraceeServerHandler(TraceeBackend traceeBackend, TraceeFilterConfiguration filterConfiguration, SoapHeaderTransport soapHeaderTransport) {
+		super(traceeBackend, filterConfiguration);
 		this.transportSerialization = soapHeaderTransport;
 	}
 
@@ -37,9 +43,9 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 		try {
 			final SOAPHeader header = soapMessage.getSOAPHeader();
 
-			if (header != null && traceeBackend.getConfiguration().shouldProcessContext(IncomingRequest)) {
+			if (header != null && filterConfiguration.shouldProcessContext(IncomingRequest)) {
 				final Map<String, String> parsedContext = transportSerialization.parseSoapHeader(header);
-				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(parsedContext, IncomingRequest);
+				final Map<String, String> filteredContext = filterConfiguration.filterDeniedParams(parsedContext, IncomingRequest);
 				traceeBackend.putAll(filteredContext);
 			}
 		} catch (final SOAPException e) {
@@ -47,18 +53,18 @@ public class TraceeServerHandler extends AbstractTraceeHandler {
 			logger.debug("Detailed: Error during precessing of inbound soap header: {}", e.getMessage(), e);
 		}
 
-		Utilities.generateInvocationIdIfNecessary(traceeBackend);
+		Utilities.generateInvocationIdIfNecessary(traceeBackend, filterConfiguration);
 	}
 
 	protected final void handleOutgoing(SOAPMessageContext context) {
 		final SOAPMessage msg = context.getMessage();
 		try {
-			if (msg != null && !traceeBackend.isEmpty() && traceeBackend.getConfiguration().shouldProcessContext(OutgoingResponse)) {
+			if (msg != null && !traceeBackend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingResponse)) {
 
 				// get or create header
 				final SOAPHeader header = getOrCreateHeader(msg);
 
-				final Map<String, String> filteredContext = traceeBackend.getConfiguration().filterDeniedParams(traceeBackend.copyToMap(), OutgoingResponse);
+				final Map<String, String> filteredContext = filterConfiguration.filterDeniedParams(traceeBackend.copyToMap(), OutgoingResponse);
 				transportSerialization.renderSoapHeader(filteredContext, header);
 
 				msg.saveChanges();

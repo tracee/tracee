@@ -3,6 +3,7 @@ package io.tracee.binding.quartz;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.quartz.JobDataMap;
@@ -18,19 +19,27 @@ public class TraceeContextInjector {
 
 	private final TraceeBackend backend;
 
-	private final String profile;
+	private final TraceeFilterConfiguration filterConfiguration;
 
+	/**
+	 * @deprecated Use full constructor
+	 */
+	@Deprecated
 	public TraceeContextInjector() {
-		this(Tracee.getBackend(), Profile.DEFAULT);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
+	/**
+	 * @deprecated Use full constructor
+	 */
+	@Deprecated
 	public TraceeContextInjector(final String profile) {
-		this(Tracee.getBackend(), profile);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profile));
 	}
 
-	TraceeContextInjector(final TraceeBackend backend, final String profile) {
+	public TraceeContextInjector(final TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	public void injectContext(Trigger trigger) {
@@ -42,10 +51,9 @@ public class TraceeContextInjector {
 	}
 
 	public void injectContext(JobDataMap jobDataMap) {
-		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 
-		if (!backend.isEmpty() && configuration.shouldProcessContext(AsyncDispatch)) {
-			jobDataMap.put(TraceeConstants.TPIC_HEADER, backend.getConfiguration(profile).filterDeniedParams(backend.copyToMap(), AsyncDispatch));
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(AsyncDispatch)) {
+			jobDataMap.put(TraceeConstants.TPIC_HEADER, filterConfiguration.filterDeniedParams(backend.copyToMap(), AsyncDispatch));
 		}
 	}
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-class Slf4jTraceeBackend extends BackendBase {
+public class Slf4jTraceeBackend extends BackendBase {
 
 	/**
 	 * This set contains all MDC-Keys managed by tracee.
@@ -16,7 +16,7 @@ class Slf4jTraceeBackend extends BackendBase {
 	 */
 	protected final ThreadLocal<Set<String>> traceeKeys;
 
-	Slf4jTraceeBackend(ThreadLocal<Set<String>> traceeKeys) {
+	public Slf4jTraceeBackend(ThreadLocal<Set<String>> traceeKeys) {
 		this.traceeKeys = traceeKeys;
 	}
 

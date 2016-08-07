@@ -26,7 +26,7 @@ public class TraceeSessionListenerTest {
 	private final TraceeBackend backend = mock(TraceeBackend.class);
 	private final HttpSession session = mock(HttpSession.class);
 	private final TraceeFilterConfiguration configuration = mock(TraceeFilterConfiguration.class);
-	private final TraceeSessionListener unit = new TraceeSessionListener(backend);
+	private final TraceeSessionListener unit = new TraceeSessionListener(backend, configuration);
 
 	@Before
 	public void setUpMocks() {

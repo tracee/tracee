@@ -3,7 +3,10 @@ package io.tracee.binding.servlet;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.HttpHeaderTransport;
 import org.hamcrest.MatcherAssert;
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
@@ -35,9 +40,10 @@ import static org.mockito.internal.verification.VerificationModeFactory.atLeastO
 
 public class TraceeFilterTest {
 
-	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final SimpleTraceeBackend backend = new SimpleTraceeBackend();
 	private final HttpHeaderTransport transport = new HttpHeaderTransport();
-	private final TraceeFilter unit = new TraceeFilter(backend, transport);
+	private final TraceeFilterConfiguration filterConfiguration = Mockito.spy(new PermitAllTraceeFilterConfiguration());
+	private final TraceeFilter unit = new TraceeFilter(backend, transport, filterConfiguration);
 	private final FilterChain filterChain = Mockito.mock(FilterChain.class);
 	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);
 	private final HttpServletResponse httpServletResponse = Mockito.mock(HttpServletResponse.class);
@@ -48,10 +54,10 @@ public class TraceeFilterTest {
 		final FilterConfig filterConfigWithProfile = mock(FilterConfig.class);
 		when(filterConfigWithProfile.getInitParameter(TraceeFilter.PROFILE_INIT_PARAM)).thenReturn("FOO");
 		final TraceeBackend spiedBackend = spy(backend);
-		final TraceeFilter unitWithSpiedBackend = new TraceeFilter(spiedBackend, transport);
+		final TraceeFilter unitWithSpiedBackend = new TraceeFilter(spiedBackend, transport, filterConfiguration);
 		unitWithSpiedBackend.init(filterConfigWithProfile);
 		unitWithSpiedBackend.doFilterHttp(httpServletRequest, httpServletResponse, filterChain);
-		verify(spiedBackend).getConfiguration(eq("FOO"));
+		assertSame(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("FOO"), unitWithSpiedBackend.configuration);
 	}
 
 	@Test
@@ -99,6 +105,6 @@ public class TraceeFilterTest {
 	@Test
 	public void defaultConstructorUsesTraceeBackend() {
 		final TraceeFilter filter = new TraceeFilter();
-		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(filter, "backend"), is(Tracee.getBackend()));
+		MatcherAssert.assertThat((TraceeBackend) FieldAccessUtil.getFieldVal(filter, "backend"), sameInstance(Tracee.getBackend()));
 	}
 }

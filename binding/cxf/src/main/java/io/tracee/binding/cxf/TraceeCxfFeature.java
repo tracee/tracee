@@ -6,6 +6,8 @@ import io.tracee.binding.cxf.interceptor.TraceeRequestInInterceptor;
 import io.tracee.binding.cxf.interceptor.TraceeRequestOutInterceptor;
 import io.tracee.binding.cxf.interceptor.TraceeResponseInInterceptor;
 import io.tracee.binding.cxf.interceptor.TraceeResponseOutInterceptor;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.Bus;
 import org.apache.cxf.feature.AbstractFeature;
@@ -13,28 +15,29 @@ import org.apache.cxf.interceptor.InterceptorProvider;
 
 public class TraceeCxfFeature extends AbstractFeature {
 
-	private String profile;
+	private TraceeFilterConfiguration filterConfiguration;
 	private TraceeBackend backend;
 
+	/**
+	 * @deprecated use full ctor
+	 */
+	@Deprecated
 	public TraceeCxfFeature() {
-		this(Tracee.getBackend(), Profile.DEFAULT);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	TraceeCxfFeature(TraceeBackend backend, String profile) {
+	TraceeCxfFeature(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
-	public TraceeCxfFeature(String profile) {
-		this(Tracee.getBackend(), profile);
-	}
 
 	@Override
 	protected void initializeProvider(InterceptorProvider provider, Bus bus) {
-		final TraceeRequestInInterceptor requestInInterceptor = new TraceeRequestInInterceptor(backend, profile);
-		final TraceeResponseInInterceptor responseInInterceptor = new TraceeResponseInInterceptor(backend, profile);
-		final TraceeRequestOutInterceptor requestOutInterceptor = new TraceeRequestOutInterceptor(backend, profile);
-		final TraceeResponseOutInterceptor responseOutInterceptor = new TraceeResponseOutInterceptor(backend, profile);
+		final TraceeRequestInInterceptor requestInInterceptor = new TraceeRequestInInterceptor(backend, filterConfiguration);
+		final TraceeResponseInInterceptor responseInInterceptor = new TraceeResponseInInterceptor(backend, filterConfiguration);
+		final TraceeRequestOutInterceptor requestOutInterceptor = new TraceeRequestOutInterceptor(backend, filterConfiguration);
+		final TraceeResponseOutInterceptor responseOutInterceptor = new TraceeResponseOutInterceptor(backend, filterConfiguration);
 
 		provider.getInInterceptors().add(requestInInterceptor);
 		provider.getInInterceptors().add(responseInInterceptor);

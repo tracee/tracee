@@ -3,6 +3,8 @@ package io.tracee.binding.jms;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -17,15 +19,20 @@ public class TraceeMessageProducer implements MessageProducer {
 
     private final MessageProducer delegate;
 	private final TraceeBackend backend;
+	private final TraceeFilterConfiguration filterConfiguration;
 
-    TraceeMessageProducer(MessageProducer delegate, TraceeBackend backend) {
+    public TraceeMessageProducer(MessageProducer delegate, TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
         this.delegate = delegate;
 		this.backend = backend;
+		this.filterConfiguration = filterConfiguration;
 	}
 
+	/**
+	 * @deprecated use full ctor
+	 */
+	@Deprecated
 	public TraceeMessageProducer(MessageProducer delegate) {
-		this.delegate = delegate;
-		this.backend = Tracee.getBackend();
+		this(delegate, Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
     /**
@@ -34,8 +41,8 @@ public class TraceeMessageProducer implements MessageProducer {
      */
     protected void writeTraceeContextToMessage(Message message) throws JMSException {
 
-		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(AsyncDispatch)) {
-			final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), AsyncDispatch);
+		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(AsyncDispatch)) {
+			final Map<String, String> filteredContext = filterConfiguration.filterDeniedParams(backend.copyToMap(), AsyncDispatch);
 			message.setObjectProperty(TraceeConstants.TPIC_HEADER, filteredContext);
 		}
     }

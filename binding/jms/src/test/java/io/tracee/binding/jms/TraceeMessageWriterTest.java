@@ -14,21 +14,21 @@ public class TraceeMessageWriterTest {
 	@Test
 	public void shouldWrapMessageProducer() throws Exception {
 		final MessageProducer producer = mock(MessageProducer.class);
-		TraceeMessageWriter.wrap(producer).close();
+		TraceeMessageWriter.wrap(producer, null, null).close();
 		verify(producer).close();
 	}
 
 	@Test
 	public void shouldWrapQueueSender() throws Exception {
 		final QueueSender sender = mock(QueueSender.class);
-		TraceeMessageWriter.wrap(sender).close();
+		TraceeMessageWriter.wrap(sender, null, null).close();
 		verify(sender).close();
 	}
 
 	@Test
 	public void shouldWrapTopicPublisher() throws Exception {
 		final TopicPublisher publisher = mock(TopicPublisher.class);
-		TraceeMessageWriter.wrap(publisher).close();
+		TraceeMessageWriter.wrap(publisher, null, null).close();
 		verify(publisher).close();
 	}
 }

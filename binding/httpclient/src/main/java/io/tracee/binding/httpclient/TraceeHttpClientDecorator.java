@@ -3,6 +3,7 @@ package io.tracee.binding.httpclient;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
@@ -30,35 +31,37 @@ public class TraceeHttpClientDecorator extends HttpClient {
 
 	private final HttpClient delegate;
 	private final TraceeBackend backend;
+	private final TraceeFilterConfiguration filterConfiguration;
 	private final HttpHeaderTransport transportSerialization;
-	private final String profile;
 
+	/**
+	 * @deprecated use wrap with full params
+	 */
+	@Deprecated
 	public static HttpClient wrap(HttpClient httpClient) {
-		return wrap(httpClient, DEFAULT);
+		return wrap(httpClient, Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	public static HttpClient wrap(HttpClient httpClient, String profile) {
+	public static HttpClient wrap(HttpClient httpClient, TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		if (httpClient instanceof TraceeHttpClientDecorator) {
 			return httpClient;
 		} else {
-			return new TraceeHttpClientDecorator(httpClient, profile);
+			return new TraceeHttpClientDecorator(httpClient, backend, filterConfiguration);
 		}
 	}
 
-	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
+	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, TraceeFilterConfiguration filterConfiguration, HttpHeaderTransport transportSerialization) {
 		this.delegate = delegate;
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
-	TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, String profile) {
-		this(delegate, backend, new HttpHeaderTransport(), profile);
+	public TraceeHttpClientDecorator(HttpClient delegate, TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
+		this(delegate, backend, filterConfiguration, new HttpHeaderTransport());
 	}
 
-	public TraceeHttpClientDecorator(HttpClient delegate, String profile) {
-		this(delegate, Tracee.getBackend(), profile);
-	}
+
 
 
 	@Override
@@ -88,7 +91,6 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	}
 
 	private void preRequest(HttpMethod httpMethod) {
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			httpMethod.setRequestHeader(TraceeConstants.TPIC_HEADER, transportSerialization.render(filteredParams));
@@ -99,7 +101,6 @@ public class TraceeHttpClientDecorator extends HttpClient {
 	private void postResponse(HttpMethod httpMethod) {
 		if (!httpMethod.isRequestSent()) return;
 		final Header[] responseHeaders = httpMethod.getResponseHeaders(TraceeConstants.TPIC_HEADER);
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<>();
 			for (Header header : responseHeaders) {

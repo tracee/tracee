@@ -24,6 +24,7 @@ public class TraceeTest {
 		constructor.newInstance();
 	}
 
+	@Deprecated
 	@Test(expected = TraceeException.class)
 	public void backendRetrievalShouldThrowTraceeExceptionWithDefaultResolver() {
 		try {

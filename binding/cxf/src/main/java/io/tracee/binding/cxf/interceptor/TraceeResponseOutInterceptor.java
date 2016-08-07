@@ -1,6 +1,8 @@
 package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
@@ -12,11 +14,11 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Outgoing
 public class TraceeResponseOutInterceptor extends AbstractTraceeOutInterceptor {
 
 	public TraceeResponseOutInterceptor(TraceeBackend backend) {
-		this(backend, Profile.DEFAULT);
+		this(backend, PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	public TraceeResponseOutInterceptor(TraceeBackend backend, String profile) {
-		super(Phase.USER_LOGICAL, OutgoingResponse, backend, profile);
+	public TraceeResponseOutInterceptor(TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
+		super(Phase.USER_LOGICAL, OutgoingResponse, backend, filterConfiguration);
 	}
 
 	@Override

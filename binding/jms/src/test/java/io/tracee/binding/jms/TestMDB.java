@@ -1,5 +1,12 @@
 package io.tracee.binding.jms;
 
+import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import io.tracee.testhelper.SimpleTraceeBackend;
+
 import javax.annotation.Resource;
 import javax.ejb.MessageDriven;
 import javax.interceptor.Interceptors;
@@ -26,7 +33,7 @@ public class TestMDB implements MessageListener {
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(responses));
+            final MessageProducer producer = TraceeMessageWriter.wrap(session.createProducer(responses), Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
             producer.setDeliveryMode(DeliveryMode.PERSISTENT);
             final TextMessage responseMessage = session.createTextMessage(incomingMessage.getText());
             producer.send(responseMessage);

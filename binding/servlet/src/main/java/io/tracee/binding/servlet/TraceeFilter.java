@@ -3,6 +3,7 @@ package io.tracee.binding.servlet;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.transport.HttpHeaderTransport;
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 
@@ -28,20 +30,22 @@ public class TraceeFilter implements Filter {
 
 	private static final String HTTP_HEADER_NAME = TraceeConstants.TPIC_HEADER;
 
-	private String profile = TraceeFilterConfiguration.Profile.DEFAULT;
-
 	private final TraceeBackend backend;
 
 	private final HttpHeaderTransport transportSerialization;
 
+	// VisibleForTesting
+	TraceeFilterConfiguration configuration;
+
 	public TraceeFilter() {
-		this(Tracee.getBackend(), new HttpHeaderTransport());
+		this(Tracee.getBackend(), new HttpHeaderTransport(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
 	// VisibleForTesting
-	TraceeFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization) {
+	public TraceeFilter(TraceeBackend backend, HttpHeaderTransport transportSerialization, TraceeFilterConfiguration configuration) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
+		this.configuration = configuration;
 	}
 
 	@Override
@@ -57,8 +61,6 @@ public class TraceeFilter implements Filter {
 	final void doFilterHttp(final HttpServletRequest request, final HttpServletResponse response,
 													final FilterChain filterChain) throws IOException, ServletException {
 
-		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
-
 		try {
 			// we need to eagerly write ResponseHeaders since the inner servlets may flush the output stream
 			// and writing of response headers become impossible afterwards. This is a best effort trade-off.
@@ -73,7 +75,7 @@ public class TraceeFilter implements Filter {
 
 	private void writeContextToResponse(final HttpServletResponse response, final TraceeFilterConfiguration configuration) {
 		if (!backend.isEmpty() && configuration.shouldProcessContext(OutgoingResponse)) {
-			final Map<String, String> filteredContext = backend.getConfiguration(profile).filterDeniedParams(backend.copyToMap(), OutgoingResponse);
+			final Map<String, String> filteredContext = configuration.filterDeniedParams(backend.copyToMap(), OutgoingResponse);
 			response.setHeader(HTTP_HEADER_NAME, transportSerialization.render(filteredContext));
 		}
 	}
@@ -82,7 +84,7 @@ public class TraceeFilter implements Filter {
 	public final void init(final FilterConfig filterConfig) throws ServletException {
 		final String profileInitParameter = filterConfig.getInitParameter(PROFILE_INIT_PARAM);
 		if (profileInitParameter != null) {
-			profile = profileInitParameter;
+			configuration = PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profileInitParameter);
 		}
 	}
 

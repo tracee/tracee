@@ -20,22 +20,22 @@ import java.util.Map;
 abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Message> {
 
 	protected final TraceeBackend backend;
+	protected final TraceeFilterConfiguration filterConfiguration;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTraceeInInterceptor.class);
 
 	private final HttpHeaderTransport httpJsonSerializer;
 	private final SoapHeaderTransport httpSoapSerializer;
 
-	private String profile;
 
 	private final TraceeFilterConfiguration.Channel channel;
 
 	public AbstractTraceeInInterceptor(String phase, TraceeFilterConfiguration.Channel channel, TraceeBackend backend,
-									   String profile) {
+									   TraceeFilterConfiguration filterConfiguration) {
 		super(phase);
 		this.channel = channel;
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 		this.httpJsonSerializer = new HttpHeaderTransport();
 		this.httpSoapSerializer = new SoapHeaderTransport();
 	}
@@ -45,7 +45,6 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 	@Override
 	public void handleMessage(final Message message) {
 		if (shouldHandleMessage(message)) {
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 
 			LOGGER.debug("Interceptor handles message!");
 			if (filterConfiguration.shouldProcessContext(channel)) {

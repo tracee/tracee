@@ -3,8 +3,8 @@ package io.tracee.binding.springhttpclient;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
-import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.transport.HttpHeaderTransport;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -22,20 +22,20 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 
 	private final TraceeBackend backend;
 	private final HttpHeaderTransport transportSerialization;
-	private final String profile;
+	private final TraceeFilterConfiguration filterConfiguration;
 
 	public TraceeClientHttpRequestInterceptor() {
-		this(Tracee.getBackend(), new HttpHeaderTransport(), Profile.DEFAULT);
+		this(Tracee.getBackend(), new HttpHeaderTransport(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
-	public TraceeClientHttpRequestInterceptor(String profile) {
-		this(Tracee.getBackend(), new HttpHeaderTransport(), profile);
+	public TraceeClientHttpRequestInterceptor(TraceeFilterConfiguration filterConfiguration) {
+		this(Tracee.getBackend(), new HttpHeaderTransport(), filterConfiguration);
 	}
 
-	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
+	public TraceeClientHttpRequestInterceptor(TraceeBackend backend, HttpHeaderTransport transportSerialization, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	@Override
@@ -47,7 +47,6 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 	}
 
 	private void preRequest(final HttpRequest request) {
-		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(OutgoingRequest)) {
 			final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), OutgoingRequest);
 			request.getHeaders().add(TraceeConstants.TPIC_HEADER, transportSerialization.render(filteredParams));
@@ -57,8 +56,6 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 	private void postResponse(ClientHttpResponse response) {
 		final List<String> headers = response.getHeaders().get(TraceeConstants.TPIC_HEADER);
 		if (headers != null) {
-			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
-
 			if (filterConfiguration.shouldProcessContext(IncomingResponse)) {
 				backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(headers), IncomingResponse));
 			}

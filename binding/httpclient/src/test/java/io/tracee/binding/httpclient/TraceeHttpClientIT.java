@@ -1,7 +1,10 @@
 package io.tracee.binding.httpclient;
 
-import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 
@@ -27,17 +30,19 @@ public class TraceeHttpClientIT {
 	private Server server;
 	private String serverEndpoint;
 
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient());
+		final HttpClient unit = TraceeHttpClientDecorator.wrap(new HttpClient(), backend, filterConfiguration);
 
 		GetMethod getMethod = new GetMethod(serverEndpoint);
-		Tracee.getBackend().put("beforeRequest", "yip");
+		backend.put("beforeRequest", "yip");
 		unit.executeMethod(getMethod);
 
 		assertThat(getMethod.getStatusCode(), equalTo(HttpServletResponse.SC_NO_CONTENT));
-		assertThat(Tracee.getBackend().get("responseFromServer"), equalTo("yesSir"));
+		assertThat(backend.get("responseFromServer"), equalTo("yesSir"));
 	}
 
 	@Before

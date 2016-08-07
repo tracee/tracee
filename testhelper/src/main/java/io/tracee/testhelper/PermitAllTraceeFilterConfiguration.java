@@ -6,6 +6,13 @@ import java.util.Map;
 
 public class PermitAllTraceeFilterConfiguration implements TraceeFilterConfiguration {
 
+	public static final PermitAllTraceeFilterConfiguration INSTANCE = new PermitAllTraceeFilterConfiguration();
+
+	/** Alias for spring xml configuration */
+	public static PermitAllTraceeFilterConfiguration instance() {
+		return INSTANCE;
+	}
+
 	public static final int ARBITRARY_NUMBER = 32;
 
 	@Override

@@ -14,6 +14,7 @@ public class Slf4jTraceeContextProviderIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(Slf4jTraceeContextProviderIT.class);
 
+	@Deprecated
     @Test
     public void testLoadProviderAndStoreToSlf4jMdc() {
         final TraceeBackend context = Tracee.getBackend();

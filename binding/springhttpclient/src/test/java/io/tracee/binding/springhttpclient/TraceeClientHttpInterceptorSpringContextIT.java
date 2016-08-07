@@ -1,7 +1,11 @@
 package io.tracee.binding.springhttpclient;
 
-import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.binding.springhttpclient.config.TraceeSpringWebConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -13,6 +17,9 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
@@ -30,9 +37,26 @@ import static org.hamcrest.Matchers.equalTo;
  * Spring configuration test.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringHttpClientTestJavaConfig.class)
+@ContextConfiguration(classes = TraceeClientHttpInterceptorSpringContextIT.Config.class)
 public class TraceeClientHttpInterceptorSpringContextIT {
 
+
+	@Configuration
+	@Import(TraceeSpringWebConfiguration.class)
+	static class Config {
+		@Bean
+		public TraceeBackend traceeBackend() {
+			return new SimpleTraceeBackend();
+		}
+		@Bean
+		public TraceeFilterConfiguration filterConfiguration() {
+			return PermitAllTraceeFilterConfiguration.INSTANCE;
+		}
+		@Bean
+		public RestTemplate restTemplate() {
+			return new RestTemplate();
+		}
+	}
 
 	@Rule
 	public ErrorCollector collector = new ErrorCollector();
@@ -52,11 +76,14 @@ public class TraceeClientHttpInterceptorSpringContextIT {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private TraceeBackend backend;
+
 	@Test
 	public void testWritesToServerAndParsesResponse() throws IOException {
-		Tracee.getBackend().put("before Request", "yip");
+		backend.put("before Request", "yip");
 		restTemplate.getForObject(serverEndpoint, EmptyEntity.class);
-		assertThat(Tracee.getBackend().get("response From Server"), equalTo("yesSir"));
+		assertThat(backend.get("response From Server"), equalTo("yesSir"));
 	}
 
 	@Before
@@ -73,7 +100,7 @@ public class TraceeClientHttpInterceptorSpringContextIT {
 			server.stop();
 			server.join();
 		}
-		Tracee.getBackend().clear();
+		backend.clear();
 	}
 
 	private static final class EmptyEntity {

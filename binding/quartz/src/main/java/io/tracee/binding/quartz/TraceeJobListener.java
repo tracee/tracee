@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import org.quartz.JobExecutionContext;
@@ -23,19 +24,23 @@ public class TraceeJobListener extends JobListenerSupport {
 
 	private final TraceeBackend backend;
 
-	private final String profile;
+	private final TraceeFilterConfiguration filterConfiguration;
 
+	/**
+	 * @deprecated Use full constructor
+	 */
+	@Deprecated
 	public TraceeJobListener() {
-		this(Tracee.getBackend(), Profile.DEFAULT);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT);
 	}
 
 	public TraceeJobListener(final String profile) {
-		this(Tracee.getBackend(), profile);
+		this(Tracee.getBackend(), PropertiesBasedTraceeFilterConfiguration.instance().forProfile(profile));
 	}
 
-	TraceeJobListener(final TraceeBackend backend, final String profile) {
+	TraceeJobListener(final TraceeBackend backend, TraceeFilterConfiguration filterConfiguration) {
 		this.backend = backend;
-		this.profile = profile;
+		this.filterConfiguration = filterConfiguration;
 	}
 
 	@Override
@@ -45,19 +50,18 @@ public class TraceeJobListener extends JobListenerSupport {
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
-		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 
-		if (configuration.shouldProcessContext(AsyncProcess)) {
+		if (filterConfiguration.shouldProcessContext(AsyncProcess)) {
 			@SuppressWarnings("unchecked")
 			final Map<String, String> traceeContext = (Map<String, String>) context.getMergedJobDataMap().get(TraceeConstants.TPIC_HEADER);
 
 			if (traceeContext != null && !traceeContext.isEmpty()) {
-				final Map<String, String> filteredContext = configuration.filterDeniedParams(traceeContext, AsyncProcess);
+				final Map<String, String> filteredContext = filterConfiguration.filterDeniedParams(traceeContext, AsyncProcess);
 				backend.putAll(filteredContext);
 			}
 		}
 
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, filterConfiguration);
 	}
 
 	@Override

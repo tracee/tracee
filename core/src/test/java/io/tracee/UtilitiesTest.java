@@ -82,43 +82,43 @@ public class UtilitiesTest {
 
 	@Test
 	public void ignoreInvocationIdGenerationIfBackendIsNull() {
-		Utilities.generateInvocationIdIfNecessary(null);
+		Utilities.generateInvocationIdIfNecessary(null, PermitAllTraceeFilterConfiguration.INSTANCE);
 		assertTrue("No exception occurred", true);
 	}
 
 	@Test
 	public void dontGenerateInvocationIdIfPresentInBackend() {
-		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+		final TraceeBackend backend = new SimpleTraceeBackend();
 		backend.put(INVOCATION_ID_KEY, "ourTestId");
-		Utilities.generateInvocationIdIfNecessary(backend);
+		Utilities.generateInvocationIdIfNecessary(backend, PermitAllTraceeFilterConfiguration.INSTANCE);
 		assertThat(backend.get(INVOCATION_ID_KEY), is("ourTestId"));
 	}
 
 	@Test
 	public void generateInvocationIdIfNotPresentInBackend() {
-		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-		Utilities.generateInvocationIdIfNecessary(backend);
+		final TraceeBackend backend = new SimpleTraceeBackend();
+		Utilities.generateInvocationIdIfNecessary(backend, PermitAllTraceeFilterConfiguration.INSTANCE);
 		assertThat(backend.get(INVOCATION_ID_KEY), not(isEmptyOrNullString()));
 	}
 
 	@Test
 	public void ignoreSessionIdGenerationIfBackendIsNull() {
-		Utilities.generateSessionIdIfNecessary(null, "abc");
+		Utilities.generateSessionIdIfNecessary(null, PermitAllTraceeFilterConfiguration.INSTANCE, "abc");
 		assertTrue("No exception occurred", true);
 	}
 
 	@Test
 	public void dontGenerateSessionIdIfPresentInBackend() {
-		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+		final TraceeBackend backend = new SimpleTraceeBackend();
 		backend.put(SESSION_ID_KEY, "ourTestId");
-		Utilities.generateSessionIdIfNecessary(backend, "123");
+		Utilities.generateSessionIdIfNecessary(backend, PermitAllTraceeFilterConfiguration.INSTANCE, "123");
 		assertThat(backend.get(SESSION_ID_KEY), is("ourTestId"));
 	}
 
 	@Test
 	public void generateSessionIdIfNotPresentInBackend() {
-		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
-		Utilities.generateSessionIdIfNecessary(backend, "123");
+		final TraceeBackend backend = new SimpleTraceeBackend();
+		Utilities.generateSessionIdIfNecessary(backend, PermitAllTraceeFilterConfiguration.INSTANCE, "123");
 		assertThat(backend.get(SESSION_ID_KEY), equalTo(Utilities.createAlphanumericHash("123",
 				PermitAllTraceeFilterConfiguration.ARBITRARY_NUMBER)));
 	}

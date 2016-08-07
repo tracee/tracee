@@ -42,9 +42,9 @@ public class TraceeServletRequestListenerTest {
 
 	private final HttpHeaderTransport transportSerialization = new HttpHeaderTransport();
 	private final TraceeBackend backend = Mockito.mock(TraceeBackend.class);
-	private final TraceeServletRequestListener unit = new TraceeServletRequestListener(backend, transportSerialization);
-	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);
 	private final TraceeFilterConfiguration configuration = Mockito.mock(TraceeFilterConfiguration.class);
+	private final TraceeServletRequestListener unit = new TraceeServletRequestListener(backend, configuration, transportSerialization);
+	private final HttpServletRequest httpServletRequest = Mockito.mock(HttpServletRequest.class);
 
 	@Before
 	public void setupMocks() {

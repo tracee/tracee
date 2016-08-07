@@ -18,30 +18,23 @@ public class SimpleTraceeBackend implements TraceeBackend {
 
 	private Map<String, String> backendValues = new HashMap<>();
 
-	public static SimpleTraceeBackend createNonLoggingAllPermittingBackend() {
-		return new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
+
+
+	public SimpleTraceeBackend() {
 	}
 
-	public SimpleTraceeBackend(TraceeFilterConfiguration configuration) {
-		this.configuration = configuration;
-	}
 
-	private final TraceeFilterConfiguration configuration;
-
-	/**
-	 * {@inheritDoc}
-	 * <br /><strong>This implementation ignores profiles and always uses the default configuration.</strong>
-	 */
+	@Deprecated
 	@Override
 	public TraceeFilterConfiguration getConfiguration(String profileName) {
-		return configuration;
+		throw new AssertionError("Used deprecated method: getConfiguration(String profileName)");
 	}
 
+	@Deprecated
 	@Override
 	public TraceeFilterConfiguration getConfiguration() {
-		return configuration;
+		throw new AssertionError("Used deprecated method: getConfiguration()");
 	}
-
 
 	@Override
 	public boolean containsKey(String key) {

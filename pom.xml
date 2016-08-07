@@ -32,6 +32,9 @@
         <module>binding/springrabbitmq</module>
         <module>binding/quartz</module>
         <module>binding/springws</module>
+        <module>binding/springcontext</module>
+        <module>binding/springbootstarter</module>
+
 
         <!-- BOM (Bill Of Materials) -->
         <module>bom</module>
@@ -460,6 +463,12 @@
                 <version>2.0.1</version>
                 <scope>provided</scope>
             </dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>

@@ -2,6 +2,8 @@ package io.tracee.binding.cxf.interceptor;
 
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.jaxb.TpicMap;
 import org.apache.cxf.binding.soap.SoapMessage;
@@ -33,7 +35,8 @@ import static org.mockito.Mockito.when;
 
 public class IncomingSoapRequestMessageTest {
 
-	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private static final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 
 	private TraceeRequestInInterceptor inInterceptor;
 
@@ -42,7 +45,7 @@ public class IncomingSoapRequestMessageTest {
 	@Before
 	public void onSetup() throws Exception {
 		backend.clear();
-		inInterceptor = new TraceeRequestInInterceptor(backend);
+		inInterceptor = new TraceeRequestInInterceptor(backend, filterConfiguration);
 
 		when(soapMessage.getExchange()).thenReturn(mock(Exchange.class));
 	}

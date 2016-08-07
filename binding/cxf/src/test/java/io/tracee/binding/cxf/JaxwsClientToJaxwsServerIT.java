@@ -25,14 +25,14 @@ public class JaxwsClientToJaxwsServerIT extends AbstractConnectionITHelper {
 	public void setup() {
 
 		JaxWsServerFactoryBean jaxWsServer = createJaxWsServer();
-		jaxWsServer.getHandlers().add(new TraceeServerHandler(serverBackend, new SoapHeaderTransport()));
+		jaxWsServer.getHandlers().add(new TraceeServerHandler(serverBackend, filterConfiguration, new SoapHeaderTransport()));
 		server = jaxWsServer.create();
 
 		JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
 
 		factoryBean.setServiceClass(HelloWorldTestService.class);
 		factoryBean.setAddress(endpointAddress);
-		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend));
+		factoryBean.getHandlers().add(new TraceeClientHandler(clientBackend, filterConfiguration));
 		factoryBean.setBus(CXFBusFactory.getDefaultBus());
 
 		helloWorldPort = factoryBean.create(HelloWorldTestService.class);

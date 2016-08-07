@@ -1,8 +1,11 @@
 package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
+import io.tracee.configuration.PropertiesBasedTraceeFilterConfiguration;
+import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.FieldAccessUtil;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
@@ -25,9 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.tracee.TraceeConstants.SOAP_HEADER_QNAME;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -38,9 +39,9 @@ import static org.mockito.Mockito.when;
 
 public class TraceeClientInterceptorTest {
 
-	private TraceeBackend backend = spy(SimpleTraceeBackend.createNonLoggingAllPermittingBackend());
+	private TraceeBackend backend = spy(new SimpleTraceeBackend());
 
-	private TraceeClientInterceptor unit = new TraceeClientInterceptor(backend, null);
+	private TraceeClientInterceptor unit = new TraceeClientInterceptor(backend, PermitAllTraceeFilterConfiguration.INSTANCE);
 	private MessageContext messageContext;
 
 	@Before
@@ -150,7 +151,8 @@ public class TraceeClientInterceptorTest {
 	@Test
 	public void defaultConstructorUsesDefaultProfile() {
 		final TraceeClientInterceptor interceptor = new TraceeClientInterceptor();
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is(Profile.DEFAULT));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(interceptor, "filterConfiguration"),
+			sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().DEFAULT));
 	}
 
 	@Test
@@ -162,6 +164,7 @@ public class TraceeClientInterceptorTest {
 	@Test
 	public void constructorStoresProfileNameInternal() {
 		final TraceeClientInterceptor interceptor = new TraceeClientInterceptor("testProf");
-		MatcherAssert.assertThat((String) FieldAccessUtil.getFieldVal(interceptor, "profile"), is("testProf"));
+		MatcherAssert.assertThat((TraceeFilterConfiguration) FieldAccessUtil.getFieldVal(interceptor, "filterConfiguration"),
+			sameInstance(PropertiesBasedTraceeFilterConfiguration.instance().forProfile("testProf")));
 	}
 }

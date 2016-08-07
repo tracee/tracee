@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 public class OutgoingResponseMessageTest {
 
-	private static final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private static final TraceeBackend backend = new SimpleTraceeBackend();
 
 	private TraceeResponseOutInterceptor outInterceptor;
 

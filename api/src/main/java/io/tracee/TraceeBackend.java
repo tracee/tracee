@@ -6,17 +6,22 @@ import java.util.Map;
 
 /**
  * A backend is expected to be thread-safe (reads and writes are delegated to thread local state).
+ * @since 0.1
  */
 public interface TraceeBackend {
 
 	/**
 	 * Gets the TraceeFilterConfiguration for a given profile.
+	 * @deprecated Create your own TraceeFilterConfiguration PropertiesBasedTraceeFilterConfiguration#instance() from core.
 	 */
+	@Deprecated
 	TraceeFilterConfiguration getConfiguration(String profileName);
 
 	/**
 	 * Gets the default TraceeFilterConfiguration.
+	 * @deprecated Create your own TraceeFilterConfiguration PropertiesBasedTraceeFilterConfiguration#instance() from core.
 	 */
+	@Deprecated
 	TraceeFilterConfiguration getConfiguration();
 
     /**

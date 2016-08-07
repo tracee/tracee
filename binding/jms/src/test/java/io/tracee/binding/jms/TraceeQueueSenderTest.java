@@ -1,5 +1,7 @@
 package io.tracee.binding.jms;
 
+import io.tracee.configuration.TraceeFilterConfiguration;
+import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
@@ -21,9 +23,10 @@ import static org.mockito.Mockito.verify;
 public class TraceeQueueSenderTest {
 
 	public static final QueueSender queueSender = mock(QueueSender.class);
-	private final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+	private final TraceeFilterConfiguration filterConfiguration = PermitAllTraceeFilterConfiguration.INSTANCE;
 	private final MessageProducer messageProducer = mock(MessageProducer.class);
-	private final TraceeQueueSender unit = new TraceeQueueSender(new TraceeMessageProducer(messageProducer, backend), queueSender);
+	private final TraceeQueueSender unit = new TraceeQueueSender(new TraceeMessageProducer(messageProducer, backend, filterConfiguration), queueSender);
 	private final Message message = mock(Message.class);
 	final Queue queue = mock(Queue.class);
 

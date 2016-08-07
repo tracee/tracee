@@ -26,7 +26,9 @@ public final class Tracee {
      * until a low memory situation occurs (since the SoftReference keeps the TraceeBackendProvider in memory).
      * It could be a solution to change the SoftReference to WeakReference but let a TraceeBackend keep a strong
      * reference to its TraceeBackendProvider.
+	 * @deprecated Use a backend provided provided by your DI container.
      */
+    @Deprecated
     public static TraceeBackend getBackend() {
 		return getBackend(new BackendProviderResolver());
     }

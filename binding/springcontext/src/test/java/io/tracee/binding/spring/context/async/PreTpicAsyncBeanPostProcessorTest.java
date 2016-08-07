@@ -1,9 +1,11 @@
-package io.tracee.binding.springmvc.async;
+package io.tracee.binding.spring.context.async;
 
 import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
-import io.tracee.binding.springmvc.async.PreTpicAsyncBeanPostProcessor.DelegateTpicToAsyncInterceptor;
-import io.tracee.binding.springmvc.async.PreTpicAsyncBeanPostProcessor.TpicPreAdvisor;
+import io.tracee.binding.spring.context.async.PreTpicAsyncBeanPostProcessor.DelegateTpicToAsyncInterceptor;
+import io.tracee.binding.spring.context.async.PreTpicAsyncBeanPostProcessor.TpicPreAdvisor;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,8 @@ import static org.mockito.Mockito.verify;
 
 public class PreTpicAsyncBeanPostProcessorTest {
 
+	private final TraceeBackend backend = new SimpleTraceeBackend();
+
 	@Before @After
 	public void beforeAndAfter() {
 		Tracee.getBackend().clear();
@@ -30,37 +34,37 @@ public class PreTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void postProcessorShouldComeWithLowestPriorityToEnsureThatTheInterceptorIsReallyTheFirstInTheChain() {
-		final PreTpicAsyncBeanPostProcessor beanPostProcessor = new PreTpicAsyncBeanPostProcessor(mock(Executor.class));
+		final PreTpicAsyncBeanPostProcessor beanPostProcessor = new PreTpicAsyncBeanPostProcessor(mock(Executor.class), backend);
 
 		assertThat(beanPostProcessor.getOrder(), is(Ordered.LOWEST_PRECEDENCE));
 	}
 
 	@Test
 	public void ensureThisBeanPostProcessorIsTheFirstInTheRow() {
-		final PreTpicAsyncBeanPostProcessor beanPostProcessor = new PreTpicAsyncBeanPostProcessor(mock(Executor.class));
+		final PreTpicAsyncBeanPostProcessor beanPostProcessor = new PreTpicAsyncBeanPostProcessor(mock(Executor.class), backend);
 
 		assertThat(beanPostProcessor.isBeforeExistingAdvisors(), is(true));
 	}
 
 	@Test
 	public void ensureAdvisorIsRunningWithMaximumPriority() {
-		final TpicPreAdvisor advisor = new TpicPreAdvisor(mock(Executor.class));
+		final TpicPreAdvisor advisor = new TpicPreAdvisor(mock(Executor.class), backend);
 		assertThat(advisor.getOrder(), is(Ordered.HIGHEST_PRECEDENCE));
 	}
 
 	@Test
 	public void advisorShouldReturnInterceptor() {
-		final TpicPreAdvisor advisor = new TpicPreAdvisor(mock(Executor.class));
+		final TpicPreAdvisor advisor = new TpicPreAdvisor(mock(Executor.class), backend);
 		assertThat(advisor.getAdvice(), instanceOf(DelegateTpicToAsyncInterceptor.class));
 	}
 
 	@Test
 	public void shouldStoreTpicToInvocationMetadata() throws Throwable {
-		final DelegateTpicToAsyncInterceptor interceptor = new DelegateTpicToAsyncInterceptor(mock(Executor.class));
+		final DelegateTpicToAsyncInterceptor interceptor = new DelegateTpicToAsyncInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		final Map<String, String> tpic = new HashMap<>();
 		tpic.put("myInvoc", "storeThisToAsync");
-		Tracee.getBackend().putAll(tpic);
+		backend.putAll(tpic);
 		interceptor.invoke(mockedInvocation);
 		verify(mockedInvocation).setUserAttribute(eq(TraceeConstants.TPIC_HEADER), eq(tpic));
 	}
