@@ -1,9 +1,9 @@
 package io.tracee.binding.httpclient;
 
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.transport.HttpHeaderTransport;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -51,7 +51,7 @@ public class TraceeHttpClientDecoratorTest {
 	@Test
 	public void testContextParsedFromResponse() throws IOException {
 		final Header responseHeader = new Header(TraceeConstants.TPIC_HEADER, "foo=bar");
-		final Header[] responseHeaders = new Header[] { responseHeader };
+		final Header[] responseHeaders = new Header[]{responseHeader};
 		when(httpMethodMock.getResponseHeaders(eq(TraceeConstants.TPIC_HEADER))).thenReturn(responseHeaders);
 		when(httpMethodMock.isRequestSent()).thenReturn(true);
 

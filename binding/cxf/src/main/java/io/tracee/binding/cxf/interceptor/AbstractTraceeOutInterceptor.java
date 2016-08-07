@@ -44,7 +44,7 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 		if (shouldHandleMessage(message)) {
 			final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 			if (!backend.isEmpty() && filterConfiguration.shouldProcessContext(channel)) {
-                final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
+				final Map<String, String> filteredParams = filterConfiguration.filterDeniedParams(backend.copyToMap(), channel);
 
 				LOGGER.debug("Interceptor handles message!");
 				if (Boolean.TRUE.equals(message.getExchange().get(Message.REST_MESSAGE))) {
@@ -64,14 +64,14 @@ abstract class AbstractTraceeOutInterceptor extends AbstractPhaseInterceptor<Mes
 						LOGGER.error("Should handle SOAP-message but it seems that cxf soap dependency is not on the classpath. Unable to add Tracee-Headers: {}", e.getMessage(), e);
 					}
 				}
-            }
+			}
 		}
 	}
 
 	private void addSoapHeader(Map<String, String> filteredParams, SoapMessage soapMessage) {
 		try {
 			final Header tpicHeader = new Header(TraceeConstants.SOAP_HEADER_QNAME, TpicMap.wrap(filteredParams),
-					new JAXBDataBinding(TpicMap.class));
+				new JAXBDataBinding(TpicMap.class));
 			soapMessage.getHeaders().add(tpicHeader);
 		} catch (JAXBException e) {
 			LOGGER.warn("Error occured during TracEE soap header creation: {}", e.getMessage());

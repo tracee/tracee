@@ -46,7 +46,7 @@ public class TraceeFilter implements Filter {
 
 	@Override
 	public final void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain)
-			throws IOException, ServletException {
+		throws IOException, ServletException {
 		if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse) {
 			doFilterHttp((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, filterChain);
 		} else {
@@ -55,7 +55,7 @@ public class TraceeFilter implements Filter {
 	}
 
 	final void doFilterHttp(final HttpServletRequest request, final HttpServletResponse response,
-													final FilterChain filterChain) throws IOException, ServletException {
+							final FilterChain filterChain) throws IOException, ServletException {
 
 		final TraceeFilterConfiguration configuration = backend.getConfiguration(profile);
 

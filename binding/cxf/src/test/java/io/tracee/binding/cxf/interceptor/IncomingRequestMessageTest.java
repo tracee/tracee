@@ -1,8 +1,8 @@
 package io.tracee.binding.cxf.interceptor;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.message.MessageImpl;

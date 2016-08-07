@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 @WebService(serviceName = TraceeJaxWsEndpointImpl.Descriptor.SERVICE_NAME, portName = "TraceeJaxWsEndpointPort",
-		targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS,
-		endpointInterface = "io.tracee.binding.jaxws.TraceeJaxWsEndpoint")
+	targetNamespace = TraceeJaxWsEndpoint.Descriptor.TNS,
+	endpointInterface = "io.tracee.binding.jaxws.TraceeJaxWsEndpoint")
 @HandlerChain(file = TraceeWsHandlerConstants.TRACEE_HANDLER_CHAIN_URL)
 public class TraceeJaxWsEndpointImpl implements TraceeJaxWsEndpoint {
 

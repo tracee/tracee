@@ -109,9 +109,9 @@ public final class TpicMap {
 		@Override
 		public String toString() {
 			return "Entry{" +
-					"key='" + key + '\'' +
-					", value='" + value + '\'' +
-					'}';
+				"key='" + key + '\'' +
+				", value='" + value + '\'' +
+				'}';
 		}
 	}
 }

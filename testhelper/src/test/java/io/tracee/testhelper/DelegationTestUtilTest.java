@@ -1,6 +1,5 @@
 package io.tracee.testhelper;
 
-import io.tracee.testhelper.DelegationTestUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

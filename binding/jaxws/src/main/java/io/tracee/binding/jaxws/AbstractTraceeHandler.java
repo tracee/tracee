@@ -17,7 +17,7 @@ import java.util.Set;
 abstract class AbstractTraceeHandler implements SOAPHandler<SOAPMessageContext> {
 
 	private static final Set<QName> HANDLED_HEADERS = Collections.unmodifiableSet(
-			new HashSet<>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
+		new HashSet<>(Collections.singleton(TraceeConstants.SOAP_HEADER_QNAME)));
 
 	protected final TraceeBackend traceeBackend;
 

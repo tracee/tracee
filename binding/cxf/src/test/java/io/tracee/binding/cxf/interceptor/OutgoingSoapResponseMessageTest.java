@@ -46,7 +46,7 @@ public class OutgoingSoapResponseMessageTest {
 	@Test
 	public void shouldAddHeaderWithDataBindingToSoapMessage() throws JAXBException {
 		backend.put("mySoapContext", "mySoapContextValue");
-		final Map<String,String> expectedHeaderFields = backend.copyToMap();
+		final Map<String, String> expectedHeaderFields = backend.copyToMap();
 		outInterceptor.handleMessage(soapMessage);
 
 		final Header tpicHeader = soapMessage.getHeaders().get(0);

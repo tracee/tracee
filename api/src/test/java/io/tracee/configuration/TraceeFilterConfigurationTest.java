@@ -2,9 +2,15 @@ package io.tracee.configuration;
 
 import org.junit.Test;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.*;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.valueOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class TraceeFilterConfigurationTest {
 

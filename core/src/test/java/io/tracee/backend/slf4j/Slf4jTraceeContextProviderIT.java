@@ -12,14 +12,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class Slf4jTraceeContextProviderIT {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Slf4jTraceeContextProviderIT.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Slf4jTraceeContextProviderIT.class);
 
-    @Test
-    public void testLoadProviderAndStoreToSlf4jMdc() {
-        final TraceeBackend context = Tracee.getBackend();
-        context.put("FOO", "BAR");
-        assertThat(MDC.get("FOO"), equalTo("BAR"));
+	@Test
+	public void testLoadProviderAndStoreToSlf4jMdc() {
+		final TraceeBackend context = Tracee.getBackend();
+		context.put("FOO", "BAR");
+		assertThat(MDC.get("FOO"), equalTo("BAR"));
 		LOG.debug("Hi");
-    }
+	}
 
 }

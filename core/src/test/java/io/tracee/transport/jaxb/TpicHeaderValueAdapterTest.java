@@ -24,10 +24,10 @@ import static org.junit.Assert.assertThat;
 public class TpicHeaderValueAdapterTest {
 
 	private static final String XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-			"<TPIC xmlns=\"http://tracee.io/tpic/1.0\">\n" +
-			"    <entry key=\"TPIC.sessionId\">ABCDEFGHIJ</entry>\n" +
-			"    <entry key=\"TPIC.invocationId\">1234567890</entry>\n" +
-			"</TPIC>\n";
+		"<TPIC xmlns=\"http://tracee.io/tpic/1.0\">\n" +
+		"    <entry key=\"TPIC.sessionId\">ABCDEFGHIJ</entry>\n" +
+		"    <entry key=\"TPIC.invocationId\">1234567890</entry>\n" +
+		"</TPIC>\n";
 
 	private JAXBContext jaxbContext;
 
@@ -60,8 +60,8 @@ public class TpicHeaderValueAdapterTest {
 	public void unmarshallRequestAndSessionId() throws JAXBException {
 		final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		final Map<String, String> context = ((TpicMap) unmarshaller.unmarshal(new StringReader(XML))).unwrapValues();
-		assertThat(context, Matchers.hasEntry(TraceeConstants.INVOCATION_ID_KEY, "1234567890")) ;
-		assertThat(context, Matchers.hasEntry(TraceeConstants.SESSION_ID_KEY, "ABCDEFGHIJ")) ;
+		assertThat(context, Matchers.hasEntry(TraceeConstants.INVOCATION_ID_KEY, "1234567890"));
+		assertThat(context, Matchers.hasEntry(TraceeConstants.SESSION_ID_KEY, "ABCDEFGHIJ"));
 	}
 
 	@Test

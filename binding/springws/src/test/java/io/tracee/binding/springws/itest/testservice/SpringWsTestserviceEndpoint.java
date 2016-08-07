@@ -11,7 +11,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 public class SpringWsTestserviceEndpoint {
 
 	@PayloadRoot(localPart = JaxwsTestservice.CURRENT_TRACEE_CONTEXT_LOCALPART,
-			namespace = JaxwsTestservice.TNS)
+		namespace = JaxwsTestservice.TNS)
 	@ResponsePayload
 	public TraceeEntryResponse currentTraceeContext(@RequestPayload TraceeEntryMethod method) {
 		Tracee.getBackend().put("testId", "TestValueFromRemoteEndpoint");

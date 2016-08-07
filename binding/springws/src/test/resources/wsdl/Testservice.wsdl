@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions
-		xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-		xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
-		xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
-		targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
-		name="JaxwsTestserviceEndpointService">
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
+	name="JaxwsTestserviceEndpointService">
 	<types>
 		<xsd:schema>
 			<xsd:import namespace="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/"
@@ -19,10 +19,12 @@
 	</message>
 	<portType name="currentTraceeContext">
 		<operation name="currentTraceeContext">
-			<input wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextRequest"
-				   message="tns:currentTraceeContext"/>
-			<output wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextResponse"
-					message="tns:currentTraceeContextResponse"/>
+			<input
+				wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextRequest"
+				message="tns:currentTraceeContext"/>
+			<output
+				wsam:Action="https://github.com/tracee/tracee/examples/jaxws/service/wsdl/currentTraceeContext/currentTraceeContextResponse"
+				message="tns:currentTraceeContextResponse"/>
 		</operation>
 	</portType>
 	<binding name="currentTraceeContextPortBinding" type="tns:currentTraceeContext">

@@ -2,10 +2,10 @@ package io.tracee.binding.httpcomponents;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
-import io.tracee.TraceeConstants;
 import org.apache.http.HttpRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.protocol.HttpContext;
@@ -21,17 +21,17 @@ public class TraceeHttpRequestInterceptorTest {
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final TraceeHttpRequestInterceptor unit = new TraceeHttpRequestInterceptor(backend, null);
 
-    @Test
-    public void testRequestInterceptorWritesTraceeContextToRequestHeader() throws Exception {
-        final HttpRequest httpRequest = new BasicHttpRequest("GET", "http://localhost/pew");
+	@Test
+	public void testRequestInterceptorWritesTraceeContextToRequestHeader() throws Exception {
+		final HttpRequest httpRequest = new BasicHttpRequest("GET", "http://localhost/pew");
 
-        backend.put("foo", "bar");
+		backend.put("foo", "bar");
 
-        unit.process(httpRequest, mock(HttpContext.class));
+		unit.process(httpRequest, mock(HttpContext.class));
 
-        assertThat("HttpRequest contains TracEE Context Header", httpRequest.containsHeader(TraceeConstants.TPIC_HEADER), equalTo(true));
-        assertThat(httpRequest.getFirstHeader(TraceeConstants.TPIC_HEADER).getValue(), equalTo("foo=bar"));
-    }
+		assertThat("HttpRequest contains TracEE Context Header", httpRequest.containsHeader(TraceeConstants.TPIC_HEADER), equalTo(true));
+		assertThat(httpRequest.getFirstHeader(TraceeConstants.TPIC_HEADER).getValue(), equalTo("foo=bar"));
+	}
 
 	@Test
 	public void defaultConstructorUsesDefaultProfile() {

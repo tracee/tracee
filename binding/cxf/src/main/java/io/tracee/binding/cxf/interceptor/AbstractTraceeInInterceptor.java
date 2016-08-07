@@ -65,20 +65,20 @@ abstract class AbstractTraceeInInterceptor extends AbstractPhaseInterceptor<Mess
 	private void handleHttpMessage(final Message message, final TraceeFilterConfiguration filterConfiguration) {
 		final Map<String, List<String>> requestHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
 		if (requestHeaders != null && !requestHeaders.isEmpty()) {
-            final List<String> traceeHeader = requestHeaders.get(TraceeConstants.TPIC_HEADER);
+			final List<String> traceeHeader = requestHeaders.get(TraceeConstants.TPIC_HEADER);
 
-            if (traceeHeader != null && !traceeHeader.isEmpty()) {
-                final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader);
-                backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
-            }
-        }
+			if (traceeHeader != null && !traceeHeader.isEmpty()) {
+				final Map<String, String> parsedContext = httpJsonSerializer.parse(traceeHeader);
+				backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
+			}
+		}
 	}
 
 	private void handleSoapMessage(final SoapMessage message, final TraceeFilterConfiguration filterConfiguration) {
 		final Header soapHeader = message.getHeader(TraceeConstants.SOAP_HEADER_QNAME);
 		if (soapHeader != null) {
 			final Map<String, String> parsedContext = httpSoapSerializer.parseTpicHeader((Element) soapHeader.getObject());
-            backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
-        }
+			backend.putAll(filterConfiguration.filterDeniedParams(parsedContext, channel));
+		}
 	}
 }

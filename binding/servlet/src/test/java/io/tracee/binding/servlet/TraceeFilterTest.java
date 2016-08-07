@@ -66,7 +66,7 @@ public class TraceeFilterTest {
 		} catch (RuntimeException ignored) { /*ignore*/ }
 
 		verify(httpServletResponse, atLeastOnce()).setHeader(eq(TraceeConstants.TPIC_HEADER),
-				contains("foobi=yes+sir"));
+			contains("foobi=yes+sir"));
 	}
 
 	@Test

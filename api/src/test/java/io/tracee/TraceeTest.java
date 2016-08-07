@@ -9,8 +9,14 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
@@ -71,7 +77,7 @@ public class TraceeTest {
 			Tracee.getBackend(resolver);
 		} catch (TraceeException e) {
 			assertThat(e.getMessage(), allOf(startsWith("Multiple TracEE backend providers found. Don't know which one of the following to use:"),
-					containsString(TestBackendProvider.class.getSimpleName())));
+				containsString(TestBackendProvider.class.getSimpleName())));
 			throw e;
 		}
 	}

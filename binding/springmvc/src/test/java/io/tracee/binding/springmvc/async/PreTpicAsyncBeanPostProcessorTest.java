@@ -23,7 +23,8 @@ import static org.mockito.Mockito.verify;
 
 public class PreTpicAsyncBeanPostProcessorTest {
 
-	@Before @After
+	@Before
+	@After
 	public void beforeAndAfter() {
 		Tracee.getBackend().clear();
 	}

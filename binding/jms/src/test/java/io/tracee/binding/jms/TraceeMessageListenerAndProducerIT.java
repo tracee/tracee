@@ -9,7 +9,15 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import javax.ejb.embeddable.EJBContainer;
-import javax.jms.*;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.naming.NamingException;
 import java.util.Map;
 
@@ -19,36 +27,36 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class TraceeMessageListenerAndProducerIT {
 
-    @Resource
-    private ConnectionFactory connectionFactory;
+	@Resource
+	private ConnectionFactory connectionFactory;
 
-    @Resource(name = "TestMDB")
-    private Queue mdb;
+	@Resource(name = "TestMDB")
+	private Queue mdb;
 
-    @Resource(name = "Response")
-    private Queue responses;
+	@Resource(name = "Response")
+	private Queue responses;
 
 	private EJBContainer container;
 
-    @Before
-    public void initContainer() throws Exception {
-        container = EJBContainer.createEJBContainer();
-        container.getContext().bind("inject", this);
-    }
+	@Before
+	public void initContainer() throws Exception {
+		container = EJBContainer.createEJBContainer();
+		container.getContext().bind("inject", this);
+	}
 
-    @After
-    public void clearTraceeCtx() throws NamingException {
-        Tracee.getBackend().clear();
+	@After
+	public void clearTraceeCtx() throws NamingException {
+		Tracee.getBackend().clear();
 		container.getContext().close();
-    }
+	}
 
-    @Test
+	@Test
 	@SuppressWarnings("unchecked")
-    public void testContextIsPropagatedForthAndBack() throws JMSException, InterruptedException {
+	public void testContextIsPropagatedForthAndBack() throws JMSException, InterruptedException {
 
-        Tracee.getBackend().put("foo", "bar");
+		Tracee.getBackend().put("foo", "bar");
 
-        final Connection connection = connectionFactory.createConnection();
+		final Connection connection = connectionFactory.createConnection();
 		try {
 			connection.start();
 			final Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -72,5 +80,5 @@ public class TraceeMessageListenerAndProducerIT {
 		} finally {
 			connection.close();
 		}
-    }
+	}
 }

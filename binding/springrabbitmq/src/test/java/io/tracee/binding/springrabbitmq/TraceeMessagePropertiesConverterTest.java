@@ -4,11 +4,11 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.LongString;
 import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
+import io.tracee.TraceeConstants;
 import io.tracee.configuration.TraceeFilterConfiguration;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
-import io.tracee.TraceeBackend;
-import io.tracee.TraceeConstants;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.springframework.amqp.core.MessageProperties;
@@ -43,7 +43,7 @@ public class TraceeMessagePropertiesConverterTest {
 		final AMQP.BasicProperties basicProperties = unit.fromMessageProperties(messageProperties, CHARSET_UTF8);
 
 		assertThat(basicProperties.getHeaders(), hasKey(TPIC_HEADER));
-		assertThat((Map<String, ?>)basicProperties.getHeaders().get(TPIC_HEADER), hasKey("inClientBeforeRequest"));
+		assertThat((Map<String, ?>) basicProperties.getHeaders().get(TPIC_HEADER), hasKey("inClientBeforeRequest"));
 	}
 
 	@Test

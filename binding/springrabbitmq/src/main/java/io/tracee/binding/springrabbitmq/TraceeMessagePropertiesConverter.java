@@ -46,7 +46,7 @@ public class TraceeMessagePropertiesConverter extends DefaultMessagePropertiesCo
 		if (filterConfiguration.shouldProcessContext(AsyncProcess)) {
 			// Values are stored as type of LongStringHelper.ByteArrayLongString - but it's private
 			final Map<String, String> traceeContextMap = transformToTraceeContextMap(
-					(Map<String, ?>) messageProperties.getHeaders().get(TPIC_HEADER));
+				(Map<String, ?>) messageProperties.getHeaders().get(TPIC_HEADER));
 			if (traceeContextMap != null && !traceeContextMap.isEmpty()) {
 				backend.putAll(filterConfiguration.filterDeniedParams(traceeContextMap, AsyncProcess));
 			}

@@ -41,7 +41,7 @@ public class TraceeClientHttpRequestInterceptorTest {
 	private final HttpHeaderTransport transportSerializationMock = new HttpHeaderTransport();
 	private final TraceeBackend backend = new SimpleTraceeBackend(new PermitAllTraceeFilterConfiguration());
 	private final TraceeClientHttpRequestInterceptor unit =
-			new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, USED_PROFILE);
+		new TraceeClientHttpRequestInterceptor(backend, transportSerializationMock, USED_PROFILE);
 	private final byte[] payload = new byte[]{};
 	private final ClientHttpRequestExecution clientHttpRequestExecutionMock = mock(ClientHttpRequestExecution.class);
 

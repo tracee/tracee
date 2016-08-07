@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
-import static io.tracee.configuration.TraceeFilterConfiguration.Profile.*;
+import static io.tracee.configuration.TraceeFilterConfiguration.Profile.DEFAULT;
 
 /**
  * Wraps an HttpClient and performs TraceEE context propagation on execute methods.

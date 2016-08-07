@@ -10,7 +10,7 @@ import org.springframework.ws.context.MessageContext;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
 
-public final class TraceeClientInterceptor extends AbstractTraceeInterceptor implements ClientInterceptor{
+public final class TraceeClientInterceptor extends AbstractTraceeInterceptor implements ClientInterceptor {
 
 	public TraceeClientInterceptor() {
 		this(Tracee.getBackend(), Profile.DEFAULT);

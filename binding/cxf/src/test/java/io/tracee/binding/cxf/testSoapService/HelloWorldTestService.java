@@ -5,7 +5,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 @WebService(name = "HelloWorldBinding", portName = "HelloWorldBinding",
-		serviceName = "HelloWorldService")
+	serviceName = "HelloWorldService")
 public interface HelloWorldTestService {
 
 	String NAMESPACE = "https://github.com/tracee/tracee";
@@ -14,5 +14,5 @@ public interface HelloWorldTestService {
 
 	@WebResult(partName = "greeting")
 	String sayHelloWorld(
-			@WebParam(partName = "firstName") String firstName);
+		@WebParam(partName = "firstName") String firstName);
 }

@@ -19,11 +19,11 @@ import static org.junit.Assert.assertTrue;
 
 public class UtilitiesTest {
 
-    @Test
-    public void testCreateRandomAlphanumeric() {
-        final String randomAlphanumeric = Utilities.createRandomAlphanumeric(32);
+	@Test
+	public void testCreateRandomAlphanumeric() {
+		final String randomAlphanumeric = Utilities.createRandomAlphanumeric(32);
 		assertTrue("32 alphanumeric character sequence",
-				Pattern.compile("[0-9a-zA-Z]{32}").matcher(randomAlphanumeric).matches());
+			Pattern.compile("[0-9a-zA-Z]{32}").matcher(randomAlphanumeric).matches());
 	}
 
 	@Test
@@ -120,6 +120,6 @@ public class UtilitiesTest {
 		final TraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 		Utilities.generateSessionIdIfNecessary(backend, "123");
 		assertThat(backend.get(SESSION_ID_KEY), equalTo(Utilities.createAlphanumericHash("123",
-				PermitAllTraceeFilterConfiguration.ARBITRARY_NUMBER)));
+			PermitAllTraceeFilterConfiguration.ARBITRARY_NUMBER)));
 	}
 }

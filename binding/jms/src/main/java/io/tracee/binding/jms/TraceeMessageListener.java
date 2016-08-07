@@ -31,22 +31,22 @@ public final class TraceeMessageListener {
 	}
 
 	@AroundInvoke
-    public Object intercept(final InvocationContext ctx) throws Exception {
-        final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
+	public Object intercept(final InvocationContext ctx) throws Exception {
+		final boolean isMdbInvocation = isMessageListenerOnMessageMethod(ctx.getMethod());
 		try {
-            if (isMdbInvocation) {
-                beforeProcessing(extractMessageParameter(ctx.getParameters()));
-            }
-            return ctx.proceed();
-        } finally {
-            if (isMdbInvocation) {
+			if (isMdbInvocation) {
+				beforeProcessing(extractMessageParameter(ctx.getParameters()));
+			}
+			return ctx.proceed();
+		} finally {
+			if (isMdbInvocation) {
 				cleanUp();
-            }
-        }
-    }
+			}
+		}
+	}
 
 	@SuppressWarnings("unchecked")
-    public void beforeProcessing(final Message message) throws JMSException {
+	public void beforeProcessing(final Message message) throws JMSException {
 
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
 			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.TPIC_HEADER);
@@ -57,21 +57,21 @@ public final class TraceeMessageListener {
 		}
 
 		Utilities.generateInvocationIdIfNecessary(backend);
-    }
+	}
 
-    void cleanUp() {
+	void cleanUp() {
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
 			backend.clear();
 		}
-    }
+	}
 
-    Message extractMessageParameter(final Object[] parameters) {
-	    return (Message) parameters[0];
-    }
+	Message extractMessageParameter(final Object[] parameters) {
+		return (Message) parameters[0];
+	}
 
-    boolean isMessageListenerOnMessageMethod(final Method method) {
-        return "onMessage".equals(method.getName())
-                && method.getParameterTypes().length == 1
-                && method.getParameterTypes()[0] == Message.class;
-    }
+	boolean isMessageListenerOnMessageMethod(final Method method) {
+		return "onMessage".equals(method.getName())
+			&& method.getParameterTypes().length == 1
+			&& method.getParameterTypes()[0] == Message.class;
+	}
 }
