@@ -12,7 +12,8 @@ public class SimpleNodeList implements NodeList, Iterable<Node> {
 
 	private final List<Node> backedList = new ArrayList<>();
 
-	public SimpleNodeList() {}
+	public SimpleNodeList() {
+	}
 
 	public SimpleNodeList(Collection<Node> fromNodes) {
 		backedList.addAll(fromNodes);

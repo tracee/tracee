@@ -40,7 +40,7 @@ public class TraceeClientFilterRequestTest {
 		traceeBackend.put("foo", "bar");
 		unit.filter(clientRequestContext);
 		assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
-				containsString("foo=bar"));
+			containsString("foo=bar"));
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class TraceeClientFilterRequestTest {
 		unit.filter(clientRequestContext);
 		assertThat(traceeBackend.get(TraceeConstants.INVOCATION_ID_KEY), isEmptyOrNullString());
 		assertThat(clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
-				is(nullValue()));
+			is(nullValue()));
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class TraceeClientFilterRequestTest {
 		unit.filter(clientRequestContext);
 		assertThat(traceeBackend.get(TraceeConstants.INVOCATION_ID_KEY), equalTo("foo"));
 		assertThat((String) clientRequestContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
-				containsString(TraceeConstants.INVOCATION_ID_KEY + "=foo"));
+			containsString(TraceeConstants.INVOCATION_ID_KEY + "=foo"));
 	}
 
 	@Test

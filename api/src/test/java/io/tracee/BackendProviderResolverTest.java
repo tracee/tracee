@@ -72,8 +72,8 @@ public class BackendProviderResolverTest {
 		BackendProviderResolver resolver = PowerMockito.spy(new BackendProviderResolver());
 
 		when(resolver, method(BackendProviderResolver.class, "loadProviders", ClassLoader.class))
-				.withArguments(BackendProviderResolver.GetClassLoader.fromContext())
-				.thenReturn(contextClassloader);
+			.withArguments(BackendProviderResolver.GetClassLoader.fromContext())
+			.thenReturn(contextClassloader);
 		assertThat(resolver.getBackendProviders(), is(equalTo(contextClassloader)));
 	}
 }

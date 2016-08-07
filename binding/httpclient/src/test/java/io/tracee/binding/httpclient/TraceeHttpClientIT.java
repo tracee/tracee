@@ -4,7 +4,6 @@ import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -45,7 +44,7 @@ public class TraceeHttpClientIT {
 		server = new Server(new InetSocketAddress("127.0.0.1", 0));
 		server.setHandler(requestHandler);
 		server.start();
-		serverEndpoint = "http://"+server.getConnectors()[0].getName();
+		serverEndpoint = "http://" + server.getConnectors()[0].getName();
 	}
 
 	private final Handler requestHandler = new AbstractHandler() {

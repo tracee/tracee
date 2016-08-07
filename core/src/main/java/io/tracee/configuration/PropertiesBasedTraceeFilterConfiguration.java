@@ -58,7 +58,7 @@ public final class PropertiesBasedTraceeFilterConfiguration implements TraceeFil
 	}
 
 	public PropertiesBasedTraceeFilterConfiguration(PropertyChain propertyChain,
-																									String profileName) {
+													String profileName) {
 		this.propertyChain = propertyChain;
 		this.profileName = profileName;
 	}

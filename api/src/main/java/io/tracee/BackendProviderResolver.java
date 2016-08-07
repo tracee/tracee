@@ -32,7 +32,7 @@ class BackendProviderResolver {
 
 		// Try to determine TraceeBackendProvider by context classloader. Fallback: use classloader of class.
 		final Set<TraceeBackendProvider> providerFromContextClassLoader = getTraceeProviderFromClassloader(cacheCopy,
-				GetClassLoader.fromContext());
+			GetClassLoader.fromContext());
 		if (!providerFromContextClassLoader.isEmpty()) {
 			return providerFromContextClassLoader;
 		} else {
@@ -64,8 +64,8 @@ class BackendProviderResolver {
 	 * @return A BackendProviderSet if we found at least one provider. Otherwise we return an EmptyBackendProviderSet.
 	 */
 	private Set<TraceeBackendProvider> getTraceeProviderFromClassloader(
-			final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
-			final ClassLoader classLoader) {
+		final Map<ClassLoader, Set<TraceeBackendProvider>> cacheCopy,
+		final ClassLoader classLoader) {
 		// use cache to get TraceeBackendProvider or empty results from old lookups
 		Set<TraceeBackendProvider> classLoaderProviders = cacheCopy.get(classLoader);
 		if (isLookupNeeded(classLoaderProviders)) {

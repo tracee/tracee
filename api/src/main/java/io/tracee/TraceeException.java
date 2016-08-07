@@ -5,11 +5,11 @@ package io.tracee;
  */
 public class TraceeException extends RuntimeException {
 
-    public TraceeException(String message) {
-        super(message);
-    }
+	public TraceeException(String message) {
+		super(message);
+	}
 
-    public TraceeException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public TraceeException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

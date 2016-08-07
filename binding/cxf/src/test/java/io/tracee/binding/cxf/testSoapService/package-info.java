@@ -1,6 +1,6 @@
 @XmlSchema(
-		namespace = HelloWorldTestService.NAMESPACE, elementFormDefault = XmlNsForm.QUALIFIED,
-		xmlns = @XmlNs(namespaceURI = HelloWorldTestService.NAMESPACE, prefix = ""))
+	namespace = HelloWorldTestService.NAMESPACE, elementFormDefault = XmlNsForm.QUALIFIED,
+	xmlns = @XmlNs(namespaceURI = HelloWorldTestService.NAMESPACE, prefix = ""))
 package io.tracee.binding.cxf.testSoapService;
 
 import javax.xml.bind.annotation.XmlNs;

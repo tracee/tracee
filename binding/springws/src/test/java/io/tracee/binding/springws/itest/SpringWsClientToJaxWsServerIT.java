@@ -1,9 +1,9 @@
 package io.tracee.binding.springws.itest;
 
-import io.tracee.testhelper.PortUtil;
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
 import io.tracee.binding.springws.itest.testservice.JaxwsTestserviceEndpoint;
+import io.tracee.testhelper.PortUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

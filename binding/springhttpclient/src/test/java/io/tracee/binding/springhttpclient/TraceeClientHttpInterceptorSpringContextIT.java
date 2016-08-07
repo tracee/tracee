@@ -39,7 +39,7 @@ public class TraceeClientHttpInterceptorSpringContextIT {
 	private final Handler requestHandler = new AbstractHandler() {
 		@Override
 		public void handle(String s, Request request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException,
-				ServletException {
+			ServletException {
 			final String incomingTraceeHeader = request.getHeader(TraceeConstants.TPIC_HEADER);
 			collector.checkThat(incomingTraceeHeader, equalTo("before+Request=yip"));
 			httpServletResponse.setHeader(TraceeConstants.TPIC_HEADER, "response+From+Server=yesSir");

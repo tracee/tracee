@@ -35,7 +35,7 @@ public class TraceeContainerFilterResponseTest {
 		backend.put("foo", "ba r");
 		unit.filter(null, responseContext);
 		assertThat((String) responseContext.getHeaders().getFirst(TraceeConstants.TPIC_HEADER),
-				equalTo("foo=ba+r"));
+			equalTo("foo=ba+r"));
 	}
 
 	@Test

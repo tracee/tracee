@@ -1,7 +1,7 @@
 package io.tracee.transport;
 
-import io.tracee.testhelper.SimpleTraceeBackend;
 import io.tracee.TraceeBackend;
+import io.tracee.testhelper.SimpleTraceeBackend;
 import org.junit.Test;
 
 import java.util.Arrays;

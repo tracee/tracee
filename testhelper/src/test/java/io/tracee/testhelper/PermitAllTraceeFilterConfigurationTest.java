@@ -1,13 +1,17 @@
 package io.tracee.testhelper;
 
-import io.tracee.testhelper.PermitAllTraceeFilterConfiguration;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.tracee.configuration.TraceeFilterConfiguration.Channel.*;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDispatch;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingRequest;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.IncomingResponse;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingRequest;
+import static io.tracee.configuration.TraceeFilterConfiguration.Channel.OutgoingResponse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -23,7 +27,7 @@ public class PermitAllTraceeFilterConfigurationTest {
 
 	@Test
 	public void testFilterDeniedParamsFiltersNothing() {
-		final Map<String,String> arbitraryContext = new HashMap<>();
+		final Map<String, String> arbitraryContext = new HashMap<>();
 		arbitraryContext.put("foo", "bar");
 		arbitraryContext.put("anything", "else");
 		MatcherAssert.assertThat(unit.filterDeniedParams(arbitraryContext, IncomingRequest), equalTo(arbitraryContext));

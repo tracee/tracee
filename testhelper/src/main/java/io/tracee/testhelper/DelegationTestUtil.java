@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 public final class DelegationTestUtil {
 
 	private static final Set<String> BLACKLIST_METHOD = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-			"class$", "finalize", "equals", "hashCode", "toString", "clone", "newInstance"
+		"class$", "finalize", "equals", "hashCode", "toString", "clone", "newInstance"
 	)));
 
 	public static <I, W> Delegation<I, W> assertDelegationToSpy(I innerObj) {
@@ -45,10 +45,10 @@ public final class DelegationTestUtil {
 		}
 
 		public void verify() {
-			if(!Mockito.mockingDetails(innerObj).isMock()) {
+			if (!Mockito.mockingDetails(innerObj).isMock()) {
 				throw new IllegalStateException("Inner object is no Mockito mock!");
 			}
-			if(Mockito.mockingDetails(wrapperObj).isMock()) {
+			if (Mockito.mockingDetails(wrapperObj).isMock()) {
 				throw new IllegalStateException("Wrapper objecgt should be real class with mocked inner object inside");
 			}
 
@@ -64,8 +64,8 @@ public final class DelegationTestUtil {
 
 				for (Method wrapperMethod : wrapperMethods) {
 					if (innerMethods.containsKey(wrapperMethod.getName() + " :: " + paramsToStr(wrapperMethod.getParameterTypes()))
-							&& !BLACKLIST_METHOD.contains(wrapperMethod.getName())
-							&& !ignoreMethods.contains(wrapperMethod.getName())) {
+						&& !BLACKLIST_METHOD.contains(wrapperMethod.getName())
+						&& !ignoreMethods.contains(wrapperMethod.getName())) {
 						errorMsg = "Method not delegated: " + wrapperMethod.getName();
 
 						final Object[] arguments = generateMockedParams(wrapperMethod);

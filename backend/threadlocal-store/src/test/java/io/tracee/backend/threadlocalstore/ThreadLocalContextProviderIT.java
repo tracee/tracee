@@ -10,17 +10,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ThreadLocalContextProviderIT {
 
-    @Test
-    public void shouldDetectThreadLocalStoreBySPI() {
-        final TraceeBackend context = Tracee.getBackend();
-        assertThat(context, Matchers.instanceOf(ThreadLocalTraceeBackend.class));
-    }
+	@Test
+	public void shouldDetectThreadLocalStoreBySPI() {
+		final TraceeBackend context = Tracee.getBackend();
+		assertThat(context, Matchers.instanceOf(ThreadLocalTraceeBackend.class));
+	}
 
-    @Test
-    public void testLoadProvierThenStoreAndRetrieve() {
-        final TraceeBackend context = Tracee.getBackend();
-        context.put("FOO", "BAR");
-        assertThat(context.get("FOO"), equalTo("BAR"));
-        context.clear();
-    }
+	@Test
+	public void testLoadProvierThenStoreAndRetrieve() {
+		final TraceeBackend context = Tracee.getBackend();
+		context.put("FOO", "BAR");
+		assertThat(context.get("FOO"), equalTo("BAR"));
+		context.clear();
+	}
 }

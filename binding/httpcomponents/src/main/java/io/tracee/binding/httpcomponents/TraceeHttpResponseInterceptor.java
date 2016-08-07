@@ -19,8 +19,8 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.Incoming
 
 public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 
-    private final TraceeBackend backend;
-    private final HttpHeaderTransport transportSerialization;
+	private final TraceeBackend backend;
+	private final HttpHeaderTransport transportSerialization;
 	private final String profile;
 
 	public TraceeHttpResponseInterceptor() {
@@ -38,15 +38,15 @@ public class TraceeHttpResponseInterceptor implements HttpResponseInterceptor {
 	}
 
 	@Override
-    public final void process(HttpResponse response, HttpContext context) {
-        final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
+	public final void process(HttpResponse response, HttpContext context) {
+		final TraceeFilterConfiguration filterConfiguration = backend.getConfiguration(profile);
 		final Header[] responseHeaders = response.getHeaders(TraceeConstants.TPIC_HEADER);
-        if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
+		if (responseHeaders != null && responseHeaders.length > 0 && filterConfiguration.shouldProcessContext(IncomingResponse)) {
 			final List<String> stringTraceeHeaders = new ArrayList<>();
 			for (Header header : responseHeaders) {
 				stringTraceeHeaders.add(header.getValue());
 			}
 			backend.putAll(filterConfiguration.filterDeniedParams(transportSerialization.parse(stringTraceeHeaders), IncomingResponse));
 		}
-    }
+	}
 }

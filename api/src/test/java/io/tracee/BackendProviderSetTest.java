@@ -56,7 +56,7 @@ public class BackendProviderSetTest {
 	}
 
 	@Test
-		 public void shouldReturnEmptyIteratorIfOneElementWasDetached() throws Exception {
+	public void shouldReturnEmptyIteratorIfOneElementWasDetached() throws Exception {
 		// Setup Set and ask for size - then we extract the 'valid' field to check that the set is marked as invalid
 		final BackendProviderSet traceeBackendProviders = buildProviderSetWithOneDetachedProvider();
 		assertThat(traceeBackendProviders.iterator().hasNext(), equalTo(false));

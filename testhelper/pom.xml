@@ -1,19 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tracee-testhelper</artifactId>
-    <packaging>jar</packaging>
+	<artifactId>tracee-testhelper</artifactId>
+	<packaging>jar</packaging>
 
-    <parent>
-        <groupId>io.tracee</groupId>
-        <artifactId>tracee-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>io.tracee</groupId>
+		<artifactId>tracee-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-    <name>tracee-testhelper</name>
-    <description>Please refer to https://github.com/tracee/tracee.</description>
+	<name>tracee-testhelper</name>
+	<description>Please refer to https://github.com/tracee/tracee.</description>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>io.tracee</groupId>
 			<artifactId>tracee-api</artifactId>
@@ -36,7 +37,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>

@@ -46,8 +46,8 @@ public class TraceeFilterIT {
 		final WebAppContext sillyWebApp = new WebAppContext("sillyWebApp", "/");
 		final AnnotationConfiguration annotationConfiguration = new AnnotationConfiguration();
 		annotationConfiguration.createServletContainerInitializerAnnotationHandlers(sillyWebApp,
-				Collections.<ServletContainerInitializer>singletonList(new TestConfig()));
-		sillyWebApp.setConfigurations(new Configuration[] {annotationConfiguration});
+			Collections.<ServletContainerInitializer>singletonList(new TestConfig()));
+		sillyWebApp.setConfigurations(new Configuration[]{annotationConfiguration});
 		server.setHandler(sillyWebApp);
 		server.start();
 		serverUrl = "http://" + server.getConnectors()[0].getName() + "/";

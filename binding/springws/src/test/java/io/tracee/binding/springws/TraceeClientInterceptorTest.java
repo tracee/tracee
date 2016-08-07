@@ -1,10 +1,10 @@
 package io.tracee.binding.springws;
 
 import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import io.tracee.configuration.TraceeFilterConfiguration.Profile;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
-import io.tracee.TraceeBackend;
 import io.tracee.transport.SoapHeaderTransport;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;

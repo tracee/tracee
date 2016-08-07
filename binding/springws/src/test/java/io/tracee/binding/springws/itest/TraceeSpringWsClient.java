@@ -8,7 +8,7 @@ public class TraceeSpringWsClient extends WebServiceGatewaySupport {
 
 	public String getCurrentTraceeContext() {
 		TraceeEntryResponse response =
-				(TraceeEntryResponse) getWebServiceTemplate().marshalSendAndReceive(new TraceeEntryMethod());
+			(TraceeEntryResponse) getWebServiceTemplate().marshalSendAndReceive(new TraceeEntryMethod());
 
 		return response.getRemoteInvocationId();
 	}

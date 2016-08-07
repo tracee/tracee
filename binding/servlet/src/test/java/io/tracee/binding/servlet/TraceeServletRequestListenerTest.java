@@ -83,7 +83,7 @@ public class TraceeServletRequestListenerTest {
 			}
 		});
 		when(httpServletRequest.getHeaders(TraceeConstants.TPIC_HEADER)).thenReturn(enumeration(
-				singletonList(INVOCATION_ID_KEY + "=123")));
+			singletonList(INVOCATION_ID_KEY + "=123")));
 
 		unit.requestInitialized(wrapToEvent(httpServletRequest));
 
