@@ -1,6 +1,6 @@
-package io.tracee.binding.springmvc.async;
+package io.tracee.binding.spring.context.async;
 
-import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
@@ -16,13 +16,13 @@ import java.util.concurrent.Executor;
 
 public class PreTpicAsyncBeanPostProcessor extends AsyncAnnotationBeanPostProcessor {
 
-	public PreTpicAsyncBeanPostProcessor(Executor executor) {
-		advisor = new TpicPreAdvisor(executor);
-		setBeforeExistingAdvisors(true);
-	}
-
 	boolean isBeforeExistingAdvisors() {
 		return beforeExistingAdvisors;
+	}
+
+	public PreTpicAsyncBeanPostProcessor(Executor executor, TraceeBackend backend) {
+		advisor = new TpicPreAdvisor(executor, backend);
+		setBeforeExistingAdvisors(true);
 	}
 
 	@Override
@@ -31,31 +31,36 @@ public class PreTpicAsyncBeanPostProcessor extends AsyncAnnotationBeanPostProces
 
 	static class TpicPreAdvisor extends AsyncAnnotationAdvisor {
 
+		private final TraceeBackend backend;
 		private final Executor executor;
 
-		TpicPreAdvisor(Executor executor) {
+		TpicPreAdvisor(Executor executor, TraceeBackend backend) {
 			super();
 			this.executor = executor;
+			this.backend = backend;
 			setTaskExecutor(executor); // compatible with spring 4
 		}
 
 		// use getAdvice instead of buildAdvice to be compatible with Spring 4
 		@Override
 		public Advice getAdvice() {
-			return new DelegateTpicToAsyncInterceptor(executor);
+			return new DelegateTpicToAsyncInterceptor(executor, backend);
 		}
 	}
 
 	static class DelegateTpicToAsyncInterceptor extends AnnotationAsyncExecutionInterceptor {
 
-		DelegateTpicToAsyncInterceptor(Executor defaultExecutor) {
+		private final TraceeBackend backend;
+
+		DelegateTpicToAsyncInterceptor(Executor defaultExecutor, TraceeBackend backend) {
 			super(defaultExecutor);
+			this.backend = backend;
 		}
 
 		@Override
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			if (invocation instanceof ReflectiveMethodInvocation) {
-				final Map<String, String> tpic = Tracee.getBackend().copyToMap();
+				final Map<String, String> tpic = backend.copyToMap();
 				((ReflectiveMethodInvocation) invocation).setUserAttribute(TraceeConstants.TPIC_HEADER, tpic);
 			}
 

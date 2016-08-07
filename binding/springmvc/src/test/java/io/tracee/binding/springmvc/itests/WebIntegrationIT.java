@@ -24,6 +24,7 @@ public abstract class WebIntegrationIT {
 		ServletContextHandler context = new ServletContextHandler(null, "/", ServletContextHandler.NO_SECURITY);
 		final DispatcherServlet dispatcherServlet = new DispatcherServlet();
 		dispatcherServlet.setContextClass(AnnotationConfigWebApplicationContext.class);
+		dispatcherServlet.setContextInitializerClasses(TraceeInterceptorSpringApplicationInitializer.class.getCanonicalName());
 		dispatcherServlet.setContextConfigLocation(TraceeInterceptorSpringConfig.class.getName());
 		context.addServlet(new ServletHolder(dispatcherServlet), "/");
 		server.setHandler(context);

@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.Endpoint;
@@ -31,6 +32,9 @@ public class SpringWsClientToJaxWsServerIT {
 	@Autowired
 	private TraceeSpringWsClient wsClient;
 
+	@Autowired
+	private WebServiceTemplate webServiceTemplate;
+
 	@Before
 	public void before() {
 		endpoint = Endpoint.publish(ENDPOINT_URL, new JaxwsTestserviceEndpoint());
@@ -43,7 +47,7 @@ public class SpringWsClientToJaxWsServerIT {
 
 	@PostConstruct
 	public void prepareTestClient() {
-		wsClient.setDefaultUri(ENDPOINT_URL);
+		webServiceTemplate.setDefaultUri(ENDPOINT_URL);
 	}
 
 	@Test

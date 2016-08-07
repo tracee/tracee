@@ -32,7 +32,7 @@ public final class TraceeClientHttpRequestInterceptor implements ClientHttpReque
 		this(Tracee.getBackend(), new HttpHeaderTransport(), profile);
 	}
 
-	protected TraceeClientHttpRequestInterceptor(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
+	public TraceeClientHttpRequestInterceptor(TraceeBackend backend, HttpHeaderTransport transportSerialization, String profile) {
 		this.backend = backend;
 		this.transportSerialization = transportSerialization;
 		this.profile = profile;

@@ -56,7 +56,7 @@ public class TraceeJobListenerIT {
 		final JobDetail jobDetail = JobBuilder.newJob(TestJob.class).build();
 		final Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail).startNow().build();
 		scheduler.scheduleJob(jobDetail, trigger);
-		verify(jobBackend, timeout(1000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), any(String.class));
+		verify(jobBackend, timeout(10000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), any(String.class));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class TraceeJobListenerIT {
 		final Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail).startNow().build();
 		new TraceeContextInjector(schedulerBackend, Profile.DEFAULT).injectContext(trigger);
 		scheduler.scheduleJob(jobDetail, trigger);
-		verify(jobBackend, timeout(1000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), any(String.class));
+		verify(jobBackend, timeout(10000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), any(String.class));
 		assertThat(jobBackend.getValuesBeforeLastClear(), hasEntry("testKey", "testValue"));
 	}
 
@@ -75,8 +75,8 @@ public class TraceeJobListenerIT {
 		final JobDetail jobDetail = JobBuilder.newJob(TestJob.class).build();
 		final Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail).startNow().build();
 		scheduler.scheduleJob(jobDetail, trigger);
-		verify(jobBackend, timeout(1000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
-		verify(jobBackend, timeout(1000)).clear();
+		verify(jobBackend, timeout(10000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
+		verify(jobBackend, timeout(10000)).clear();
 	}
 
 	@Test
@@ -85,8 +85,8 @@ public class TraceeJobListenerIT {
 		final Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail).startNow().build();
 		trigger.getJobDataMap().put("throwException", true);
 		scheduler.scheduleJob(jobDetail, trigger);
-		verify(jobBackend, timeout(1000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
-		verify(jobBackend, timeout(1000)).clear();
+		verify(jobBackend, timeout(10000)).put(eq(TraceeConstants.INVOCATION_ID_KEY), anyString());
+		verify(jobBackend, timeout(10000)).clear();
 	}
 
 	public static class TestJob implements Job {

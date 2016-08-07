@@ -1,12 +1,13 @@
 package io.tracee.binding.springmvc.itests;
 
-import io.tracee.Tracee;
+import io.tracee.TraceeBackend;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,12 @@ import java.io.IOException;
 
 import static io.tracee.TraceeConstants.TPIC_HEADER;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class TraceeInterceptorIT extends WebIntegrationIT{
+public class TraceeInterceptorIT extends WebIntegrationIT {
 
 	@Test
 	public void shouldDelegateContextToServerAndBack() throws IOException {
@@ -45,15 +47,16 @@ public class TraceeInterceptorIT extends WebIntegrationIT{
 
 	@Test
 	public void whenResponseIsCommitedWeShouldReceiveInitValues() throws IOException {
-		final Header traceeResponseHeader = get("closeResponse", "initialVal=0815").getFirstHeader(TPIC_HEADER);
-
+		final HttpResponse response = get("closeResponse", "initialVal=0815");
+		assertThat(response.getStatusLine().getStatusCode(), equalTo(200));
+		final Header traceeResponseHeader = response.getFirstHeader(TPIC_HEADER);
 		assertThat(traceeResponseHeader, notNullValue());
 		assertThat(traceeResponseHeader.getValue(), containsString("initialVal=0815"));
 		assertThat(traceeResponseHeader.getValue(), not(containsString("initialVal=laterValue321")));
 	}
 
 	private HttpResponse get(String remoteRessource, String traceeHeaderValue) throws IOException {
-		final HttpClient client = new DefaultHttpClient();
+		final HttpClient client = HttpClientBuilder.create().build();
 		final HttpGet httpGet = new HttpGet(ENDPOINT_URL + remoteRessource);
 		if (traceeHeaderValue != null) {
 			httpGet.setHeader(TPIC_HEADER, traceeHeaderValue);
@@ -65,13 +68,17 @@ public class TraceeInterceptorIT extends WebIntegrationIT{
 	@Controller
 	public static class SillyController {
 
+		@Autowired
+		TraceeBackend traceeBackend;
+
+
 		@RequestMapping("/addToTpic")
 		@ResponseStatus(HttpStatus.NO_CONTENT)
 		public void handleGet(HttpServletRequest request) {
 			if (request.getHeader(TPIC_HEADER) == null) {
 				throw new AssertionError("No expected Header " + TPIC_HEADER + " in request set");
 			}
-			Tracee.getBackend().put("inInterceptor", "y e s");
+			traceeBackend.put("inInterceptor", "y e s");
 		}
 
 		@RequestMapping("/throwException")
@@ -85,7 +92,7 @@ public class TraceeInterceptorIT extends WebIntegrationIT{
 		@ResponseStatus(HttpStatus.NO_CONTENT)
 		public void closeResponse(HttpServletResponse response) throws IOException {
 			response.flushBuffer();
-			Tracee.getBackend().put("initialVal", "laterValue321");
+			traceeBackend.put("initialVal", "laterValue321");
 		}
 	}
 }

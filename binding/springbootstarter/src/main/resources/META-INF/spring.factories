@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.tracee.spring.autoconfigure.TraceeContextAutoConfiguration,\
+  io.tracee.spring.autoconfigure.TraceeSpringAsyncAutoConfiguration,\
+  io.tracee.spring.autoconfigure.TraceeSpringMvcAutoConfiguration,\
+  io.tracee.spring.autoconfigure.TraceeSpringWebAutoConfiguration,\
+  io.tracee.spring.autoconfigure.TraceeSpringWsAutoConfiguration

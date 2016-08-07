@@ -20,7 +20,7 @@ public final class TraceeClientInterceptor extends AbstractTraceeInterceptor imp
 		this(Tracee.getBackend(), profile);
 	}
 
-	TraceeClientInterceptor(final TraceeBackend backend, final String profile) {
+	public TraceeClientInterceptor(final TraceeBackend backend, final String profile) {
 		super(backend, profile);
 	}
 
