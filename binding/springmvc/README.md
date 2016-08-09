@@ -3,7 +3,10 @@
 # tracee-springmvc
 
 This tracee module reads the incoming TracEE context for requests to your Spring MVC controllers and generates invocationIds if needed. It adds the TPIC header to your responses as well. - If you don't like to expose the TPIC in your responses (maybe you want to hide it from your users), you should take an individual TracEE configuration.
-This module requires Spring 3.1.0 or above.
+This module requires Spring 4.1.0 or above.
+
+ * __TraceeInterceptor__: Parses TracEE-Context from the request and writes the received context immediatly to the response. When the request handled it tries to replace the written context (when `HttpResponse` is not commited) and clears the TracEE context.
+ * __TraceeResponseBodyAdvice__: Large bodies or specific view mapper like JSON views encoded with jackson closes the response immediatly. This advice writes the TracEE context before the view starts with the encoding. 
 
 ## Installation
 
@@ -21,31 +24,44 @@ Add `tracee-springmvc` to your application dependencies. That's all! - For examp
 </dependencies>
 ```
 
-Then you're able to use our `TraceeInterceptor` in two ways:
+Then you're able to use our `TraceeInterceptor` and the `TraceeResponseBodyAdvice`. In your Java configuration please extend `WebMvcConfigurationSupport`:
 
-With Spring JavaConfig:
 ```java
 @Configuration
-@EnableWebMvc
-public class YourApplicationConfig extends WebMvcConfigurerAdapter {
+public class TraceeInterceptorSpringConfig extends DelegatingWebMvcConfiguration {
+
+	@Bean
+	public TraceeInterceptor traceeInterceptor() {
+		return new TraceeInterceptor();
+	}
+
+	@Bean
+	public TraceeResponseBodyAdvice responseBodyAdvice() {
+		return new TraceeResponseBodyAdvice();
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(traceeInterceptor());
+	}
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new io.tracee.binding.springmvc.TraceeInterceptor());
-    }
-
+	public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
+		final RequestMappingHandlerAdapter handlerAdapter = super.requestMappingHandlerAdapter();
+		handlerAdapter.setResponseBodyAdvice(Collections.<ResponseBodyAdvice<?>>singletonList(responseBodyAdvice()));
+		return handlerAdapter;
+	}
 }
 ```
 
-With XML configuration:
-
-```xml
-<mvc:interceptors>
-	<bean id="traceeInterceptor" class="io.tracee.binding.springmvc.TraceeInterceptor">
-		<property name="profileName" value="default"/> <!-- The profile configuration is optional -->
-	</bean>
-</mvc:interceptors>
-...
+To define the tracee profile specify it at the bean definition:
+```java
+@Bean
+public TraceeInterceptor traceeInterceptor() {
+	final TraceeInterceptor interceptor = new TraceeInterceptor();
+	interceptor.setProfileName("default");
+	return interceptor;
+}
 ```
 
 ## Delegate to asynchronous methods
