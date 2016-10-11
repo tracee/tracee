@@ -1,4 +1,4 @@
-> This document contains documentation for the `tracee-servlet` module. Check the [TracEE main documentation](/README.md) to get started.
+> This document contains documentation for the `tracee-springhttpclient` module. Check the [TracEE main documentation](/README.md) to get started.
 
 # tracee-springhttpclient
 
