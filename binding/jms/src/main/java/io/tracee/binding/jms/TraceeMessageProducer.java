@@ -3,6 +3,7 @@ package io.tracee.binding.jms;
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
+import io.tracee.transport.HttpHeaderTransport;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -14,18 +15,20 @@ import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncDis
 
 public class TraceeMessageProducer implements MessageProducer {
 
-
 	private final MessageProducer delegate;
 	private final TraceeBackend backend;
+	private final HttpHeaderTransport httpHeaderSerialization;
 
 	TraceeMessageProducer(MessageProducer delegate, TraceeBackend backend) {
 		this.delegate = delegate;
 		this.backend = backend;
+		this.httpHeaderSerialization = new HttpHeaderTransport();
 	}
 
 	public TraceeMessageProducer(MessageProducer delegate) {
 		this.delegate = delegate;
 		this.backend = Tracee.getBackend();
+		this.httpHeaderSerialization = new HttpHeaderTransport();
 	}
 
 	/**
@@ -36,7 +39,9 @@ public class TraceeMessageProducer implements MessageProducer {
 
 		if (!backend.isEmpty() && backend.getConfiguration().shouldProcessContext(AsyncDispatch)) {
 			final Map<String, String> filteredContext = backend.getConfiguration().filterDeniedParams(backend.copyToMap(), AsyncDispatch);
-			message.setObjectProperty(TraceeConstants.TPIC_HEADER, filteredContext);
+			final String contextAsString = httpHeaderSerialization.render(filteredContext);
+
+			message.setStringProperty(TraceeConstants.TPIC_HEADER, contextAsString);
 		}
 	}
 
