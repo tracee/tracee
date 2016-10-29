@@ -48,20 +48,17 @@ Be aware, that you _really should_ remove your custom context parameters as soon
 
 ## TracEE backends
 
-TracEE already ships with a number of adapters for popular logging frameworks, namely:
-
-* [slf4j](/backend/slf4j)
-* [log4j](/backend/log4j)
-* [log4j2](/backend/log4j2)
-* [jboss-logging](/backend/jboss-logging)
+TracEE uses SLF4J as default logging backend. It uses the MDC to store the values and logs through SLF4J itself. - But most of the time TracEE is very silent.
 
 If you have no logging backend present in a component, you can still use the [threadlocal-store](/backend/threadlocal-store) as
 backend that supports propagation of parameters (but leaves out the logging part).
 
-### Implementing custom backends
+### Implementing custom backends to store the values
 
 You can make your own backend by implementing the `io.tracee.spi.TraceeBackendProvider` interface
 and create a _provider-configuration file_ `classpath:/META-INF/services/io.tracee.spi.TraceeContextProvider`
 (see JDKs [ServiceLoader](http://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html)).
 
 The module [tracee-core](/core) contains abstractions over MDC-like logging backends that may help you with your integration.
+
+(But add the SLF4J logging API in every case! TracEE uses the API to log errors or other states. TracEE feels comfortable with the `NOPLogger` of SLF4J.)
