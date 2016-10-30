@@ -2,6 +2,7 @@ package io.tracee.binding.jms;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeConstants;
+import io.tracee.transport.HttpHeaderTransport;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -64,7 +66,8 @@ public class TraceeMessageListenerAndProducerIT {
 
 				assertThat("response within 1 second", response, notNullValue());
 				assertThat(response.getText(), equalTo("foo"));
-				final Map<String, String> traceeContext = (Map<String, String>) response.getObjectProperty(TraceeConstants.TPIC_HEADER);
+				final String traceeContextAsString = response.getStringProperty(TraceeConstants.TPIC_HEADER);
+				final Map<String, String> traceeContext = new HttpHeaderTransport().parse(singletonList(traceeContextAsString));
 				assertThat(traceeContext, Matchers.hasEntry("foo", "bar"));
 			} finally {
 				session.close();
