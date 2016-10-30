@@ -1,4 +1,6 @@
-# TracEE 2.0.0
+# TracEE 2.0.0-SNAPSHOT
+
+**Look into [TracEE 1.x Branch](https://github.com/tracee/tracee/tree/tracee-1.x) to find the current stable version.**
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tracee/tracee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
