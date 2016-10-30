@@ -4,6 +4,7 @@ import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.Utilities;
+import io.tracee.transport.HttpHeaderTransport;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -13,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import static io.tracee.configuration.TraceeFilterConfiguration.Channel.AsyncProcess;
+import static java.util.Collections.singletonList;
 
 /**
  * EJB interceptor that parses a TracEE context from message properties and cleans it after message processing.
@@ -21,8 +23,11 @@ public final class TraceeMessageListener {
 
 	private final TraceeBackend backend;
 
+	private final HttpHeaderTransport httpHeaderSerialization;
+
 	TraceeMessageListener(TraceeBackend backend) {
 		this.backend = backend;
+		this.httpHeaderSerialization = new HttpHeaderTransport();
 	}
 
 	@SuppressWarnings("unused")
@@ -49,9 +54,9 @@ public final class TraceeMessageListener {
 	public void beforeProcessing(final Message message) throws JMSException {
 
 		if (backend.getConfiguration().shouldProcessContext(AsyncProcess)) {
-			final Object encodedTraceeContext = message.getObjectProperty(TraceeConstants.TPIC_HEADER);
+			final String encodedTraceeContext = message.getStringProperty(TraceeConstants.TPIC_HEADER);
 			if (encodedTraceeContext != null) {
-				final Map<String, String> contextFromMessage = (Map<String, String>) encodedTraceeContext;
+				final Map<String, String> contextFromMessage = httpHeaderSerialization.parse(singletonList(encodedTraceeContext));
 				backend.putAll(backend.getConfiguration().filterDeniedParams(contextFromMessage, AsyncProcess));
 			}
 		}

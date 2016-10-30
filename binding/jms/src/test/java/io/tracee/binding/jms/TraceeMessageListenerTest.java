@@ -5,6 +5,7 @@ import io.tracee.TraceeBackend;
 import io.tracee.TraceeConstants;
 import io.tracee.testhelper.FieldAccessUtil;
 import io.tracee.testhelper.SimpleTraceeBackend;
+import io.tracee.transport.HttpHeaderTransport;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,13 +23,16 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TraceeMessageListenerTest {
 
+	private final HttpHeaderTransport httpHeaderTransport = new HttpHeaderTransport();
 	private final SimpleTraceeBackend backend = SimpleTraceeBackend.createNonLoggingAllPermittingBackend();
 	private final TraceeMessageListener unit = new TraceeMessageListener(backend);
 	private final InvocationContext invocationContext = mock(InvocationContext.class);
@@ -47,7 +51,12 @@ public class TraceeMessageListenerTest {
 				return null;
 			}
 		});
-		when(message.getObjectProperty(TraceeConstants.TPIC_HEADER)).thenReturn(encodedContext);
+		when(message.getStringProperty(TraceeConstants.TPIC_HEADER)).thenAnswer(new Answer<String>() {
+			@Override
+			public String answer(InvocationOnMock invocation) throws Throwable {
+				return httpHeaderTransport.render(encodedContext);
+			}
+		});
 	}
 
 	@Test
@@ -74,6 +83,17 @@ public class TraceeMessageListenerTest {
 		unit.intercept(invocationContext);
 		assertThat(backend.getValuesBeforeLastClear(), hasEntry(is(INVOCATION_ID_KEY), notNullValue()));
 		verify(mdbLike).onMessage(message);
+	}
+
+	/**
+	 *
+	 * @see <a href="https://github.com/tracee/tracee/issues/168">TracEE Issue 168</a>
+	 */
+	@Test
+	public void readContextWithoutUsingObjectMethods_issue168() throws Exception {
+		encodedContext.put("contextFromMessage", "yes");
+		unit.intercept(invocationContext);
+		verify(message, never()).getObjectProperty(anyString());
 	}
 
 	@EJB
