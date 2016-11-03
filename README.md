@@ -1,4 +1,4 @@
-# TracEE 1.1.2
+# TracEE 1.2.0
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tracee/tracee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.tracee/tracee-parent)
