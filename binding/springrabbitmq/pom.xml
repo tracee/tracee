@@ -17,7 +17,7 @@
 	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<properties>
-		<spring-amqp.version>1.5.6.RELEASE</spring-amqp.version>
+		<spring-amqp.version>1.6.3.RELEASE</spring-amqp.version>
 	</properties>
 
 	<dependencies>

@@ -17,7 +17,7 @@
 	<description>Please refer to https://github.com/tracee/tracee.</description>
 
 	<properties>
-		<spring-ws.version>2.2.4.RELEASE</spring-ws.version>
+		<spring-ws.version>2.4.0.RELEASE</spring-ws.version>
 	</properties>
 
 	<build>
