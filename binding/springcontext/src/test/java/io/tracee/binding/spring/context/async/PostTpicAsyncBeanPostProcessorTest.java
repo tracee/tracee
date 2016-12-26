@@ -1,4 +1,4 @@
-package io.tracee.binding.springmvc.async;
+package io.tracee.binding.spring.context.async;
 
 import io.tracee.Tracee;
 import io.tracee.TraceeBackend;
@@ -49,20 +49,20 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void ensureThatThePriorityIsNotHighestToRunInAsyncMode() {
-		final PostTpicAsyncBeanPostProcessor postProcessor = new PostTpicAsyncBeanPostProcessor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor postProcessor = new PostTpicAsyncBeanPostProcessor(mock(Executor.class), backend);
 
 		assertThat(postProcessor.getOrder(), is(0));
 	}
 
 	@Test
 	public void advisorShouldReturnInterceptor() {
-		final PostTpicAsyncBeanPostProcessor.TpicPostAdvisor advisor = new PostTpicAsyncBeanPostProcessor.TpicPostAdvisor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.TpicPostAdvisor advisor = new PostTpicAsyncBeanPostProcessor.TpicPostAdvisor(mock(Executor.class), backend);
 		assertThat(advisor.getAdvice(), instanceOf(PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor.class));
 	}
 
 	@Test
 	public void shouldRestoreTpicFromMetadataWhenSet() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		final Map<String, String> tpic = new HashMap<>();
 		tpic.put("myInvoc", "storeThisToAsync");
@@ -75,7 +75,7 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void shouldSkipTpicRestoreFromMetadataWhenMetadataIsNull() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		when(mockedInvocation.getUserAttribute(TraceeConstants.TPIC_HEADER)).thenReturn(null);
 
@@ -86,7 +86,7 @@ public class PostTpicAsyncBeanPostProcessorTest {
 
 	@Test
 	public void shouldClearTpicAfterInvocation() throws Throwable {
-		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class));
+		final PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor interceptor = new PostTpicAsyncBeanPostProcessor.DelegateTpicToThreadInterceptor(mock(Executor.class), backend);
 		final ReflectiveMethodInvocation mockedInvocation = mock(ReflectiveMethodInvocation.class);
 		when(mockedInvocation.getUserAttribute(TraceeConstants.TPIC_HEADER)).thenReturn(null);
 

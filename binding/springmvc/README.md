@@ -24,7 +24,40 @@ Add `tracee-springmvc` to your application dependencies. That's all! - For examp
 </dependencies>
 ```
 
-Then you're able to use our `TraceeInterceptor` and the `TraceeResponseBodyAdvice`. In your Java configuration please extend `WebMvcConfigurationSupport`:
+There are several mechanisms to configure _tracee-springmvc_. The following sections demonstrate these mechanisms, ordered by preference.
+
+### Use TraceeSpringMvcConfiguration
+
+This mechanism is especially preferred when you use springs `@EnableWebMvc` (auto-provided `DelegatingWebMvcConfiguration`) on your application configuration.
+All you need to do is to import `TraceeSpringMvcConfiguration` to your configuration. All MVC controllers will receive a `TraceeInterceptor` and a `TraceeResponseBodyAdvice`.
+
+
+```java
+package myapp;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.context.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
+import io.tracee.binding.springhttpclient.config.TraceeSpringWebConfiguration;
+
+
+@EnableWebMvc
+@Configuration
+@Import({TraceeContextConfiguration.class, TraceeSpringMvcConfiguration.class})
+public class MyConfiguration {
+
+    @Autowired
+    MyMvcController myMvcController();
+
+}
+```
+
+### Use TraceeSpringMvcConfiguration
+
+In some scenarios your application configuration extends Springs `WebMvcConfigurationSupport`.
+
+The following example demonstrates how you can plug _tracee-springmvc_ into your custom `WebMvcConfigurationSupport`:
 
 ```java
 @Configuration
@@ -66,20 +99,4 @@ public TraceeInterceptor traceeInterceptor() {
 
 ## Delegate to asynchronous methods
 
-When you're using asynchronous methods annotated with `@Async` you have to delegate the TPIC to the asynchronous invocation. Otherwise
-the MDC of the async threads in the threadpool are not clean and log statements contains wrong TPIC metadata.
-To enable the delegation add following bean post processors to your configuration:
-
-```java
-@Bean
-public PreTpicAsyncBeanPostProcessor preTpicAsyncBeanPostProcessor(AsyncTaskExecutor executor) {
-	return new PreTpicAsyncBeanPostProcessor(executor);
-}
-
-@Bean
-public PostTpicAsyncBeanPostProcessor postTpicAsyncBeanPostProcessor(AsyncTaskExecutor executor) {
-	return new PostTpicAsyncBeanPostProcessor(executor);
-}
-```
-
-This enables TracEE to delegate the TPIC to your asynchronous method calls and delete the TPIC after the processing from the thread.
+Please refer to [TracEE spring context bindings](../springcontext/README.md)

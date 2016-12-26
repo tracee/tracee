@@ -8,7 +8,10 @@
       http://www.springframework.org/schema/web-services/web-services-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:annotation-config/>
-	<context:component-scan base-package="io.tracee.binding.springws.itest"/>
+	<context:component-scan base-package="io.tracee.binding.springws.itest.testservice"/>
+
+	<bean class="io.tracee.binding.spring.context.config.TraceeContextConfiguration"/>
+	<bean class="io.tracee.binding.springws.config.TraceeSpringWsConfiguration"/>
 
 	<sws:annotation-driven/>
 	<sws:interceptors>

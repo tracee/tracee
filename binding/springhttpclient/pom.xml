@@ -28,6 +28,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>io.tracee.binding</groupId>
+			<artifactId>tracee-springcontext</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<scope>provided</scope>
